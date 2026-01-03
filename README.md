@@ -6,7 +6,7 @@
 
 ## 🌐 LIVE DEMO
 
-**[View the Portfolio](https://free-portfolio-aayush.vercel.app/)**
+**[View the Portfolio](https://mubashir-rehman.github.io/)**
 
 ---
 
