@@ -313,8 +313,11 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  text-align: center;
   gap: 2rem;
   z-index: 1;
+  width: 100%;
 }
 
 .hero-section-heading {
@@ -346,9 +349,10 @@ a {
 }
 
 .hero-section-description {
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin-top: 2rem;
-  width: 70%;
+  width: 100%;
+  max-width: 800px;
   font-weight: 500;
   opacity: 75%;
 }
@@ -468,129 +472,7 @@ a {
 
 
 
-.hero-section-right {
-  position: relative;
-  /* margin-right: 5rem; */
-  /* padding-right: 5rem; */
-}
 
-.myCard {
-  background-color: transparent;
-  /* width: 190px;
-  height: 254px; */
-  height: 23rem;
-  width: 16rem;
-  perspective: 1000px;
-  animation: float 6s ease-in-out infinite;
-}
-
-.title {
-  font-size: 1.5em;
-  font-weight: 900;
-  text-align: center;
-  margin: 0;
-}
-
-.innerCard {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  transition: transform 1.5s;
-  transform-style: preserve-3d;
-  cursor: pointer;
-}
-
-.myCard:hover .innerCard {
-  transform: rotateY(180deg);
-  /* transform: rotateY(180deg) rotateZ(180deg); */
-}
-
-.frontSide,
-.backSide {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: 1rem;
-  color: white;
-  box-shadow: 0 0 0.3em rgba(255, 255, 255, 0.5);
-  font-weight: 700;
-}
-
-
-.frontSide,
-.frontSide::before {
-
-  background-image: url("/userAsset/aayush_flower.jpg");
-  background-size: cover;
-  background-position: center;
-
-  /* background: linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%); */
-}
-
-.backSide,
-.backSide::before {
-  /* background-image: linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%); */
-  /* background-color: #ffd700; */
-  background: linear-gradient(143.42deg, #4AB1F1 0.58%, #566CEC 37.22%, #D749AF 73.87%, #FF7C51 112.26%);
-  /* background: linear-gradient(140deg, #03001e, #7303c0, #ec38bc,white); */
-}
-
-.backSide {
-  transform: rotateY(180deg);
-  /* transform: rotateY(180deg) rotateZ(180deg); */
-}
-
-.frontSide::before,
-.backSide::before {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  content: '';
-  width: 110%;
-  height: 110%;
-  position: absolute;
-  z-index: -1;
-  border-radius: 1em;
-  filter: blur(30px);
-  animation: animate 6s ease-in-out infinite;
-}
-
-@keyframes float {
-  0% {
-    transform: translatey(0px);
-  }
-
-  50% {
-    transform: translatey(-20px);
-  }
-
-  100% {
-    transform: translatey(0px);
-  }
-}
-
-@keyframes animate {
-  0% {
-    opacity: 0.3;
-    /* transform: translate(20px); */
-  }
-
-  50% {
-    opacity: 0.8;
-  }
-
-  100% {
-    opacity: 0.3;
-  }
-}
 
 
 @media (max-width:900px) {
@@ -653,10 +535,7 @@ a {
     left: 0%;
   }
 
-  .myCard {
-    height: 22rem;
-    width: 15rem;
-  }
+
 }
 
 
@@ -733,17 +612,17 @@ a {
 }
 
 #project2 {
-  background-image: url(/projects/discord.jpg);
+  background-image: url(./projects/discord.jpg);
   left: 5%;
 }
 
 #project3 {
-  background-image: url(/projects/Password\ generator.jpg);
+  background-image: url(./projects/Password\ generator.jpg);
   right: 5%;
 }
 
 #project4 {
-  background-image: url(/projects/Project4.png);
+  background-image: url(./projects/Project4.png);
   left: 5%;
 }
 
