@@ -42,6 +42,7 @@
   --btn-shadow: rgba(236, 17, 17, 0.2);
   --project-bg: linear-gradient(rgb(11, 11, 11) 10%, rgb(15, 15, 15), rgb(5, 5, 5), black, black, black, black);
   --contact-bg: linear-gradient(rgb(0, 0, 0), rgba(8, 8, 8, 0.8), rgba(8, 8, 8, 0.75), rgba(8, 8, 8, 0.433), rgba(8, 8, 8, 0.433), rgba(8, 8, 8, 0.433), rgba(8, 8, 8, 0.433), rgba(8, 8, 8, 0.433), black);
+  --card-overlay: linear-gradient(90deg, #000000b0, rgba(0, 0, 0, 0.266), #95969600);
 }
 
 .light-theme {
@@ -59,6 +60,7 @@
   --btn-shadow: rgba(0, 0, 0, 0.1);
   --project-bg: linear-gradient(#f8fafc 10%, #f1f5f9, #e2e8f0, #ffffff);
   --contact-bg: linear-gradient(white, rgba(248, 250, 252, 0.8), rgba(248, 250, 252, 0.95), white);
+  --card-overlay: linear-gradient(90deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8), transparent);
 }
 
 .wrapper {
@@ -202,7 +204,7 @@
   /* width: 30px; */
   /* background-color: #544aec; */
   font-size: 1rem;
-  color: rgba(241, 242, 238, 0.677);
+  color: var(--text-muted);
   /* font-weight: 400; */
 }
 
@@ -213,7 +215,7 @@ a {
 .nav-item a:hover {
   /* transition: 0.3s;  */
   /* letter-spacing: 1px; */
-  color: rgba(246, 230, 230, 0.858);
+  color: var(--text-color);
 }
 
 .nav-links {
@@ -225,15 +227,15 @@ a {
 
 .nav-icon {
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.819);
+  color: var(--text-muted);
   font-size: 17px;
   transition: 0.3s;
 }
 
 .nav-icon:hover {
-  color: rgb(255, 255, 255);
+  color: var(--text-color);
   transform: scale(0.9);
-  filter: drop-shadow(0px 0px 7px #ffffff);
+  filter: drop-shadow(0px 0px 7px var(--text-color));
 }
 
 .nav-icon:active {
@@ -685,7 +687,7 @@ a {
   right: 0;
   left: 0;
   /* background: linear-gradient(45deg, #343d68, #343d68be, #343d687c); */
-  background: linear-gradient(90deg, #000000b0, rgba(0, 0, 0, 0.266), #95969600);
+  background: var(--card-overlay);
   z-index: 1;
   transition: 0.5s;
   border-radius: 18px;
@@ -742,7 +744,7 @@ a {
   flex-direction: column;
   background-color: rgba(255, 255, 255, 0);
   gap: 1rem;
-  color: rgb(255, 255, 255);
+  color: var(--text-color);
   padding: 2em;
   bottom: 20%;
   position: absolute;
@@ -820,7 +822,7 @@ a {
 
 .icon {
   cursor: pointer;
-  color: white;
+  color: var(--text-color);
   font-size: 32px;
   transition: 0.3s;
   /* font-size: 18px; */
@@ -1456,7 +1458,7 @@ textarea {
 
 .secondLast>p {
   font-size: 0.9rem;
-  color: rgba(238, 232, 232, 0.673);
+  color: var(--text-muted);
   font-weight: 900;
 }
 
@@ -1566,7 +1568,7 @@ textarea {
 
 .secondLast>p {
   font-size: 0.9rem;
-  color: rgba(238, 232, 232, 0.673);
+  color: var(--text-muted);
   font-weight: 900;
 }
 
@@ -1597,8 +1599,7 @@ textarea {
 }
 
 .last-quote>p {
-  color: #ffffff;
-  opacity: 40%;
+  color: var(--text-muted);
   text-align: center;
   font-size: small;
   font-weight: 500;
