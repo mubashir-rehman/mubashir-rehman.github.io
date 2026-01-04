@@ -32,7 +32,7 @@ If you find this project useful or interesting, please consider giving it a star
 - **Blazing Fast Performance:** Optimized to ensure a smooth, seamless experience for all users.
 - **Detailed Documentation:** Step-by-step instructions for setup, customization, and further development.
 
-Check out the demo: **[Click here](https://free-portfolio-aayush.vercel.app/)**
+Check out the demo: **[Click here](https://mubashir-rehman.github.io/)**
 
 ---
 
@@ -48,9 +48,15 @@ Check out the demo: **[Click here](https://free-portfolio-aayush.vercel.app/)**
 
 For any inquiries or feedback, feel free to reach out:
 
-- **Email**: [iAayushBharti@gmail.com](mailto:iAayushBharti@gmail.com)
-- **LinkedIn**: [Aayush Bharti on LinkedIn](https://www.linkedin.com/in/iaayushbharti/)
+- **Email**: [mubashirrehman66@gmail.com](mailto:mubashirrehman66@gmail.com)
+- **LinkedIn**: [Mubashir Rehman on LinkedIn](https://www.linkedin.com/in/mubashir-rehman/)
 
 ---
 
 Thank you for checking out the Devfolio template!
+
+---
+
+## 📜 Credits
+
+Credits to **[iAayushBharti](https://github.com/iAayushBharti)** for the original portfolio template.
