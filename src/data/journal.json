@@ -1,0 +1,10 @@
+[
+  {
+    "slug": "welcome",
+    "title": "Why I Built This Portfolio",
+    "date": "2025-03-09",
+    "excerpt": "A backend engineer's reflection on building in public, shipping 11K lines of production code, and why I finally put my work on the internet.",
+    "tags": ["Meta", "Personal", "Engineering"],
+    "content": "# Why I Built This Portfolio\n\nI've shipped 7 microservices, led drone swarm systems, and published ML research — and I never had a single place that told the full story.\n\nThis is that place.\n\n## What you'll find here\n\n- **Projects** with real metrics, not just buzzwords\n- **A journal** where I think out loud about engineering and life\n- **Habit tracking** — because systems beat motivation\n- **An honest About page** — not a polished PR version of me\n\n## The philosophy\n\nShip it. Measure it. Iterate. This site is version 1.\n\n*— Mubashir*"
+  }
+]

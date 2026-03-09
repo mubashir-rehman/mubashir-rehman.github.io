@@ -1,0 +1,120 @@
+{
+  "name": "Mubashir Rehman",
+  "tagline": "Backend Engineer · AI/ML · Cloud · Systems",
+  "location": "Lahore, Pakistan",
+  "email": "mubashirrehman66@gmail.com",
+  "phone": "+92 309 552 8384",
+  "website": "https://mubashir-rehman.github.io",
+  "bio": "Backend-focused Software Engineer with a proven track record building production systems for AI, distributed architectures, and cloud infrastructure. I've shipped 7 microservices with 60+ endpoints serving 1,000+ concurrent users, led drone swarm control systems handling 10K msg/sec telemetry, and published ML research in a peer-reviewed journal. I care deeply about clean design, measurable impact, and systems that actually hold up under pressure. Open to freelance projects and full-time roles.",
+  "available": true,
+  "availabilityNote": "Open to Freelance & Full-Time Roles",
+  "metrics": [
+    { "label": "Lines of Production Code", "value": "11K+" },
+    { "label": "Commits Authored", "value": "182" },
+    { "label": "Concurrent Users Supported", "value": "1K+" },
+    { "label": "Test Coverage", "value": "~85%" },
+    { "label": "Published Paper", "value": "CSSP 2024" },
+    { "label": "Uptime Achieved", "value": "99.8%" }
+  ],
+  "skills": {
+    "Languages": ["Python", "C++", "JavaScript", "C", "Java", "Kotlin", "C#", "SQL"],
+    "Backend": ["Django", "FastAPI", "Flask", "Django REST Framework", "Node.js"],
+    "Databases": ["PostgreSQL", "Redis", "pgvector"],
+    "Cloud & DevOps": ["AWS EC2", "ECS", "VPC", "S3", "IAM", "Docker", "GitHub Actions", "CI/CD", "DigitalOcean", "Nginx"],
+    "AI / ML": ["OpenAI GPT", "Google Gemini", "LangChain", "MindsDB", "Databricks", "Keras", "scikit-learn", "PyTorch"],
+    "Tools": ["Git", "Jira", "pytest", "Postman", "Celery", "ARQ", "MQTT", "WebSockets", "OAuth2.0", "Stripe", "OpenCV", "n8n"]
+  },
+  "experience": [
+    {
+      "role": "Software Engineer",
+      "company": "TransData",
+      "location": "Lahore, Pakistan",
+      "period": "Mar 2025 – Present",
+      "highlights": [
+        "Sole DRF developer for 7 microservices and 60+ endpoints supporting 1,000+ concurrent users",
+        "Reduced prompt deployment time from 2 hours to 5 minutes via versioned prompt management + n8n across 6 AI pipelines",
+        "Multi-tier data extraction (LinkedIn API → scraper → OpenAI fallback) achieving ~95% profile completion",
+        "WebSocket notifications via Django Channels: 10K+ daily updates with <100ms latency",
+        "Stripe subscriptions with 99.9% payment success; OAuth2 + JWT refresh auth",
+        "182 commits (66% of repo), 11K+ lines of production code, 89 tests at ~85% coverage",
+        "Semantic search via Google Gemini embeddings + pgvector (768-d): <50ms latency, 90% cache hit rate",
+        "Architected real-time crypto intelligence platform processing 100+ social mentions/hr with 10 microservices",
+        "Async blockchain analysis for 6 networks; ML-based DEX scam detection at 92% accuracy",
+        "Integrated MindsDB and Databricks for enterprise AI workflows; optimized PostgreSQL schemas reducing latency 30%",
+        "HRMS migration to Django: 200+ employees, onboarding cut from 4 hours to 30 minutes, 99.8% uptime"
+      ]
+    },
+    {
+      "role": "Software Engineer",
+      "company": "VeritusLabs",
+      "location": "Lahore, Pakistan",
+      "period": "Jul 2023 – Mar 2025",
+      "highlights": [
+        "Led team of 4 building QGroundControl drone swarm control for 10+ UAVs at 50Hz telemetry; cut mission planning time by 60%",
+        "MQTT telemetry pipeline achieving 10K msg/sec with <20ms latency",
+        "Python ground control with Olympe/Sphinx, real-time video streaming and OpenCV object detection",
+        "AWS infra automation (Boto3), ECS Fargate Flask deployment with autoscaling",
+        "Docker CI/CD + Vagrant cross-platform testing; 95% on-time delivery across 12 sprints",
+        "AI prompt management platform with OpenAI GPT-4 streaming, LangChain NLP, RBAC, and S3 storage"
+      ]
+    },
+    {
+      "role": "Teaching Assistant",
+      "company": "Information Technology University",
+      "location": "Lahore, Pakistan",
+      "period": "Sep 2022 – Jan 2025",
+      "highlights": [
+        "Mentored 60+ graduate students in Advanced OS, Virtualization, and Distributed Systems",
+        "Analyzed foundational research papers including Scheduler Activations, Exokernel, and GFS",
+        "Designed lab assignments for 100+ undergraduates in multithreading, file systems, and system calls",
+        "Guided 15+ research projects in memory management and distributed systems"
+      ]
+    },
+    {
+      "role": "Game Development Intern",
+      "company": "GameBole",
+      "location": "Lahore, Pakistan",
+      "period": "Mar 2022 – Aug 2022",
+      "highlights": [
+        "Endless runner (Unity/C#) with object pooling: 40% memory reduction, 5K+ downloads, 4.2★ rating",
+        "Web game (PlayCanvas/JS) with scene pre-loading, object pooling, and cross-browser optimization",
+        "Integrated Google Play Services for leaderboards and achievements"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "BS Computer Science",
+      "institution": "Information Technology University",
+      "location": "Lahore, Pakistan",
+      "period": "Sep 2018 – Dec 2024",
+      "note": "PEEF Scholarship for academic excellence"
+    }
+  ],
+  "publications": [
+    {
+      "title": "Evaluation of a Low-Cost Single-Lead ECG Module for Vascular Ageing Prediction and Studying Smoking-Induced Changes in ECG",
+      "authors": "Syed Anas Ali; Muhammad Saqib Niaz; Mubashir Rehman; Ahsan Mehmood; M. Mahboob Ur Rahman; Kashif Riaz; Qammer H. Abbasi",
+      "journal": "Circuits, Systems, and Signal Processing (CSSP)",
+      "date": "November 2024",
+      "arxiv": "https://arxiv.org/abs/2308.04355v3",
+      "doi": "arXiv:2308.04355v3"
+    }
+  ],
+  "achievements": [
+    "Published research in CSSP journal (Nov 2024) — arXiv:2308.04355v3",
+    "Authored 66% of production codebase at TransData (182 commits, 11K+ lines)",
+    "Achieved 99.8% uptime on HRMS serving 200+ employees",
+    "Reduced HRMS onboarding time from 4 hours to 30 minutes",
+    "Led drone swarm system with 10K msg/sec MQTT pipeline at <20ms latency",
+    "ML-based DEX scam detection model at 92% accuracy",
+    "PEEF Scholarship recipient for academic excellence"
+  ],
+  "socialLinks": {
+    "github": "https://github.com/mubashir-rehman",
+    "linkedin": "https://linkedin.com/in/mubashir-rehman",
+    "website": "https://mubashir-rehman.github.io",
+    "email": "mubashirrehman66@gmail.com",
+    "whatsapp": "https://wa.me/923095528384"
+  }
+}
