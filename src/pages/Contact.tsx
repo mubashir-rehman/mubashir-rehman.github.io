@@ -11,10 +11,34 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setError("");
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch("https://formspree.io/f/mwvrvwjn", {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" },
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        setError("Something went wrong. Please try again or email me directly.");
+      }
+    } catch {
+      setError("Network error. Please try again or email me directly.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const whatsappMsg = encodeURIComponent(
@@ -94,8 +118,11 @@ export default function Contact() {
                   <label className="mb-1.5 block text-sm font-medium">Message</label>
                   <Textarea name="message" required rows={5} placeholder="Tell me about your project..." data-testid="input-message" />
                 </div>
-                <Button type="submit" className="w-full" data-testid="button-submit">
-                  <Send size={16} className="mr-2" /> Send Message
+                {error && (
+                  <p className="text-sm text-red-500" data-testid="text-error">{error}</p>
+                )}
+                <Button type="submit" className="w-full" disabled={submitting} data-testid="button-submit">
+                  <Send size={16} className="mr-2" /> {submitting ? "Sending..." : "Send Message"}
                 </Button>
               </form>
             )}
