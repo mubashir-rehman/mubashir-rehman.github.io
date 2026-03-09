@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Gamepad2, Music, BookOpen, Tv } from "lucide-react";
 import anime from "@/data/anime.json";
+import books from "@/data/books.json";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,7 +15,7 @@ const hobbies = [
   { icon: Tv, label: "Anime", desc: "See the list below \u2193" },
 ];
 
-const tabs = [
+const animeTabs = [
   { key: "watching" as const, label: "Watching" },
   { key: "completed" as const, label: "Completed" },
   { key: "planToWatch" as const, label: "Plan to Watch" },
@@ -22,8 +23,15 @@ const tabs = [
   { key: "dropped" as const, label: "Dropped" },
 ];
 
+const bookTabs = [
+  { key: "reading" as const, label: "Reading" },
+  { key: "completed" as const, label: "Completed" },
+  { key: "onHold" as const, label: "On Hold" },
+];
+
 export default function Hobbies() {
-  const [tab, setTab] = useState<keyof typeof anime>("watching");
+  const [animeTab, setAnimeTab] = useState<keyof typeof anime>("watching");
+  const [bookTab, setBookTab] = useState<keyof typeof books>("reading");
 
   return (
     <PageTransition>
@@ -58,14 +66,14 @@ export default function Hobbies() {
 
         <section className="mt-12">
           <h2 className="font-heading text-2xl font-bold">Anime List</h2>
-          <div className="mt-4 flex gap-2">
-            {tabs.map((t) => (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {animeTabs.map((t) => (
               <button
                 key={t.key}
                 data-testid={`button-anime-tab-${t.key}`}
-                onClick={() => setTab(t.key)}
+                onClick={() => setAnimeTab(t.key)}
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                  tab === t.key
+                  animeTab === t.key
                     ? "border border-primary bg-primary/10 text-primary"
                     : "border border-border bg-card text-muted-foreground hover:border-primary/30 hover:text-foreground"
                 }`}
@@ -75,7 +83,7 @@ export default function Hobbies() {
             ))}
           </div>
           <ul className="mt-4 space-y-2">
-            {anime[tab].map((title) => (
+            {anime[animeTab].map((title) => (
               <motion.li
                 key={title}
                 initial={{ opacity: 0, x: -10 }}
@@ -84,6 +92,41 @@ export default function Hobbies() {
                 <Card>
                   <CardContent className="px-4 py-3">
                     <span className="text-sm" data-testid={`text-anime-${title}`}>{title}</span>
+                  </CardContent>
+                </Card>
+              </motion.li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="mt-12">
+          <h2 className="font-heading text-2xl font-bold">Reading List</h2>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {bookTabs.map((t) => (
+              <button
+                key={t.key}
+                data-testid={`button-book-tab-${t.key}`}
+                onClick={() => setBookTab(t.key)}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  bookTab === t.key
+                    ? "border border-primary bg-primary/10 text-primary"
+                    : "border border-border bg-card text-muted-foreground hover:border-primary/30 hover:text-foreground"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+          <ul className="mt-4 space-y-2">
+            {books[bookTab].map((title) => (
+              <motion.li
+                key={title}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+              >
+                <Card>
+                  <CardContent className="px-4 py-3">
+                    <span className="text-sm" data-testid={`text-book-${title}`}>{title}</span>
                   </CardContent>
                 </Card>
               </motion.li>
@@ -102,16 +145,6 @@ export default function Hobbies() {
                 </p>
                 <p className="text-xs text-muted-foreground">Connect via Spotify API</p>
               </div>
-            </CardContent>
-          </Card>
-        </section>
-
-        <section className="mt-12">
-          <h2 className="font-heading text-2xl font-bold">Reading List</h2>
-          <Card className="mt-4">
-            <CardContent className="flex items-center gap-4 p-5">
-              <BookOpen size={24} className="text-primary" />
-              <p className="text-sm text-muted-foreground">Coming soon — currently reading Sufi philosophy.</p>
             </CardContent>
           </Card>
         </section>
