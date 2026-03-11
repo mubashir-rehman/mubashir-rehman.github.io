@@ -63,7 +63,7 @@ export default function SEO({ title, description, schema }: SEOProps) {
   const fullTitle = title ? `${title} | ${BASE_TITLE}` : BASE_TITLE;
   const desc = description || BASE_DESC;
   const isHome = !title;
-  const pageUrl = pathname === "/" ? SITE_URL : `${SITE_URL}/#${pathname}`;
+  const pageUrl = pathname === "/" ? SITE_URL : `${SITE_URL}${pathname}`;
   const canonical = isCanonicalHost();
 
   return (
