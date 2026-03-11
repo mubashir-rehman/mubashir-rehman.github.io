@@ -78,7 +78,7 @@ export default function Contact() {
 
   return (
     <PageTransition>
-      <SEO title="Contact" description="Get in touch — open to freelance projects and full-time roles." />
+      <SEO title="Contact" description="Reach out to Mubashir Rehman — available for freelance projects and full-time backend engineering roles. Contact via email, WhatsApp, GitHub, or LinkedIn." />
       <div className="mx-auto max-w-3xl px-4 pb-20 pt-24 sm:px-6">
         <h1 className="font-heading text-3xl font-bold sm:text-4xl">Get In Touch</h1>
         <p className="mt-2 text-muted-foreground">

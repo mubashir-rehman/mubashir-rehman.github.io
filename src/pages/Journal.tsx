@@ -11,7 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 function JournalList() {
   return (
     <PageTransition>
-      <SEO title="Journal" description="Thoughts on engineering, systems, and life." />
+      <SEO title="Journal" description="Technical writing by Mubashir Rehman — articles on backend engineering, distributed systems, Python, and software architecture." />
       <div className="mx-auto max-w-3xl px-4 pb-20 pt-24 sm:px-6">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-primary/20 text-primary">

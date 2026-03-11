@@ -35,7 +35,7 @@ export default function Hobbies() {
 
   return (
     <PageTransition>
-      <SEO title="Hobbies" />
+      <SEO title="Hobbies" description="What Mubashir Rehman does outside of coding — gaming, music, anime watchlist, and reading philosophy and Sufi literature." />
       <div className="mx-auto max-w-4xl px-4 pb-20 pt-24 sm:px-6">
         <h1 className="font-heading text-3xl font-bold sm:text-4xl">Hobbies</h1>
         <p className="mt-2 text-muted-foreground">What I do when I'm not shipping code.</p>

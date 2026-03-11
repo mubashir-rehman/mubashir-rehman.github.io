@@ -23,7 +23,7 @@ export default function Projects() {
 
   return (
     <PageTransition>
-      <SEO title="Projects" description="Production projects with real metrics — from AI-powered SaaS to drone swarm systems." />
+      <SEO title="Projects" description="Production projects by Mubashir Rehman — AI-powered SaaS, drone swarm systems, microservices, and full-stack apps with real metrics." />
       <div className="mx-auto max-w-6xl px-4 pb-20 pt-24 sm:px-6">
         <h1 className="font-heading text-3xl font-bold sm:text-4xl">Projects</h1>
         <p className="mt-2 text-muted-foreground">Production systems with real metrics.</p>
