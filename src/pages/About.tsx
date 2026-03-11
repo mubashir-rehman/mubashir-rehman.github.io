@@ -16,7 +16,24 @@ const fadeUp = {
 export default function About() {
   return (
     <PageTransition>
-      <SEO title="About" description="Mubashir Rehman — Backend Engineer in Lahore, Pakistan. Python, Django, FastAPI, AWS, Docker. 7 microservices, 60+ endpoints, 99.8% uptime." />
+      <SEO
+        title="About"
+        description="Mubashir Rehman — Backend Engineer in Lahore, Pakistan. Python, Django, FastAPI, AWS, Docker. 7 microservices, 60+ endpoints, 99.8% uptime."
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "ProfilePage",
+          mainEntity: {
+            "@type": "Person",
+            name: "Mubashir Rehman",
+            jobTitle: "Backend Software Engineer",
+            url: "https://mubashir-rehman.github.io",
+            sameAs: [
+              "https://github.com/mubashir-rehman",
+              "https://linkedin.com/in/mubashir-rehman",
+            ],
+          },
+        }}
+      />
       <div className="mx-auto max-w-4xl px-4 pb-20 pt-24 sm:px-6">
         <motion.div {...fadeUp} className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
           <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded-full border-2 border-primary/40 bg-primary/5 font-heading text-3xl font-bold text-primary">
