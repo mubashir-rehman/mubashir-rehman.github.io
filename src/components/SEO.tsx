@@ -74,7 +74,7 @@ export default function SEO({ title, description, schema }: SEOProps) {
 
       {/* Suppress indexing on non-canonical deployments */}
       {!canonical && (
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="noindex" />
       )}
 
       {/* Open Graph */}
