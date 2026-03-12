@@ -103,20 +103,20 @@ export default function Contact() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4" data-testid="form-contact">
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium">Name</label>
-                  <Input name="name" required placeholder="Your name" data-testid="input-name" />
+                  <label htmlFor="name" className="mb-1.5 block text-sm font-medium">Name</label>
+                  <Input id="name" name="name" required placeholder="Your name" autoComplete="name" data-testid="input-name" />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium">Email</label>
-                  <Input name="email" type="email" required placeholder="you@example.com" data-testid="input-email" />
+                  <label htmlFor="email" className="mb-1.5 block text-sm font-medium">Email</label>
+                  <Input id="email" name="email" type="email" required placeholder="you@example.com" autoComplete="email" data-testid="input-email" />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium">Subject</label>
-                  <Input name="subject" required placeholder="What's this about?" data-testid="input-subject" />
+                  <label htmlFor="subject" className="mb-1.5 block text-sm font-medium">Subject</label>
+                  <Input id="subject" name="subject" required placeholder="What's this about?" data-testid="input-subject" />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium">Message</label>
-                  <Textarea name="message" required rows={5} placeholder="Tell me about your project..." data-testid="input-message" />
+                  <label htmlFor="message" className="mb-1.5 block text-sm font-medium">Message</label>
+                  <Textarea id="message" name="message" required rows={5} placeholder="Tell me about your project..." data-testid="input-message" />
                 </div>
                 {error && (
                   <p className="text-sm text-red-500" data-testid="text-error">{error}</p>
