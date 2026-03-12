@@ -12,7 +12,6 @@ if (typeof window !== "undefined") {
 }
 
 export const createRoot = ViteReactSSG({
-  base: "/",
   routes: [
     {
       path: "/",
