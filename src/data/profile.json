@@ -9,20 +9,90 @@
   "available": true,
   "availabilityNote": "Open to Freelance & Full-Time Roles",
   "metrics": [
-    { "label": "Lines of Production Code", "value": "11K+" },
-    { "label": "Commits Authored", "value": "182" },
-    { "label": "Concurrent Users Supported", "value": "1K+" },
-    { "label": "Test Coverage", "value": "~85%" },
-    { "label": "Published Paper", "value": "CSSP 2024" },
-    { "label": "Uptime Achieved", "value": "99.8%" }
+    {
+      "label": "Lines of Production Code",
+      "value": "11K+"
+    },
+    {
+      "label": "Commits Authored",
+      "value": "182"
+    },
+    {
+      "label": "Concurrent Users Supported",
+      "value": "1K+"
+    },
+    {
+      "label": "Test Coverage",
+      "value": "~85%"
+    },
+    {
+      "label": "Published Paper",
+      "value": "CSSP 2024"
+    },
+    {
+      "label": "Uptime Achieved",
+      "value": "99.8%"
+    }
   ],
   "skills": {
-    "Languages": ["Python", "C++", "JavaScript", "C", "Java", "Kotlin", "C#", "SQL"],
-    "Backend": ["Django", "FastAPI", "Flask", "Django REST Framework", "Node.js"],
-    "Databases": ["PostgreSQL", "Redis", "pgvector"],
-    "Cloud & DevOps": ["AWS EC2", "ECS", "VPC", "S3", "IAM", "Docker", "GitHub Actions", "CI/CD", "DigitalOcean", "Nginx"],
-    "AI / ML": ["OpenAI GPT", "Google Gemini", "LangChain", "MindsDB", "Databricks", "Keras", "scikit-learn", "PyTorch"],
-    "Tools": ["Git", "Jira", "pytest", "Postman", "Celery", "ARQ", "MQTT", "WebSockets", "OAuth2.0", "Stripe", "OpenCV", "n8n"]
+    "Languages": [
+      "Python",
+      "C++",
+      "JavaScript",
+      "C",
+      "Java",
+      "Kotlin",
+      "C#",
+      "SQL"
+    ],
+    "Backend": [
+      "Django",
+      "FastAPI",
+      "Flask",
+      "Django REST Framework",
+      "Node.js"
+    ],
+    "Databases": [
+      "PostgreSQL",
+      "Redis",
+      "pgvector"
+    ],
+    "Cloud & DevOps": [
+      "AWS EC2",
+      "ECS",
+      "VPC",
+      "S3",
+      "IAM",
+      "Docker",
+      "GitHub Actions",
+      "CI/CD",
+      "DigitalOcean",
+      "Nginx"
+    ],
+    "AI / ML": [
+      "OpenAI GPT",
+      "Google Gemini",
+      "LangChain",
+      "MindsDB",
+      "Databricks",
+      "Keras",
+      "scikit-learn",
+      "PyTorch"
+    ],
+    "Tools": [
+      "Git",
+      "Jira",
+      "pytest",
+      "Postman",
+      "Celery",
+      "ARQ",
+      "MQTT",
+      "WebSockets",
+      "OAuth2.0",
+      "Stripe",
+      "OpenCV",
+      "n8n"
+    ]
   },
   "experience": [
     {
@@ -89,6 +159,20 @@
       "location": "Lahore, Pakistan",
       "period": "Sep 2018 – Dec 2024",
       "note": "PEEF Scholarship for academic excellence"
+    },
+    {
+      "degree": "FSc Pre-Engineering",
+      "institution": "Govt. Millat Degree College Mumtazabad",
+      "location": "Multan, Pakistan",
+      "period": "Sep 2016 – Jun 2018",
+      "note": "Fully funded STFS scholarship by Pakistan Science Foundation"
+    },
+    {
+      "degree": "Matriculation Science",
+      "institution": "Govt. M. A. Jinnah High School",
+      "location": "Multan, Pakistan",
+      "period": "Sep 2014 – Jun 2016",
+      "note": "Dalda Scholarship for outstanding merit"
     }
   ],
   "publications": [
@@ -108,7 +192,9 @@
     "Reduced HRMS onboarding time from 4 hours to 30 minutes",
     "Led drone swarm system with 10K msg/sec MQTT pipeline at <20ms latency",
     "ML-based DEX scam detection model at 92% accuracy",
-    "PEEF Scholarship recipient for academic excellence"
+    "PEEF Scholarship recipient for academic excellence",
+    "STFS Scholarship recipient for academic excellence",
+    "Dalda Scholarship recipient for academic excellence"
   ],
   "socialLinks": {
     "github": "https://github.com/mubashir-rehman",
