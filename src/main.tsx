@@ -71,21 +71,60 @@ if (typeof window !== "undefined") {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Stale chunk recovery for React.lazy() imports.
+//
+// After a new deploy, Vite renames all JS chunks with a fresh content hash.
+// If a visitor's browser has cached the old HTML, React.lazy() will try to
+// fetch e.g. `Projects-OldHash.js` which no longer exists on the server.
+// The dynamic import() rejects with "Failed to fetch dynamically imported
+// module", bypassing the fetch monkey-patch above.
+//
+// This wrapper catches that rejection and performs one hard navigation so the
+// browser re-fetches fresh HTML → new chunk URLs → everything resolves.
+// The flag is keyed to the current URL so it applies per-route and resets
+// naturally after a successful reload brings in the new bundle.
+// ---------------------------------------------------------------------------
+const CHUNK_RELOAD_KEY = "chunk-reload-v1";
+
+function lazyWithReload<T extends React.ComponentType<unknown>>(
+  factory: () => Promise<{ default: T }>,
+): React.LazyExoticComponent<T> {
+  return React.lazy(() =>
+    factory().catch((err: unknown) => {
+      if (typeof window !== "undefined") {
+        const key = `${CHUNK_RELOAD_KEY}:${window.location.pathname}`;
+        if (!sessionStorage.getItem(key)) {
+          sessionStorage.setItem(key, "1");
+          window.location.replace(
+            window.location.pathname +
+              window.location.search +
+              window.location.hash,
+          );
+          // Stall while the navigation is in flight — prevents a crash render.
+          return new Promise<{ default: T }>(() => {});
+        }
+      }
+      return Promise.reject(err);
+    }),
+  );
+}
+
 export const createRoot = ViteReactSSG({
   routes: [
     {
       path: "/",
       element: <App />,
       children: [
-        { index: true, Component: React.lazy(() => import("@/pages/Landing")) },
-        { path: "about", Component: React.lazy(() => import("@/pages/About")) },
-        { path: "projects", Component: React.lazy(() => import("@/pages/Projects")) },
-        { path: "hobbies", Component: React.lazy(() => import("@/pages/Hobbies")) },
-        { path: "habits", Component: React.lazy(() => import("@/pages/Habits")) },
-        { path: "journal", Component: React.lazy(() => import("@/pages/Journal").then(m => ({ default: m.JournalList }))) },
-        { path: "journal/:slug", Component: React.lazy(() => import("@/pages/Journal").then(m => ({ default: m.JournalEntry }))) },
-        { path: "contact", Component: React.lazy(() => import("@/pages/Contact")) },
-        { path: "*", Component: React.lazy(() => import("@/pages/NotFound")) },
+        { index: true, Component: lazyWithReload(() => import("@/pages/Landing")) },
+        { path: "about", Component: lazyWithReload(() => import("@/pages/About")) },
+        { path: "projects", Component: lazyWithReload(() => import("@/pages/Projects")) },
+        { path: "hobbies", Component: lazyWithReload(() => import("@/pages/Hobbies")) },
+        { path: "habits", Component: lazyWithReload(() => import("@/pages/Habits")) },
+        { path: "journal", Component: lazyWithReload(() => import("@/pages/Journal").then(m => ({ default: m.JournalList }))) },
+        { path: "journal/:slug", Component: lazyWithReload(() => import("@/pages/Journal").then(m => ({ default: m.JournalEntry }))) },
+        { path: "contact", Component: lazyWithReload(() => import("@/pages/Contact")) },
+        { path: "*", Component: lazyWithReload(() => import("@/pages/NotFound")) },
       ],
     }
   ],
