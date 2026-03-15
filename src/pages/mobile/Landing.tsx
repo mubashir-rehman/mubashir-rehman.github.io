@@ -24,10 +24,10 @@ const M3 = {
 // Quick nav tiles (Bookme-style)
 // ---------------------------------------------------------------------------
 const quickLinks = [
-  { to: "/projects", Icon: FolderOpen, label: "Projects", color: "hsl(var(--m3-primary-container))", onColor: "hsl(var(--m3-on-primary-container))" },
-  { to: "/habits",   Icon: Flame,      label: "Habits",   color: "hsl(var(--m3-primary-container))", onColor: "hsl(var(--m3-on-primary-container))" },
-  { to: "/hobbies",  Icon: Heart,      label: "Hobbies",  color: "hsl(var(--m3-primary-container))", onColor: "hsl(var(--m3-on-primary-container))" },
-  { to: "/journal",  Icon: BookOpen,   label: "Journal",  color: "hsl(var(--m3-primary-container))", onColor: "hsl(var(--m3-on-primary-container))" },
+  { to: "/journal",  Icon: BookOpen,   label: "Journal"  },
+  { to: "/habits",   Icon: Flame,      label: "Habits"   },
+  { to: "/hobbies",  Icon: Heart,      label: "Hobbies"  },
+  { to: "/projects", Icon: FolderOpen, label: "Projects" },
 ];
 
 // ---------------------------------------------------------------------------

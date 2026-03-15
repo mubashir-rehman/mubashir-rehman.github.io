@@ -1,37 +1,20 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { House, User, Mail, FolderOpen, Heart, Flame, BookOpen } from "lucide-react";
+import { House, User, FolderOpen, Mail } from "lucide-react";
 import { useMobile } from "@/hooks/useMobile";
 
-// Mobile landing: 3 primary tabs only (LinkedIn style — icon + label)
-const mobilePrimaryLinks = [
-  { to: "/",        Icon: House,  label: "Home"    },
-  { to: "/about",   Icon: User,   label: "About"   },
-  { to: "/contact", Icon: Mail,   label: "Contact" },
-];
-
-// All other mobile pages: full 7-tab icon nav
-const mobileFullLinks = [
+const links = [
   { to: "/",         Icon: House,      label: "Home"     },
-  { to: "/about",    Icon: User,       label: "About"    },
   { to: "/projects", Icon: FolderOpen, label: "Projects" },
-  { to: "/hobbies",  Icon: Heart,      label: "Hobbies"  },
-  { to: "/habits",   Icon: Flame,      label: "Habits"   },
-  { to: "/journal",  Icon: BookOpen,   label: "Journal"  },
+  { to: "/about",    Icon: User,       label: "About"    },
   { to: "/contact",  Icon: Mail,       label: "Contact"  },
 ];
-
-const PRIMARY_ROUTES = ["/", "/about", "/contact"];
 
 export default function BottomNav() {
   const { pathname } = useLocation();
   const isMobile = useMobile();
 
   if (!isMobile) return null;
-
-  const isPrimaryRoute = PRIMARY_ROUTES.includes(pathname);
-  const links = isPrimaryRoute ? mobilePrimaryLinks : mobileFullLinks;
-  const showLabels = isPrimaryRoute;
 
   return (
     <nav
@@ -65,7 +48,7 @@ export default function BottomNav() {
                 className="relative z-10 flex items-center justify-center"
               >
                 <Icon
-                  size={showLabels ? 24 : 22}
+                  size={24}
                   fill={isActive ? "currentColor" : "none"}
                   stroke={isActive ? "hsl(var(--m3-surface))" : "currentColor"}
                   strokeWidth={1.75}
@@ -80,7 +63,6 @@ export default function BottomNav() {
               <span
                 className={[
                   "relative z-10 font-body text-[10px] font-medium leading-none transition-colors",
-                  showLabels ? "block" : "sr-only",
                   isActive
                     ? "text-[hsl(var(--m3-on-primary-container))]"
                     : "text-[hsl(var(--m3-on-surface-var))]",
