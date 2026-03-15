@@ -6,8 +6,11 @@ import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { useMobile } from "@/hooks/useMobile";
+import MobileProjects from "@/pages/mobile/Projects";
 
 export default function Projects() {
+  const isMobile = useMobile();
   const allTags = useMemo(() => {
     const set = new Set<string>();
     projects.forEach((p) => p.tags.forEach((t) => set.add(t)));
@@ -15,6 +18,8 @@ export default function Projects() {
   }, []);
 
   const [filter, setFilter] = useState<string | null>(null);
+
+  if (isMobile) return <MobileProjects />;
 
   const filtered = useMemo(() => {
     const list = filter ? projects.filter((p) => p.tags.includes(filter)) : projects;
