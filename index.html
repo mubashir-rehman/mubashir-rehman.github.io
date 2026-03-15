@@ -3,6 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Prevent browsers from serving stale HTML after a new deploy.
+         Vite hashes all JS/CSS asset filenames so they are immutably cached.
+         HTML files are not hashed, so without this they can be served stale
+         from browser or CDN cache, pointing to JS bundles that no longer exist
+         on the server — causing JSON parse crashes on the SSG manifest fetch. -->
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
     <title>Mubashir Rehman — Backend Engineer</title>
     <meta name="description" content="Backend Software Engineer specializing in Python, Django, AWS, and AI/ML systems. 11K+ lines shipped, 99.8% uptime. Open to freelance and full-time roles." />
     <meta property="og:title" content="Mubashir Rehman — Backend Engineer" />

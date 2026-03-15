@@ -25,8 +25,14 @@ if (typeof window !== "undefined") {
   // Fix: monkey-patch window.fetch *before* ViteReactSSG initialises. When the
   // manifest URL comes back non-OK (HTML 404), return a fake `Response("{}")`
   // so `.json()` succeeds, the loader finds no data and exits cleanly with
-  // `null`, and we simultaneously trigger a one-time reload to pull fresh
-  // assets. The `ssg-reloaded` flag in sessionStorage prevents an infinite loop.
+  // `null`, and we simultaneously trigger a one-time hard navigation to pull
+  // fresh assets.
+  //
+  // The reload key is scoped to the current bundle hash so that:
+  //   - Each deploy gets exactly one clean recovery attempt.
+  //   - A recovered bundle (new hash) has a fresh flag → no loop risk.
+  //   - `location.replace()` is a full navigation (not reload()) so the
+  //     browser fetches fresh HTML rather than replaying from cache.
   const _fetch = window.fetch.bind(window);
   window.fetch = async (
     input: RequestInfo | URL,
@@ -42,11 +48,19 @@ if (typeof window !== "undefined") {
     const response = await _fetch(input, init);
 
     if (url.includes("static-loader-data-manifest") && !response.ok) {
-      if (!sessionStorage.getItem("ssg-reloaded")) {
-        sessionStorage.setItem("ssg-reloaded", "1");
-        window.location.reload();
+      // Key the flag to the current bundle hash so each deploy version gets
+      // exactly one recovery attempt — prevents cross-deploy flag collisions.
+      const hash = (window as Window & { __VITE_REACT_SSG_HASH__?: string }).__VITE_REACT_SSG_HASH__ ?? "unknown";
+      const reloadKey = `ssg-reloaded-${hash}`;
+      if (!sessionStorage.getItem(reloadKey)) {
+        sessionStorage.setItem(reloadKey, "1");
+        // Use replace() not reload(): replace() is a full navigation so the
+        // browser fetches fresh HTML (bypassing page cache), which references
+        // the new hashed JS bundle. reload() may replay from cache.
+        window.location.replace(window.location.pathname + window.location.search + window.location.hash);
       }
-      // Return an empty manifest so the loader returns null instead of throwing.
+      // Return an empty manifest so the loader returns null instead of throwing
+      // while the navigation is in flight.
       return new Response("{}", {
         status: 200,
         headers: { "Content-Type": "application/json" },
