@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Gamepad2, Music, BookOpen, Tv } from "lucide-react";
 import anime from "@/data/anime.json";
 import books from "@/data/books.json";
+import { useMobile } from "@/hooks/useMobile";
+import MobileHobbies from "@/pages/mobile/Hobbies";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { Card, CardContent } from "@/components/ui/card";
@@ -30,6 +32,9 @@ const bookTabs = [
 ];
 
 export default function Hobbies() {
+  const isMobile = useMobile();
+  if (isMobile) return <MobileHobbies />;
+
   const [animeTab, setAnimeTab] = useState<keyof typeof anime>("watching");
   const [bookTab, setBookTab] = useState<keyof typeof books>("reading");
 

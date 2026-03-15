@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
 import habits from "@/data/habits.json";
 import journal from "@/data/journal.json";
+import { useMobile } from "@/hooks/useMobile";
+import MobileHabits from "@/pages/mobile/Habits";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { Card, CardContent } from "@/components/ui/card";
@@ -197,9 +199,12 @@ function isRecent(dateStr: string): boolean {
 }
 
 export default function Habits() {
+  const isMobile = useMobile();
   const weeks = useMemo(() => getWeeks(), []);
   const monthLabels = useMemo(() => getMonthLabels(weeks), [weeks]);
   const journalLog = useMemo(() => Object.fromEntries(journal.map((e) => [e.date, true])), []);
+
+  if (isMobile) return <MobileHabits />;
 
   const [selectedYears, setSelectedYears] = useState<Record<string, number>>(() =>
     Object.fromEntries(habits.map((h) => [h.habit, new Date().getFullYear()]))

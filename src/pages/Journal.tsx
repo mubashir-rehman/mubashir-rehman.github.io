@@ -8,6 +8,8 @@ import PageTransition from "@/components/PageTransition";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import Comments from "@/components/Comments";
+import { useMobile } from "@/hooks/useMobile";
+import { MobileJournalList, MobileJournalEntry } from "@/pages/mobile/Journal";
 
 const SITE_URL = "https://mubashir-rehman.github.io";
 
@@ -25,6 +27,8 @@ function formatDate(iso: string): string {
 }
 
 function JournalList() {
+  const isMobile = useMobile();
+  if (isMobile) return <MobileJournalList />;
   return (
     <PageTransition>
       <SEO
@@ -99,6 +103,8 @@ function JournalList() {
 }
 
 function JournalEntry() {
+  const isMobile = useMobile();
+  if (isMobile) return <MobileJournalEntry />;
   const { slug } = useParams();
   const entry = journal.find((e) => e.slug === slug);
 
