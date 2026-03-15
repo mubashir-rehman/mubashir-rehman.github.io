@@ -1,0 +1,70 @@
+/* Giscus custom theme — Sakura — matches portfolio sakura palette */
+/* Portfolio sakura variables:
+   --background:       hsl(340 60% 97%)  ≈ #FDEEF3
+   --card:             hsl(340 50% 94%)  ≈ #F8E4ED
+   --foreground:       hsl(340 40% 18%)  ≈ #3D2329
+   --primary:          hsl(340 78% 58%)  ≈ #E8679A
+   --border:           hsl(340 28% 84%)  ≈ #E0C8D0
+   --muted:            hsl(340 28% 88%)  ≈ #E8D0DA
+   --muted-foreground: hsl(340 18% 45%)  ≈ #8A6470
+   --secondary:        hsl(340 35% 90%)  ≈ #F0D8E0
+*/
+
+:root {
+  --color-canvas-default:         #fdeef3;
+  --color-canvas-subtle:          #f8e4ed;
+  --color-canvas-inset:           #f8e4ed;
+  --color-canvas-overlay:         #ffffff;
+
+  --color-fg-default:             #3d2329;
+  --color-fg-muted:               #8a6470;
+  --color-fg-subtle:              #b08090;
+  --color-fg-on-emphasis:         #ffffff;
+
+  --color-border-default:         #e0c8d0;
+  --color-border-muted:           #e8d0da;
+  --color-border-subtle:          rgba(61,35,41,0.08);
+
+  --color-neutral-muted:          rgba(61,35,41,0.06);
+  --color-neutral-emphasis-plus:  #8a6470;
+  --color-neutral-emphasis:       #b08090;
+
+  --color-accent-fg:              #e8679a;
+  --color-accent-subtle:          rgba(232,103,154,0.08);
+  --color-accent-emphasis:        #e8679a;
+  --color-accent-muted:           rgba(232,103,154,0.15);
+
+  --color-success-fg:             #1a7f37;
+  --color-danger-fg:              #cf222e;
+  --color-attention-fg:           #9a6700;
+
+  /* Buttons */
+  --color-btn-text:               #3d2329;
+  --color-btn-bg:                 #fdeef3;
+  --color-btn-border:             #e0c8d0;
+  --color-btn-hover-bg:           #f8e4ed;
+  --color-btn-hover-border:       #d0b8c8;
+  --color-btn-active-bg:          #f0d8e0;
+
+  --color-btn-primary-text:       #ffffff;
+  --color-btn-primary-bg:         #e8679a;
+  --color-btn-primary-border:     #e8679a;
+  --color-btn-primary-hover-bg:   #d94f82;
+  --color-btn-primary-hover-border: #d94f82;
+  --color-btn-primary-selected-bg: #c93a6e;
+
+  /* Inputs */
+  --color-input-bg:               #ffffff;
+  --color-input-border:           #e0c8d0;
+  --color-input-contrast-bg:      #fdeef3;
+
+  /* Social reaction pill */
+  --color-social-reaction-bg-hover:      rgba(232,103,154,0.08);
+  --color-social-reaction-bg-reacted-hover: rgba(232,103,154,0.15);
+
+  /* Links */
+  --color-link-fg:                #e8679a;
+
+  /* Scrollbar */
+  scrollbar-color: #e0c8d0 transparent;
+}

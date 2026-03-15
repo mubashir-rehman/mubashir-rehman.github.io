@@ -1,0 +1,349 @@
+cv:
+  name: Mubashir Rehman
+  location: Multan, Pakistan
+  email: mubashirrehman66@gmail.com
+  phone: +92 309 552 8384
+  website: https://mubashir-rehman.github.io
+  social_networks:
+    - network: LinkedIn
+      username: mubashir-rehman
+    - network: GitHub
+      username: mubashir-rehman
+  
+  sections:
+    summary:
+      - Software Engineer with hands-on experience building scalable backend systems, AI-powered platforms, and cloud-native applications. Expertise in Python, Django, FastAPI, Docker, and CI/CD pipelines. Proven track record architecting production-ready systems including cryptocurrency intelligence platforms and LinkedIn content automation tools. Skilled in integrating AI/ML services, optimizing database performance, and deploying fault-tolerant microservices.
+    
+    education:
+      - institution: Information Technology University
+        area: Computer Science
+        degree: BS
+        start_date: 2018-09
+        end_date: 2024-06
+        location: Lahore, Pakistan
+        highlights:
+          - Awarded fully funded Punjab Educational Endowment Fund (PEEF) Scholarship for academic excellence
+          - Completed leadership development workshop at Punjab House Murree
+      
+      - institution: Govt. Millat Degree College Mumtazabad
+        area: Pre-Engineering
+        degree: FSc
+        start_date: 2016-09
+        end_date: 2018-06
+        location: Multan, Pakistan
+        highlights:
+          - Awarded national-level fully funded Science Talent Farming Scheme scholarship
+          - Participated in visits to NUST, Quaid-e-Azam University, Atomic Energy Commission, and Islamic University of Agriculture
+      
+      - institution: Govt. M. A. Jinnah High School
+        area: Science
+        degree: Matriculation
+        start_date: 2014-09
+        end_date: 2016-06
+        location: Multan, Pakistan
+        highlights:
+          - Awarded Dalda Scholarship for outstanding merit
+    
+    experience:
+      - company: TransData
+        position: Software Engineer
+        start_date: 2025-03
+        end_date: present
+        location: Lahore, Pakistan
+        highlights:
+          - "**AI-Powered LinkedIn Content Automation (Brandmate) – Lead Backend Engineer:** Architected Django REST Framework application as sole backend developer, building 60+ REST API endpoints across 7 apps supporting AI-powered LinkedIn content generation and automated post scheduling"
+          - Designed versioned prompt management system extracting prompts from n8n workflows and implementing backend injection for 6 of 8 AI workflows, enabling A/B testing without code changes
+          - Developed multi-tier LinkedIn profile scraping with official API, third-party fallback, and OpenAI-powered human-in-the-loop extraction, achieving 95%+ data retrieval success rate
+          - Implemented real-time WebSocket updates using Django Channels for live post status notifications and integrated Stripe payment system with subscription management
+          - Built LinkedIn OAuth 2.0 flow with mobile deep linking and JWT authentication using SimpleJWT for seamless cross-platform experience
+          - Containerized application using Docker and deployed to self-hosted production server, creating automated testing suite with 89 passing tests
+          - Authored 66% of repository commits (182 of 274), developing 11,000+ lines of production Python code
+          - "**Cryptocurrency Intelligence Platform (Coin Intelligence Bot):** Designed GitHub Actions CI/CD pipeline with branch-based deployments and automated environment configuration using SSH key authentication"
+          - Built multi-stage Docker builds orchestrating 10+ microservices with Docker Compose including health checks and dependency ordering
+          - Integrated Google Gemini API for cryptocurrency due diligence analysis with automatic rate limit handling, exponential backoff retry, and Redis caching achieving 90%+ cache hit rate
+          - Developed semantic embedding pipeline using Gemini text-embedding-004 generating 768-dimensional vectors and implemented pgvector similarity search for real-time cryptocurrency mention matching
+          - Built async contract analysis microservice with Routescan/Etherscan API integration supporting 6 blockchain networks, implementing token bucket rate limiting (5 calls/sec) and LRU caching achieving 80%+ hit rates
+          - Created DEX event parser detecting LP creation from Uniswap, PancakeSwap, and SushiSwap factory contracts with scam detection heuristics
+          - Architected real-time social media ingestion pipeline processing 100+ cryptocurrency mentions per hour from Telegram, Discord, and Twitter with background task processing using ARQ/Redis and Celery
+          - "**HRMS & AI/ML Integration Projects:** Designed and optimized PostgreSQL schemas supporting high-throughput AI workloads, reducing query latency by 30% through strategic indexing and query optimization"
+          - Migrated HRMS operations to Horilla (Django-based), customizing and white-labeling platform with enhanced import tools and streamlined payroll/attendance workflows
+          - Deployed Dockerized HRMS on DigitalOcean using Systemd for persistent uptime with automated rollback capabilities
+          - Implemented OAuth2.0 flows with refresh-token handling and enhanced observability by extending logging framework, reducing support tickets by 25%
+      
+      - company: Veritus Software
+        position: Team Lead & Software Engineer
+        start_date: 2023-07
+        end_date: 2025-03
+        location: Lahore, Pakistan
+        highlights:
+          - "**Advanced Drone Control and Simulation Systems:** Developed and enhanced QGroundControl using Qt framework, integrating custom UI features in QML and optimizing drone swarm control algorithms"
+          - Modified Gazebo simulation environments supporting multi-drone telemetry for real-time interaction with QGroundControl
+          - Implemented high-performance telemetry transfer using multithreading, multiprocessing, and MQTT protocols ensuring seamless ground-to-drone communication
+          - Established Dockerized development environments with Vagrant for isolated testing, enabling efficient CI/CD workflows
+          - Led Agile team delivering incremental demos using Jira for task management, creating technical presentations with diagrams and multimedia
+          - "**Python-Based Drone Ground Control and Video Processing:** Transitioned ground control systems to Olympe (Python) and Sphinx, integrating advanced telemetry handling using multiprocessing and MQTT"
+          - Engineered video streaming from Sphinx simulator to Android applications, incorporating OpenCV for real-time object detection and obstacle avoidance
+          - Enhanced Android ground control station integrating OpenStreetMap and Bing Maps APIs for real-time navigation and drone tracking
+          - "**AWS Infrastructure Automation and Cloud Deployment:** Automated creation and management of AWS resources including VPCs, subnets, EC2 instances, IAM roles, and ECS services using Boto3 and JSON-configured setups"
+          - Deployed Flask applications on ECS with Dockerized environments ensuring public access through Dynu DDNS
+          - Delivered end-to-end solutions from infrastructure provisioning to OAuth authentication and public accessibility
+          - "**AI-Powered Prompt Enhancer Web Application:** Built full-stack web application with AI-powered tools including Prompt Template Generator, Function Helper, Project Generator, and Task Planner"
+          - Integrated OpenAI GPT models for natural language processing and code generation achieving high user satisfaction
+          - Managed role-based access control (RBAC) using Django with AWS S3 for secure storage of user content
+          - Established CI/CD pipelines using Docker and Boto3 for AWS ECS achieving seamless scaling and reliability
+      
+      - company: Information Technology University
+        position: Teaching Assistant
+        start_date: 2023-01
+        end_date: 2023-05
+        location: Lahore, Pakistan
+        highlights:
+          - "**Advanced Operating Systems (Graduate Level):** Facilitated discussions on OS research topics including Scheduler Activations, Superpages, GFS, Exokernel, VMware, and Xen virtualization"
+          - Analyzed foundational research papers guiding students in literature reviews and technical paper writing
+          - Supported students in implementing research-inspired projects in memory management and distributed systems
+          - "**Operating Systems (Undergraduate Level):** Designed hands-on lab assignments for indexed file systems, multithreaded applications, and process scheduling algorithms"
+          - Guided students in debugging with Valgrind and utilizing Vagrant for OS virtualization
+          - Provided personalized assistance enhancing understanding of process management, memory allocation, and synchronization
+      
+      - company: GameBole Studios
+        position: Game Development Intern
+        start_date: 2022-03
+        end_date: 2022-07
+        location: Lahore, Pakistan
+        highlights:
+          - Developed multi-level endless runner game for Android using Unity and C# with advanced mechanics including level progression, power-ups, and dynamic obstacles
+          - Optimized performance with object pooling reducing memory consumption ensuring smooth experience across Android devices
+          - Integrated Google Play Services for leaderboards and achievements providing social engagement features
+          - Built web-based endless runner using PlayCanvas and JavaScript implementing memory optimization strategies including scene pre-loading and asset reuse
+    
+    projects:
+      - name: Cardiovascular Age Prediction using Single-Lead ECG
+        start_date: 2023-01
+        end_date: 2024-11
+        highlights:
+          - Designed cost-effective health monitoring system ($10 hardware) using ESP32 microcontroller and AD8232 ECG sensor for real-time data collection from 42 subjects
+          - Implemented complete signal processing pipeline using NeuroKit2 and SciPy for ECG feature extraction from 126 minutes of recorded data
+          - Trained machine learning models using Random Forest and 1D CNN achieving R² = 0.99 for vascular age prediction from 6,131 ECG segments
+          - Applied transfer learning using ResNet-18 on spectrogram images achieving MSE = 0.99, R² = 0.87
+          - Performed explainable AI analysis identifying ECG markers associated with vascular ageing and smoking-induced physiological changes
+          - Co-authored research paper published as arXiv preprint and accepted in Circuits, Systems, and Signal Processing (CSSP) journal
+      
+      - name: Remote Job Scheduler
+        start_date: 2023-01
+        end_date: 2023-05
+        highlights:
+          - Developed server-client application enabling remote command execution and job scheduling for distributed systems using C and TCP/IP
+          - Leveraged multi-threading (Pthread) for concurrent task handling improving system responsiveness and load balancing
+          - Implemented process control using Exec and Fork for secure and efficient remote job execution
+      
+      - name: Publisher-Subscriber System for Topics
+        start_date: 2022-09
+        end_date: 2022-12
+        highlights:
+          - Designed scalable publisher-subscriber system supporting real-time messaging with Redis for fast in-memory caching
+          - Integrated SQL database for durable topic storage with Node.js backend managing subscriptions and message routing
+      
+      - name: Simple Indexed File System
+        start_date: 2022-02
+        end_date: 2022-05
+        highlights:
+          - Developed indexed file system optimizing data retrieval by replacing linked structures with indexed blocks
+          - Implemented core operations including file creation, allocation, and directory management
+          - Validated with test scenarios ensuring reliability and efficient memory utilization
+    
+    publications:
+      - title: Evaluation of a Low-Cost Single-Lead ECG Module for Vascular Ageing Prediction and Studying Smoking-induced Changes in ECG
+        authors:
+          - Syed Anas Ali
+          - Muhammad Saqib Niaz
+          - '***Mubashir Rehman***'
+          - Ahsan Mehmood
+          - M. Mahboob Ur Rahman
+          - Kashif Riaz
+          - Qammer H. Abbasi
+        doi: arXiv:2308.04355v3
+        journal: Circuits, Systems, and Signal Processing (CSSP)
+        date: 2024-11
+    
+    skills:
+      - label: Programming Languages
+        details: Python, C++, JavaScript, Java, Kotlin, C#, QML, C
+      
+      - label: Backend Frameworks
+        details: Django, FastAPI, Flask, Django REST Framework
+      
+      - label: Databases
+        details: PostgreSQL, Redis, SQL, pgvector
+      
+      - label: Cloud & DevOps
+        details: AWS (EC2, ECS, VPC, S3, IAM), Docker, Docker Compose, GitHub Actions, CI/CD, DigitalOcean, Nginx, Systemd, Vagrant
+      
+      - label: AI/ML
+        details: OpenAI GPT, Google Gemini API, LangChain, MindsDB, Keras, scikit-learn, ResNet-18, text embeddings, semantic search
+      
+      - label: APIs & Integrations
+        details: OAuth2.0, Slack API, Box API, Asana API, Stripe, LinkedIn API, REST APIs
+      
+      - label: Message Brokers & Task Queues
+        details: Celery, Redis, ARQ, MQTT
+      
+      - label: Real-time Technologies
+        details: Django Channels, WebSockets, Daphne ASGI
+      
+      - label: Testing & Tools
+        details: pytest, Postman, Git, GitHub, GitLab, Jira
+      
+      - label: Drone Systems
+        details: QGroundControl, PX4, ArduPilot, Gazebo, Olympe, Sphinx
+      
+      - label: Signal Processing
+        details: NeuroKit2, SciPy, OpenCV, Discrete Wavelet Transform
+      
+      - label: Other Technologies
+        details: Qt framework, Multithreading, Multiprocessing, Alembic migrations, JWT authentication, n8n workflows
+
+design:
+  theme: engineeringclassic
+  page:
+    size: us-letter
+    top_margin: 2cm
+    bottom_margin: 2cm
+    left_margin: 2cm
+    right_margin: 2cm
+    show_page_numbering: true
+    show_last_updated_date: true
+  colors:
+    text: rgb(0, 0, 0)
+    name: rgb(0, 79, 144)
+    connections: rgb(0, 79, 144)
+    section_titles: rgb(0, 79, 144)
+    links: rgb(0, 79, 144)
+    last_updated_date_and_page_numbering: rgb(128, 128, 128)
+  text:
+    font_family: Raleway
+    font_size: 10pt
+    leading: 0.6em
+    alignment: justified
+    date_and_location_column_alignment: right
+  links:
+    underline: false
+    use_external_link_icon: false
+  header:
+    name_font_family: Raleway
+    name_font_size: 30pt
+    name_bold: false
+    small_caps_for_name: false
+    vertical_space_between_name_and_connections: 0.7cm
+    vertical_space_between_connections_and_first_section: 0.7cm
+    horizontal_space_between_connections: 0.5cm
+    connections_font_family: Raleway
+    separator_between_connections: ''
+    use_icons_for_connections: true
+    use_urls_as_placeholders_for_connections: false
+    make_connections_links: true
+    alignment: left
+  section_titles:
+    type: with-partial-line
+    font_family: Raleway
+    font_size: 1.4em
+    bold: false
+    small_caps: false
+    line_thickness: 0.5pt
+    vertical_space_above: 0.5cm
+    vertical_space_below: 0.3cm
+  entries:
+    date_and_location_width: 4.15cm
+    left_and_right_margin: 0.2cm
+    horizontal_space_between_columns: 0.1cm
+    vertical_space_between_entries: 1.2em
+    allow_page_break_in_sections: true
+    allow_page_break_in_entries: true
+    short_second_row: false
+    show_time_spans_in: []
+  highlights:
+    bullet: •
+    nested_bullet: '-'
+    top_margin: 0.25cm
+    left_margin: 0cm
+    vertical_space_between_highlights: 0.25cm
+    horizontal_space_between_bullet_and_highlight: 0.5em
+    summary_left_margin: 0cm
+  entry_types:
+    one_line_entry:
+      template: '**LABEL:** DETAILS'
+    education_entry:
+      main_column_first_row_template: '**INSTITUTION**, AREA -- LOCATION'
+      degree_column_template: '**DEGREE**'
+      degree_column_width: 1cm
+      main_column_second_row_template: |-
+        SUMMARY
+        HIGHLIGHTS
+      date_and_location_column_template: DATE
+    normal_entry:
+      main_column_first_row_template: '**NAME**'
+      main_column_second_row_template: |-
+        SUMMARY
+        HIGHLIGHTS
+      date_and_location_column_template: DATE
+    experience_entry:
+      main_column_first_row_template: '**POSITION**, COMPANY -- LOCATION'
+      main_column_second_row_template: |-
+        SUMMARY
+        HIGHLIGHTS
+      date_and_location_column_template: DATE
+    publication_entry:
+      main_column_first_row_template: '**TITLE**'
+      main_column_second_row_template: |-
+        AUTHORS
+        URL (JOURNAL)
+      main_column_second_row_without_journal_template: |-
+        AUTHORS
+        URL
+      main_column_second_row_without_url_template: |-
+        AUTHORS
+        JOURNAL
+      date_and_location_column_template: DATE
+
+locale:
+  language: en
+  phone_number_format: national
+  page_numbering_template: NAME - Page PAGE_NUMBER of TOTAL_PAGES
+  last_updated_date_template: Last updated in TODAY
+  date_template: MONTH_ABBREVIATION YEAR
+  month: month
+  months: months
+  year: year
+  years: years
+  present: present
+  to: –
+  abbreviations_for_months:
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - June
+    - July
+    - Aug
+    - Sept
+    - Oct
+    - Nov
+    - Dec
+  full_names_of_months:
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+
+rendercv_settings:
+  date: '2025-01-03'
+  bold_keywords: []
+  sort_entries: none

@@ -9,6 +9,7 @@ import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SakuraPetals from "@/components/SakuraPetals";
 import ScrollRestoration from "@/components/ScrollRestoration";
 import ScrollToTop from "@/components/ScrollToTop";
 
@@ -28,6 +29,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <>
+          <SakuraPetals />
           <ScrollRestoration />
           <ScrollToTop />
           <Navbar />

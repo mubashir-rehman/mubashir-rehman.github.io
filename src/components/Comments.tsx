@@ -9,7 +9,9 @@ export default function Comments() {
   const giscusTheme =
     theme === "dark"
       ? `${THEME_BASE_URL}/giscus-dark.css`
-      : `${THEME_BASE_URL}/giscus-light.css`;
+      : theme === "sakura"
+        ? `${THEME_BASE_URL}/giscus-sakura.css`
+        : `${THEME_BASE_URL}/giscus-light.css`;
 
   return (
     <div className="mt-12 border-t border-border pt-10">
