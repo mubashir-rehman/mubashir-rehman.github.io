@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
 import habits from "@/data/habits.json";
+import journal from "@/data/journal.json";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { Card, CardContent } from "@/components/ui/card";
@@ -127,23 +128,27 @@ function isRecent(dateStr: string): boolean {
 export default function Habits() {
   const weeks = useMemo(() => getWeeks(), []);
   const monthLabels = useMemo(() => getMonthLabels(weeks), [weeks]);
+  const journalLog = useMemo(() => Object.fromEntries(journal.map((e) => [e.date, true])), []);
 
   const radarData = useMemo(() => {
     const today = new Date();
     return habits.map((habit) => {
+      const log = habit.habit === "Journal entry"
+        ? { ...habit.log, ...journalLog }
+        : (habit.log as Record<string, boolean>);
       let count = 0;
       for (let i = 0; i < 30; i++) {
         const d = new Date(today);
         d.setDate(today.getDate() - i);
         const key = d.toISOString().split("T")[0];
-        if ((habit.log as Record<string, boolean>)[key]) count++;
+        if (log[key]) count++;
       }
       return {
         habit: `${habit.emoji} ${habit.habit}`,
         score: Math.round((count / 30) * 100),
       };
     });
-  }, []);
+  }, [journalLog]);
 
   return (
     <PageTransition>
@@ -190,7 +195,10 @@ export default function Habits() {
 
         <div className="mt-8 space-y-10">
           {habits.map((habit, hi) => {
-            const stats = calculateStats(habit.log as Record<string, boolean>);
+            const log = habit.habit === "Journal entry"
+              ? { ...habit.log, ...journalLog }
+              : (habit.log as Record<string, boolean>);
+            const stats = calculateStats(log);
             const hasData = stats.total > 0;
 
             return (
@@ -252,7 +260,7 @@ export default function Habits() {
                           {weeks.map((week, wi) => (
                             <div key={wi} className="flex flex-col gap-[3px]">
                               {week.map((day) => {
-                                const done = (habit.log as Record<string, boolean>)[day];
+                                const done = log[day];
                                 const today = isToday(day);
                                 const recent = isRecent(day);
 
