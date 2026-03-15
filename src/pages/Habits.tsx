@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
+import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
 import habits from "@/data/habits.json";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
@@ -127,6 +128,23 @@ export default function Habits() {
   const weeks = useMemo(() => getWeeks(), []);
   const monthLabels = useMemo(() => getMonthLabels(weeks), [weeks]);
 
+  const radarData = useMemo(() => {
+    const today = new Date();
+    return habits.map((habit) => {
+      let count = 0;
+      for (let i = 0; i < 30; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        const key = d.toISOString().split("T")[0];
+        if ((habit.log as Record<string, boolean>)[key]) count++;
+      }
+      return {
+        habit: `${habit.emoji} ${habit.habit}`,
+        score: Math.round((count / 30) * 100),
+      };
+    });
+  }, []);
+
   return (
     <PageTransition>
       <SEO title="Habits" description="Mubashir Rehman's daily habit tracker — GitHub-style contribution grids for coding, reading, exercise, and personal routines." />
@@ -135,6 +153,40 @@ export default function Habits() {
         <p className="mt-2 text-muted-foreground">
           Systems beat motivation. Update via <code className="rounded border border-border bg-secondary px-1 text-xs">habits.json</code>.
         </p>
+
+        {/* Radar chart section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mt-8"
+        >
+          <p className="mb-3 text-sm text-muted-foreground">Habit Balance — last 30 days</p>
+          <Card>
+            <CardContent className="p-4">
+              <div style={{ width: "100%", height: 320 }}>
+                <ResponsiveContainer>
+                  <RadarChart data={radarData}>
+                    <PolarGrid stroke="currentColor" className="opacity-20" />
+                    <PolarAngleAxis
+                      dataKey="habit"
+                      tick={{ fill: "currentColor", fontSize: 12 }}
+                      style={{ color: "hsl(var(--foreground))" }}
+                    />
+                    <Radar
+                      dataKey="score"
+                      fill="hsl(var(--primary))"
+                      fillOpacity={0.25}
+                      stroke="hsl(var(--primary))"
+                      strokeWidth={2}
+                      dot={{ fill: "hsl(var(--primary))" }}
+                    />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
 
         <div className="mt-8 space-y-10">
           {habits.map((habit, hi) => {
