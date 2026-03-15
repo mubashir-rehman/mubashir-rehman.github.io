@@ -388,6 +388,29 @@ Your site will be live at `https://your-username.github.io` within ~2 minutes.
 
 ---
 
+## Setting Up Google Search Console
+
+Verifying your site with [Google Search Console](https://search.google.com/search-console) lets you monitor search performance, submit your sitemap, and spot indexing issues.
+
+### Verification (HTML file method — already used in this repo)
+
+1. Go to https://search.google.com/search-console and add your property URL (`https://your-username.github.io`)
+2. Choose **HTML file** verification
+3. Download the verification file (e.g. `google970de44929ca96e5.html`)
+4. Place it in the `public/` directory — Vite copies everything in `public/` to the build root, so it will be served at `https://your-username.github.io/google970de44929ca96e5.html`
+5. Push to `main` and wait for CI to deploy, then click **Verify** in Search Console
+
+### Submit your sitemap
+
+Once verified, submit your sitemap for faster indexing:
+
+1. In Search Console go to **Sitemaps**
+2. Enter `sitemap.xml` and click **Submit**
+
+> Remember to keep `public/sitemap.xml` up to date whenever you add new pages or journal entries — it is static and not auto-generated.
+
+---
+
 ## License
 
 **Source code** — MIT License. See [LICENSE](./LICENSE).
