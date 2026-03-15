@@ -50,7 +50,7 @@ export default function Navbar() {
   const location = useLocation();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl shadow-sm">
 
       {/* Cherry blossom floral decoration — SAKURA THEME ONLY */}
       {theme === "sakura" && (
