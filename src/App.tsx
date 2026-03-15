@@ -48,7 +48,9 @@ const App = () => (
               </AnimatePresence>
             </div>
           </main>
-          <Footer />
+          <div className="hidden md:block">
+            <Footer />
+          </div>
         </>
       </TooltipProvider>
     </ThemeProvider>
