@@ -16,6 +16,7 @@ The source code (components, pages, utilities, configuration) is available under
 
 ## Features
 
+- 🤖 **AI chatbot** — floating "Ask Me Anything" assistant powered by Groq (llama-3.3-70b), answers questions about skills, experience, and projects based on injected resume context
 - ⚡ **Static Site Generation** — pre-rendered at build time via `vite-react-ssg`, no server needed
 - 🎨 **Three themes** — dark, light, and sakura (cherry blossom spring theme) with smooth cycling
 - 📊 **GitHub-style habit tracker** — contribution grids with month labels, streaks, radar chart overview, year switcher
@@ -38,6 +39,7 @@ The source code (components, pages, utilities, configuration) is available under
 | Routing | react-router-dom v6 |
 | SEO | react-helmet-async |
 | Comments | @giscus/react |
+| AI Chatbot | Groq API (llama-3.3-70b-versatile) |
 | Contact | Formspree |
 | Deploy | GitHub Pages + GitHub Actions |
 
@@ -63,7 +65,28 @@ cd mubashir-rehman.github.io
 npm install
 ```
 
-### 3. Start the dev server
+### 3. Configure environment variables
+
+```bash
+cp .env.example .env
+```
+
+Then fill in your values in `.env`:
+
+```env
+# Groq API key — get a free key at https://console.groq.com
+VITE_GROQ_API_KEY=your_groq_api_key_here
+
+# Giscus — get values at https://giscus.app/
+VITE_GISCUS_REPO=your-username/your-repo
+VITE_GISCUS_REPO_ID=your_repo_id
+VITE_GISCUS_CATEGORY=General
+VITE_GISCUS_CATEGORY_ID=your_category_id
+```
+
+> **Note:** All `VITE_` variables are baked into the JS bundle at build time by Vite — there is no runtime server. The Groq API key will be visible in the compiled output; Groq's free-tier rate limits provide natural abuse protection.
+
+### 4. Start the dev server
 
 ```bash
 npm run dev
@@ -192,6 +215,32 @@ The three custom CSS theme files (`public/giscus-dark.css`, `giscus-light.css`, 
 
 ---
 
+## Setting Up the AI Chatbot (AskMe)
+
+The floating "Ask Me Anything" button is powered by [Groq](https://console.groq.com/) — a free, fast inference API. No backend required; the request is made directly from the browser.
+
+### Steps
+
+1. **Get a free Groq API key** at https://console.groq.com/
+
+2. **Add it to your `.env`:**
+   ```env
+   VITE_GROQ_API_KEY=gsk_your_key_here
+   ```
+
+3. **Add it as a GitHub Actions secret** so CI builds can embed it:
+   - Go to your repo → `Settings → Secrets and variables → Actions`
+   - Click **New repository secret**
+   - Name: `VITE_GROQ_API_KEY`, Value: your key
+
+4. **Update the system prompt** in `src/components/AskMe.tsx` — replace the `--- CONTEXT START ---` block with your own resume text and project descriptions. The more detail you provide, the better the answers.
+
+5. **Update the suggested questions** in the `SUGGESTED_QUESTIONS` array at the top of `AskMe.tsx` to reflect your own background.
+
+> The chatbot is instructed to only answer questions based on the injected context and to redirect off-topic questions. It maintains full conversation history within the session.
+
+---
+
 ## Setting Up the Contact Form
 
 The contact form uses [Formspree](https://formspree.io/) — no backend or server required.
@@ -227,6 +276,7 @@ That's it. Form submissions will be delivered to your Formspree-linked email.
 ├── src/
 │   ├── components/
 │   │   ├── ui/                 # shadcn/ui primitives (auto-generated, don't edit)
+│   │   ├── AskMe.tsx           # Floating AI chatbot (Groq-powered)
 │   │   ├── Comments.tsx        # Giscus comments widget
 │   │   ├── Footer.tsx          # Footer with sakura road scene
 │   │   ├── Navbar.tsx          # Navigation with theme cycler
@@ -254,7 +304,7 @@ That's it. Form submissions will be delivered to your Formspree-linked email.
 │   │   ├── Contact.tsx         # /contact — Formspree form
 │   │   └── NotFound.tsx        # 404
 │   │
-│   ├── main.tsx                # ViteReactSSG entry + route config
+│   ├── main.tsx                # ViteReactSSG entry, route config, stale-chunk recovery (lazyWithReload)
 │   ├── App.tsx                 # Shell layout (Navbar + Outlet + Footer)
 │   └── index.css               # Design tokens (CSS custom properties)
 │
@@ -286,6 +336,8 @@ npm run preview
 npm test
 ```
 
+> **Stale chunk recovery:** After a new deploy, Vite renames all JS chunks with a fresh content hash. Visitors with cached old HTML would normally see "Failed to fetch dynamically imported module". Two guards in `main.tsx` handle this automatically — `lazyWithReload` catches the chunk 404 and performs one silent hard-reload, and a `fetch` monkey-patch handles the SSG manifest mismatch. Visitors see a ~1s spinner, then land on the fresh page with no error.
+
 ---
 
 ## Deploying to GitHub Pages
@@ -303,7 +355,10 @@ Every push to `main` triggers the GitHub Actions workflow at `.github/workflows/
 **One-time setup:**
 1. Go to your repo → `Settings → Pages`
 2. Under **Source**, select **GitHub Actions**
-3. Push to `main` — the workflow runs automatically
+3. Add all required secrets under `Settings → Secrets and variables → Actions`:
+   - `VITE_GROQ_API_KEY` — your Groq API key
+   - `VITE_GISCUS_REPO`, `VITE_GISCUS_REPO_ID`, `VITE_GISCUS_CATEGORY`, `VITE_GISCUS_CATEGORY_ID` — your Giscus config
+4. Push to `main` — the workflow runs automatically
 
 Your site will be live at `https://your-username.github.io` within ~2 minutes.
 
@@ -321,9 +376,9 @@ Your site will be live at `https://your-username.github.io` within ~2 minutes.
 ## Adding a New Page
 
 1. Create `src/pages/YourPage.tsx`
-2. Add the route in `src/main.tsx`:
+2. Add the route in `src/main.tsx` — use `lazyWithReload` (not `React.lazy`) so stale-chunk recovery applies:
    ```tsx
-   { path: "your-page", Component: React.lazy(() => import(" @/pages/YourPage")) }
+   { path: "your-page", Component: lazyWithReload(() => import("@/pages/YourPage")) }
    ```
 3. Add to `ssgOptions.includedRoutes` in `vite.config.ts`:
    ```ts
