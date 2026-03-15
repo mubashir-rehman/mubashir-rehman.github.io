@@ -35,20 +35,20 @@ export default function About() {
         }}
       />
       <div className="mx-auto max-w-4xl px-4 pb-20 pt-24 sm:px-6">
-        <motion.div {...fadeUp} className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-          <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded-full border-2 border-primary/40 bg-primary/5 font-heading text-3xl font-bold text-primary">
+        <motion.div {...fadeUp} className="grid grid-cols-[auto_1fr] items-center gap-4 sm:flex sm:items-start sm:gap-6">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-2 border-primary/40 bg-primary/5 font-heading text-xl font-bold text-primary sm:h-28 sm:w-28 sm:text-3xl">
             MR
           </div>
           <div>
-            <h1 className="text-center font-heading text-3xl font-bold sm:text-left sm:text-4xl">
+            <h1 className="font-heading text-2xl font-bold sm:text-4xl">
               {profile.name}
             </h1>
-            <p className="mt-1 text-center text-muted-foreground sm:text-left">
-              <MapPin size={14} className="mr-1 inline" />
+            <p className="mt-0.5 text-sm text-muted-foreground sm:mt-1 sm:text-base">
+              <MapPin size={13} className="mr-1 inline" />
               {profile.location}
             </p>
             {profile.available && (
-              <Badge variant="outline" className="mt-2 border-primary/30 text-primary" data-testid="badge-availability">
+              <Badge variant="outline" className="mt-1.5 border-primary/30 text-primary text-xs sm:mt-2 sm:text-sm" data-testid="badge-availability">
                 {profile.availabilityNote}
               </Badge>
             )}
