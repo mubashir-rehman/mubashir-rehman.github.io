@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import SakuraPetals from "@/components/SakuraPetals";
 import ScrollRestoration from "@/components/ScrollRestoration";
 import ScrollToTop from "@/components/ScrollToTop";
+import AskMe from "@/components/AskMe";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
           <SakuraPetals />
           <ScrollRestoration />
           <ScrollToTop />
+          <AskMe />
           <Navbar />
           <main className="min-h-screen pt-0">
             <AnimatePresence mode="wait">
