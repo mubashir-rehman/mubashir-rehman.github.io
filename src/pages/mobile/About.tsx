@@ -100,7 +100,7 @@ export default function MobileAbout() {
         description="Mubashir Rehman — Backend Engineer in Lahore, Pakistan. Python, Django, FastAPI, AWS, Docker."
       />
 
-      <div className="min-h-screen bg-[hsl(var(--m3-surface))] pb-28 pt-16">
+      <div className="min-h-screen bg-[hsl(var(--m3-surface))] pb-28 pt-4">
         <div className="mx-auto max-w-lg space-y-3 px-4 pt-5">
 
           {/* ---------------------------------------------------------------- */}

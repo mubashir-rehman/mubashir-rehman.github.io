@@ -212,7 +212,7 @@ export default function MobileProjects() {
         description="Production projects by Mubashir Rehman — AI-powered SaaS, drone swarm systems, microservices, and full-stack apps with real metrics."
       />
 
-      <div className="min-h-screen bg-[hsl(var(--m3-surface))] pb-28 pt-16">
+      <div className="min-h-screen bg-[hsl(var(--m3-surface))] pb-28 pt-4">
 
         {/* Page header */}
         <div className="px-4 pt-5">

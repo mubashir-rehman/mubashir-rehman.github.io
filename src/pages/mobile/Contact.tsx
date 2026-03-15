@@ -167,7 +167,7 @@ export default function MobileContact() {
         description="Reach out to Mubashir Rehman — available for freelance projects and full-time backend engineering roles."
       />
 
-      <div className="min-h-screen bg-[hsl(var(--m3-surface))] pb-28 pt-16">
+      <div className="min-h-screen bg-[hsl(var(--m3-surface))] pb-28 pt-4">
         <div className="mx-auto max-w-lg space-y-3 px-4 pt-5">
 
           {/* ---------------------------------------------------------------- */}

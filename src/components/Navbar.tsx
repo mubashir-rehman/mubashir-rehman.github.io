@@ -51,8 +51,8 @@ export default function Navbar() {
   const location = useLocation();
   const isMobile = useMobile();
 
-  // Mobile landing page has no header — content starts at top
-  if (isMobile && location.pathname === "/") return null;
+  // Mobile uses bottom nav + per-page headers — no top navbar needed
+  if (isMobile) return null;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl shadow-sm">
