@@ -128,5 +128,15 @@
     "demo": "",
     "featured": false,
     "metrics": ["2s initial load", "Scene pre-loading", "Cross-browser compatible"]
+  },
+  {
+    "id": "portfolio-site",
+    "title": "Personal Portfolio — mubashir-rehman.github.io",
+    "description": "Fully static personal portfolio built with React 18, TypeScript, and Vite — SSG-rendered via vite-react-ssg for zero JS-required page loads and instant navigation. Features 8 pages (Landing, About, Projects, Hobbies, Habits, Journal, Contact, 404), a custom 3-theme system (Sakura / Dark / Light) with animated cherry blossom SVG scene, GitHub-style habit heatmap with year-select, a markdown-rendered journal with Giscus comment threads, animated counters with Framer Motion page transitions, and full SEO with react-helmet-async, JSON-LD structured data, Open Graph tags, and a static sitemap. Deployed to GitHub Pages via GitHub Actions CI/CD with SSG pre-rendering of all routes. Includes a fetch monkey-patch guard to handle stale bundle/manifest hash mismatches on redeploy without crashing.",
+    "tags": ["React 18", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion", "shadcn/ui", "SSG", "GitHub Actions", "SEO"],
+    "github": "https://github.com/mubashir-rehman/mubashir-rehman.github.io",
+    "demo": "https://mubashir-rehman.github.io",
+    "featured": false,
+    "metrics": ["8 SSG pages", "3 themes", "6,500+ lines", "100% static", "CI/CD on push"]
   }
 ]
