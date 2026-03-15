@@ -5,19 +5,19 @@ import {
   User,
   FolderOpen,
   Heart,
-  Activity,
+  Flame,
   BookOpen,
   Mail,
 } from "lucide-react";
 
 const links = [
-  { to: "/",        Icon: House,      label: "Home"     },
-  { to: "/about",   Icon: User,       label: "About"    },
-  { to: "/projects",Icon: FolderOpen, label: "Projects" },
-  { to: "/hobbies", Icon: Heart,      label: "Hobbies"  },
-  { to: "/habits",  Icon: Activity,   label: "Habits"   },
-  { to: "/journal", Icon: BookOpen,   label: "Journal"  },
-  { to: "/contact", Icon: Mail,       label: "Contact"  },
+  { to: "/",         Icon: House,       label: "Home"     },
+  { to: "/about",    Icon: User,        label: "About"    },
+  { to: "/projects", Icon: FolderOpen,  label: "Projects" },
+  { to: "/hobbies",  Icon: Heart,       label: "Hobbies"  },
+  { to: "/habits",   Icon: Flame,       label: "Habits"   },
+  { to: "/journal",  Icon: BookOpen,    label: "Journal"  },
+  { to: "/contact",  Icon: Mail,        label: "Contact"  },
 ];
 
 export default function BottomNav() {
