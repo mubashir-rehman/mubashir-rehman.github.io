@@ -132,7 +132,7 @@ export default function Contact() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="grid grid-cols-2 gap-4 content-start"
+            className="grid grid-cols-4 gap-3 content-start"
           >
             {socialLinks.map((link) => (
               <a
@@ -143,14 +143,11 @@ export default function Contact() {
                 data-testid={`link-social-${link.label.toLowerCase()}`}
               >
                 <Card className="group h-full transition-all hover:border-primary/40 hover:shadow-md hover:shadow-primary/5">
-                  <CardContent className="flex flex-col items-center justify-center gap-3 p-6 text-center">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
-                      <link.icon size={22} />
+                  <CardContent className="flex flex-col items-center justify-center gap-2 px-2 py-5 text-center">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
+                      <link.icon size={20} />
                     </span>
-                    <div>
-                      <p className="text-sm font-semibold">{link.label}</p>
-                      <p className="mt-0.5 text-xs text-muted-foreground">{link.detail}</p>
-                    </div>
+                    <p className="text-xs font-semibold">{link.label}</p>
                   </CardContent>
                 </Card>
               </a>
