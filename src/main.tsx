@@ -9,19 +9,52 @@ if (typeof window !== "undefined") {
   if (redirect && redirect !== "/") {
     window.history.replaceState(null, "", redirect);
   }
+
   // Guard against stale bundle/manifest mismatch after a new deploy.
-  // vite-react-ssg fetches `static-loader-data-manifest-<hash>.json` on boot.
-  // If the user has a cached JS bundle from a previous deploy, that hash no
-  // longer exists on the server, GitHub Pages returns an HTML 404, and
-  // JSON.parse throws. We catch here and do a one-time hard reload to
-  // force fresh assets. The `ssg-reloaded` flag prevents an infinite loop.
-  window.addEventListener("unhandledrejection", (e: PromiseRejectionEvent) => {
-    const msg: string = (e.reason as Error)?.message ?? "";
-    if (msg.includes("JSON") && !sessionStorage.getItem("ssg-reloaded")) {
-      sessionStorage.setItem("ssg-reloaded", "1");
-      window.location.reload();
+  //
+  // vite-react-ssg attaches a React Router loader to every route that calls:
+  //   window.__VITE_REACT_SSG_STATIC_LOADER_MANIFEST__ =
+  //     await (await fetch(`static-loader-data-manifest-<hash>.json`)).json();
+  //
+  // When a user has a cached JS bundle from a previous deploy, that hash is
+  // gone — GitHub Pages returns an HTML 404 page, `.json()` throws
+  // "Unexpected token '<'", React Router's error boundary catches it, and
+  // "Unexpected Application Error!" is shown. An `unhandledrejection` listener
+  // cannot help because React Router swallows the error first.
+  //
+  // Fix: monkey-patch window.fetch *before* ViteReactSSG initialises. When the
+  // manifest URL comes back non-OK (HTML 404), return a fake `Response("{}")`
+  // so `.json()` succeeds, the loader finds no data and exits cleanly with
+  // `null`, and we simultaneously trigger a one-time reload to pull fresh
+  // assets. The `ssg-reloaded` flag in sessionStorage prevents an infinite loop.
+  const _fetch = window.fetch.bind(window);
+  window.fetch = async (
+    input: RequestInfo | URL,
+    init?: RequestInit,
+  ): Promise<Response> => {
+    const url =
+      typeof input === "string"
+        ? input
+        : input instanceof URL
+          ? input.href
+          : (input as Request).url;
+
+    const response = await _fetch(input, init);
+
+    if (url.includes("static-loader-data-manifest") && !response.ok) {
+      if (!sessionStorage.getItem("ssg-reloaded")) {
+        sessionStorage.setItem("ssg-reloaded", "1");
+        window.location.reload();
+      }
+      // Return an empty manifest so the loader returns null instead of throwing.
+      return new Response("{}", {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
     }
-  });
+
+    return response;
+  };
 }
 
 export const createRoot = ViteReactSSG({
