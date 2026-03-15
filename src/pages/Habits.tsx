@@ -14,16 +14,15 @@ const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "S
 function getWeeks(): string[][] {
   const weeks: string[][] = [];
   const today = new Date();
-  // Align to Sunday of the current week
-  const dayOfWeek = today.getDay();
-  const mondayOffset = dayOfWeek; // Days since Sunday
-  const totalDays = 52 * 7 + mondayOffset;
+  // Calculate the start date (52 weeks ago from today)
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - (52 * 7 - 1));
 
-  for (let w = 51; w >= 0; w--) {
+  for (let w = 0; w < 52; w++) {
     const week: string[] = [];
     for (let d = 0; d < 7; d++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() - (totalDays - (w * 7 + d)));
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + (w * 7 + d));
       week.push(date.toISOString().split("T")[0]);
     }
     weeks.push(week);
