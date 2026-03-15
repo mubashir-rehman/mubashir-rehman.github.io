@@ -133,25 +133,35 @@ export default function About() {
         </motion.section>
 
         <motion.section {...fadeUp} className="mt-12">
-          <h2 className="mb-4 font-heading text-2xl font-bold">
+          <h2 className="mb-6 font-heading text-2xl font-bold">
             <GraduationCap size={20} className="mr-2 inline text-primary" />
             Education
           </h2>
-          {profile.education.map((edu, i) => (
-            <Card key={i} data-testid={`card-education-${i}`}>
-              <CardContent className="p-5">
-                <h3 className="font-semibold">{edu.degree}</h3>
+          <div className="relative border-l-2 border-border pl-6">
+            {profile.education.map((edu, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="relative mb-10 last:mb-0"
+                data-testid={`card-education-${i}`}
+              >
+                <span className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full border-2 border-primary bg-background" />
+                <div className="text-xs text-primary font-semibold">{edu.period}</div>
+                <h3 className="mt-1 text-lg font-semibold">{edu.degree}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {edu.institution} · {edu.period}
+                  {edu.institution} · {edu.location}
                 </p>
                 {edu.note && (
                   <Badge variant="secondary" className="mt-2 text-xs font-normal">
                     {edu.note}
                   </Badge>
                 )}
-              </CardContent>
-            </Card>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </motion.section>
 
         <motion.section {...fadeUp} className="mt-12">
