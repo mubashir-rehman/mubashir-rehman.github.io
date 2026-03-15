@@ -14,6 +14,7 @@ import ScrollRestoration from "@/components/ScrollRestoration";
 import ScrollToTop from "@/components/ScrollToTop";
 import AskMe from "@/components/AskMe";
 import BottomNav from "@/components/BottomNav";
+import ThemeFAB from "@/components/ThemeFAB";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
           <ScrollRestoration />
           <ScrollToTop />
           <AskMe />
+          <ThemeFAB />
           <BottomNav />
           <Navbar />
           <main className="min-h-screen pt-0">

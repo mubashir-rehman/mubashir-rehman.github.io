@@ -2,6 +2,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { useTheme } from "./ThemeProvider";
 import { Sun, Moon, Flower2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useMobile } from "@/hooks/useMobile";
 
 const links = [
   { to: "/", label: "Home" },
@@ -48,6 +49,10 @@ function ThemeIcon({ theme }: { theme: "dark" | "light" | "sakura" }) {
 export default function Navbar() {
   const { theme, cycleTheme } = useTheme();
   const location = useLocation();
+  const isMobile = useMobile();
+
+  // Mobile landing page has no header — content starts at top
+  if (isMobile && location.pathname === "/") return null;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl shadow-sm">
@@ -128,15 +133,9 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile: only theme toggle — bottom nav handles page links */}
+        {/* Mobile: theme toggle hidden — ThemeFAB handles it */}
         <div className="flex items-center gap-2 md:hidden">
-          <button
-            onClick={cycleTheme}
-            className="rounded-lg p-2 text-muted-foreground hover:bg-secondary"
-            aria-label="Cycle theme"
-          >
-            <ThemeIcon theme={theme} />
-          </button>
+          {/* intentionally empty — theme toggle is the FAB */}
         </div>
       </div>
     </nav>

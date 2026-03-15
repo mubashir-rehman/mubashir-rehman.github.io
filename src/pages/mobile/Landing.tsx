@@ -70,7 +70,7 @@ export default function MobileLanding() {
     <PageTransition>
       <SEO />
       <div
-        className="min-h-screen bg-[hsl(var(--m3-surface))] pb-24 pt-16"
+        className="min-h-screen bg-[hsl(var(--m3-surface))] pb-24 pt-4"
         style={{ fontFamily: "var(--font-body)" }}
       >
         {/* ---------------------------------------------------------------- */}
