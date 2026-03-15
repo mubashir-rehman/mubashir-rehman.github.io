@@ -146,7 +146,7 @@ export default function Habits() {
         habit: `${habit.emoji} ${habit.habit}`,
         score: Math.round((count / 30) * 100),
       };
-    });
+    }).sort((a, b) => b.score - a.score);
   }, [journalLog]);
 
   return (
