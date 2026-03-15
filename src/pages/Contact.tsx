@@ -8,8 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useMobile } from "@/hooks/useMobile";
+import MobileContact from "@/pages/mobile/Contact";
 
 export default function Contact() {
+  const isMobile = useMobile();
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -44,6 +47,8 @@ export default function Contact() {
   const whatsappMsg = encodeURIComponent(
     "Hi Mubashir, I found you via your portfolio and would like to connect!"
   );
+
+  if (isMobile) return <MobileContact />;
 
   const socialLinks = [
     {
