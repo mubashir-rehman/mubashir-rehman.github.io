@@ -46,13 +46,10 @@ export default function BottomNav() {
             >
               <Icon
                 size={22}
-                className={
-                  isActive
-                    ? "text-primary"
-                    : "text-muted-foreground"
-                }
                 fill={isActive ? "currentColor" : "none"}
-                strokeWidth={isActive ? 0 : 1.75}
+                stroke={isActive ? "hsl(var(--background))" : "currentColor"}
+                strokeWidth={1.75}
+                className={isActive ? "text-primary" : "text-muted-foreground"}
               />
             </motion.span>
 
