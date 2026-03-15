@@ -21,7 +21,7 @@ export default function BottomNav() {
       className="fixed bottom-0 left-0 right-0 z-50 border-t border-[hsl(var(--m3-outline-var))] bg-[hsl(var(--m3-surface))]/95 backdrop-blur-xl shadow-[0_-1px_12px_0_rgba(0,0,0,0.06)]"
       aria-label="Mobile navigation"
     >
-      <div className="flex">
+      <div className="flex pb-safe">
         {links.map(({ to, Icon, label }) => {
           const isActive =
             to === "/" ? pathname === "/" : pathname.startsWith(to);
@@ -31,38 +31,42 @@ export default function BottomNav() {
               key={to}
               to={to}
               aria-label={label}
-              className="relative flex flex-1 flex-col items-center justify-center gap-0.5 py-2"
+              className="flex flex-1 flex-col items-center justify-center gap-1 py-3"
             >
-              {/* M3 active indicator pill */}
-              {isActive && (
+              {/* Icon wrapper — pill indicator lives here only */}
+              <span className="relative flex items-center justify-center">
+                {/* M3 indicator pill — behind icon only */}
+                {isActive && (
+                  <motion.span
+                    layoutId="bottom-nav-indicator"
+                    className="absolute inset-0 -mx-4 rounded-full bg-[hsl(var(--m3-primary-container))]"
+                    style={{ borderRadius: 999 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                  />
+                )}
                 <motion.span
-                  layoutId="bottom-nav-indicator"
-                  className="absolute top-1.5 h-8 w-16 rounded-full bg-[hsl(var(--m3-primary-container))]"
-                  transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                />
-              )}
+                  animate={isActive ? { scale: 1.08 } : { scale: 1 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  className="relative z-10 flex h-8 w-16 items-center justify-center"
+                >
+                  <Icon
+                    size={22}
+                    fill={isActive ? "currentColor" : "none"}
+                    stroke={isActive ? "hsl(var(--m3-surface))" : "currentColor"}
+                    strokeWidth={1.75}
+                    className={
+                      isActive
+                        ? "text-[hsl(var(--m3-on-primary-container))]"
+                        : "text-[hsl(var(--m3-on-surface-var))]"
+                    }
+                  />
+                </motion.span>
+              </span>
 
-              <motion.span
-                animate={isActive ? { scale: 1.1 } : { scale: 1 }}
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                className="relative z-10 flex items-center justify-center"
-              >
-                <Icon
-                  size={24}
-                  fill={isActive ? "currentColor" : "none"}
-                  stroke={isActive ? "hsl(var(--m3-surface))" : "currentColor"}
-                  strokeWidth={1.75}
-                  className={
-                    isActive
-                      ? "text-[hsl(var(--m3-on-primary-container))]"
-                      : "text-[hsl(var(--m3-on-surface-var))]"
-                  }
-                />
-              </motion.span>
-
+              {/* Label — always outside the pill */}
               <span
                 className={[
-                  "relative z-10 font-body text-[10px] font-medium leading-none transition-colors",
+                  "font-body text-[10px] font-medium leading-none transition-colors",
                   isActive
                     ? "text-[hsl(var(--m3-on-primary-container))]"
                     : "text-[hsl(var(--m3-on-surface-var))]",
