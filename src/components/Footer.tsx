@@ -17,16 +17,19 @@ export default function Footer() {
   const { theme } = useTheme();
 
   return (
-    <footer className="border-t border-border bg-card">
-      {/* Cherry blossom road scene — SAKURA THEME ONLY */}
+    <footer className="relative border-t border-border bg-card">
+      {/* Cherry blossom road scene — SAKURA THEME ONLY — Background layer */}
       {theme === "sakura" && (
-        <div aria-hidden="true" className="w-full overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
           <svg
             viewBox="0 0 1200 220"
             xmlns="http://www.w3.org/2000/svg"
             preserveAspectRatio="xMidYMid slice"
-            className="w-full"
-            style={{ display: "block", maxHeight: "220px" }}
+            className="h-full w-full"
+            style={{ display: "block" }}
           >
             <defs>
               <linearGradient id="sky-grad" x1="0" y1="0" x2="0" y2="1">
@@ -151,7 +154,7 @@ export default function Footer() {
         </div>
       )}
 
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 py-12 sm:px-6">
         {/* Rule */}
         <blockquote className="mb-10 border-l-2 border-primary pl-4 italic text-muted-foreground">
           <p className="text-sm leading-relaxed">"{rule}"</p>
