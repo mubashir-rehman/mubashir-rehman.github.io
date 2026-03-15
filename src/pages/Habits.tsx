@@ -10,11 +10,54 @@ import { Card, CardContent } from "@/components/ui/card";
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+// Wrap a string at the last space before maxLen, returning [line1, line2|null]
+function wrapLabel(text: string, maxLen = 13): [string, string | null] {
+  if (text.length <= maxLen) return [text, null];
+  const breakAt = text.lastIndexOf(" ", maxLen);
+  if (breakAt <= 0) return [text.slice(0, maxLen), text.slice(maxLen).trim() || null];
+  return [text.slice(0, breakAt), text.slice(breakAt + 1) || null];
+}
+
+// Custom SVG tick for PolarAngleAxis — renders up to two lines so long labels
+// don't overflow the chart container on narrow screens.
+interface TickProps {
+  x?: number;
+  y?: number;
+  cx?: number;
+  cy?: number;
+  payload?: { value: string };
+}
+function RadarTick({ x = 0, y = 0, cx = 0, cy = 0, payload }: TickProps) {
+  if (!payload) return null;
+  // Strip the leading emoji + space — decorative at this scale
+  const raw = payload.value.replace(/^\S+\s/, "");
+  const [line1, line2] = wrapLabel(raw, 13);
+
+  const isLeft = x < cx - 5;
+  const isRight = x > cx + 5;
+  const anchor = isLeft ? "end" : isRight ? "start" : "middle";
+  const lineHeight = 13;
+  const offset = line2 ? -(lineHeight / 2) : 0;
+
+  return (
+    <text
+      x={x}
+      y={y}
+      textAnchor={anchor}
+      dominantBaseline="central"
+      fill="currentColor"
+      fontSize={11}
+    >
+      <tspan x={x} dy={offset}>{line1}</tspan>
+      {line2 && <tspan x={x} dy={lineHeight}>{line2}</tspan>}
+    </text>
+  );
+}
+
 // Get 52 weeks of dates (Sunday-Saturday), ending today
 function getWeeks(): string[][] {
   const weeks: string[][] = [];
   const today = new Date();
-  // Calculate the start date (52 weeks ago from today)
   const startDate = new Date(today);
   startDate.setDate(today.getDate() - (52 * 7 - 1));
 
@@ -33,8 +76,7 @@ function getWeeks(): string[][] {
 // Get 52 weeks of dates ending at the end of the given year (Dec 31)
 function getWeeksForYear(year: number): string[][] {
   const weeks: string[][] = [];
-  const endDate = new Date(year, 11, 31); // Dec 31 of the given year
-  // Calculate the start date (52 weeks ago from end of year)
+  const endDate = new Date(year, 11, 31);
   const startDate = new Date(endDate);
   startDate.setDate(endDate.getDate() - (52 * 7 - 1));
 
@@ -55,7 +97,7 @@ function getAvailableYears(log: Record<string, boolean>): number[] {
   const currentYear = new Date().getFullYear();
   const years = new Set<number>();
   years.add(currentYear);
-  years.add(currentYear - 1); // Always show at least 2 years
+  years.add(currentYear - 1);
 
   Object.keys(log).forEach((date) => {
     const year = new Date(date).getFullYear();
@@ -71,7 +113,6 @@ function getMonthLabels(weeks: string[][]): (string | null)[] {
   let lastMonth = -1;
 
   for (let w = 0; w < 52; w++) {
-    // Use the first day of the week (Sunday) to determine the month
     const date = new Date(weeks[w][0]);
     const month = date.getMonth();
     if (month !== lastMonth) {
@@ -97,7 +138,6 @@ function calculateStats(log: Record<string, boolean>) {
     return { total: 0, currentStreak: 0, longestStreak: 0 };
   }
 
-  // Current streak - consecutive days ending today or yesterday
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const yesterday = new Date(today);
@@ -112,7 +152,7 @@ function calculateStats(log: Record<string, boolean>) {
 
     if (mostRecent.getTime() === today.getTime() || mostRecent.getTime() === yesterday.getTime()) {
       currentStreak = 1;
-      let checkDate = new Date(mostRecent);
+      const checkDate = new Date(mostRecent);
       for (let i = 1; i < sortedDates.length; i++) {
         checkDate.setDate(checkDate.getDate() - 1);
         const nextDate = sortedDates[i];
@@ -126,7 +166,6 @@ function calculateStats(log: Record<string, boolean>) {
     }
   }
 
-  // Longest streak
   let longestStreak = 1;
   let streak = 1;
   for (let i = 1; i < sortedDates.length; i++) {
@@ -144,13 +183,11 @@ function calculateStats(log: Record<string, boolean>) {
   return { total, currentStreak, longestStreak };
 }
 
-// Check if a date is today
 function isToday(dateStr: string): boolean {
   const today = new Date().toISOString().split("T")[0];
   return dateStr === today;
 }
 
-// Check if a date is within the last 30 days
 function isRecent(dateStr: string): boolean {
   const date = new Date(dateStr);
   const today = new Date();
@@ -197,7 +234,7 @@ export default function Habits() {
           Systems beat motivation. Update via <code className="rounded border border-border bg-secondary px-1 text-xs">habits.json</code>.
         </p>
 
-        {/* Radar chart section */}
+        {/* Radar chart */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -206,15 +243,23 @@ export default function Habits() {
         >
           <p className="mb-3 text-sm text-muted-foreground">Habit Balance — last 30 days</p>
           <Card>
-            <CardContent className="p-4">
-              <div style={{ width: "100%", height: 320 }}>
+            <CardContent className="p-2 sm:p-4">
+              {/*
+                outerRadius="52%" shrinks the data polygon so PolarAngleAxis
+                labels (which sit outside it) have room on narrow screens.
+                margin adds extra breathing room on all four sides.
+              */}
+              <div style={{ width: "100%", height: 300 }}>
                 <ResponsiveContainer>
-                  <RadarChart data={radarData}>
+                  <RadarChart
+                    data={radarData}
+                    outerRadius="52%"
+                    margin={{ top: 20, right: 30, bottom: 20, left: 30 }}
+                  >
                     <PolarGrid stroke="currentColor" className="opacity-20" />
                     <PolarAngleAxis
                       dataKey="habit"
-                      tick={{ fill: "currentColor", fontSize: 12 }}
-                      style={{ color: "hsl(var(--foreground))" }}
+                      tick={(props: TickProps) => <RadarTick {...props} />}
                     />
                     <Radar
                       dataKey="score"
@@ -275,12 +320,17 @@ export default function Habits() {
                     )}
                   </div>
                 </div>
+
                 <Card>
                   <CardContent className="flex gap-0 p-0 overflow-hidden">
-                    {/* Grid — takes remaining space */}
-                    <div className="flex-1 overflow-x-auto p-3">
-                      {/* Day labels on the left */}
+                    {/*
+                      min-w-0 is required: without it a flex child ignores
+                      overflow-x-auto and expands to its intrinsic scroll width,
+                      pushing the year selector off-screen on mobile.
+                    */}
+                    <div className="flex-1 min-w-0 overflow-x-auto p-3">
                       <div className="inline-flex">
+                        {/* Day labels */}
                         <div className="mr-2 flex flex-col gap-[3px] pt-5">
                           {DAY_LABELS.map((label, i) => (
                             <div key={label} className="h-3 text-[10px] text-muted-foreground">
@@ -289,9 +339,8 @@ export default function Habits() {
                           ))}
                         </div>
 
-                        {/* Grid with month labels */}
+                        {/* Grid + month labels */}
                         <div>
-                          {/* Month labels */}
                           <div className="mb-1 flex gap-[3px]">
                             {habitMonthLabels.map((label, i) => (
                               <div key={i} className="w-3 text-[10px] text-muted-foreground">
@@ -299,8 +348,6 @@ export default function Habits() {
                               </div>
                             ))}
                           </div>
-
-                          {/* Contribution grid */}
                           <div className="flex gap-[3px]">
                             {habitWeeks.map((week, wi) => (
                               <div key={wi} className="flex flex-col gap-[3px]">
@@ -308,12 +355,10 @@ export default function Habits() {
                                   const done = log[day];
                                   const today = isToday(day);
                                   const recent = isRecent(day);
-
                                   let cellClass = "bg-secondary";
                                   if (done) {
                                     cellClass = hasData && recent ? "bg-primary" : "bg-primary/60";
                                   }
-
                                   return (
                                     <div
                                       key={day}
