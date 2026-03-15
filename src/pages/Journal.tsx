@@ -66,15 +66,15 @@ function JournalList() {
                     </div>
                     <h2 className="mt-2 font-heading text-xl font-bold">{entry.title}</h2>
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{entry.excerpt}</p>
-                    <div className="mt-4 flex items-center justify-between">
-                      <div className="flex gap-2">
+                    <div className="mt-4 flex flex-wrap items-center justify-between gap-y-2">
+                      <div className="flex flex-wrap gap-2">
                         {entry.tags.map((tag) => (
                           <Badge key={tag} variant="secondary" className="text-xs font-normal">
                             {tag}
                           </Badge>
                         ))}
                       </div>
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                      <span className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
                         Read <ArrowRight size={12} />
                       </span>
                     </div>
