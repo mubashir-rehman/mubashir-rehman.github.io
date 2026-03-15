@@ -5,9 +5,9 @@
   "email": "mubashirrehman66@gmail.com",
   "phone": "+92 309 552 8384",
   "website": "https://mubashir-rehman.github.io",
-  "bio": "Backend-focused Software Engineer with a proven track record building production systems for AI, distributed architectures, and cloud infrastructure. I've shipped 7 microservices with 60+ endpoints serving 1,000+ concurrent users, led drone swarm control systems handling 10K msg/sec telemetry, and published ML research in a peer-reviewed journal. I care deeply about clean design, measurable impact, and systems that actually hold up under pressure. Open to freelance projects and full-time roles.",
+  "bio": "Backend-focused Software Engineer with a proven track record building production systems for AI, distributed architectures, and cloud infrastructure. I've shipped 7 microservices with 60+ endpoints serving 1,000+ concurrent users, led drone swarm control systems handling 10K msg/sec telemetry, and published ML research in a peer-reviewed journal. I care deeply about clean design, measurable impact, and systems that actually hold up under pressure.",
   "available": true,
-  "availabilityNote": "Open to Freelance & Full-Time Roles",
+  "availabilityNote": "Open to Full-Time Roles",
   "metrics": [
     {
       "label": "Lines of Production Code",

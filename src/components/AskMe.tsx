@@ -30,7 +30,7 @@ Location: Lahore, Pakistan
 Email: mubashirrehman66@gmail.com
 Phone: +92 309 552 8384
 Website: https://mubashir-rehman.github.io
-Available: Yes — Open to Freelance & Full-Time Roles
+Available: Yes — Open to Full-Time Roles
 
 Bio: Backend-focused Software Engineer with a proven track record building production systems for AI, distributed architectures, and cloud infrastructure. Shipped 7 microservices with 60+ endpoints serving 1,000+ concurrent users, led drone swarm control systems handling 10K msg/sec telemetry, and published ML research in a peer-reviewed journal. Cares deeply about clean design, measurable impact, and systems that hold up under pressure.
 
@@ -209,7 +209,7 @@ const SUGGESTED_QUESTIONS = [
   "What stack does he use?",
   "Tell me about his experience",
   "What projects has he built?",
-  "Is he open to freelance work?",
+  "Is he open to full-time roles?",
 ];
 
 // ---------------------------------------------------------------------------
