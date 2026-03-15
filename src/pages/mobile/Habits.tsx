@@ -291,7 +291,7 @@ export default function MobileHabits() {
       if (h.habit === "Journal entry") journal.forEach((e) => { log[e.date] = true; });
       const done = days30.filter((d) => log[d]).length;
       return { subject: `${h.emoji} ${h.habit}`, value: Math.round((done / 30) * 100) };
-    });
+    }).sort((a, b) => b.value - a.value);
   }, []);
 
   return (
