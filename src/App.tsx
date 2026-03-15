@@ -13,6 +13,7 @@ import SakuraPetals from "@/components/SakuraPetals";
 import ScrollRestoration from "@/components/ScrollRestoration";
 import ScrollToTop from "@/components/ScrollToTop";
 import AskMe from "@/components/AskMe";
+import BottomNav from "@/components/BottomNav";
 
 const queryClient = new QueryClient();
 
@@ -34,13 +35,16 @@ const App = () => (
           <ScrollRestoration />
           <ScrollToTop />
           <AskMe />
+          <BottomNav />
           <Navbar />
           <main className="min-h-screen pt-0">
-            <AnimatePresence mode="wait">
-              <Suspense fallback={<PageLoader />}>
-                <Outlet />
-              </Suspense>
-            </AnimatePresence>
+            <div className="pb-16 md:pb-0">
+              <AnimatePresence mode="wait">
+                <Suspense fallback={<PageLoader />}>
+                  <Outlet />
+                </Suspense>
+              </AnimatePresence>
+            </div>
           </main>
           <Footer />
         </>

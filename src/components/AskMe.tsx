@@ -351,7 +351,7 @@ export default function AskMe() {
             transition={{ type: "spring", stiffness: 400, damping: 30 }}
             className={[
               "fixed z-50 flex flex-col overflow-hidden",
-              "bottom-24 right-4 sm:right-6",
+              "bottom-[4.5rem] right-4 sm:bottom-24 sm:right-6",
               "w-[calc(100vw-2rem)] sm:w-[380px]",
               "h-[min(500px,calc(100dvh-7rem))]",
               "rounded-2xl border border-border bg-background shadow-2xl",
@@ -512,7 +512,7 @@ export default function AskMe() {
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.93 }}
         className={[
-          "fixed bottom-6 right-4 sm:right-6 z-50",
+          "fixed bottom-[4.5rem] right-4 sm:bottom-6 sm:right-6 z-50",
           "flex h-13 w-13 items-center justify-center",
           "h-[52px] w-[52px] rounded-full",
           "bg-primary text-primary-foreground shadow-lg shadow-primary/25",

@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useTheme } from "./ThemeProvider";
-import { Sun, Moon, Flower2, Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Sun, Moon, Flower2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const links = [
   { to: "/", label: "Home" },
@@ -48,7 +47,6 @@ function ThemeIcon({ theme }: { theme: "dark" | "light" | "sakura" }) {
 
 export default function Navbar() {
   const { theme, cycleTheme } = useTheme();
-  const [open, setOpen] = useState(false);
   const location = useLocation();
 
   return (
@@ -130,7 +128,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile nav */}
+        {/* Mobile: only theme toggle — bottom nav handles page links */}
         <div className="flex items-center gap-2 md:hidden">
           <button
             onClick={cycleTheme}
@@ -139,45 +137,8 @@ export default function Navbar() {
           >
             <ThemeIcon theme={theme} />
           </button>
-          <button
-            onClick={() => setOpen(!open)}
-            className="rounded-lg p-2 text-muted-foreground hover:bg-secondary"
-            aria-label="Toggle menu"
-          >
-            {open ? <X size={20} /> : <Menu size={20} />}
-          </button>
         </div>
       </div>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-t border-border bg-background md:hidden"
-          >
-            <div className="flex flex-col gap-1 px-4 py-3">
-              {links.map((l) => (
-                <NavLink
-                  key={l.to}
-                  to={l.to}
-                  onClick={() => setOpen(false)}
-                  className={({ isActive }) =>
-                    `rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                      isActive
-                        ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:bg-secondary"
-                    }`
-                  }
-                >
-                  {l.label}
-                </NavLink>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </nav>
   );
 }
