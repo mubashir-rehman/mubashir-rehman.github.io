@@ -1,0 +1,70 @@
+/* Giscus custom theme — Light — matches portfolio light palette */
+/* Portfolio light variables:
+   --background:       hsl(270 20% 97%)  ≈ #F7F4FB
+   --card:             hsl(270 18% 94%)  ≈ #EDE8F5
+   --foreground:       hsl(260 40% 13%)  ≈ #1C1430
+   --primary:          hsl(265 85% 55%)  ≈ #7C3AED
+   --border:           hsl(270 12% 82%)  ≈ #CFC8DC
+   --muted:            hsl(270 12% 88%)  ≈ #E0D9EC
+   --muted-foreground: hsl(260 10% 40%)  ≈ #5C5670
+   --secondary:        hsl(270 15% 90%)  ≈ #E4DFF0
+*/
+
+:root {
+  --color-canvas-default:         #f7f4fb;
+  --color-canvas-subtle:          #ede8f5;
+  --color-canvas-inset:           #ede8f5;
+  --color-canvas-overlay:         #ffffff;
+
+  --color-fg-default:             #1c1430;
+  --color-fg-muted:               #5c5670;
+  --color-fg-subtle:              #8b80a0;
+  --color-fg-on-emphasis:         #ffffff;
+
+  --color-border-default:         #cfc8dc;
+  --color-border-muted:           #e0d9ec;
+  --color-border-subtle:          rgba(28,20,48,0.08);
+
+  --color-neutral-muted:          rgba(28,20,48,0.06);
+  --color-neutral-emphasis-plus:  #5c5670;
+  --color-neutral-emphasis:       #8b80a0;
+
+  --color-accent-fg:              #7c3aed;
+  --color-accent-subtle:          rgba(124,58,237,0.08);
+  --color-accent-emphasis:        #7c3aed;
+  --color-accent-muted:           rgba(124,58,237,0.15);
+
+  --color-success-fg:             #1a7f37;
+  --color-danger-fg:              #cf222e;
+  --color-attention-fg:           #9a6700;
+
+  /* Buttons */
+  --color-btn-text:               #1c1430;
+  --color-btn-bg:                 #f7f4fb;
+  --color-btn-border:             #cfc8dc;
+  --color-btn-hover-bg:           #ede8f5;
+  --color-btn-hover-border:       #bfb8cc;
+  --color-btn-active-bg:          #e4dff0;
+
+  --color-btn-primary-text:       #ffffff;
+  --color-btn-primary-bg:         #7c3aed;
+  --color-btn-primary-border:     #7c3aed;
+  --color-btn-primary-hover-bg:   #6d28d9;
+  --color-btn-primary-hover-border: #6d28d9;
+  --color-btn-primary-selected-bg: #5b21b6;
+
+  /* Inputs */
+  --color-input-bg:               #ffffff;
+  --color-input-border:           #cfc8dc;
+  --color-input-contrast-bg:      #f7f4fb;
+
+  /* Social reaction pill */
+  --color-social-reaction-bg-hover:      rgba(124,58,237,0.08);
+  --color-social-reaction-bg-reacted-hover: rgba(124,58,237,0.15);
+
+  /* Links */
+  --color-link-fg:                #7c3aed;
+
+  /* Scrollbar */
+  scrollbar-color: #cfc8dc transparent;
+}

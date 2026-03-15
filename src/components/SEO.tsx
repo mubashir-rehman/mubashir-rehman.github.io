@@ -5,6 +5,7 @@ interface SEOProps {
   title?: string;
   description?: string;
   schema?: object | object[];
+  canonicalUrl?: string;
 }
 
 const BASE_TITLE = "Mubashir Rehman — Backend Engineer";
@@ -58,7 +59,7 @@ function isCanonicalHost(): boolean {
   return host === CANONICAL_HOST || host === "localhost" || host === "127.0.0.1";
 }
 
-export default function SEO({ title, description, schema }: SEOProps) {
+export default function SEO({ title, description, schema, canonicalUrl }: SEOProps) {
   const { pathname } = useLocation();
   const fullTitle = title ? `${title} | ${BASE_TITLE}` : BASE_TITLE;
   const desc = description || BASE_DESC;
@@ -71,6 +72,9 @@ export default function SEO({ title, description, schema }: SEOProps) {
       <title>{fullTitle}</title>
       <link rel="canonical" href={pageUrl} />
       <meta name="description" content={desc} />
+      {canonicalUrl && (
+        <meta name="giscus:backlink" content={canonicalUrl} />
+      )}
 
       {/* Suppress indexing on non-canonical deployments */}
       {!canonical && (

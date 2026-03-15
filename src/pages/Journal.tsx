@@ -7,6 +7,7 @@ import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import Comments from "@/components/Comments";
 
 function JournalList() {
   return (
@@ -89,7 +90,11 @@ function JournalEntry() {
 
   return (
     <PageTransition>
-      <SEO title={entry.title} description={entry.excerpt} />
+      <SEO
+        title={entry.title}
+        description={entry.excerpt}
+        canonicalUrl={`https://mubashir-rehman.github.io/journal/${entry.slug}`}
+      />
       <article className="mx-auto max-w-3xl px-4 pb-20 pt-24 sm:px-6">
         <Link
           to="/journal"
@@ -119,6 +124,8 @@ function JournalEntry() {
             </div>
           </CardContent>
         </Card>
+
+        <Comments />
       </article>
     </PageTransition>
   );
