@@ -1,11 +1,18 @@
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 
+interface ArticleMeta {
+  publishedTime: string;
+  author?: string;
+  tags?: string[];
+}
+
 interface SEOProps {
   title?: string;
   description?: string;
   schema?: object | object[];
   canonicalUrl?: string;
+  articleMeta?: ArticleMeta;
 }
 
 const BASE_TITLE = "Mubashir Rehman — Backend Engineer";
@@ -59,13 +66,14 @@ function isCanonicalHost(): boolean {
   return host === CANONICAL_HOST || host === "localhost" || host === "127.0.0.1";
 }
 
-export default function SEO({ title, description, schema, canonicalUrl }: SEOProps) {
+export default function SEO({ title, description, schema, canonicalUrl, articleMeta }: SEOProps) {
   const { pathname } = useLocation();
   const fullTitle = title ? `${title} | ${BASE_TITLE}` : BASE_TITLE;
   const desc = description || BASE_DESC;
   const isHome = !title;
   const pageUrl = pathname === "/" ? SITE_URL : `${SITE_URL}${pathname}`;
   const canonical = isCanonicalHost();
+  const ogType = articleMeta ? "article" : "website";
 
   return (
     <Helmet>
@@ -85,8 +93,19 @@ export default function SEO({ title, description, schema, canonicalUrl }: SEOPro
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={desc} />
       <meta property="og:url" content={pageUrl} />
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={ogType} />
       <meta property="og:image" content={OG_IMAGE} />
+
+      {/* Article-specific Open Graph meta */}
+      {articleMeta && (
+        <>
+          <meta property="article:published_time" content={articleMeta.publishedTime} />
+          <meta property="article:author" content={articleMeta.author ?? "Mubashir Rehman"} />
+          {articleMeta.tags?.map((tag) => (
+            <meta key={tag} property="article:tag" content={tag} />
+          ))}
+        </>
+      )}
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />

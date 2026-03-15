@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Calendar, PenLine } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, Clock, PenLine } from "lucide-react";
 import journal from "@/data/journal.json";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
@@ -9,10 +9,28 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import Comments from "@/components/Comments";
 
+const SITE_URL = "https://mubashir-rehman.github.io";
+
+function readingTime(content: string): number {
+  const words = content.trim().split(/\s+/).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 function JournalList() {
   return (
     <PageTransition>
-      <SEO title="Journal" description="Technical writing by Mubashir Rehman — articles on backend engineering, distributed systems, Python, and software architecture." />
+      <SEO
+        title="Journal"
+        description="Technical writing by Mubashir Rehman — articles on backend engineering, distributed systems, Python, and software architecture."
+      />
       <div className="mx-auto max-w-3xl px-4 pb-20 pt-24 sm:px-6">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-primary/20 text-primary">
@@ -36,9 +54,15 @@ function JournalList() {
               <Link to={`/journal/${entry.slug}`} data-testid={`link-journal-${entry.slug}`}>
                 <Card className="group transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
                   <CardContent className="p-6">
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Calendar size={12} />
-                      {entry.date}
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                      <span className="inline-flex items-center gap-1">
+                        <Calendar size={12} />
+                        {formatDate(entry.date)}
+                      </span>
+                      <span className="inline-flex items-center gap-1">
+                        <Clock size={12} />
+                        {readingTime(entry.content)} min read
+                      </span>
                     </div>
                     <h2 className="mt-2 font-heading text-xl font-bold">{entry.title}</h2>
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{entry.excerpt}</p>
@@ -88,44 +112,117 @@ function JournalEntry() {
     );
   }
 
+  const mins = readingTime(entry.content);
+  const wordCount = entry.content.trim().split(/\s+/).length;
+  const entryUrl = `${SITE_URL}/journal/${entry.slug}`;
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: entry.title,
+    description: entry.excerpt,
+    datePublished: entry.date,
+    dateModified: entry.date,
+    wordCount,
+    url: entryUrl,
+    image: `${SITE_URL}/og-image.png`,
+    inLanguage: "en",
+    keywords: entry.tags.join(", "),
+    author: {
+      "@type": "Person",
+      name: "Mubashir Rehman",
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Person",
+      name: "Mubashir Rehman",
+      url: SITE_URL,
+    },
+    isPartOf: {
+      "@type": "Blog",
+      name: "Mubashir Rehman — Journal",
+      url: `${SITE_URL}/journal`,
+    },
+  };
+
   return (
     <PageTransition>
       <SEO
         title={entry.title}
         description={entry.excerpt}
-        canonicalUrl={`https://mubashir-rehman.github.io/journal/${entry.slug}`}
+        canonicalUrl={entryUrl}
+        schema={articleSchema}
+        articleMeta={{
+          publishedTime: entry.date,
+          author: "Mubashir Rehman",
+          tags: entry.tags,
+        }}
       />
-      <article className="mx-auto max-w-3xl px-4 pb-20 pt-24 sm:px-6">
+
+      <article className="mx-auto max-w-2xl px-4 pb-24 pt-24 sm:px-6">
+
+        {/* Back link */}
         <Link
           to="/journal"
-          className="mb-8 inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground"
           data-testid="link-back-journal"
         >
           <ArrowLeft size={14} /> Back to Journal
         </Link>
 
-        <Card>
-          <CardContent className="p-6 sm:p-8">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Calendar size={12} />
-              {entry.date}
-            </div>
-            <h1 className="mt-3 font-heading text-3xl font-bold sm:text-4xl">{entry.title}</h1>
-            <div className="mt-3 flex gap-2">
-              {entry.tags.map((tag) => (
-                <Badge key={tag} variant="secondary" className="text-xs font-normal">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
+        {/* Article header */}
+        <header className="mt-10">
+          <div className="flex flex-wrap gap-2">
+            {entry.tags.map((tag) => (
+              <Badge key={tag} variant="secondary" className="text-xs font-normal">
+                {tag}
+              </Badge>
+            ))}
+          </div>
 
-            <div className="mt-8 border-t border-border pt-8 prose prose-sm max-w-none text-foreground prose-headings:font-heading prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-li:text-muted-foreground prose-a:text-primary">
-              <ReactMarkdown>{entry.content}</ReactMarkdown>
-            </div>
-          </CardContent>
-        </Card>
+          <h1 className="mt-4 font-heading text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+            {entry.title}
+          </h1>
 
-        <Comments />
+          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+            {entry.excerpt}
+          </p>
+
+          <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5">
+              <Calendar size={14} />
+              <time dateTime={entry.date}>{formatDate(entry.date)}</time>
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Clock size={14} />
+              {mins} min read
+            </span>
+          </div>
+
+          <hr className="mt-8 border-border" />
+        </header>
+
+        {/* Article body */}
+        <div className="prose prose-base mt-10 max-w-none font-body
+          prose-headings:font-heading prose-headings:tracking-tight
+          prose-h2:mt-10 prose-h2:text-2xl prose-h2:font-bold
+          prose-h3:mt-8 prose-h3:text-xl prose-h3:font-semibold
+          prose-p:leading-8
+          prose-blockquote:not-italic prose-blockquote:border-l-2 prose-blockquote:border-primary prose-blockquote:pl-5 prose-blockquote:text-muted-foreground
+          prose-strong:font-semibold
+          prose-a:no-underline prose-a:font-medium hover:prose-a:underline
+          prose-li:leading-7
+          prose-hr:border-border
+          prose-code:rounded prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
+        ">
+          <ReactMarkdown>{entry.content}</ReactMarkdown>
+        </div>
+
+        {/* Comments */}
+        <div className="mt-16 border-t border-border pt-10">
+          <Comments />
+        </div>
+
       </article>
     </PageTransition>
   );
