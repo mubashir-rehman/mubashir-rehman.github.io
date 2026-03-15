@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
 import habits from "@/data/habits.json";
@@ -28,6 +28,41 @@ function getWeeks(): string[][] {
     weeks.push(week);
   }
   return weeks;
+}
+
+// Get 52 weeks of dates ending at the end of the given year (Dec 31)
+function getWeeksForYear(year: number): string[][] {
+  const weeks: string[][] = [];
+  const endDate = new Date(year, 11, 31); // Dec 31 of the given year
+  // Calculate the start date (52 weeks ago from end of year)
+  const startDate = new Date(endDate);
+  startDate.setDate(endDate.getDate() - (52 * 7 - 1));
+
+  for (let w = 0; w < 52; w++) {
+    const week: string[] = [];
+    for (let d = 0; d < 7; d++) {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + (w * 7 + d));
+      week.push(date.toISOString().split("T")[0]);
+    }
+    weeks.push(week);
+  }
+  return weeks;
+}
+
+// Get available years for a habit (from current year down to earliest data year)
+function getAvailableYears(log: Record<string, boolean>): number[] {
+  const currentYear = new Date().getFullYear();
+  const years = new Set<number>();
+  years.add(currentYear);
+  years.add(currentYear - 1); // Always show at least 2 years
+
+  Object.keys(log).forEach((date) => {
+    const year = new Date(date).getFullYear();
+    years.add(year);
+  });
+
+  return Array.from(years).sort((a, b) => b - a);
 }
 
 // Get month labels for the top row
@@ -129,6 +164,10 @@ export default function Habits() {
   const monthLabels = useMemo(() => getMonthLabels(weeks), [weeks]);
   const journalLog = useMemo(() => Object.fromEntries(journal.map((e) => [e.date, true])), []);
 
+  const [selectedYears, setSelectedYears] = useState<Record<string, number>>(() =>
+    Object.fromEntries(habits.map((h) => [h.habit, new Date().getFullYear()]))
+  );
+
   const radarData = useMemo(() => {
     const today = new Date();
     return habits.map((habit) => {
@@ -199,6 +238,11 @@ export default function Habits() {
               : (habit.log as Record<string, boolean>);
             const stats = calculateStats(log);
             const hasData = stats.total > 0;
+            const selectedYear = selectedYears[habit.habit];
+            const habitWeeks = selectedYear === new Date().getFullYear()
+              ? getWeeks()
+              : getWeeksForYear(selectedYear);
+            const habitMonthLabels = getMonthLabels(habitWeeks);
 
             return (
               <motion.div
@@ -232,56 +276,76 @@ export default function Habits() {
                   </div>
                 </div>
                 <Card>
-                  <CardContent className="overflow-x-auto p-3">
-                    <div className="inline-flex">
+                  <CardContent className="flex gap-0 p-0 overflow-hidden">
+                    {/* Grid — takes remaining space */}
+                    <div className="flex-1 overflow-x-auto p-3">
                       {/* Day labels on the left */}
-                      <div className="mr-2 flex flex-col gap-[3px] pt-5">
-                        {DAY_LABELS.map((label, i) => (
-                          <div key={label} className="h-3 text-[10px] text-muted-foreground">
-                            {i === 1 || i === 3 || i === 5 ? label : ""}
+                      <div className="inline-flex">
+                        <div className="mr-2 flex flex-col gap-[3px] pt-5">
+                          {DAY_LABELS.map((label, i) => (
+                            <div key={label} className="h-3 text-[10px] text-muted-foreground">
+                              {i === 1 || i === 3 || i === 5 ? label : ""}
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Grid with month labels */}
+                        <div>
+                          {/* Month labels */}
+                          <div className="mb-1 flex gap-[3px]">
+                            {habitMonthLabels.map((label, i) => (
+                              <div key={i} className="w-3 text-[10px] text-muted-foreground">
+                                {label}
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
 
-                      {/* Grid with month labels */}
-                      <div>
-                        {/* Month labels */}
-                        <div className="mb-1 flex gap-[3px]">
-                          {monthLabels.map((label, i) => (
-                            <div key={i} className="w-3 text-[10px] text-muted-foreground">
-                              {label}
-                            </div>
-                          ))}
-                        </div>
+                          {/* Contribution grid */}
+                          <div className="flex gap-[3px]">
+                            {habitWeeks.map((week, wi) => (
+                              <div key={wi} className="flex flex-col gap-[3px]">
+                                {week.map((day) => {
+                                  const done = log[day];
+                                  const today = isToday(day);
+                                  const recent = isRecent(day);
 
-                        {/* Contribution grid */}
-                        <div className="flex gap-[3px]">
-                          {weeks.map((week, wi) => (
-                            <div key={wi} className="flex flex-col gap-[3px]">
-                              {week.map((day) => {
-                                const done = log[day];
-                                const today = isToday(day);
-                                const recent = isRecent(day);
+                                  let cellClass = "bg-secondary";
+                                  if (done) {
+                                    cellClass = hasData && recent ? "bg-primary" : "bg-primary/60";
+                                  }
 
-                                let cellClass = "bg-secondary";
-                                if (done) {
-                                  cellClass = hasData && recent ? "bg-primary" : "bg-primary/60";
-                                }
-
-                                return (
-                                  <div
-                                    key={day}
-                                    title={day}
-                                    className={`h-3 w-3 rounded-sm ${cellClass}${
-                                      today ? " ring-1 ring-primary" : ""
-                                    }`}
-                                  />
-                                );
-                              })}
-                            </div>
-                          ))}
+                                  return (
+                                    <div
+                                      key={day}
+                                      title={day}
+                                      className={`h-3 w-3 rounded-sm ${cellClass}${
+                                        today ? " ring-1 ring-primary" : ""
+                                      }`}
+                                    />
+                                  );
+                                })}
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
+                    </div>
+
+                    {/* Year selector */}
+                    <div className="flex flex-col items-center justify-center gap-1 border-l border-border px-3 py-3">
+                      {getAvailableYears(log).map((year) => (
+                        <button
+                          key={year}
+                          onClick={() => setSelectedYears((prev) => ({ ...prev, [habit.habit]: year }))}
+                          className={`text-xs transition-colors ${
+                            selectedYears[habit.habit] === year
+                              ? "font-medium text-primary"
+                              : "text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          {year}
+                        </button>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
