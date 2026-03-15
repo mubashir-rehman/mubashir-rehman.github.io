@@ -5,6 +5,8 @@ import { Typewriter } from "@/components/Typewriter";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
+import { useMobile } from "@/hooks/useMobile";
+import MobileLanding from "@/pages/mobile/Landing";
 
 const stats = [
   { value: "11K+", label: "Lines Shipped" },
@@ -14,6 +16,9 @@ const stats = [
 ];
 
 export default function Landing() {
+  const isMobile = useMobile();
+  if (isMobile) return <MobileLanding />;
+
   return (
     <PageTransition>
       <SEO />

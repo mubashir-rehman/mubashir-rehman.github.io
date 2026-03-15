@@ -50,6 +50,20 @@
     --purple-glow: 275 90% 65%;
     --navy: 260 40% 13%;
     --cream: 270 20% 97%;
+
+    /* M3 surface container tones — light */
+    --m3-surface-lowest:    270 24% 99%;
+    --m3-surface-low:       270 20% 96%;
+    --m3-surface:           270 20% 97%;
+    --m3-surface-high:      270 16% 92%;
+    --m3-surface-highest:   270 14% 88%;
+    --m3-on-surface:        260 40% 13%;
+    --m3-on-surface-var:    260 20% 30%;
+    --m3-outline:           270 10% 60%;
+    --m3-outline-var:       270 12% 82%;
+    --m3-primary-container: 265 80% 90%;
+    --m3-on-primary-container: 265 85% 20%;
+    --m3-emphasized-easing: cubic-bezier(0.2, 0, 0, 1.0);
   }
 
   .dark {
@@ -95,6 +109,20 @@
     --purple-glow: 275 95% 80%;
     --navy: 260 40% 13%;
     --cream: 270 20% 97%;
+
+    /* M3 surface container tones — dark */
+    --m3-surface-lowest:    240 12% 4%;
+    --m3-surface-low:       240 10% 7%;
+    --m3-surface:           240 10% 6%;
+    --m3-surface-high:      240 8% 12%;
+    --m3-surface-highest:   240 7% 16%;
+    --m3-on-surface:        0 0% 93%;
+    --m3-on-surface-var:    240 5% 70%;
+    --m3-outline:           240 6% 40%;
+    --m3-outline-var:       240 6% 22%;
+    --m3-primary-container: 265 60% 25%;
+    --m3-on-primary-container: 265 90% 90%;
+    --m3-emphasized-easing: cubic-bezier(0.2, 0, 0, 1.0);
   }
 
   .sakura {
@@ -142,6 +170,20 @@
     --purple-glow: 350 82% 68%;
     --navy: 340 40% 18%;
     --cream: 340 60% 97%;
+
+    /* M3 surface container tones — sakura */
+    --m3-surface-lowest:    340 65% 99%;
+    --m3-surface-low:       340 55% 96%;
+    --m3-surface:           340 60% 97%;
+    --m3-surface-high:      340 45% 91%;
+    --m3-surface-highest:   340 40% 87%;
+    --m3-on-surface:        340 40% 18%;
+    --m3-on-surface-var:    340 22% 35%;
+    --m3-outline:           340 18% 58%;
+    --m3-outline-var:       340 28% 84%;
+    --m3-primary-container: 340 75% 88%;
+    --m3-on-primary-container: 340 78% 18%;
+    --m3-emphasized-easing: cubic-bezier(0.2, 0, 0, 1.0);
   }
 }
 
