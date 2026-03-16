@@ -17,11 +17,12 @@ export default function BottomNav() {
   if (!isMobile) return null;
 
   return (
-    <nav
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-[hsl(var(--m3-outline-var))] bg-[hsl(var(--m3-surface))]/95 backdrop-blur-xl shadow-[0_-1px_12px_0_rgba(0,0,0,0.06)]"
-      aria-label="Mobile navigation"
-    >
-      <div className="flex pb-safe">
+    /* Floating container — margin on all sides, fully rounded */
+    <div className="fixed bottom-3 left-3 right-3 z-50">
+      <nav
+        className="flex rounded-[24px] bg-[hsl(var(--m3-surface))] px-2 py-2 shadow-[0_4px_24px_0_rgba(0,0,0,0.12)] border border-[hsl(var(--m3-outline-var)/0.6)]"
+        aria-label="Mobile navigation"
+      >
         {links.map(({ to, Icon, label }) => {
           const isActive =
             to === "/" ? pathname === "/" : pathname.startsWith(to);
@@ -31,53 +32,49 @@ export default function BottomNav() {
               key={to}
               to={to}
               aria-label={label}
-              className="flex flex-1 flex-col items-center justify-center gap-1 py-3"
+              className="relative flex flex-1 items-center justify-center"
             >
-              {/* Icon wrapper — pill indicator lives here only */}
-              <span className="relative flex items-center justify-center">
-                {/* M3 indicator pill — behind icon only */}
-                {isActive && (
-                  <motion.span
-                    layoutId="bottom-nav-indicator"
-                    className="absolute inset-0 -mx-4 rounded-full bg-[hsl(var(--m3-primary-container))]"
-                    style={{ borderRadius: 999 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                  />
-                )}
+              {/* Active pill wraps icon + label together */}
+              {isActive && (
                 <motion.span
-                  animate={isActive ? { scale: 1.08 } : { scale: 1 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className="relative z-10 flex h-8 w-16 items-center justify-center"
-                >
-                  <Icon
-                    size={22}
-                    fill={isActive ? "currentColor" : "none"}
-                    stroke={isActive ? "hsl(var(--m3-surface))" : "currentColor"}
-                    strokeWidth={1.75}
-                    className={
-                      isActive
-                        ? "text-[hsl(var(--m3-on-primary-container))]"
-                        : "text-[hsl(var(--m3-on-surface-var))]"
-                    }
-                  />
-                </motion.span>
-              </span>
+                  layoutId="bottom-nav-pill"
+                  className="absolute inset-0 rounded-[16px]"
+                  style={{ backgroundColor: "hsl(var(--m3-primary-container))" }}
+                  transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                />
+              )}
 
-              {/* Label — always outside the pill */}
-              <span
-                className={[
-                  "font-body text-[10px] font-medium leading-none transition-colors",
-                  isActive
-                    ? "text-[hsl(var(--m3-on-primary-container))]"
-                    : "text-[hsl(var(--m3-on-surface-var))]",
-                ].join(" ")}
+              <motion.span
+                animate={isActive ? { scale: 1.02 } : { scale: 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                className="relative z-10 flex flex-col items-center gap-0.5 px-3 py-2"
               >
-                {label}
-              </span>
+                <Icon
+                  size={22}
+                  fill={isActive ? "currentColor" : "none"}
+                  stroke={isActive ? "hsl(var(--m3-surface))" : "currentColor"}
+                  strokeWidth={1.75}
+                  className={
+                    isActive
+                      ? "text-[hsl(var(--m3-on-primary-container))]"
+                      : "text-[hsl(var(--m3-on-surface-var))]"
+                  }
+                />
+                <span
+                  className={[
+                    "font-body text-[10px] font-semibold leading-none transition-colors",
+                    isActive
+                      ? "text-[hsl(var(--m3-on-primary-container))]"
+                      : "text-[hsl(var(--m3-on-surface-var))]",
+                  ].join(" ")}
+                >
+                  {label}
+                </span>
+              </motion.span>
             </NavLink>
           );
         })}
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }

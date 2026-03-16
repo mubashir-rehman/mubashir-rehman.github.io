@@ -37,7 +37,7 @@ export default function ThemeFAB() {
         "fixed right-4 z-50",
         // Stacked above AskMe button: AskMe is at bottom-[4.5rem] (72px, 52px tall)
         // So this sits at 72 + 52 + 8px gap = 132px from bottom
-        "bottom-[8.25rem] sm:bottom-auto sm:top-auto",
+        "bottom-[9.5rem] sm:bottom-auto sm:top-auto",
         // On desktop this is hidden (isMobile check above), but keep sm positioning safe
         "sm:hidden",
         "flex h-10 w-10 items-center justify-center rounded-full",
