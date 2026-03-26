@@ -1,4 +1,4 @@
-import { useRef, useMemo } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FolderOpen, Flame, Heart, BookOpen, ArrowRight } from "lucide-react";
@@ -61,10 +61,11 @@ const fadeSlideUp = {
 // ---------------------------------------------------------------------------
 export default function MobileLanding() {
   const carouselRef = useRef<HTMLDivElement>(null);
-  const quote = useMemo(
-    () => fortyRules[Math.floor(Math.random() * fortyRules.length)],
-    [],
-  );
+  const [quoteIndex, setQuoteIndex] = useState(0);
+  useEffect(() => {
+    setQuoteIndex(Math.floor(Math.random() * fortyRules.length));
+  }, []);
+  const quote = fortyRules[quoteIndex];
 
   return (
     <PageTransition>

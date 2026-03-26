@@ -24,10 +24,18 @@ function formatLike(target: string, current: number): string {
 export function AnimatedCounter({ value, label }: CounterProps) {
   const [count, setCount] = useState(0);
   const [triggered, setTriggered] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const target = parseNumeric(value);
 
+  // Mark as mounted so SSG and client first-render agree (both show final value
+  // string, not "0"), eliminating the React #418/#425 hydration mismatch.
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !triggered) {
@@ -38,7 +46,7 @@ export function AnimatedCounter({ value, label }: CounterProps) {
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [triggered]);
+  }, [triggered, mounted]);
 
   useEffect(() => {
     if (!triggered) return;
@@ -58,6 +66,10 @@ export function AnimatedCounter({ value, label }: CounterProps) {
     return () => clearInterval(timer);
   }, [triggered, target]);
 
+  // Before mount: render the final value so SSG HTML and client first-render match.
+  // After mount: show animated count (starts at 0, animates up on intersection).
+  const display = !mounted ? value : triggered ? formatLike(value, count) : value;
+
   return (
     <motion.div
       ref={ref}
@@ -67,7 +79,7 @@ export function AnimatedCounter({ value, label }: CounterProps) {
       className="text-center"
     >
       <div className="font-heading text-3xl font-bold text-primary sm:text-4xl">
-        {triggered ? formatLike(value, count) : "0"}
+        {display}
       </div>
       <div className="mt-1 text-xs text-muted-foreground sm:text-sm">{label}</div>
     </motion.div>

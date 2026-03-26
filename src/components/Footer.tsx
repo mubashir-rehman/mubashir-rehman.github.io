@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Github, Linkedin, Mail } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
@@ -13,8 +13,14 @@ const footerLinks = [
 ];
 
 export default function Footer() {
-  const rule = useMemo(() => fortyRules[Math.floor(Math.random() * fortyRules.length)], []);
   const { theme } = useTheme();
+  // Randomise only after mount to avoid SSR/client content mismatch (React #425).
+  // SSG renders index 0; client swaps to a random rule after hydration.
+  const [ruleIndex, setRuleIndex] = useState(0);
+  useEffect(() => {
+    setRuleIndex(Math.floor(Math.random() * fortyRules.length));
+  }, []);
+  const rule = fortyRules[ruleIndex];
 
   return (
     <footer className="relative border-t border-border bg-card">
