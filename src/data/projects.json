@@ -3,140 +3,315 @@
     "id": "brandmate",
     "title": "AI-Powered LinkedIn Content Platform",
     "description": "Sole DRF backend developer for a production AI-powered LinkedIn content platform. Built 7 microservices and 60+ REST endpoints supporting 1,000+ concurrent users. Features include versioned prompt management across 6 AI pipelines (n8n), multi-tier profile extraction (LinkedIn API → scraper → OpenAI fallback) at ~95% completion rate, WebSocket notifications via Django Channels at 10K+ daily updates with <100ms latency, Stripe subscriptions with 99.9% payment success, and semantic search using Gemini embeddings + pgvector at <50ms query latency.",
-    "tags": ["Python", "Django", "DRF", "WebSockets", "OpenAI", "pgvector", "Stripe", "n8n", "PostgreSQL"],
+    "tags": [
+      "Python",
+      "Django",
+      "DRF",
+      "WebSockets",
+      "OpenAI",
+      "pgvector",
+      "Stripe",
+      "n8n",
+      "PostgreSQL"
+    ],
     "github": "",
     "demo": "",
     "featured": true,
-    "metrics": ["7 microservices", "60+ endpoints", "1K+ concurrent users", "10K+ daily WS updates", "<100ms latency"]
+    "metrics": [
+      "7 microservices",
+      "60+ endpoints",
+      "1K+ concurrent users",
+      "10K+ daily WS updates",
+      "<100ms latency"
+    ]
   },
   {
     "id": "crypto-intelligence",
     "title": "AI-Driven Cryptocurrency Intelligence Platform",
     "description": "Architected a complete real-time intelligence system as sole engineer, processing 100+ social mentions hourly using Google Gemini embeddings and pgvector semantic search. Built async blockchain analysis microservices across 6 networks with token-bucket rate limiting (80%+ cache hits) and automated fraud detection using ML-based DEX scam token detection at 92% accuracy. Established CI/CD orchestrating 10 microservices with automated deployments.",
-    "tags": ["Python", "FastAPI", "Docker", "Google Gemini", "pgvector", "Redis", "Celery", "ARQ", "Etherscan"],
+    "tags": [
+      "Python",
+      "FastAPI",
+      "Docker",
+      "Google Gemini",
+      "pgvector",
+      "Redis",
+      "Celery",
+      "ARQ",
+      "Etherscan"
+    ],
     "github": "",
     "demo": "",
     "featured": true,
-    "metrics": ["100+ mentions/hr", "10 microservices", "6 networks", "92% scam detection", "80%+ cache hits"]
+    "metrics": [
+      "100+ mentions/hr",
+      "10 microservices",
+      "6 networks",
+      "92% scam detection",
+      "80%+ cache hits"
+    ]
   },
   {
     "id": "ai-ml-pipeline",
     "title": "Enterprise AI/ML Pipeline Integration",
     "description": "Collaborated in a 7-member team integrating MindsDB and Databricks for enterprise AI workflows. Developed APIs connecting Slack and enterprise systems via OAuth 2.0. Optimized PostgreSQL schemas reducing query latency by 30%. Enhanced logging and monitoring systems, reducing support tickets by 25%.",
-    "tags": ["Django", "PostgreSQL", "MindsDB", "Databricks", "Slack API", "OAuth 2.0"],
+    "tags": [
+      "Django",
+      "PostgreSQL",
+      "MindsDB",
+      "Databricks",
+      "Slack API",
+      "OAuth 2.0"
+    ],
     "github": "",
     "demo": "",
     "featured": true,
-    "metrics": ["7-member team", "30% latency reduction", "25% fewer support tickets", "MindsDB + Databricks"]
+    "metrics": [
+      "7-member team",
+      "30% latency reduction",
+      "25% fewer support tickets",
+      "MindsDB + Databricks"
+    ]
   },
   {
     "id": "horilla-hrms",
     "title": "Enterprise HRMS Migration & Automation",
     "description": "Migrated a legacy HRMS to Django with full-stack ownership, serving 200+ employees. Built attendance, contract, and payroll modules. Implemented ZKTeco biometric sync (Web API), designed multi-device biometric schema, and built monthly/day worksheet reporting endpoints. Deployed Dockerized system on DigitalOcean with Nginx, automated rollback, and performance optimizations. Achieved 99.8% uptime with rolling updates and cut onboarding time from 4 hours to 30 minutes.",
-    "tags": ["Python", "Django", "PostgreSQL", "Docker", "DigitalOcean", "Nginx", "Celery", "N8N"],
+    "tags": [
+      "Python",
+      "Django",
+      "PostgreSQL",
+      "Docker",
+      "DigitalOcean",
+      "Nginx",
+      "Celery",
+      "N8N"
+    ],
     "github": "",
     "demo": "",
     "featured": true,
-    "metrics": ["200+ employees", "99.8% uptime", "4 hrs → 30 min onboarding", "25% ticket resolution improvement"]
+    "metrics": [
+      "200+ employees",
+      "99.8% uptime",
+      "4 hrs → 30 min onboarding",
+      "25% ticket resolution improvement"
+    ]
   },
   {
     "id": "drone-swarm",
     "title": "Drone Swarm Control System",
     "description": "Led a team of 4 building a QGroundControl-based drone swarm controller supporting 10+ UAVs with 50Hz telemetry. Enhanced custom ground control using Qt with custom UI features. Optimized drone swarm control with multiprocessing and real-time telemetry with multithreading. Built Gazebo SITL multi-drone simulation, high-throughput MQTT telemetry pipeline at 10K msg/sec with <20ms latency, and custom mission planning tools reducing planning time by 60%. Dockerized CI/CD workflows and managed isolated environments with Vagrant.",
-    "tags": ["C++", "Qt", "Python", "MQTT", "ArduPilot", "PX4", "Gazebo", "Docker", "Vagrant"],
+    "tags": [
+      "C++",
+      "Qt",
+      "Python",
+      "MQTT",
+      "ArduPilot",
+      "PX4",
+      "Gazebo",
+      "Docker",
+      "Vagrant"
+    ],
     "github": "",
     "demo": "",
     "featured": true,
-    "metrics": ["10+ UAVs", "50Hz telemetry", "10K msg/sec", "<20ms latency", "60% faster mission planning"]
+    "metrics": [
+      "10+ UAVs",
+      "50Hz telemetry",
+      "10K msg/sec",
+      "<20ms latency",
+      "60% faster mission planning"
+    ]
   },
   {
     "id": "ground-control-video",
     "title": "Python Ground Control & Video Processing",
     "description": "Transitioned drone ground control to Olympe and Sphinx, integrating telemetry with multiprocessing and MQTT. Developed video streaming from Sphinx to Android apps enabling real-time object detection via OpenCV. Enhanced navigation using OpenStreetMap in Android ground stations. Designed responsive features like video overlays and live telemetry visualization.",
-    "tags": ["Python", "Olympe", "OpenCV", "Sphinx", "Android SDK", "MQTT", "Bing Maps API"],
+    "tags": [
+      "Python",
+      "Olympe",
+      "OpenCV",
+      "Sphinx",
+      "Android SDK",
+      "MQTT",
+      "Bing Maps API"
+    ],
     "github": "",
     "demo": "",
     "featured": false,
-    "metrics": ["Real-time object detection", "MQTT telemetry", "Android ground station"]
+    "metrics": [
+      "Real-time object detection",
+      "MQTT telemetry",
+      "Android ground station"
+    ]
   },
   {
     "id": "aws-automation",
     "title": "AWS Automation & Cloud Deployment",
     "description": "Automated AWS infrastructure provisioning with Boto3, including VPCs, EC2, and ECS services. Deployed Flask apps on ECS with Docker and ensured public access using Dynu DDNS. Streamlined modular deployments and delivered scalable, end-to-end cloud solutions.",
-    "tags": ["Python", "Boto3", "AWS ECS", "Flask", "Docker", "Dynu DDNS"],
+    "tags": [
+      "Python",
+      "Boto3",
+      "AWS ECS",
+      "Flask",
+      "Docker",
+      "Dynu DDNS"
+    ],
     "github": "",
     "demo": "",
     "featured": false,
-    "metrics": ["VPC + EC2 + ECS automation", "ECS Fargate deployment", "Auto-scaling"]
+    "metrics": [
+      "VPC + EC2 + ECS automation",
+      "ECS Fargate deployment",
+      "Auto-scaling"
+    ]
   },
   {
     "id": "ecg-cardiovascular",
     "title": "Cardiovascular Age Prediction — Published Research",
     "description": "End-to-end ML pipeline for cardiovascular age prediction. Collected ECG data from 42 subjects using ESP32 + AD8232, producing 6,131 segments with 13 features. Trained Random Forest (R²=0.99) and ResNet-18 transfer learning models (R²=0.87). Published in Circuits, Systems, and Signal Processing (CSSP) journal, Nov 2024.",
-    "tags": ["Python", "Keras", "scikit-learn", "PyTorch", "ESP32", "IoT", "Research"],
+    "tags": [
+      "Python",
+      "Keras",
+      "scikit-learn",
+      "PyTorch",
+      "ESP32",
+      "IoT",
+      "Research"
+    ],
     "github": "",
     "demo": "https://arxiv.org/abs/2308.04355v3",
     "featured": true,
-    "metrics": ["42 subjects", "6,131 ECG segments", "R²=0.99 (RF)", "Published CSSP 2024"]
+    "metrics": [
+      "42 subjects",
+      "6,131 ECG segments",
+      "R²=0.99 (RF)",
+      "Published CSSP 2024"
+    ]
   },
   {
     "id": "ai-prompt-platform",
     "title": "AI Prompt Management Platform",
     "description": "Django platform integrating OpenAI GPT-4 with streaming responses for prompt versioning, RBAC access control, and secure S3 asset storage. Built at VeritusLabs for internal AI workflow management.",
-    "tags": ["Python", "Django", "OpenAI", "LangChain", "AWS S3", "RBAC", "Docker", "CI/CD"],
+    "tags": [
+      "Python",
+      "Django",
+      "OpenAI",
+      "LangChain",
+      "AWS S3",
+      "RBAC",
+      "Docker",
+      "CI/CD"
+    ],
     "github": "",
     "demo": "",
     "featured": false,
-    "metrics": ["GPT-4 streaming", "RBAC", "S3 storage", "LangChain NLP"]
+    "metrics": [
+      "GPT-4 streaming",
+      "RBAC",
+      "S3 storage",
+      "LangChain NLP"
+    ]
   },
   {
     "id": "distributed-scheduler",
     "title": "Distributed Job Scheduler",
     "description": "TCP/IP distributed scheduler in C with Pthread concurrency supporting 50+ simultaneous jobs. Implements process isolation via Fork/Exec for safe parallel execution.",
-    "tags": ["C", "TCP/IP", "Multithreading", "Distributed Systems"],
+    "tags": [
+      "C",
+      "TCP/IP",
+      "Multithreading",
+      "Distributed Systems"
+    ],
     "github": "",
     "demo": "",
     "featured": false,
-    "metrics": ["50+ simultaneous jobs", "Fork/Exec isolation"]
+    "metrics": [
+      "50+ simultaneous jobs",
+      "Fork/Exec isolation"
+    ]
   },
   {
     "id": "pubsub-messaging",
     "title": "Real-Time Pub-Sub Messaging System",
     "description": "Scalable publisher-subscriber system with Redis in-memory caching and PostgreSQL persistence. Supports 1K+ msg/sec with Node.js backend and delivery acknowledgments.",
-    "tags": ["Python", "Redis", "PostgreSQL", "Node.js", "Distributed Systems"],
+    "tags": [
+      "Python",
+      "Redis",
+      "PostgreSQL",
+      "Node.js",
+      "Distributed Systems"
+    ],
     "github": "",
     "demo": "",
     "featured": false,
-    "metrics": ["1K+ msg/sec", "Redis + SQL persistence"]
+    "metrics": [
+      "1K+ msg/sec",
+      "Redis + SQL persistence"
+    ]
   },
   {
     "id": "endless-runner-mobile",
     "title": "Endless Runner Mobile Game",
     "description": "Multi-level endless runner for Android built in Unity/C# using object pooling techniques reducing memory usage by 40%. Implemented advanced mechanics like level progression, power-ups, and dynamic obstacles. Integrated Google Play Services for leaderboards and achievements. Achieved 5K+ downloads with 4.2★ rating.",
-    "tags": ["Unity", "C#", "Android", "Game Dev"],
+    "tags": [
+      "Unity",
+      "C#",
+      "Android",
+      "Game Dev"
+    ],
     "github": "",
     "demo": "",
     "featured": false,
-    "metrics": ["5K+ downloads", "4.2★ rating", "40% memory reduction"]
+    "metrics": [
+      "5K+ downloads",
+      "4.2★ rating",
+      "40% memory reduction"
+    ]
   },
   {
     "id": "endless-runner-web",
     "title": "Endless Runner Web Game",
     "description": "Web-based endless runner game built with PlayCanvas and JavaScript. Optimized gameplay with scene pre-loading, object pooling, and reusable assets to minimize load times. Enhanced user engagement through asynchronous signals and optimized rendering to reduce latency. Designed scalable game architecture allowing easy expansion with new levels and features.",
-    "tags": ["JavaScript", "PlayCanvas", "Web", "Game Dev"],
+    "tags": [
+      "JavaScript",
+      "PlayCanvas",
+      "Web",
+      "Game Dev"
+    ],
     "github": "",
     "demo": "",
     "featured": false,
-    "metrics": ["2s initial load", "Scene pre-loading", "Cross-browser compatible"]
+    "metrics": [
+      "2s initial load",
+      "Scene pre-loading",
+      "Cross-browser compatible"
+    ]
   },
   {
     "id": "portfolio-site",
-    "title": "Personal Portfolio — mubashir-rehman.github.io",
+    "title": "Personal Portfolio — mubashir-rehman.is-a.dev",
     "description": "Fully static personal portfolio built with React 18, TypeScript, and Vite — SSG-rendered via vite-react-ssg for zero JS-required page loads and instant navigation. Features 8 pages (Landing, About, Projects, Hobbies, Habits, Journal, Contact, 404), a custom 3-theme system (Sakura / Dark / Light) with animated cherry blossom SVG scene, GitHub-style habit heatmap with year-select, a markdown-rendered journal with Giscus comment threads, animated counters with Framer Motion page transitions, and full SEO with react-helmet-async, JSON-LD structured data, Open Graph tags, and a static sitemap. Deployed to GitHub Pages via GitHub Actions CI/CD with SSG pre-rendering of all routes. Includes a fetch monkey-patch guard to handle stale bundle/manifest hash mismatches on redeploy without crashing.",
-    "tags": ["React 18", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion", "shadcn/ui", "SSG", "GitHub Actions", "SEO"],
+    "tags": [
+      "React 18",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "Framer Motion",
+      "shadcn/ui",
+      "SSG",
+      "GitHub Actions",
+      "SEO"
+    ],
     "github": "https://github.com/mubashir-rehman/mubashir-rehman.github.io",
-    "demo": "https://mubashir-rehman.github.io",
+    "demo": "https://mubashir-rehman.is-a.dev",
     "featured": false,
-    "metrics": ["8 SSG pages", "3 themes", "6,500+ lines", "100% static", "CI/CD on push"]
+    "metrics": [
+      "8 SSG pages",
+      "3 themes",
+      "6,500+ lines",
+      "100% static",
+      "CI/CD on push"
+    ]
   }
 ]

@@ -1,7 +1,7 @@
 import Giscus from "@giscus/react";
 import { useTheme } from "@/components/ThemeProvider";
 
-const THEME_BASE_URL = "https://mubashir-rehman.github.io";
+const THEME_BASE_URL = "https://mubashir-rehman.is-a.dev";
 
 export default function Comments() {
   const { theme } = useTheme();

@@ -11,7 +11,7 @@ import Comments from "@/components/Comments";
 import { useMobile } from "@/hooks/useMobile";
 import { MobileJournalList, MobileJournalEntry } from "@/pages/mobile/Journal";
 
-const SITE_URL = "https://mubashir-rehman.github.io";
+const SITE_URL = "https://mubashir-rehman.is-a.dev";
 
 function readingTime(content: string): number {
   const words = content.trim().split(/\s+/).length;

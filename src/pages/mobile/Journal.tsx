@@ -7,7 +7,7 @@ import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import Comments from "@/components/Comments";
 
-const SITE_URL = "https://mubashir-rehman.github.io";
+const SITE_URL = "https://mubashir-rehman.is-a.dev";
 const emphasized = [0.2, 0, 0, 1.0] as [number, number, number, number];
 
 function readingTime(content: string): number {

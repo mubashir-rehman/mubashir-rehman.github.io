@@ -31,7 +31,7 @@ export default function About() {
             "@type": "Person",
             name: "Mubashir Rehman",
             jobTitle: "Backend Software Engineer",
-            url: "https://mubashir-rehman.github.io",
+            url: "https://mubashir-rehman.is-a.dev",
             sameAs: [
               "https://github.com/mubashir-rehman",
               "https://linkedin.com/in/mubashir-rehman",

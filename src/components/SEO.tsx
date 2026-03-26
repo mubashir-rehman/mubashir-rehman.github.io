@@ -17,8 +17,8 @@ interface SEOProps {
 
 const BASE_TITLE = "Mubashir Rehman — Backend Engineer";
 const BASE_DESC = "Backend Software Engineer specializing in Python, Django, AWS, and AI/ML systems. 11K+ lines shipped, 99.8% uptime. Open to full-time roles.";
-const SITE_URL = "https://mubashir-rehman.github.io";
-const CANONICAL_HOST = "mubashir-rehman.github.io";
+const SITE_URL = "https://mubashir-rehman.is-a.dev";
+const CANONICAL_HOST = "mubashir-rehman.is-a.dev";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 const personSchema = {

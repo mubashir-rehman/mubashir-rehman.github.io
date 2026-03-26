@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mubashir-rehman.github.io/sitemap.xml
+Sitemap: https://mubashir-rehman.is-a.dev/sitemap.xml

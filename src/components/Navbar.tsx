@@ -41,9 +41,9 @@ function BlossomFlower({
 
 // Icon on toggle button shows what theme you'll GO TO next
 function ThemeIcon({ theme }: { theme: "dark" | "light" | "sakura" }) {
-  if (theme === "sakura") return <Moon size={18} />;
-  if (theme === "dark")   return <Sun size={18} />;
-  return <Flower2 size={18} />;
+  if (theme === "light")  return <Moon size={18} />;
+  if (theme === "dark")   return <Flower2 size={18} />;
+  return <Sun size={18} />;
 }
 
 export default function Navbar() {

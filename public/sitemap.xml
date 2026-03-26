@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mubashir-rehman.github.io/</loc>
+    <loc>https://mubashir-rehman.is-a.dev/</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://mubashir-rehman.github.io/about</loc>
+    <loc>https://mubashir-rehman.is-a.dev/about</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mubashir-rehman.github.io/projects</loc>
+    <loc>https://mubashir-rehman.is-a.dev/projects</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mubashir-rehman.github.io/journal</loc>
+    <loc>https://mubashir-rehman.is-a.dev/journal</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mubashir-rehman.github.io/journal/rebuilding-for-mobile</loc>
+    <loc>https://mubashir-rehman.is-a.dev/journal/rebuilding-for-mobile</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>never</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mubashir-rehman.github.io/journal/flowers-of-multan</loc>
+    <loc>https://mubashir-rehman.is-a.dev/journal/flowers-of-multan</loc>
     <lastmod>2026-03-15</lastmod>
     <changefreq>never</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mubashir-rehman.github.io/journal/welcome</loc>
+    <loc>https://mubashir-rehman.is-a.dev/journal/welcome</loc>
     <lastmod>2026-03-09</lastmod>
     <changefreq>never</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mubashir-rehman.github.io/habits</loc>
+    <loc>https://mubashir-rehman.is-a.dev/habits</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://mubashir-rehman.github.io/hobbies</loc>
+    <loc>https://mubashir-rehman.is-a.dev/hobbies</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://mubashir-rehman.github.io/contact</loc>
+    <loc>https://mubashir-rehman.is-a.dev/contact</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>

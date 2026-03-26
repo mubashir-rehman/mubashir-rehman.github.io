@@ -9,7 +9,7 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: "sakura",
+  theme: "light",
   setTheme: () => {},
   cycleTheme: () => {},
 });
@@ -19,9 +19,9 @@ export const useTheme = () => useContext(ThemeContext);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as Theme) || "sakura";
+      return (localStorage.getItem("theme") as Theme) || "light";
     }
-    return "sakura";
+    return "light";
   });
 
   useEffect(() => {
@@ -33,10 +33,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = (t: Theme) => setThemeState(t);
 
-  // Cycle: sakura → dark → light → sakura
+  // Cycle: light → dark → sakura → light
   const cycleTheme = () =>
     setThemeState((prev) =>
-      prev === "sakura" ? "dark" : prev === "dark" ? "light" : "sakura"
+      prev === "light" ? "dark" : prev === "dark" ? "sakura" : "light"
     );
 
   return (
