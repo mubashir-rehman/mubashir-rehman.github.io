@@ -1,8 +1,20 @@
 <!doctype html>
-<html lang="en" class="dark" suppressHydrationWarning>
+<html lang="en" class="light" suppressHydrationWarning>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Inline theme script: runs synchronously before React hydrates so the
+         correct theme class is always applied from the first paint, preventing
+         the SSR/client mismatch that causes React hydration errors #418/#423.
+         Must be the first script in <head>. -->
+    <script>
+      (function() {
+        var t = localStorage.getItem('theme');
+        var valid = ['light', 'dark', 'sakura'];
+        var theme = valid.indexOf(t) !== -1 ? t : 'light';
+        document.documentElement.className = theme;
+      })();
+    </script>
     <!-- Prevent browsers from serving stale HTML after a new deploy.
          Vite hashes all JS/CSS asset filenames so they are immutably cached.
          HTML files are not hashed, so without this they can be served stale
@@ -11,16 +23,16 @@
     <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <title>Mubashir Rehman — Backend Engineer</title>
-    <meta name="description" content="Backend Software Engineer specializing in Python, Django, AWS, and AI/ML systems. 11K+ lines shipped, 99.8% uptime. Open to freelance and full-time roles." />
+    <meta name="description" content="Backend Software Engineer specializing in Python, Django, AWS, and AI/ML systems. 11K+ lines shipped, 99.8% uptime. Open to full-time roles." />
     <meta property="og:title" content="Mubashir Rehman — Backend Engineer" />
-    <meta property="og:description" content="Backend Software Engineer specializing in Python, Django, AWS, and AI/ML systems. 11K+ lines shipped, 99.8% uptime." />
+    <meta property="og:description" content="Backend Software Engineer specializing in Python, Django, AWS, and AI/ML systems. 11K+ lines shipped, 99.8% uptime. Open to full-time roles." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://mubashir-rehman.github.io/" />
-    <meta property="og:image" content="https://mubashir-rehman.github.io/og-image.png" />
+    <meta property="og:url" content="https://mubashir-rehman.is-a.dev/" />
+    <meta property="og:image" content="https://mubashir-rehman.is-a.dev/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Mubashir Rehman — Backend Engineer" />
-    <meta name="twitter:description" content="Backend Software Engineer specializing in Python, Django, AWS, and AI/ML systems." />
-    <meta name="twitter:image" content="https://mubashir-rehman.github.io/og-image.png" />
+    <meta name="twitter:description" content="Backend Software Engineer specializing in Python, Django, AWS, and AI/ML systems. 11K+ lines shipped, 99.8% uptime." />
+    <meta name="twitter:image" content="https://mubashir-rehman.is-a.dev/og-image.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- Umami Analytics (uncomment and replace with your script) -->
     <!-- <script async defer data-website-id="YOUR_UMAMI_ID" src="https://analytics.example.com/umami.js"></script> -->

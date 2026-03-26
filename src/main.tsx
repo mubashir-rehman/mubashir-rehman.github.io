@@ -48,9 +48,10 @@ if (typeof window !== "undefined") {
     const response = await _fetch(input, init);
 
     if (url.includes("static-loader-data-manifest") && !response.ok) {
-      // Key the flag to the current bundle hash so each deploy version gets
-      // exactly one recovery attempt — prevents cross-deploy flag collisions.
-      const hash = (window as Window & { __VITE_REACT_SSG_HASH__?: string }).__VITE_REACT_SSG_HASH__ ?? "unknown";
+      // Extract the hash directly from the manifest filename, e.g.
+      // "static-loader-data-manifest-vne3stib0t.json" → "vne3stib0t"
+      const hashMatch = url.match(/static-loader-data-manifest-([^.]+)\.json/);
+      const hash = hashMatch ? hashMatch[1] : "unknown";
       const reloadKey = `ssg-reloaded-${hash}`;
       if (!sessionStorage.getItem(reloadKey)) {
         sessionStorage.setItem(reloadKey, "1");
