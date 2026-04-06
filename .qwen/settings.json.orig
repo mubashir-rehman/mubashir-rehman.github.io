@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl *)",
+      "Bash(bash *)",
+      "Bash(uv *)",
+      "Bash(python3 *)",
+      "Bash(rm *)",
+      "Bash(npm run *)",
+      "Bash(sleep *)",
+      "Bash(head *)",
+      "Bash(pkill *)",
+      "Bash(echo *)",
+      "Bash(source *)",
+      "Bash(python *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push)"
+    ]
+  }
+}
