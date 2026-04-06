@@ -4,7 +4,7 @@ import { Gamepad2, Music, BookOpen, Tv } from "lucide-react";
 import anime from "@/data/anime.json";
 import books from "@/data/books.json";
 import { useMobile } from "@/hooks/useMobile";
-import MobileHobbies from "@/pages/mobile/Hobbies";
+import MobileHobbies from "@/components/pages/mobile/Hobbies";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { Card, CardContent } from "@/components/ui/card";

@@ -203,7 +203,7 @@ Rules:
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY as string | undefined;
+const GROQ_API_KEY = import.meta.env.PUBLIC_GROQ_API_KEY as string | undefined;
 
 const SUGGESTED_QUESTIONS = [
   "What stack does he use?",
@@ -286,7 +286,7 @@ export default function AskMe() {
     ];
 
     try {
-      if (!GROQ_API_KEY) throw new Error("VITE_GROQ_API_KEY is not set.");
+      if (!GROQ_API_KEY) throw new Error("PUBLIC_GROQ_API_KEY is not set.");
 
       const res = await fetch(GROQ_API_URL, {
         method: "POST",

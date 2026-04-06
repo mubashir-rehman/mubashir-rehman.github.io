@@ -4,7 +4,7 @@ import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } fro
 import habits from "@/data/habits.json";
 import journal from "@/data/journal.json";
 import { useMobile } from "@/hooks/useMobile";
-import MobileHabits from "@/pages/mobile/Habits";
+import MobileHabits from "@/components/pages/mobile/Habits";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { Card, CardContent } from "@/components/ui/card";

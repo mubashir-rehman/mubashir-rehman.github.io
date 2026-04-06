@@ -18,10 +18,10 @@ export default function Comments() {
       <h2 className="mb-6 font-heading text-xl font-bold">Comments</h2>
       <Giscus
         id="comments"
-        repo={import.meta.env.VITE_GISCUS_REPO}
-        repoId={import.meta.env.VITE_GISCUS_REPO_ID}
-        category={import.meta.env.VITE_GISCUS_CATEGORY}
-        categoryId={import.meta.env.VITE_GISCUS_CATEGORY_ID}
+        repo={import.meta.env.PUBLIC_GISCUS_REPO}
+        repoId={import.meta.env.PUBLIC_GISCUS_REPO_ID}
+        category={import.meta.env.PUBLIC_GISCUS_CATEGORY}
+        categoryId={import.meta.env.PUBLIC_GISCUS_CATEGORY_ID}
         mapping="pathname"
         strict="0"
         reactionsEnabled="1"

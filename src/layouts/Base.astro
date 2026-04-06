@@ -1,0 +1,139 @@
+---
+/**
+ * Base.astro — HTML shell for every page.
+ *
+ * Responsibilities:
+ *  - Emit a fully-formed <head> with static SEO metadata (title, description,
+ *    canonical, og/twitter, robots, structured data).  This is what search
+ *    engines and social scrapers see — no JavaScript needed.
+ *  - Apply the saved theme class before first paint to prevent FOUC.
+ *  - Render a <slot /> so each Astro page can inject its React island.
+ */
+
+import "../index.css";
+
+interface ArticleMeta {
+  publishedTime: string;
+  author?: string;
+  tags?: string[];
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  schema?: object | object[];
+  articleMeta?: ArticleMeta;
+}
+
+const SITE        = "https://mubashir-rehman.is-a.dev";
+const BASE_TITLE  = "Mubashir Rehman — Backend Engineer";
+const BASE_DESC   =
+  "Backend Software Engineer specialising in Python, Django, AWS, and AI/ML systems. " +
+  "11K+ lines shipped, 99.8% uptime. Open to full-time roles.";
+const OG_IMAGE    = `${SITE}/og-image.png`;
+
+const {
+  title,
+  description = BASE_DESC,
+  canonicalPath = "/",
+  schema,
+  articleMeta,
+} = Astro.props;
+
+const fullTitle   = title ? `${title} | ${BASE_TITLE}` : BASE_TITLE;
+const canonicalURL = canonicalPath === "/" ? SITE : `${SITE}${canonicalPath}`;
+const ogType       = articleMeta ? "article" : "website";
+
+// Only suppress indexing on non-canonical deployments (e.g. raw github.io URL)
+const isCanonical =
+  Astro.url.hostname === "mubashir-rehman.is-a.dev" ||
+  Astro.url.hostname === "localhost" ||
+  Astro.url.hostname === "127.0.0.1";
+
+// Shared person + website structured data (included on every page)
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Mubashir Rehman",
+  jobTitle: "Backend Software Engineer",
+  description: BASE_DESC,
+  url: SITE,
+  email: "mubashirrehman66@gmail.com",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Lahore",
+    addressCountry: "Pakistan",
+  },
+  alumniOf: {
+    "@type": "EducationalOrganization",
+    name: "Information Technology University",
+  },
+  knowsAbout: [
+    "Python","Django","FastAPI","PostgreSQL","Docker",
+    "AWS","Redis","AI/ML","Distributed Systems","Microservices",
+  ],
+  sameAs: [
+    "https://github.com/mubashir-rehman",
+    "https://linkedin.com/in/mubashir-rehman",
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Theme FOUC prevention — runs synchronously before first paint -->
+    <script is:inline>
+      (function () {
+        var t = localStorage.getItem("theme") || "light";
+        document.documentElement.classList.add(t);
+      })();
+    </script>
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    {!isCanonical && <meta name="robots" content="noindex" />}
+
+    <!-- Open Graph -->
+    <meta property="og:title"       content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url"         content={canonicalURL} />
+    <meta property="og:type"        content={ogType} />
+    <meta property="og:image"       content={OG_IMAGE} />
+
+    <!-- Article-specific OG -->
+    {articleMeta && (
+      <>
+        <meta property="article:published_time" content={articleMeta.publishedTime} />
+        <meta property="article:author"          content={articleMeta.author ?? "Mubashir Rehman"} />
+        {articleMeta.tags?.map((tag) => (
+          <meta property="article:tag" content={tag} />
+        ))}
+      </>
+    )}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image"       content={OG_IMAGE} />
+
+    <!-- Person schema (present on all pages) -->
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+
+    <!-- Page-specific structured data -->
+    {schema && (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    )}
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

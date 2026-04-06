@@ -1,0 +1,12 @@
+---
+import Base from "@/layouts/Base.astro";
+import ReactApp from "@/components/ReactApp";
+---
+
+<Base
+  title="Journal"
+  description="Technical writing by Mubashir Rehman — articles on backend engineering, distributed systems, Python, and software architecture."
+  canonicalPath="/journal"
+>
+  <ReactApp client:only="react" />
+</Base>

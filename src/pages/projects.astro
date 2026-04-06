@@ -1,0 +1,12 @@
+---
+import Base from "@/layouts/Base.astro";
+import ReactApp from "@/components/ReactApp";
+---
+
+<Base
+  title="Projects"
+  description="Production projects by Mubashir Rehman — AI-powered SaaS platforms, drone swarm control systems, crypto intelligence pipelines, and distributed backends."
+  canonicalPath="/projects"
+>
+  <ReactApp client:only="react" />
+</Base>

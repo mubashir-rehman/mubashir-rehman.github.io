@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useMobile } from "@/hooks/useMobile";
-import MobileProjects from "@/pages/mobile/Projects";
+import MobileProjects from "@/components/pages/mobile/Projects";
 
 export default function Projects() {
   const isMobile = useMobile();

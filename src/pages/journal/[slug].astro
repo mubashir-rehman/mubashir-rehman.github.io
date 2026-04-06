@@ -1,0 +1,41 @@
+---
+import Base from "@/layouts/Base.astro";
+import ReactApp from "@/components/ReactApp";
+import journal from "@/data/journal.json";
+
+export function getStaticPaths() {
+  return journal.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const SITE = "https://mubashir-rehman.is-a.dev";
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: entry.title,
+  description: entry.excerpt,
+  datePublished: entry.date,
+  dateModified: entry.date,
+  url: `${SITE}/journal/${entry.slug}`,
+  image: `${SITE}/og-image.png`,
+  inLanguage: "en",
+  keywords: entry.tags?.join(", "),
+  author: { "@type": "Person", name: "Mubashir Rehman", url: SITE },
+  publisher: { "@type": "Person", name: "Mubashir Rehman", url: SITE },
+  isPartOf: { "@type": "Blog", name: "Mubashir Rehman — Journal", url: `${SITE}/journal` },
+};
+---
+
+<Base
+  title={entry.title}
+  description={entry.excerpt}
+  canonicalPath={`/journal/${entry.slug}`}
+  schema={articleSchema}
+  articleMeta={{ publishedTime: entry.date, author: "Mubashir Rehman", tags: entry.tags }}
+>
+  <ReactApp client:only="react" />
+</Base>

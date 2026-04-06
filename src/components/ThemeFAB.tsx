@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Sun, Moon, Flower2 } from "lucide-react";
-import { useTheme, Theme } from "@/components/ThemeProvider";
+import { useTheme } from "@/components/ThemeProvider";
+import type { Theme } from "@/components/ThemeProvider";
 import { useMobile } from "@/hooks/useMobile";
 
 function ThemeIcon({ theme }: { theme: Theme }) {

@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMobile } from "@/hooks/useMobile";
-import MobileContact from "@/pages/mobile/Contact";
+import MobileContact from "@/components/pages/mobile/Contact";
 
 export default function Contact() {
   const isMobile = useMobile();

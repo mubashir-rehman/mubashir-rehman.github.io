@@ -6,7 +6,7 @@ import { AnimatedCounter } from "@/components/AnimatedCounter";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { useMobile } from "@/hooks/useMobile";
-import MobileLanding from "@/pages/mobile/Landing";
+import MobileLanding from "@/components/pages/mobile/Landing";
 
 const stats = [
   { value: "11K+", label: "Lines Shipped" },

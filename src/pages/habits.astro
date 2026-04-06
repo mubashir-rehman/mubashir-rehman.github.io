@@ -1,0 +1,12 @@
+---
+import Base from "@/layouts/Base.astro";
+import ReactApp from "@/components/ReactApp";
+---
+
+<Base
+  title="Habits"
+  description="Mubashir Rehman's daily habits and consistency tracking — a personal dashboard."
+  canonicalPath="/habits"
+>
+  <ReactApp client:only="react" />
+</Base>

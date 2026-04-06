@@ -1,0 +1,22 @@
+---
+import Base from "@/layouts/Base.astro";
+import ReactApp from "@/components/ReactApp";
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Mubashir Rehman — Portfolio",
+  url: "https://mubashir-rehman.is-a.dev",
+  description:
+    "Backend Software Engineer specialising in Python, Django, AWS, and AI/ML systems. " +
+    "11K+ lines shipped, 99.8% uptime. Open to full-time roles.",
+  author: { "@type": "Person", name: "Mubashir Rehman" },
+};
+---
+
+<Base
+  canonicalPath="/"
+  schema={websiteSchema}
+>
+  <ReactApp client:only="react" />
+</Base>

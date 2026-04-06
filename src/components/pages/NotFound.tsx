@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useMobile } from "@/hooks/useMobile";
-import MobileNotFound from "@/pages/mobile/NotFound";
+import MobileNotFound from "@/components/pages/mobile/NotFound";
 
 const NotFound = () => {
   const location = useLocation();

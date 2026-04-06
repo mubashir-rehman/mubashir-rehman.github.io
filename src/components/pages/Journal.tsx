@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import Comments from "@/components/Comments";
 import { useMobile } from "@/hooks/useMobile";
-import { MobileJournalList, MobileJournalEntry } from "@/pages/mobile/Journal";
+import { MobileJournalList, MobileJournalEntry } from "@/components/pages/mobile/Journal";
 
 const SITE_URL = "https://mubashir-rehman.is-a.dev";
 

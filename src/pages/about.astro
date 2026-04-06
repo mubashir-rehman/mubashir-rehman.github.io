@@ -1,0 +1,28 @@
+---
+import Base from "@/layouts/Base.astro";
+import ReactApp from "@/components/ReactApp";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  mainEntity: {
+    "@type": "Person",
+    name: "Mubashir Rehman",
+    jobTitle: "Backend Software Engineer",
+    url: "https://mubashir-rehman.is-a.dev",
+    sameAs: [
+      "https://github.com/mubashir-rehman",
+      "https://linkedin.com/in/mubashir-rehman",
+    ],
+  },
+};
+---
+
+<Base
+  title="About"
+  description="Mubashir Rehman — Backend Engineer in Lahore, Pakistan. Python, Django, FastAPI, AWS, Docker. 7 microservices, 60+ endpoints, 99.8% uptime."
+  canonicalPath="/about"
+  schema={schema}
+>
+  <ReactApp client:only="react" />
+</Base>

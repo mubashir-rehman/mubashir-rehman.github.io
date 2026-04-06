@@ -6,7 +6,7 @@ import PageTransition from "@/components/PageTransition";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMobile } from "@/hooks/useMobile";
-import MobileAbout from "@/pages/mobile/About";
+import MobileAbout from "@/components/pages/mobile/About";
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
