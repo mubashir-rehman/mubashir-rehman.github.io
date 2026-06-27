@@ -1,6 +1,6 @@
 # mubashir-rehman.github.io
 
-A fully static, open source developer portfolio built with React 18, Vite, TypeScript, Tailwind CSS, and shadcn/ui. Features SSG via `vite-react-ssg`, a GitHub-style habit tracker, a personal journal with [giscus](https://giscus.app/) comments powered by GitHub Discussions, and three themes (dark / light / sakura).
+A fully static, open source developer portfolio built with Astro 6, React 18, TypeScript, Tailwind CSS, and shadcn/ui. Astro pre-renders a static HTML + SEO shell for every route and mounts the React app as a single client-side island. Features a GitHub-style habit tracker, a personal journal with [giscus](https://giscus.app/) comments powered by GitHub Discussions, and three themes (dark / light / sakura).
 
 **Live site:** https://mubashir-rehman.github.io
 
@@ -17,7 +17,7 @@ The source code (components, pages, utilities, configuration) is available under
 ## Features
 
 - 🤖 **AI chatbot** — floating "Ask Me Anything" assistant powered by Groq (llama-3.3-70b), answers questions about skills, experience, and projects based on injected resume context
-- ⚡ **Static Site Generation** — pre-rendered at build time via `vite-react-ssg`, no server needed
+- ⚡ **Static Site Generation** — pre-rendered at build time via Astro (`output: "static"`), no server needed
 - 🎨 **Three themes** — dark, light, and sakura (cherry blossom spring theme) with smooth cycling
 - 📊 **GitHub-style habit tracker** — contribution grids with month labels, streaks, radar chart overview, year switcher
 - ✍️ **Journal** — Markdown-rendered entries with [giscus](https://giscus.app/) comments via GitHub Discussions
@@ -32,12 +32,12 @@ The source code (components, pages, utilities, configuration) is available under
 
 | Layer | Technology |
 |---|---|
-| Framework | React 18 + TypeScript |
-| Build | Vite 5 + vite-react-ssg |
+| Framework | Astro 6 (static) + React 18 island |
+| Language | TypeScript |
 | Styling | Tailwind CSS v3 + shadcn/ui |
 | Animation | Framer Motion |
-| Routing | react-router-dom v6 |
-| SEO | react-helmet-async |
+| Routing | react-router-dom v6 (client-side, inside the island) |
+| SEO | Static `<head>` via `Base.astro` + `react-helmet-async` inside the island |
 | Comments | @giscus/react |
 | AI Chatbot | Groq API (llama-3.3-70b-versatile) |
 | Contact | Formspree |
@@ -75,16 +75,18 @@ Then fill in your values in `.env`:
 
 ```env
 # Groq API key — get a free key at https://console.groq.com
-VITE_GROQ_API_KEY=your_groq_api_key_here
+PUBLIC_GROQ_API_KEY=your_groq_api_key_here
 
 # Giscus — get values at https://giscus.app/
-VITE_GISCUS_REPO=your-username/your-repo
-VITE_GISCUS_REPO_ID=your_repo_id
-VITE_GISCUS_CATEGORY=General
-VITE_GISCUS_CATEGORY_ID=your_category_id
+PUBLIC_GISCUS_REPO=your-username/your-repo
+PUBLIC_GISCUS_REPO_ID=your_repo_id
+PUBLIC_GISCUS_CATEGORY=General
+PUBLIC_GISCUS_CATEGORY_ID=your_category_id
 ```
 
-> **Note:** All `VITE_` variables are baked into the JS bundle at build time by Vite — there is no runtime server. The Groq API key will be visible in the compiled output; Groq's free-tier rate limits provide natural abuse protection.
+> **Note:** Astro exposes client-side env vars only when prefixed with `PUBLIC_` (read via `import.meta.env.PUBLIC_*`). They are baked into the JS bundle at build time — there is no runtime server. The Groq API key will be visible in the compiled output; Groq's free-tier rate limits provide natural abuse protection.
+>
+> In CI the GitHub Actions secrets are still named `VITE_*` and the workflow maps them onto the `PUBLIC_*` env vars at build time — so keep the **secret** names as `VITE_*` but use `PUBLIC_*` in your local `.env`.
 
 ### 4. Start the dev server
 
@@ -92,7 +94,7 @@ VITE_GISCUS_CATEGORY_ID=your_category_id
 npm run dev
 ```
 
-The site runs at `http://localhost:5000`.
+The site runs at `http://localhost:4321` (Astro's default dev port).
 
 ---
 
@@ -169,8 +171,8 @@ New entries go at the **top** of the array so they appear first.
 ### `src/data/anime.json` / `src/data/books.json`
 Lists shown on the Hobbies page. Edit freely.
 
-### `public/sitemap.xml`
-Update manually whenever you add new pages or journal entries.
+### Sitemap
+The sitemap is generated automatically at build by `@astrojs/sitemap` (output `dist/public/sitemap-index.xml`) — no manual editing needed.
 
 ---
 
@@ -225,13 +227,13 @@ The floating "Ask Me Anything" button is powered by [Groq](https://console.groq.
 
 2. **Add it to your `.env`:**
    ```env
-   VITE_GROQ_API_KEY=gsk_your_key_here
+   PUBLIC_GROQ_API_KEY=gsk_your_key_here
    ```
 
 3. **Add it as a GitHub Actions secret** so CI builds can embed it:
    - Go to your repo → `Settings → Secrets and variables → Actions`
    - Click **New repository secret**
-   - Name: `VITE_GROQ_API_KEY`, Value: your key
+   - Name: `VITE_GROQ_API_KEY`, Value: your key (the workflow maps this secret onto `PUBLIC_GROQ_API_KEY` at build time)
 
 4. **Update the system prompt** in `src/components/AskMe.tsx` — replace the `--- CONTEXT START ---` block with your own resume text and project descriptions. The more detail you provide, the better the answers.
 
@@ -252,7 +254,7 @@ The contact form uses [Formspree](https://formspree.io/) — no backend or serve
 2. **Create a new form** in your Formspree dashboard
    - You'll get a form endpoint URL like `https://formspree.io/f/xxxxxxxx`
 
-3. **Update `src/pages/Contact.tsx`** — replace the existing endpoint:
+3. **Update `src/components/pages/Contact.tsx`** — replace the existing endpoint:
 
 ```tsx
 const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
@@ -270,17 +272,41 @@ That's it. Form submissions will be delivered to your Formspree-linked email.
 │   ├── giscus-light.css        # Giscus theme — light
 │   ├── giscus-sakura.css       # Giscus theme — sakura
 │   ├── robots.txt
-│   ├── sitemap.xml             # Update manually when adding pages/entries
-│   └── 404.html                # SPA fallback for GitHub Pages
+│   └── og-image.png            # Open Graph / social preview image
 │
 ├── src/
+│   ├── pages/                  # ← Astro routes (static HTML + SEO shell, NOT React)
+│   │   ├── index.astro         # Home /
+│   │   ├── about.astro         # /about
+│   │   ├── projects.astro      # /projects
+│   │   ├── habits.astro        # /habits
+│   │   ├── journal.astro       # /journal
+│   │   ├── hobbies.astro       # /hobbies
+│   │   ├── contact.astro       # /contact
+│   │   └── 404.astro           # 404
+│   │                           # Each mounts <ReactApp client:only="react" />
+│   │                           # with route-specific SEO props.
+│   │
+│   ├── layouts/
+│   │   └── Base.astro          # HTML shell: <head>, OG/Twitter, JSON-LD, theme FOUC guard
+│   │
 │   ├── components/
+│   │   ├── ReactApp.tsx        # React app root — BrowserRouter + providers + all routes
+│   │   ├── pages/              # ← Actual React page components (lazy-loaded by ReactApp)
+│   │   │   ├── Landing.tsx     #   /
+│   │   │   ├── About.tsx       #   /about
+│   │   │   ├── Projects.tsx    #   /projects
+│   │   │   ├── Habits.tsx      #   /habits — GitHub-style tracker + radar chart
+│   │   │   ├── Journal.tsx     #   exports JournalList + JournalEntry (/journal, /journal/:slug)
+│   │   │   ├── Hobbies.tsx     #   /hobbies
+│   │   │   ├── Contact.tsx     #   /contact — Formspree form
+│   │   │   ├── NotFound.tsx    #   404
+│   │   │   └── mobile/         #   mobile variants (desktop pages early-return these via useMobile)
 │   │   ├── ui/                 # shadcn/ui primitives (auto-generated, don't edit)
 │   │   ├── AskMe.tsx           # Floating AI chatbot (Groq-powered)
 │   │   ├── Comments.tsx        # Giscus comments widget
 │   │   ├── Footer.tsx          # Footer with sakura road scene
 │   │   ├── Navbar.tsx          # Navigation with theme cycler
-│   │   ├── SEO.tsx             # Per-page helmet tags
 │   │   ├── SakuraPetals.tsx    # Falling petal animation (sakura theme only)
 │   │   ├── ThemeProvider.tsx   # dark / light / sakura theme context
 │   │   └── ...
@@ -294,25 +320,16 @@ That's it. Form submissions will be delivered to your Formspree-linked email.
 │   │   ├── books.json          # Hobbies — books list
 │   │   └── fortyRules.json     # Forty Rules of Love quotes (footer)
 │   │
-│   ├── pages/
-│   │   ├── Landing.tsx         # Home /
-│   │   ├── About.tsx           # /about
-│   │   ├── Projects.tsx        # /projects
-│   │   ├── Habits.tsx          # /habits — GitHub-style tracker + radar chart
-│   │   ├── Journal.tsx         # /journal and /journal/:slug
-│   │   ├── Hobbies.tsx         # /hobbies
-│   │   ├── Contact.tsx         # /contact — Formspree form
-│   │   └── NotFound.tsx        # 404
-│   │
-│   ├── main.tsx                # ViteReactSSG entry, route config, stale-chunk recovery (lazyWithReload)
-│   ├── App.tsx                 # Shell layout (Navbar + Outlet + Footer)
+│   ├── env.d.ts                # Types for PUBLIC_* env vars
 │   └── index.css               # Design tokens (CSS custom properties)
 │
-├── .github/workflows/static.yml  # GitHub Actions deploy pipeline
-├── vite.config.ts                # Vite + SSG config
+├── .github/workflows/deploy.yml  # GitHub Actions deploy pipeline (static.yml is an identical duplicate)
+├── astro.config.mjs              # Astro config (static output → dist/public, sitemap, @ alias)
 ├── tailwind.config.ts            # Tailwind theme tokens
 └── package.json
 ```
+
+> **Sitemap** is generated automatically at build by `@astrojs/sitemap` (with `/404` filtered out) — there is no longer a hand-maintained `public/sitemap.xml`.
 
 ---
 
@@ -336,8 +353,6 @@ npm run preview
 npm test
 ```
 
-> **Stale chunk recovery:** After a new deploy, Vite renames all JS chunks with a fresh content hash. Visitors with cached old HTML would normally see "Failed to fetch dynamically imported module". Two guards in `main.tsx` handle this automatically — `lazyWithReload` catches the chunk 404 and performs one silent hard-reload, and a `fetch` monkey-patch handles the SSG manifest mismatch. Visitors see a ~1s spinner, then land on the fresh page with no error.
-
 ---
 
 ## Deploying to GitHub Pages
@@ -346,7 +361,7 @@ This repo is pre-configured for automated GitHub Pages deployment.
 
 ### Automatic deploy (recommended)
 
-Every push to `main` triggers the GitHub Actions workflow at `.github/workflows/static.yml`, which:
+Every push to `main` triggers the GitHub Actions workflow at `.github/workflows/deploy.yml`, which:
 1. Installs dependencies (`npm ci`)
 2. Builds the site (`npm run build`)
 3. Uploads `dist/public/` as the Pages artifact
@@ -375,16 +390,27 @@ Your site will be live at `https://your-username.github.io` within ~2 minutes.
 
 ## Adding a New Page
 
-1. Create `src/pages/YourPage.tsx`
-2. Add the route in `src/main.tsx` — use `lazyWithReload` (not `React.lazy`) so stale-chunk recovery applies:
+A route lives in two layers — add both:
+
+1. Create the React page component in `src/components/pages/YourPage.tsx`.
+2. Register it in `src/components/ReactApp.tsx` — add a lazy import and a `<Route>`:
    ```tsx
-   { path: "your-page", Component: lazyWithReload(() => import("@/pages/YourPage")) }
+   const YourPage = lazy(() => import("@/components/pages/YourPage"));
+   // ...inside <Routes>:
+   <Route path="/your-page" element={<YourPage />} />
    ```
-3. Add to `ssgOptions.includedRoutes` in `vite.config.ts`:
-   ```ts
-   "/your-page"
+3. Create the Astro shell `src/pages/your-page.astro` so the route pre-renders with correct SEO and works on hard load / direct link:
+   ```astro
+   ---
+   import Base from "@/layouts/Base.astro";
+   import ReactApp from "@/components/ReactApp";
+   ---
+   <Base title="Your Page" description="..." canonicalPath="/your-page">
+     <ReactApp client:only="react" />
+   </Base>
    ```
-4. Add to `public/sitemap.xml`
+
+The sitemap updates automatically on the next build (`@astrojs/sitemap`).
 
 ---
 
@@ -397,7 +423,7 @@ Verifying your site with [Google Search Console](https://search.google.com/searc
 1. Go to https://search.google.com/search-console and add your property URL (`https://your-username.github.io`)
 2. Choose **HTML file** verification
 3. Download the verification file (e.g. `google970de44929ca96e5.html`)
-4. Place it in the `public/` directory — Vite copies everything in `public/` to the build root, so it will be served at `https://your-username.github.io/google970de44929ca96e5.html`
+4. Place it in the `public/` directory — Astro copies everything in `public/` to the build root, so it will be served at `https://your-username.github.io/google970de44929ca96e5.html`
 5. Push to `main` and wait for CI to deploy, then click **Verify** in Search Console
 
 ### Submit your sitemap
@@ -405,9 +431,9 @@ Verifying your site with [Google Search Console](https://search.google.com/searc
 Once verified, submit your sitemap for faster indexing:
 
 1. In Search Console go to **Sitemaps**
-2. Enter `sitemap.xml` and click **Submit**
+2. Enter `sitemap-index.xml` and click **Submit**
 
-> Remember to keep `public/sitemap.xml` up to date whenever you add new pages or journal entries — it is static and not auto-generated.
+> The sitemap is generated automatically by `@astrojs/sitemap` on every build — no manual maintenance needed.
 
 ---
 
