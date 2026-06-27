@@ -164,7 +164,7 @@ export default function MobileContact() {
     <PageTransition>
       <SEO
         title="Contact"
-        description="Reach out to Mubashir Rehman — available for full-time backend engineering roles."
+        description="Reach out to Mubashir Rehman — open to remote backend engineering roles in any timezone (and on-site in Lahore)."
       />
 
       <div className="min-h-screen bg-[hsl(var(--m3-surface))] pb-28 pt-4">
@@ -178,7 +178,7 @@ export default function MobileContact() {
               Get In Touch
             </h1>
             <p className="mt-1 font-body text-sm text-[hsl(var(--m3-on-surface-var))]">
-              Open to full-time roles.
+              Open to remote roles, any timezone.
             </p>
           </motion.div>
 

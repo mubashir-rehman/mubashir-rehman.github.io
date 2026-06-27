@@ -239,15 +239,37 @@ export default function MobileAbout() {
                   {pub.authors.split(";").slice(0, 3).join(" ·")}
                   {pub.authors.split(";").length > 3 ? " · et al." : ""}
                 </p>
-                <a
-                  href={pub.arxiv}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center gap-1.5 font-body text-xs font-semibold text-[hsl(var(--primary))]"
-                  data-testid={`link-publication-${i}`}
-                >
-                  <ExternalLink size={12} /> {pub.doi}
-                </a>
+                {pub.equalContribution && (
+                  <p className="mt-1 font-body text-[10px] leading-relaxed text-[hsl(var(--m3-on-surface-var))]">
+                    {pub.equalContribution}
+                  </p>
+                )}
+                {pub.contribution && (
+                  <p className="mt-1.5 font-body text-[11px] leading-relaxed text-[hsl(var(--m3-on-surface-var))]">
+                    <span className="font-semibold text-[hsl(var(--m3-on-surface))]">My contribution:</span> {pub.contribution}
+                  </p>
+                )}
+                <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-body text-xs font-semibold text-[hsl(var(--primary))]">
+                  <a
+                    href={pub.springer || pub.arxiv}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5"
+                    data-testid={`link-publication-${i}`}
+                  >
+                    <ExternalLink size={12} /> DOI
+                  </a>
+                  {pub.arxiv && (
+                    <a
+                      href={pub.arxiv}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5"
+                    >
+                      <ExternalLink size={12} /> arXiv
+                    </a>
+                  )}
+                </div>
               </div>
             ))}
           </motion.div>

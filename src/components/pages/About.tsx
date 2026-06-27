@@ -23,7 +23,7 @@ export default function About() {
     <PageTransition>
       <SEO
         title="About"
-        description="Mubashir Rehman — Backend Engineer in Lahore, Pakistan. Python, Django, FastAPI, AWS, Docker. 7 microservices, 60+ endpoints, 99.8% uptime."
+        description="Mubashir Rehman — Backend Engineer in Lahore, Pakistan. Python, Django, FastAPI, AWS, Docker. Primary backend owner — 7 services, 60+ REST endpoints; co-author of peer-reviewed ML research (CSSP 2025)."
         schema={{
           "@context": "https://schema.org",
           "@type": "ProfilePage",
@@ -67,7 +67,7 @@ export default function About() {
         <motion.div {...fadeUp}>
           <Card className="mt-10">
             <CardContent className="flex flex-wrap justify-center gap-x-6 gap-y-2 p-4 text-sm text-muted-foreground">
-              {["7 Microservices", "60+ Endpoints", "85% Test Coverage", "99.8% Uptime"].map((m) => (
+              {["7 Backend Services", "60+ REST Endpoints", "4 Engineers Led", "1 Peer-Reviewed Paper"].map((m) => (
                 <span key={m} className="whitespace-nowrap" data-testid={`text-metric-${m.split(" ")[0]}`}>
                   <span className="font-semibold text-foreground">{m.split(" ")[0]}</span>{" "}
                   {m.split(" ").slice(1).join(" ")}
@@ -194,18 +194,38 @@ export default function About() {
               <CardContent className="p-5">
                 <h3 className="text-sm font-semibold leading-snug">{pub.title}</h3>
                 <p className="mt-1 text-xs text-muted-foreground">{pub.authors}</p>
+                {pub.equalContribution && (
+                  <p className="mt-1 text-xs text-muted-foreground">{pub.equalContribution}</p>
+                )}
                 <p className="mt-1 text-xs text-muted-foreground italic">
                   {pub.journal} · {pub.date}
                 </p>
-                <a
-                  href={pub.arxiv}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
-                  data-testid={`link-publication-${i}`}
-                >
-                  {pub.doi} <ExternalLink size={12} />
-                </a>
+                {pub.contribution && (
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    <span className="font-medium text-foreground/80">My contribution:</span> {pub.contribution}
+                  </p>
+                )}
+                <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-semibold text-primary">
+                  <a
+                    href={pub.springer || pub.arxiv}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 hover:underline"
+                    data-testid={`link-publication-${i}`}
+                  >
+                    DOI: {pub.doi} <ExternalLink size={12} />
+                  </a>
+                  {pub.arxiv && (
+                    <a
+                      href={pub.arxiv}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 hover:underline"
+                    >
+                      arXiv <ExternalLink size={12} />
+                    </a>
+                  )}
+                </div>
               </CardContent>
             </Card>
           ))}

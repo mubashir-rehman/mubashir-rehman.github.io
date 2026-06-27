@@ -5,7 +5,7 @@ const roles = [
   "Backend Engineer",
   "Systems Architect",
   "AI/ML Integrations",
-  "Open to Full-Time Roles",
+  "Open to Remote Roles",
 ];
 
 export function Typewriter() {

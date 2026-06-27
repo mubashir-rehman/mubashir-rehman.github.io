@@ -36,8 +36,6 @@ import ThemeFAB from "@/components/ThemeFAB";
 const Landing   = lazy(() => import("@/components/pages/Landing"));
 const About     = lazy(() => import("@/components/pages/About"));
 const Projects  = lazy(() => import("@/components/pages/Projects"));
-const Hobbies   = lazy(() => import("@/components/pages/Hobbies"));
-const Habits    = lazy(() => import("@/components/pages/Habits"));
 const JournalList  = lazy(() =>
   import("@/components/pages/Journal").then((m) => ({ default: m.JournalList }))
 );
@@ -84,8 +82,6 @@ function AppInner() {
                         <Route path="/"                  element={<Landing />} />
                         <Route path="/about"             element={<About />} />
                         <Route path="/projects"          element={<Projects />} />
-                        <Route path="/hobbies"           element={<Hobbies />} />
-                        <Route path="/habits"            element={<Habits />} />
                         <Route path="/journal"           element={<JournalList />} />
                         <Route path="/journal/:slug"     element={<JournalEntry />} />
                         <Route path="/contact"           element={<Contact />} />

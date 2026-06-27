@@ -9,10 +9,10 @@ import { useMobile } from "@/hooks/useMobile";
 import MobileLanding from "@/components/pages/mobile/Landing";
 
 const stats = [
-  { value: "11K+", label: "Lines Shipped" },
-  { value: "182", label: "Commits" },
-  { value: "1K+", label: "Concurrent Users" },
-  { value: "1", label: "Published Paper" },
+  { value: "3+", label: "Years Building Backends" },
+  { value: "60+", label: "REST Endpoints" },
+  { value: "4", label: "Engineers Led" },
+  { value: "1", label: "Peer-Reviewed Paper" },
 ];
 
 export default function Landing() {

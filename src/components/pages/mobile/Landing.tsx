@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FolderOpen, Flame, Heart, BookOpen, ArrowRight } from "lucide-react";
+import { FolderOpen, BookOpen, ArrowRight } from "lucide-react";
 import { Typewriter } from "@/components/Typewriter";
 import profile from "@/data/profile.json";
 import projects from "@/data/projects.json";
@@ -25,8 +25,6 @@ const M3 = {
 // ---------------------------------------------------------------------------
 const quickLinks = [
   { to: "/journal",  Icon: BookOpen,   label: "Journal"  },
-  { to: "/habits",   Icon: Flame,      label: "Habits"   },
-  { to: "/hobbies",  Icon: Heart,      label: "Hobbies"  },
   { to: "/projects", Icon: FolderOpen, label: "Projects" },
 ];
 

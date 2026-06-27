@@ -1,97 +1,114 @@
 {
   "name": "Mubashir Rehman",
   "tagline": "Backend Engineer · AI/ML · Cloud · Systems",
+  "anchorTagline": "Backend engineer who ships AI & automation into production",
+  "currentRole": "Software Engineer @ TransData",
   "location": "Lahore, Pakistan",
+  "remote": "Open to remote roles (any timezone) · On-site in Lahore, PK",
   "email": "mubashirrehman66@gmail.com",
   "phone": "+92 309 552 8384",
   "website": "https://mubashir-rehman.is-a.dev",
-  "bio": "Backend-focused Software Engineer with a proven track record building production systems for AI, distributed architectures, and cloud infrastructure. I've shipped 7 microservices with 60+ endpoints serving 1,000+ concurrent users, led drone swarm control systems handling 10K msg/sec telemetry, and published ML research in a peer-reviewed journal. I care deeply about clean design, measurable impact, and systems that actually hold up under pressure.",
+  "bio": "Backend-focused Software Engineer with 3+ years building production systems for AI automation, distributed architectures, and cloud infrastructure. I've shipped backend platforms across LinkedIn content automation, crypto/social intelligence, HRMS/ERP customization, and healthcare integration tooling; led a 4-engineer drone-control team; and co-authored peer-reviewed ML research (Circuits, Systems, and Signal Processing, Springer 2025). I care about clean design, measurable impact, and systems that hold up under pressure.",
   "available": true,
-  "availabilityNote": "Open to Full-Time Roles",
+  "availabilityNote": "Open to remote roles · any timezone",
   "metrics": [
     {
-      "label": "Lines of Production Code",
-      "value": "11K+"
+      "label": "Years Building Backends",
+      "value": "3+"
     },
     {
-      "label": "Commits Authored",
-      "value": "182"
+      "label": "REST Endpoints Built",
+      "value": "60+"
     },
     {
-      "label": "Concurrent Users Supported",
-      "value": "1K+"
+      "label": "Production Systems Shipped",
+      "value": "8+"
     },
     {
-      "label": "Test Coverage",
-      "value": "~85%"
+      "label": "Open-Source Tools",
+      "value": "2"
     },
     {
-      "label": "Published Paper",
-      "value": "CSSP 2024"
+      "label": "Peer-Reviewed Paper",
+      "value": "CSSP 2025"
     },
     {
-      "label": "Uptime Achieved",
-      "value": "99.8%"
+      "label": "Engineers Led",
+      "value": "4"
     }
   ],
   "skills": {
     "Languages": [
       "Python",
+      "SQL",
       "C++",
       "JavaScript",
+      "TypeScript",
       "C",
-      "Java",
-      "Kotlin",
       "C#",
-      "SQL"
+      "Bash"
     ],
     "Backend": [
       "Django",
+      "Django REST Framework",
       "FastAPI",
       "Flask",
-      "Django REST Framework",
-      "Node.js"
+      "REST APIs",
+      "WebSockets / Django Channels",
+      "OAuth2 / JWT / RBAC"
     ],
-    "Databases": [
-      "PostgreSQL",
-      "Redis",
-      "pgvector"
-    ],
-    "Cloud & DevOps": [
-      "AWS EC2",
-      "ECS",
-      "VPC",
-      "S3",
-      "IAM",
-      "Docker",
-      "GitHub Actions",
-      "CI/CD",
-      "DigitalOcean",
-      "Nginx"
-    ],
-    "AI / ML": [
-      "OpenAI GPT",
+    "AI / ML / LLM": [
+      "OpenAI API",
       "Google Gemini",
       "LangChain",
-      "MindsDB",
-      "Databricks",
+      "LangGraph",
+      "pgvector / Embeddings",
+      "Semantic Search",
+      "vLLM / LiteLLM",
       "Keras",
       "scikit-learn",
-      "PyTorch"
+      "PyTorch",
+      "OpenCV"
     ],
-    "Tools": [
-      "Git",
-      "Jira",
-      "pytest",
-      "Postman",
+    "Databases & Caching": [
+      "PostgreSQL",
+      "MySQL",
+      "Redis",
+      "pgvector",
+      "SQLAlchemy / Alembic"
+    ],
+    "Cloud & DevOps": [
+      "Docker",
+      "Docker Compose",
+      "GitHub Actions",
+      "CI/CD",
+      "Nginx",
+      "AWS (EC2, ECS, S3, VPC, IAM)",
+      "Boto3",
+      "DigitalOcean",
+      "Vercel"
+    ],
+    "Async & Automation": [
       "Celery",
+      "n8n",
+      "asyncio",
       "ARQ",
       "MQTT",
-      "WebSockets",
-      "OAuth2.0",
-      "Stripe",
-      "OpenCV",
-      "n8n"
+      "Background Workers"
+    ],
+    "Enterprise / ERP": [
+      "ERPNext / Frappe v16",
+      "Horilla HRMS",
+      "ZKTeco Biometric API",
+      "HL7 / Mirth Connect workflows"
+    ],
+    "Frontend": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Astro",
+      "Tailwind CSS",
+      "shadcn/ui"
     ]
   },
   "experience": [
@@ -101,31 +118,33 @@
       "location": "Lahore, Pakistan",
       "period": "Mar 2025 – Present",
       "highlights": [
-        "Sole DRF developer for 7 microservices and 60+ endpoints supporting 1,000+ concurrent users",
-        "Reduced prompt deployment time from 2 hours to 5 minutes via versioned prompt management + n8n across 6 AI pipelines",
-        "Multi-tier data extraction (LinkedIn API → scraper → OpenAI fallback) achieving ~95% profile completion",
-        "WebSocket notifications via Django Channels: 10K+ daily updates with <100ms latency",
-        "Stripe subscriptions with 99.9% payment success; OAuth2 + JWT refresh auth",
-        "182 commits (66% of repo), 11K+ lines of production code, 89 tests at ~85% coverage",
-        "Semantic search via Google Gemini embeddings + pgvector (768-d): <50ms latency, 90% cache hit rate",
-        "Architected real-time crypto intelligence platform processing 100+ social mentions/hr with 10 microservices",
-        "Async blockchain analysis for 6 networks; ML-based DEX scam detection at 92% accuracy",
-        "Integrated MindsDB and Databricks for enterprise AI workflows; optimized PostgreSQL schemas reducing latency 30%",
-        "HRMS migration to Django: 200+ employees, onboarding cut from 4 hours to 30 minutes, 99.8% uptime"
+        "Primary backend engineer — owned the core backend of a multi-tenant SaaS platform (7 services, 60+ REST endpoints) end to end, from schema to deploy, authoring the bulk of the codebase",
+        "Built 7 backend services and 60+ REST endpoints with Django REST Framework, including auth, background jobs, and integration workflows",
+        "Cut prompt deployment from hours to minutes with versioned prompt management + n8n across AI content pipelines",
+        "Multi-tier profile extraction (LinkedIn API → scraper → OpenAI fallback) for high-completeness data enrichment",
+        "Real-time notifications with WebSockets via Django Channels; Stripe-based subscription billing; OAuth2 + JWT refresh auth",
+        "Semantic search using Google Gemini embeddings + pgvector (768-d) with Redis caching",
+        "Architected a real-time crypto/social intelligence platform (FastAPI, ~10 services) ingesting Telegram, Discord, and X",
+        "Async multi-chain blockchain analysis; ML-based DEX scam-token detection (~92% on internal test set)",
+        "Integrated MindsDB and Databricks for enterprise AI workflows; optimized PostgreSQL schemas",
+        "Migrated and extended a Django-based HRMS for a ~200-employee workforce: biometric attendance sync (ZKTeco), reporting endpoints, and zero-downtime rolling deploys",
+        "Built a healthcare HL7 integration operations web tool replicating key Mirth Connect actions; customized ERPNext/Frappe v16 with custom doctypes and a task-tree view",
+        "Deployed internal LLM inference (vLLM + LiteLLM, Qwen3-8B-AWQ) behind an OpenAI-compatible API for team use"
       ]
     },
     {
-      "role": "Software Engineer",
+      "role": "Team Lead & Software Engineer",
       "company": "VeritusLabs",
       "location": "Lahore, Pakistan",
       "period": "Jul 2023 – Mar 2025",
       "highlights": [
-        "Led team of 4 building QGroundControl drone swarm control for 10+ UAVs at 50Hz telemetry; cut mission planning time by 60%",
-        "MQTT telemetry pipeline achieving 10K msg/sec with <20ms latency",
-        "Python ground control with Olympe/Sphinx, real-time video streaming and OpenCV object detection",
-        "AWS infra automation (Boto3), ECS Fargate Flask deployment with autoscaling",
-        "Docker CI/CD + Vagrant cross-platform testing; 95% on-time delivery across 12 sprints",
-        "AI prompt management platform with OpenAI GPT-4 streaming, LangChain NLP, RBAC, and S3 storage"
+        "Led a team of 4 building QGroundControl-based drone swarm control (C++ / Qt / QML) for 10+ UAVs at 50Hz telemetry",
+        "Built an MQTT telemetry pipeline designed for ~10K msg/sec with multithreading and multiprocessing",
+        "Custom mission-planning tools that meaningfully cut planning time; Gazebo SITL multi-drone simulation",
+        "Python ground control with Olympe/Sphinx, real-time video streaming, and OpenCV object detection to Android GCS",
+        "AWS infrastructure automation (Boto3): VPCs, EC2, IAM, ECS Fargate Flask deployment",
+        "Dockerized CI/CD + Vagrant cross-platform testing across Agile sprints",
+        "Built an AI prompt-management web app (FastAPI/Django, OpenAI GPT-4 streaming, LangChain, RBAC, S3)"
       ]
     },
     {
@@ -146,7 +165,7 @@
       "location": "Lahore, Pakistan",
       "period": "Mar 2022 – Aug 2022",
       "highlights": [
-        "Endless runner (Unity/C#) with object pooling: 40% memory reduction, 5K+ downloads, 4.2★ rating",
+        "Endless runner (Unity/C#) with object pooling for reduced memory footprint; 5K+ downloads, 4.2★ rating",
         "Web game (PlayCanvas/JS) with scene pre-loading, object pooling, and cross-browser optimization",
         "Integrated Google Play Services for leaderboards and achievements"
       ]
@@ -179,22 +198,23 @@
     {
       "title": "Evaluation of a Low-Cost Single-Lead ECG Module for Vascular Ageing Prediction and Studying Smoking-Induced Changes in ECG",
       "authors": "Syed Anas Ali; Muhammad Saqib Niaz; Mubashir Rehman; Ahsan Mehmood; M. Mahboob Ur Rahman; Kashif Riaz; Qammer H. Abbasi",
-      "journal": "Circuits, Systems, and Signal Processing (CSSP)",
-      "date": "November 2024",
-      "arxiv": "https://arxiv.org/abs/2308.04355v3",
-      "doi": "arXiv:2308.04355v3"
+      "equalContribution": "Ali, Niaz & Rehman contributed equally to this work",
+      "contribution": "Data collection, ML pipeline (signal preprocessing, segmentation, feature engineering), and model training & evaluation (Random Forest, ResNet-18 transfer learning).",
+      "journal": "Circuits, Systems, and Signal Processing (CSSP), Springer",
+      "date": "2025",
+      "arxiv": "https://arxiv.org/abs/2308.04355",
+      "springer": "https://link.springer.com/article/10.1007/s00034-025-03048-2",
+      "doi": "10.1007/s00034-025-03048-2"
     }
   ],
   "achievements": [
-    "Published research in CSSP journal (Nov 2024) — arXiv:2308.04355v3",
-    "Authored 66% of production codebase at TransData (182 commits, 11K+ lines)",
-    "Achieved 99.8% uptime on HRMS serving 200+ employees",
-    "Reduced HRMS onboarding time from 4 hours to 30 minutes",
-    "Led drone swarm system with 10K msg/sec MQTT pipeline at <20ms latency",
-    "ML-based DEX scam detection model at 92% accuracy",
+    "Co-authored (equal contribution) peer-reviewed ML/IoT research in Circuits, Systems, and Signal Processing (Springer, 2025) — DOI 10.1007/s00034-025-03048-2",
+    "Primary backend engineer at TransData — owned the core backend (7 services, 60+ REST endpoints) of a multi-tenant SaaS platform, authoring the bulk of the codebase",
+    "Led a 4-engineer team delivering a real-time drone swarm control system",
+    "Built and open-sourced HireTrack — an AI, bring-your-own-key résumé-tailoring and job-pipeline tool",
     "PEEF Scholarship recipient for academic excellence",
-    "STFS Scholarship recipient for academic excellence",
-    "Dalda Scholarship recipient for academic excellence"
+    "STFS (Science Talent Farming Scheme) Scholarship recipient",
+    "Dalda Scholarship recipient for academic merit"
   ],
   "socialLinks": {
     "github": "https://github.com/mubashir-rehman",
