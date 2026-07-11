@@ -59,19 +59,32 @@ const personSchema = {
   jobTitle: "Backend Software Engineer",
   description: BASE_DESC,
   url: SITE,
+  image: OG_IMAGE,
   email: "mubashirrehman66@gmail.com",
+  nationality: { "@type": "Country", name: "Pakistan" },
   address: {
     "@type": "PostalAddress",
     addressLocality: "Lahore",
-    addressCountry: "Pakistan",
+    addressCountry: "PK",
   },
   alumniOf: {
     "@type": "EducationalOrganization",
     name: "Information Technology University",
   },
+  hasOccupation: {
+    "@type": "Occupation",
+    name: "Backend Software Engineer",
+    occupationalCategory: "15-1252.00",
+    skills:
+      "Python, Django, Django REST Framework, FastAPI, PostgreSQL, Redis, " +
+      "Docker, AWS, LLM/RAG systems, LangChain/LangGraph, REST API design, " +
+      "microservices, ERPNext/Frappe, CI/CD",
+  },
   knowsAbout: [
-    "Python","Django","FastAPI","PostgreSQL","Docker",
-    "AWS","Redis","AI/ML","Distributed Systems","Microservices",
+    "Python","Django","Django REST Framework","FastAPI","PostgreSQL","Redis",
+    "Docker","AWS","REST API design","Microservices","Distributed Systems",
+    "Large Language Models","Retrieval-Augmented Generation","LangChain","LangGraph",
+    "pgvector","Machine Learning","ERPNext","Frappe","HL7","TypeScript","React",
   ],
   sameAs: [
     "https://github.com/mubashir-rehman",

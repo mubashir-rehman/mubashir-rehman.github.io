@@ -16,21 +16,64 @@ import profile from "@/data/profile.json";
 import projects from "@/data/projects.json";
 import roles from "@/data/roles.json";
 
+const SITE = "https://mubashir-rehman.is-a.dev";
 const featuredProjects = projects.filter((p) => p.featured);
 
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "Mubashir Rehman — Portfolio",
-  url: "https://mubashir-rehman.is-a.dev",
+  url: SITE,
   description:
     "Backend engineer (Python, Django, FastAPI, AWS, AI/ML). " +
     "Primary backend owner of multi-tenant production platforms; co-author of peer-reviewed ML research. Open to remote roles, any timezone.",
   author: { "@type": "Person", name: "Mubashir Rehman" },
 };
+
+// ScholarlyArticle — peer-reviewed publication (built from profile data)
+const pub = profile.publications[0];
+const scholarlyArticleSchema = pub && {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  headline: pub.title,
+  name: pub.title,
+  author: pub.authors
+    .split(";")
+    .map((a) => ({ "@type": "Person", name: a.trim() })),
+  datePublished: pub.date,
+  isPartOf: { "@type": "Periodical", name: pub.journal },
+  publisher: { "@type": "Organization", name: "Springer" },
+  identifier: {
+    "@type": "PropertyValue",
+    propertyID: "DOI",
+    value: pub.doi,
+  },
+  url: pub.springer,
+  sameAs: [pub.springer, pub.arxiv].filter(Boolean),
+};
+
+// SoftwareSourceCode — flagship open-source project HireTrack
+const hireTrack = projects.find((p) => p.id === "hiretrack");
+const softwareSourceCodeSchema = hireTrack && {
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  name: "HireTrack — AI Résumé Builder & Job Pipeline Tracker",
+  description: hireTrack.description,
+  codeRepository: hireTrack.github,
+  programmingLanguage: ["TypeScript", "JavaScript"],
+  runtimePlatform: "Web",
+  author: { "@type": "Person", name: "Mubashir Rehman", url: SITE },
+  url: hireTrack.github,
+};
+
+const homeSchemas = [
+  websiteSchema,
+  scholarlyArticleSchema,
+  softwareSourceCodeSchema,
+].filter(Boolean);
 ---
 
-<PageLayout canonicalPath="/" schema={websiteSchema}>
+<PageLayout canonicalPath="/" schema={homeSchemas}>
 
   <!-- ====================================================================
        1. HERO
