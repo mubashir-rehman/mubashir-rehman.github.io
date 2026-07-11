@@ -23,7 +23,6 @@ import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import SakuraPetals from "@/components/SakuraPetals";
 import ScrollRestoration from "@/components/ScrollRestoration";
 import ScrollToTop from "@/components/ScrollToTop";
 import AskMe from "@/components/AskMe";
@@ -32,8 +31,8 @@ import ThemeFAB from "@/components/ThemeFAB";
 
 // ---------------------------------------------------------------------------
 // Lazy-loaded page components
+// (Landing removed — home "/" is now a static Astro page at src/pages/index.astro)
 // ---------------------------------------------------------------------------
-const Landing   = lazy(() => import("@/components/pages/Landing"));
 const About     = lazy(() => import("@/components/pages/About"));
 const Projects  = lazy(() => import("@/components/pages/Projects"));
 const JournalList  = lazy(() =>
@@ -67,7 +66,6 @@ function AppInner() {
             <Toaster />
             <Sonner />
             <>
-              <SakuraPetals />
               <ScrollRestoration />
               <ScrollToTop />
               <AskMe />
@@ -79,7 +77,6 @@ function AppInner() {
                   <AnimatePresence mode="wait">
                     <Suspense fallback={<PageLoader />}>
                       <Routes location={location} key={location.pathname}>
-                        <Route path="/"                  element={<Landing />} />
                         <Route path="/about"             element={<About />} />
                         <Route path="/projects"          element={<Projects />} />
                         <Route path="/journal"           element={<JournalList />} />

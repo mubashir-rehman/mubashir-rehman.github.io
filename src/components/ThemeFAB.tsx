@@ -1,19 +1,15 @@
 import { motion } from "framer-motion";
-import { Sun, Moon, Flower2 } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import type { Theme } from "@/components/ThemeProvider";
 import { useMobile } from "@/hooks/useMobile";
 
 function ThemeIcon({ theme }: { theme: Theme }) {
-  if (theme === "light")  return <Moon size={16} />;
-  if (theme === "dark")   return <Flower2 size={16} />;
-  return <Sun size={16} />;
+  return theme === "light" ? <Moon size={16} /> : <Sun size={16} />;
 }
 
 function themeLabel(theme: Theme): string {
-  if (theme === "light")  return "Switch to dark";
-  if (theme === "dark")   return "Switch to sakura";
-  return "Switch to light";
+  return theme === "light" ? "Switch to dark" : "Switch to light";
 }
 
 export default function ThemeFAB() {

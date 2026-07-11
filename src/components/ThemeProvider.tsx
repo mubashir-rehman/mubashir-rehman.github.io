@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-export type Theme = "dark" | "light" | "sakura";
+export type Theme = "dark" | "light";
 
 interface ThemeContextType {
   theme: Theme;
@@ -19,25 +19,24 @@ export const useTheme = () => useContext(ThemeContext);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as Theme) || "light";
+      // Only light/dark are supported; migrate any legacy/unknown value.
+      return localStorage.getItem("theme") === "dark" ? "dark" : "light";
     }
     return "light";
   });
 
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.remove("dark", "light", "sakura");
+    root.classList.remove("dark", "light");
     root.classList.add(theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   const setTheme = (t: Theme) => setThemeState(t);
 
-  // Cycle: light → dark → sakura → light
+  // Toggle: light ↔ dark
   const cycleTheme = () =>
-    setThemeState((prev) =>
-      prev === "light" ? "dark" : prev === "dark" ? "sakura" : "light"
-    );
+    setThemeState((prev) => (prev === "light" ? "dark" : "light"));
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, cycleTheme }}>

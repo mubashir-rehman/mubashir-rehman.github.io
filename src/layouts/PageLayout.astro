@@ -1,0 +1,59 @@
+---
+/**
+ * PageLayout.astro
+ *
+ * Layout for Astro-rendered pages (/, /for/*).
+ * Wraps Base.astro and adds:
+ *  - Astro View Transitions (ClientRouter) for smooth MPA navigation
+ *  - Astro chrome: Navbar, BottomNav, Footer
+ *  - Global islands: ThemeFABIsland (mobile), AskMe (chatbot)
+ */
+
+import Base from "@/layouts/Base.astro";
+import { ClientRouter } from "astro:transitions";
+import Navbar from "@/components/astro/Navbar.astro";
+import BottomNav from "@/components/astro/BottomNav.astro";
+import Footer from "@/components/astro/Footer.astro";
+import AskMe from "@/components/AskMe";
+import ThemeFABIsland from "@/components/ThemeFABIsland";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  schema?: object | object[];
+}
+
+const { title, description, canonicalPath = "/", schema } = Astro.props;
+---
+
+<Base
+  title={title}
+  description={description}
+  canonicalPath={canonicalPath}
+  schema={schema}
+>
+  <!-- View Transitions for smooth page switches between Astro pages -->
+  <ClientRouter />
+
+  <!-- Top navbar (desktop) -->
+  <Navbar />
+
+  <!-- Page content — padded to clear fixed navbar (pt-16) and mobile bottom nav (pb-20 on mobile) -->
+  <main class="min-h-screen pt-16 pb-20 md:pb-0">
+    <slot />
+  </main>
+
+  <!-- Footer (desktop only in original design, but we show it everywhere) -->
+  <Footer />
+
+  <!-- Mobile bottom nav (md:hidden inside component) -->
+  <BottomNav />
+
+  <!-- Global islands — mounted once here so they're available on all Astro pages -->
+  <!-- AskMe chatbot — idle hydration -->
+  <AskMe client:idle />
+
+  <!-- Mobile theme FAB (sm:hidden inside component) -->
+  <ThemeFABIsland client:load />
+</Base>

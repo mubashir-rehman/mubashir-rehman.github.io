@@ -1,6 +1,22 @@
 ---
-import Base from "@/layouts/Base.astro";
-import ReactApp from "@/components/ReactApp";
+/**
+ * index.astro — Home page
+ *
+ * Fully rendered at build time as static HTML.
+ * Content sourced exclusively from JSON data files — no invented metrics.
+ * Uses PageLayout for chrome + islands.
+ */
+
+import PageLayout from "@/layouts/PageLayout.astro";
+import Metric from "@/components/astro/Metric.astro";
+import ProjectCard from "@/components/astro/ProjectCard.astro";
+import RoleCard from "@/components/astro/RoleCard.astro";
+
+import profile from "@/data/profile.json";
+import projects from "@/data/projects.json";
+import roles from "@/data/roles.json";
+
+const featuredProjects = projects.filter((p) => p.featured);
 
 const websiteSchema = {
   "@context": "https://schema.org",
@@ -14,9 +30,300 @@ const websiteSchema = {
 };
 ---
 
-<Base
-  canonicalPath="/"
-  schema={websiteSchema}
->
-  <ReactApp client:only="react" />
-</Base>
+<PageLayout canonicalPath="/" schema={websiteSchema}>
+
+  <!-- ====================================================================
+       1. HERO
+       ==================================================================== -->
+  <section class="grain-overlay relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-4 py-20 text-center">
+    <div class="relative z-10 mx-auto max-w-4xl">
+
+      <!-- Availability badge -->
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted-foreground">
+        <span class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+        {profile.remote}
+      </div>
+
+      <!-- Name -->
+      <h1 class="font-heading text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl animate-fade-in">
+        {profile.name}
+      </h1>
+
+      <!-- Anchor tagline -->
+      <p class="mt-4 text-xl text-primary sm:text-2xl font-medium animate-fade-in-delay">
+        {profile.anchorTagline}
+      </p>
+
+      <!-- Secondary tagline -->
+      <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg animate-fade-in-delay2">
+        {profile.tagline}
+      </p>
+
+      <!-- Primary CTAs -->
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row animate-fade-in-delay2">
+        <a
+          href="/projects"
+          class="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
+        >
+          View Projects
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/30 hover:text-primary"
+        >
+          Contact Me
+        </a>
+      </div>
+
+      <!-- Hire me for — role tracks -->
+      <div class="mt-10 animate-fade-in-delay2">
+        <p class="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+          Hire me for
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-2">
+          {roles.map((r) => (
+            <a
+              href={`/for/${r.slug}`}
+              class="rounded-full border border-border bg-card px-4 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:border-primary/40 hover:text-primary hover:bg-primary/5"
+            >
+              {r.navLabel}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground animate-bounce">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+  </section>
+
+
+  <!-- ====================================================================
+       2. SNAPSHOT METRICS
+       ==================================================================== -->
+  <section class="reveal border-y border-border bg-muted/30 py-12 px-4">
+    <div class="mx-auto max-w-6xl">
+      <p class="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+        By the numbers
+      </p>
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
+        {profile.metrics.map((m) => (
+          <Metric value={m.value} label={m.label} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================================
+       3. ROLE-TRACK CARDS
+       ==================================================================== -->
+  <section class="reveal mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <h2 class="font-heading text-2xl font-bold text-foreground sm:text-3xl mb-2">
+      What I do
+    </h2>
+    <p class="text-muted-foreground mb-8">
+      Four specialisations — pick the one that matches your need.
+    </p>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {roles.map((role) => (
+        <RoleCard role={role} />
+      ))}
+    </div>
+  </section>
+
+
+  <!-- ====================================================================
+       4. FEATURED PROJECTS
+       ==================================================================== -->
+  <section class="reveal bg-card/30 py-16 px-4">
+    <div class="mx-auto max-w-6xl sm:px-6">
+      <div class="mb-8 flex items-end justify-between">
+        <div>
+          <h2 class="font-heading text-2xl font-bold text-foreground sm:text-3xl mb-2">
+            Featured Projects
+          </h2>
+          <p class="text-muted-foreground">Production work and open-source.</p>
+        </div>
+        <a
+          href="/projects"
+          class="hidden text-sm font-semibold text-primary hover:underline sm:block"
+        >
+          All projects →
+        </a>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {featuredProjects.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+      <div class="mt-6 sm:hidden text-center">
+        <a href="/projects" class="text-sm font-semibold text-primary hover:underline">
+          All projects →
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================================
+       5. EXPERIENCE
+       ==================================================================== -->
+  <section class="reveal mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <h2 class="font-heading text-2xl font-bold text-foreground sm:text-3xl mb-8">
+      Experience
+    </h2>
+    <div class="space-y-10">
+      {profile.experience.map((exp) => (
+        <div class="relative pl-6 before:absolute before:left-0 before:top-2 before:bottom-0 before:w-px before:bg-border">
+          <div class="absolute left-[-4px] top-2 h-2 w-2 rounded-full bg-primary"></div>
+          <div class="mb-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h3 class="font-heading text-lg font-bold text-foreground">{exp.role}</h3>
+            <span class="text-sm font-medium text-primary">{exp.company}</span>
+            <span class="text-xs text-muted-foreground">{exp.period}</span>
+          </div>
+          <ul class="mt-3 space-y-1.5">
+            {exp.highlights.slice(0, 5).map((h) => (
+              <li class="flex gap-2 text-sm text-muted-foreground leading-relaxed">
+                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60"></span>
+                {h}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+
+  <!-- ====================================================================
+       6. PUBLICATION
+       ==================================================================== -->
+  {profile.publications.length > 0 && (
+    <section class="reveal bg-card/30 py-16 px-4">
+      <div class="mx-auto max-w-6xl sm:px-6">
+        <h2 class="font-heading text-2xl font-bold text-foreground sm:text-3xl mb-8">
+          Research
+        </h2>
+        {(() => {
+          const pub = profile.publications[0];
+          return (
+            <div class="rounded-xl border border-border bg-card p-6 sm:p-8">
+              <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary mb-4">
+                Peer-Reviewed · Springer 2025
+              </div>
+              <h3 class="font-heading text-lg font-bold text-foreground leading-snug mb-3">
+                {pub.title}
+              </h3>
+              <p class="text-sm text-muted-foreground mb-1">
+                <span class="font-medium text-foreground">Authors:</span> {pub.authors}
+              </p>
+              <p class="text-sm text-muted-foreground mb-1 italic">
+                {pub.equalContribution}
+              </p>
+              <p class="text-sm text-muted-foreground mb-4">
+                <span class="font-medium text-foreground">My contribution:</span> {pub.contribution}
+              </p>
+              <p class="text-xs text-muted-foreground mb-4">
+                {pub.journal} · {pub.date}
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <a
+                  href={pub.springer}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1.5 rounded-lg border border-primary bg-primary/10 px-4 py-2 text-xs font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
+                >
+                  Springer / DOI →
+                </a>
+                <a
+                  href={pub.arxiv}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-xs font-semibold text-muted-foreground transition-all hover:border-primary/40 hover:text-primary"
+                >
+                  arXiv preprint
+                </a>
+              </div>
+            </div>
+          );
+        })()}
+      </div>
+    </section>
+  )}
+
+
+  <!-- ====================================================================
+       7. CONTACT CTA
+       ==================================================================== -->
+  <section class="reveal mx-auto max-w-6xl px-4 py-16 sm:px-6 text-center">
+    <h2 class="font-heading text-2xl font-bold text-foreground sm:text-3xl mb-4">
+      Let's work together
+    </h2>
+    <p class="mx-auto max-w-lg text-muted-foreground mb-8">
+      Open to remote roles in any timezone. If you're looking for a backend engineer
+      who ships production-grade AI systems — let's talk.
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-4">
+      <a
+        href={`mailto:${profile.socialLinks.email}`}
+        class="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        {profile.socialLinks.email}
+      </a>
+      <a
+        href={profile.socialLinks.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-muted-foreground transition-all hover:border-primary/40 hover:text-primary"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a
+        href={profile.socialLinks.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-muted-foreground transition-all hover:border-primary/40 hover:text-primary"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </section>
+
+</PageLayout>
+
+<!-- Scroll reveal script — activates .reveal elements as they scroll into view -->
+<script>
+  const observer = new IntersectionObserver(
+    (entries) =>
+      entries.forEach((e) => {
+        if (e.isIntersecting) e.target.classList.add("is-visible");
+      }),
+    { threshold: 0.08 }
+  );
+  document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+</script>
+
+<style>
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in {
+    animation: fade-in-up 0.7s ease forwards;
+  }
+  .animate-fade-in-delay {
+    opacity: 0;
+    animation: fade-in-up 0.7s ease 0.25s forwards;
+  }
+  .animate-fade-in-delay2 {
+    opacity: 0;
+    animation: fade-in-up 0.7s ease 0.5s forwards;
+  }
+</style>

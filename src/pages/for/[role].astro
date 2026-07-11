@@ -1,0 +1,263 @@
+---
+/**
+ * /for/[role].astro — Role-targeted landing pages
+ *
+ * Generated statically from roles.json.
+ * 4 pages: /for/ai-backend, /for/backend, /for/erp-hrms, /for/full-stack
+ *
+ * Each page includes:
+ *  - Role headline, tagline, pitch
+ *  - Bullet points
+ *  - Skills badges
+ *  - Featured projects (resolved from projects.json)
+ *  - Résumé download button
+ *  - FAQ section
+ *  - FAQPage + Occupation JSON-LD schema
+ */
+
+import PageLayout from "@/layouts/PageLayout.astro";
+import ProjectCard from "@/components/astro/ProjectCard.astro";
+import Badge from "@/components/astro/Badge.astro";
+
+import roles from "@/data/roles.json";
+import projects from "@/data/projects.json";
+
+export function getStaticPaths() {
+  return roles.map((role) => ({
+    params: { role: role.slug },
+    props: { role },
+  }));
+}
+
+const { role } = Astro.props;
+
+// Resolve featured project IDs → full project objects
+const featuredProjects = role.featuredProjects
+  .map((id) => projects.find((p) => p.id === id))
+  .filter(Boolean);
+
+// Build FAQPage JSON-LD
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: role.faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
+    },
+  })),
+};
+
+// Build ProfilePage / Occupation schema
+const occupationSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  mainEntity: {
+    "@type": "Person",
+    name: "Mubashir Rehman",
+    jobTitle: role.headline,
+    description: role.pitch,
+    url: `https://mubashir-rehman.is-a.dev/for/${role.slug}`,
+    knowsAbout: role.skills,
+    sameAs: [
+      "https://github.com/mubashir-rehman",
+      "https://linkedin.com/in/mubashir-rehman",
+    ],
+  },
+};
+
+const schemas = [faqSchema, occupationSchema];
+
+const description = `${role.tagline} ${role.pitch.slice(0, 120)}…`;
+---
+
+<PageLayout
+  title={role.label}
+  description={description}
+  canonicalPath={`/for/${role.slug}`}
+  schema={schemas}
+>
+
+  <!-- ====================================================================
+       HERO
+       ==================================================================== -->
+  <section class="grain-overlay relative px-4 py-20 text-center sm:px-6">
+    <div class="mx-auto max-w-3xl">
+      <!-- Role badge -->
+      <div class="mb-6 inline-flex items-center rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-sm font-semibold text-primary">
+        {role.label}
+      </div>
+
+      <h1 class="font-heading text-4xl font-bold leading-tight text-foreground sm:text-5xl lg:text-6xl">
+        {role.headline}
+      </h1>
+
+      <p class="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
+        {role.tagline}
+      </p>
+
+      <!-- CTAs -->
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href={`mailto:mubashirrehman66@gmail.com?subject=Inquiry: ${role.label} role`}
+          class="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
+        >
+          Get in touch
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a
+          href={role.resume}
+          class="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-muted-foreground transition-all hover:border-primary/40 hover:text-primary"
+          download
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Résumé ({role.label})
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================================
+       PITCH + BULLETS
+       ==================================================================== -->
+  <section class="reveal mx-auto max-w-4xl px-4 py-16 sm:px-6">
+    <div class="grid gap-10 lg:grid-cols-2">
+      <!-- Pitch -->
+      <div>
+        <h2 class="font-heading text-xl font-bold text-foreground mb-4">
+          Why hire me as {role.label}?
+        </h2>
+        <p class="text-muted-foreground leading-relaxed">
+          {role.pitch}
+        </p>
+      </div>
+
+      <!-- Bullets -->
+      <div>
+        <h2 class="font-heading text-xl font-bold text-foreground mb-4">
+          What I've shipped
+        </h2>
+        <ul class="space-y-3">
+          {role.bullets.map((bullet) => (
+            <li class="flex gap-3 text-sm text-muted-foreground leading-relaxed">
+              <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"></span>
+              {bullet}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================================
+       SKILLS
+       ==================================================================== -->
+  <section class="reveal bg-card/30 py-12 px-4">
+    <div class="mx-auto max-w-4xl sm:px-6">
+      <h2 class="font-heading text-xl font-bold text-foreground mb-6">
+        Core stack for this role
+      </h2>
+      <div class="flex flex-wrap gap-2">
+        {role.skills.map((skill) => (
+          <Badge variant="primary">{skill}</Badge>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================================
+       FEATURED PROJECTS
+       ==================================================================== -->
+  {featuredProjects.length > 0 && (
+    <section class="reveal mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <h2 class="font-heading text-2xl font-bold text-foreground sm:text-3xl mb-2">
+        Relevant Projects
+      </h2>
+      <p class="text-muted-foreground mb-8">
+        Work that directly demonstrates this specialisation.
+      </p>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {featuredProjects.map((project) => project && (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+    </section>
+  )}
+
+
+  <!-- ====================================================================
+       RÉSUMÉ CTA
+       ==================================================================== -->
+  <section class="reveal bg-primary/5 border-y border-primary/20 py-12 px-4 text-center">
+    <div class="mx-auto max-w-xl">
+      <h2 class="font-heading text-xl font-bold text-foreground mb-3">
+        Need a tailored résumé?
+      </h2>
+      <p class="text-muted-foreground text-sm mb-6">
+        This résumé is focused specifically on {role.label} work —
+        highlighting the most relevant projects and skills.
+      </p>
+      <a
+        href={role.resume}
+        class="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
+        download
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download {role.label} Résumé (PDF)
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ====================================================================
+       FAQ
+       ==================================================================== -->
+  <section class="reveal mx-auto max-w-3xl px-4 py-16 sm:px-6">
+    <h2 class="font-heading text-2xl font-bold text-foreground sm:text-3xl mb-8">
+      Frequently asked
+    </h2>
+    <div class="space-y-6">
+      {role.faqs.map((faq) => (
+        <div class="rounded-xl border border-border bg-card p-6">
+          <h3 class="font-heading text-base font-semibold text-foreground mb-3">
+            {faq.q}
+          </h3>
+          <p class="text-sm text-muted-foreground leading-relaxed">
+            {faq.a}
+          </p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Still have questions? -->
+    <div class="mt-10 text-center">
+      <p class="text-muted-foreground text-sm mb-4">
+        Have a specific question?
+      </p>
+      <a
+        href={`mailto:mubashirrehman66@gmail.com?subject=${encodeURIComponent(role.label + " — Question")}`}
+        class="inline-flex items-center gap-2 rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-muted-foreground transition-all hover:border-primary/40 hover:text-primary"
+      >
+        Ask directly →
+      </a>
+    </div>
+  </section>
+
+</PageLayout>
+
+<!-- Scroll reveal -->
+<script>
+  const observer = new IntersectionObserver(
+    (entries) =>
+      entries.forEach((e) => {
+        if (e.isIntersecting) e.target.classList.add("is-visible");
+      }),
+    { threshold: 0.08 }
+  );
+  document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+</script>

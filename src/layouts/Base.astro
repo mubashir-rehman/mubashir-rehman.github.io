@@ -89,7 +89,12 @@ const personSchema = {
     <!-- Theme FOUC prevention — runs synchronously before first paint -->
     <script is:inline>
       (function () {
-        var t = localStorage.getItem("theme") || "light";
+        var t = localStorage.getItem("theme");
+        // Only light/dark are supported; migrate any legacy/unknown value.
+        if (t !== "light" && t !== "dark") {
+          t = "light";
+          localStorage.setItem("theme", t);
+        }
         document.documentElement.classList.add(t);
       })();
     </script>

@@ -16,9 +16,10 @@
 
 ## Key source materials (on user's machine, outside repo)
 
-- **Master CV (source of truth):** `~/Downloads/resumes/Mubashir_Rehman_Master_CV_Source_of_Truth_Export.md` — positioning, role-segmented tailoring inventory, summary variants, and the **honesty/verification notes** (lines ~504–567). Canonical brain.
-- **Clean role-bucket résumés:** `~/Downloads/files (10) (1)/` — `Mubashir_Rehman_Resume_AI_Backend.pdf`, `..._Backend.pdf`, `..._ERP_HRMS.pdf`. (No clean Full-Stack bucket existed → drafting one.)
-- **All tailored résumés:** `~/Downloads/resumes/` (30+ role-specific variants).
+- **Résumé-tailoring workspace (NEW, 2026-06-28):** `~/development/resume-tailoring/` — a separate **git repo** with its own `CLAUDE.md`. Holds everything below.
+- **Master CV (source of truth):** `~/development/resume-tailoring/master-cv.md` (renamed; canonical) — positioning, role-segmented tailoring inventory, summary variants, and the **honesty/verification notes** section. Canonical brain. (Stale backup copy still in `~/Downloads/resumes/`.)
+- **Clean role-bucket résumés:** `~/development/resume-tailoring/templates/` — AI_Backend / Backend / ERP_HRMS (`.pdf` + `.docx`). Format references only.
+- **All tailored résumés:** `~/development/resume-tailoring/submitted-applications/` (39 files — history/audit trail).
 - **HireTrack project (to feature):** `~/development/job-application-tracker` — repo `github.com/mubashir-rehman/job-application-tracker`, live `https://job-application-tracker-sigma-liard.vercel.app/`. Stack: React 19, Vite 6, **LangGraph** (`@langchain/langgraph`), Supabase (Auth + RLS), `@google/genai`, client-side `docx`/`mammoth`/`pdfjs`, PWA. BYOK, 5 providers.
 
 ## Integrity rules (reconciliation)
@@ -41,7 +42,62 @@ Reframe these flagged claims as scope, not verified outcomes (per Master CV hone
   `Mubashir-Rehman-AI-Backend.pdf`, `Mubashir-Rehman-Backend.pdf`, `Mubashir-Rehman-ERP-HRMS.pdf` (paths already referenced in roles.json). Generate Full-Stack PDF from the .md.
 - [ ] **TODO:** user to review reconciled metrics and flag any he has *verified* and wants restored as hard numbers.
 
-### Phase 2 — Static HTML rendering (the LLM/SEO core) — ⬜ not started
+### Phase 2 — Static HTML rendering (the LLM/SEO core) — 🟡 Stage 1 DONE
+**Stage 1 (Foundation + Home + Role pages) complete & verified (2026-06-27):**
+- `PageLayout.astro` + `src/components/astro/` chrome (Navbar/BottomNav/Footer) + kit
+  (Section/Card/Badge/Metric/ProjectCard/RoleCard); global islands `ThemeToggle`,
+  `ThemeFABIsland`, `SakuraPetalsIsland` (localStorage + `themechange` event, no ThemeProvider).
+- `index.astro` = responsive native-Astro Home (hero → 6 metrics → 4 role cards → featured
+  projects → experience → publication → contact). `for/[role].astro` ×4 + FAQPage/ProfilePage JSON-LD.
+- Coexistence: removed `/` route from `ReactApp`; chrome Home links hard-nav; deleted
+  `Landing.tsx` + `mobile/Landing.tsx`. Build = 13 pages, 0 errors; body content confirmed static.
+- Build + content-in-body + Playwright QA (0 console errors) all PASS functionally.
+- **⛔ UI REJECTED by user (2026-06-27) — DO NOT COMMIT Stage 1 as-is.** The look is poor.
+  Concrete problems seen on the sakura-theme home screenshot (`scratchpad/qa/home-desktop.png`):
+  1. **Hero `<h1>` "Mubashir Rehman" is CLIPPED under the fixed navbar** — the Astro home/hero
+     has no top offset to clear the fixed `Navbar.astro` (need `pt` on the hero / main, like the
+     old React pages had `pt-24`). Real bug, theme-independent.
+  2. **Metrics use serif numerals + an unbalanced 2-column floaty layout** — looks dated and
+     sparse; weak alignment. Rethink the metric/snapshot treatment (cards? even grid? sans-serif
+     tabular numbers?).
+  3. **SakuraPetals render as sparse scattered ovals** — read as debris/seeds, not elegant petals;
+     looks cheap. Revisit density/shape/opacity or the petal SVG.
+  4. **Excessive vertical whitespace + weak hierarchy** — hero feels empty; sections float.
+  5. The **"Backend Engineer · AI/ML · Cloud · Systems ⌄"** subhead + chevron under the tagline
+     looks redundant/awkward — reconsider or remove.
+  6. Overall: generic, not recruiter-grade/premium.
+- **RESUME PLAN (next session):** dedicated **design/polish pass on the Astro pages BEFORE
+  committing or continuing Stage 2.2.** Only commit once the user likes the look. The React pages
+  (`/about` etc.) are untouched, so reverting = restore `index.astro` to mount ReactApp.
+  - **LOCKED (2026-06-27): DROP THE SAKURA THEME ENTIRELY** (minimize engineering effort). Themes
+    become **light + dark only**. Remove from the system: `SakuraPetals`/`SakuraPetalsIsland`,
+    sakura branch in `ThemeToggle`/`ThemeFAB`/`ThemeProvider`, sakura CSS tokens + `.sakura-only`
+    rules in `index.css`, the navbar/footer sakura decorations, and the 3-theme cycle → 2-theme.
+    (This also kills the "cheap petals" UI problem.) `fortyRules.json` footer quote is separate —
+    keep unless we decide otherwise.
+  - **LOCKED: drive the UI via the `/ui-ux-pro-max:ui-ux-pro-max` skill** — use it to decide
+    style/palette/typography/layout for the Astro pages, then implement. (Still fix the hero-clipped-
+    under-navbar bug, rework the serif/floaty metrics, tighten spacing/hierarchy as part of that.)
+- Résumé PDFs still absent in `public/resume/` (role-page download buttons 404).
+- **Stage 2.2 remaining:** About, Projects (vanilla filter), Contact (form island), Journal →
+  Astro; then delete `ReactApp` shell entirely + remove `client:only` mounts.
+
+- **2026-07-12 — Sakura dropped + Stage-1 UI polish pass (branch `revamp/stage2-polish`).**
+  - ✅ **Sakura theme removed system-wide** (per lock): deleted `SakuraPetals`/`SakuraPetalsIsland`
+    + `public/giscus-sakura.css`; `ThemeToggle`/`ThemeFABIsland`/`ThemeProvider`/`ThemeFAB` are now
+    a 2-state **light ↔ dark** toggle (no `Flower2`); removed sakura CSS tokens + `.sakura-only`
+    rules + petal keyframes from `index.css`; stripped sakura decorations from `astro/Navbar.astro`,
+    `astro/Footer.astro`, `Navbar.tsx`, `Footer.tsx`; removed sakura giscus branch in `Comments.tsx`;
+    FOUC scripts (`Base.astro`) + `ThemeProvider` migrate any legacy `"sakura"` value → `light`;
+    updated `AskMe.tsx` copy. Build green (13 pages), no new lint errors.
+  - ✅ **Home polish (addressed the 6 rejection points):** metrics → sans-serif tabular-nums in an
+    even carded grid (was serif/floaty) with a "By the numbers" eyebrow; hero height set to
+    `calc(100vh-4rem)` + `pt-16` on `<main>` so the `<h1>` clears the fixed navbar (clip fixed);
+    petals gone; tightened hero whitespace. Note: the LOCKED `ui-ux-pro-max` skill was NOT used
+    this pass (kept edits surgical); **visual sign-off still pending** — no browser automation was
+    available in-session, verified structurally against built HTML only.
+
+### Phase 2 (orig notes) — Static HTML rendering — ⬜
 The big architectural fix: pages currently render `client:only="react"` → **crawlers/LLMs see an empty `<body>`.** Convert content-heavy pages to **native Astro (server-rendered HTML)** from the JSON, keeping React islands only for interactivity (theme FAB, project filter, AskMe, animations).
 - [ ] `src/pages/index.astro` → server-render Home sections: Hero → Snapshot → **4 role-track cards** → Featured projects → Experience → Publication → Contact.
 - [ ] `src/pages/for/[role].astro` → NEW dynamic route, statically generated for the 4 roles (uses roles.json + projects.json).
@@ -130,6 +186,36 @@ The big architectural fix: pages currently render `client:only="react"` → **cr
     heading), `contact.astro`, and the `AskMe.tsx` FAQ suggestion. Repo-wide "full-time": clean.
   - **NEW FLAG (journal prose):** `journal.json` excerpt still says "shipping 11K lines" — personal
     dated post; left as voice, flag only.
+
+- **2026-06-27 — Phase 2 kicked off (executor: Sonnet agent).** Approved architecture:
+  proper Astro islands — content rendered as native Astro HTML from JSON at build; React kept
+  only as small islands (AskMe, theme toggle, SakuraPetals). Retire the one-`client:only`-shell.
+  Nav = Astro MPA + `<ClientRouter />`. Locked decisions: **(1) collapse desktop+mobile into ONE
+  responsive design** (drop the `useMobile()` dual-component split); **(2) staged scope** — do
+  Foundation + Home + Role pages first, then About/Projects/Contact/Journal in Phase 2.2;
+  (3) CSS scroll-reveal (not framer-motion); (4) vanilla-JS project filter.
+  Stage-1 deliverables: `PageLayout.astro` + Astro chrome + global islands + component kit;
+  `index.astro` responsive Astro Home; `/for/[role].astro` ×4 (+ FAQPage schema). Coexistence
+  rule: migrated routes owned by Astro; remove `/` route from `ReactApp` and hard-link to it.
+
+- **2026-06-28 — NEW EVIDENCE: BridgeLink → site now UNDER-claims.** Verified via git that
+  **BridgeLink** (TransData, Jan–Mar 2026) is real production full-stack work — Mubashir is **top
+  contributor (~248 commits)** on a Mirth/NextGen-Connect-style **HL7 healthcare integration**
+  platform: **React 19 + TypeScript + Vite** frontend, **Node.js + TypeScript** Express-style BFF
+  (Sequelize, Jest), proxying the BridgeLink Server API; PHI-access auditing, real-time message-
+  trends dashboards, accessibility (ARIA/focus/keyboard). This means **production TypeScript +
+  Node.js are now defensible** (the earlier reconciliation that said "no production Node.js/TS" is
+  outdated). Master CV `.md` + the résumé-tailoring prompt (`~/development/resume-tailoring/resume_tailoring_system_prompt.md`)
+  already updated; **Master CV `.pdf`/`.docx` still need regenerating from the `.md`.**
+  - **WEBSITE TODO (do alongside/after the UI pass):**
+    1. Add **BridgeLink** to `src/data/projects.json` (healthcare HL7, full-stack React+Node/TS,
+       top contributor; honest framing — ops tooling not clinical software, PHI audit *features*
+       not HIPAA ownership, no invented metrics). Tag roles `["full-stack","backend"]` (+ healthcare).
+    2. Strengthen the **full-stack** role page/pitch in `roles.json` with real production TS+Node
+       (BridgeLink + HireTrack), and consider a **healthcare-integration** angle.
+    3. Add BridgeLink + "production TypeScript/Node.js" to `AskMe.tsx` grounding context; revisit
+       `profile.json` skills (add TypeScript/Node.js/React/Frontend) — mirror the Master CV update.
+    4. Reconcile honestly: BridgeLink impact metrics NOT established (describe scope/ownership only).
 
 ## Watch-outs when resuming
 - Don't break components reading `profile.json` — keys preserved; only added keys + reframed values.
