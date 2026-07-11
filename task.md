@@ -115,6 +115,45 @@ The big architectural fix: pages currently render `client:only="react"` → **cr
 - [ ] Navbar (`src/components/Navbar.tsx` + `BottomNav.tsx`): add **"Hire me for ▾"** (4 tracks) + prominent **Résumé** download; keep Journal/Habits/Hobbies secondary.
 - [ ] Hero (`src/components/pages/Landing.tsx` + `mobile/Landing.tsx`): rebuild for 10-second scan — title, remote-availability badge, value prop, defensible metrics, 3 CTAs (View Work / Download Résumé / Contact).
 
+### Phase 5 — Visibility (SEO/GEO) per Google's 2026 guidance — 🟡 diagnosed, action pending
+
+> **Reference docs captured in-repo:** [`docs/seo-references/`](docs/seo-references/)
+> (SEO starter guide, creating-helpful-content, AI-optimization-guide,
+> using-gen-ai-content — fetched 2026-07-12; each file lists its source URL).
+
+**Audit findings (2026-07-12, measured on `dist/public`):**
+- **⛔ #1 problem — blank `<body>` on 4 pages.** About / Projects / Journal /
+  Contact are still `client:only` React → **0 chars of body text** in static HTML
+  (Home ≈ 8.3k, `/for/*` ≈ 6k). Google's rule: *"see the page the same way an
+  average user does"*; AI features require a page *"indexed and eligible to be
+  shown with a snippet."* These pages — the ones a recruiter/LLM would cite — are
+  effectively invisible. **This is exactly Phase 2.2.** Titles/descriptions already
+  render fine in `<head>`; only the body is missing.
+- **`llms.txt` does nothing for Google.** The AI-optimization guide **explicitly
+  ignores `llms.txt`** ("no AI text files… including llms.txt"). Keep it — ChatGPT
+  / Perplexity / Claude *do* fetch it — but it is **not** a Google lever. For
+  Google: ordinary indexable HTML + snippet eligibility only.
+- **Zero images.** Static HTML ships **0 `<img>`** and there's no profile photo;
+  `Person.image` currently points at the generic OG card. Both guides call for
+  high-quality images + `alt` text (also unlocks Google Images + richer AI cards).
+
+**Prioritised plan (highest leverage first):**
+- [ ] **Do Phase 2.2** (static-render About → Projects → Journal → Contact). This is
+  the single change that moves Google + AI-Overview visibility. Start with
+  **Projects + About** (most recruiter/LLM signal).
+- [ ] Add a **real profile photo** (fix `Person.image` in `Base.astro`) + **project
+  screenshots** with descriptive `alt` text.
+- [ ] **E-E-A-T / helpful-content** (not a ranking dial, but the personal-site
+  levers): visible **author byline** + first-person About with credentials; keep
+  leaning on first-hand **journal** + project write-ups; keep the honesty/integrity
+  framing (= the Trust signal). E-E-A-T is **NOT** a direct ranking factor.
+- [ ] **Search Console** (already verified via `public/google…​.html`): submit
+  `sitemap-index.xml`; run **URL Inspection** on `/about` + `/projects` to confirm
+  the blank-body issue; watch the **Generative AI performance report**. No
+  third-party tool has real Google AI-ranking data.
+- [ ] AI-content disclosure: content is human-authored → compliant; only add a light
+  disclosure if a section becomes substantially AI-assisted.
+
 ---
 
 ## Decisions log
@@ -223,4 +262,23 @@ The big architectural fix: pages currently render `client:only="react"` → **cr
 - `projects.json` now has a `roles` array per project — Projects.tsx filtering uses `tags`, unaffected.
 - roles.json résumé paths point to PDFs not yet placed in `public/resume/`.
 - Repo is on `main`; branch before committing per repo policy. Docs already migrated to Astro (see `CLAUDE.md`).
-- Nothing in this revamp is committed yet — all changes are in the working tree.
+
+### Resume point — 2026-07-12 (branch `revamp/stage2-polish`, NOT merged to `main`)
+Committed this session (5 commits on the branch):
+1. `portfolio (enhancement)` — Stage-2 static home + role pages; **sakura dropped** (light/dark); home polish.
+2. `SEO/GEO` — `llms.txt`, AI-crawler `robots.txt`, sitemap fix, removed sitewide `noindex`.
+3. `SEO/GEO` — enriched `Person` + added `ScholarlyArticle` (paper) & `SoftwareSourceCode` (HireTrack).
+4. `docs (task)` — marked Phase 3 done.
+5. `docs` — captured Google SEO/GEO refs + Phase 5 visibility plan (this update).
+
+**⚠️ Two things still need the user:**
+- **Visual sign-off on the Astro home is pending** — the Stage-1 look was rejected once and this
+  session had **no browser automation** (verified structurally only). Next session is **Claude
+  cowork with the Playwright MCP + Chrome extension** → *screenshot the home (light + dark) at
+  `npm run preview` / `localhost:4321` and confirm before building more UI on top.*
+- Confirm the `_headers` `noindex` removal is fine for hosting (likely inert on GitHub Pages).
+
+**Highest-leverage next task = Phase 2.2** (static-render About/Projects/Journal/Contact) — see
+Phase 5 for why (those pages currently ship an empty `<body>` = invisible to Google + AI).
+Skill note: `ui-ux-pro-max` was **not** used for the home polish (kept surgical) — still LOCKED
+for the fuller design pass if wanted.
