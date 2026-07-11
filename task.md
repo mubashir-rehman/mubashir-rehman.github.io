@@ -105,10 +105,11 @@ The big architectural fix: pages currently render `client:only="react"` → **cr
 - [ ] Keep journal/habits/hobbies as React islands (not SEO-critical).
 - Note: current React pages live in `src/components/pages/` (+ `mobile/` variants). `ReactApp.tsx` uses BrowserRouter. Decide: keep islands for interactive widgets vs full Astro rewrite. See `CLAUDE.md` for the Astro-island architecture.
 
-### Phase 3 — GEO / technical SEO — ⬜ not started
-- [ ] `public/llms.txt` — concise machine-readable summary (identity, 4 tracks, top projects, contact) for LLM ingestion.
-- [ ] `public/robots.txt` — explicitly allow `GPTBot`, `ClaudeBot`, `PerplexityBot`, `OAI-SearchBot`, `Google-Extended`; fix sitemap URL → `sitemap-index.xml` (Astro sitemap, not old static `sitemap.xml`).
-- [ ] Schema: expand `Person` (hasOccupation, award, fuller knowsAbout), add **FAQPage** per role page (FAQ content already in roles.json), add **SoftwareSourceCode** schema for HireTrack. Files: `src/layouts/Base.astro`, `src/components/SEO.tsx`.
+### Phase 3 — GEO / technical SEO — ✅ done (2026-07-12, branch `revamp/stage2-polish`)
+- [x] `public/llms.txt` — machine-readable summary (identity, 4 tracks, featured projects, research, contact), generated from JSON.
+- [x] `public/robots.txt` — explicitly allows `GPTBot`, `OAI-SearchBot`, `ChatGPT-User`, `ClaudeBot`, `Claude-Web`, `anthropic-ai`, `PerplexityBot`, `Google-Extended`, `Applebot-Extended`, `CCBot`; `Sitemap:` → `sitemap-index.xml`; links `llms.txt`. Deleted stale static `public/sitemap.xml`.
+- [x] Also removed the site-wide `X-Robots-Tag: noindex` from `public/_headers` (it opposed the ranking goal; per-page canonical noindex lives in `Base.astro`). **Flagged to user** — likely inert on GitHub Pages, confirm hosting.
+- [x] Schema: expanded `Person` (hasOccupation + SOC category, nationality, image, fuller knowsAbout) in `Base.astro`; added **ScholarlyArticle** (CSSP paper) + **SoftwareSourceCode** (HireTrack) to the Home `schema` array, both built from JSON. **FAQPage + ProfilePage** per role page were already present in `for/[role].astro`. (`SEO.tsx` untouched — home/role schema lives in the Astro pages.)
 
 ### Phase 4 — Recruiter nav & hero polish — ⬜ not started
 - [ ] Navbar (`src/components/Navbar.tsx` + `BottomNav.tsx`): add **"Hire me for ▾"** (4 tracks) + prominent **Résumé** download; keep Journal/Habits/Hobbies secondary.
