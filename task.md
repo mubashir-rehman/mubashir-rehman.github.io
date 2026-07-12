@@ -238,24 +238,24 @@ The big architectural fix: pages currently render `client:only="react"` → **cr
   `index.astro` responsive Astro Home; `/for/[role].astro` ×4 (+ FAQPage schema). Coexistence
   rule: migrated routes owned by Astro; remove `/` route from `ReactApp` and hard-link to it.
 
-- **2026-06-28 — NEW EVIDENCE: BridgeLink → site now UNDER-claims.** Verified via git that
-  **BridgeLink** (TransData, Jan–Mar 2026) is real production full-stack work — Mubashir is **top
+- **2026-06-28 — NEW EVIDENCE: the HL7 Platform (name under NDA) → site now UNDER-claims.** Verified via git that
+  **the HL7 Platform (name under NDA)** (TransData, Jan–Mar 2026) is real production full-stack work — Mubashir is **top
   contributor (~248 commits)** on a Mirth/NextGen-Connect-style **HL7 healthcare integration**
   platform: **React 19 + TypeScript + Vite** frontend, **Node.js + TypeScript** Express-style BFF
-  (Sequelize, Jest), proxying the BridgeLink Server API; PHI-access auditing, real-time message-
+  (Sequelize, Jest), proxying the platform's server API; PHI-access auditing, real-time message-
   trends dashboards, accessibility (ARIA/focus/keyboard). This means **production TypeScript +
   Node.js are now defensible** (the earlier reconciliation that said "no production Node.js/TS" is
   outdated). Master CV `.md` + the résumé-tailoring prompt (`~/development/resume-tailoring/resume_tailoring_system_prompt.md`)
   already updated; **Master CV `.pdf`/`.docx` still need regenerating from the `.md`.**
   - **WEBSITE TODO (do alongside/after the UI pass):**
-    1. Add **BridgeLink** to `src/data/projects.json` (healthcare HL7, full-stack React+Node/TS,
+    1. Add **the HL7 Platform (name under NDA)** to `src/data/projects.json` (healthcare HL7, full-stack React+Node/TS,
        top contributor; honest framing — ops tooling not clinical software, PHI audit *features*
        not HIPAA ownership, no invented metrics). Tag roles `["full-stack","backend"]` (+ healthcare).
     2. Strengthen the **full-stack** role page/pitch in `roles.json` with real production TS+Node
-       (BridgeLink + HireTrack), and consider a **healthcare-integration** angle.
-    3. Add BridgeLink + "production TypeScript/Node.js" to `AskMe.tsx` grounding context; revisit
+       (the HL7 Platform (name under NDA) + HireTrack), and consider a **healthcare-integration** angle.
+    3. Add the HL7 Platform (name under NDA) + "production TypeScript/Node.js" to `AskMe.tsx` grounding context; revisit
        `profile.json` skills (add TypeScript/Node.js/React/Frontend) — mirror the Master CV update.
-    4. Reconcile honestly: BridgeLink impact metrics NOT established (describe scope/ownership only).
+    4. Reconcile honestly: the HL7 Platform (name under NDA) impact metrics NOT established (describe scope/ownership only).
 
 ## Watch-outs when resuming
 - Don't break components reading `profile.json` — keys preserved; only added keys + reframed values.

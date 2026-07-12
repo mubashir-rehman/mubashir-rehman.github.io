@@ -1,24 +1,35 @@
 ---
 /**
- * index.astro — Home page
+ * index.astro — Home (Engineering Minimal redesign)
  *
- * Fully rendered at build time as static HTML.
- * Content sourced exclusively from JSON data files — no invented metrics.
- * Uses PageLayout for chrome + islands.
+ * Fully static at build time; content sourced exclusively from src/data JSON.
+ * IA: hero → metrics → affiliations → case studies → role tracks → projects
+ *     → experience → publication → services teaser → contact CTA.
+ * Design rules: design-system/MASTER.md. One primary CTA per screen.
  */
 
 import PageLayout from "@/layouts/PageLayout.astro";
-import Metric from "@/components/astro/Metric.astro";
-import ProjectCard from "@/components/astro/ProjectCard.astro";
-import RoleCard from "@/components/astro/RoleCard.astro";
 
 import profile from "@/data/profile.json";
 import projects from "@/data/projects.json";
 import roles from "@/data/roles.json";
 
 const SITE = "https://mubashir-rehman.is-a.dev";
-const featuredProjects = projects.filter((p) => p.featured);
 
+// --- Content selections -------------------------------------------------
+const caseStudyIds = ["hl7-integration-platform", "hiretrack"];
+const caseStudies = caseStudyIds
+  .map((id) => projects.find((p) => p.id === id))
+  .filter(Boolean);
+
+const moreProjects = projects
+  .filter((p) => p.featured && !caseStudyIds.includes(p.id))
+  .slice(0, 4);
+
+const experience = profile.experience.slice(0, 3);
+const pub = profile.publications[0];
+
+// --- Structured data (preserved from Phase 3 SEO work) -------------------
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -30,29 +41,20 @@ const websiteSchema = {
   author: { "@type": "Person", name: "Mubashir Rehman" },
 };
 
-// ScholarlyArticle — peer-reviewed publication (built from profile data)
-const pub = profile.publications[0];
 const scholarlyArticleSchema = pub && {
   "@context": "https://schema.org",
   "@type": "ScholarlyArticle",
   headline: pub.title,
   name: pub.title,
-  author: pub.authors
-    .split(";")
-    .map((a) => ({ "@type": "Person", name: a.trim() })),
+  author: pub.authors.split(";").map((a) => ({ "@type": "Person", name: a.trim() })),
   datePublished: pub.date,
   isPartOf: { "@type": "Periodical", name: pub.journal },
   publisher: { "@type": "Organization", name: "Springer" },
-  identifier: {
-    "@type": "PropertyValue",
-    propertyID: "DOI",
-    value: pub.doi,
-  },
+  identifier: { "@type": "PropertyValue", propertyID: "DOI", value: pub.doi },
   url: pub.springer,
   sameAs: [pub.springer, pub.arxiv].filter(Boolean),
 };
 
-// SoftwareSourceCode — flagship open-source project HireTrack
 const hireTrack = projects.find((p) => p.id === "hiretrack");
 const softwareSourceCodeSchema = hireTrack && {
   "@context": "https://schema.org",
@@ -66,307 +68,410 @@ const softwareSourceCodeSchema = hireTrack && {
   url: hireTrack.github,
 };
 
-const homeSchemas = [
-  websiteSchema,
-  scholarlyArticleSchema,
-  softwareSourceCodeSchema,
-].filter(Boolean);
+const homeSchemas = [websiteSchema, scholarlyArticleSchema, softwareSourceCodeSchema].filter(
+  Boolean
+);
 ---
 
 <PageLayout canonicalPath="/" schema={homeSchemas}>
-
-  <!-- ====================================================================
-       1. HERO
-       ==================================================================== -->
-  <section class="grain-overlay relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-4 py-20 text-center">
-    <div class="relative z-10 mx-auto max-w-4xl">
-
-      <!-- Availability badge -->
-      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted-foreground">
-        <span class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
-        {profile.remote}
-      </div>
-
-      <!-- Name -->
-      <h1 class="font-heading text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl animate-fade-in">
-        {profile.name}
-      </h1>
-
-      <!-- Anchor tagline -->
-      <p class="mt-4 text-xl text-primary sm:text-2xl font-medium animate-fade-in-delay">
-        {profile.anchorTagline}
-      </p>
-
-      <!-- Secondary tagline -->
-      <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg animate-fade-in-delay2">
-        {profile.tagline}
-      </p>
-
-      <!-- Primary CTAs -->
-      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row animate-fade-in-delay2">
-        <a
-          href="/projects"
-          class="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-6 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
+  <!-- ================================================================
+       1. HERO — left-aligned, 10-second recruiter scan
+       ================================================================ -->
+  <section class="hero-glow border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
+      <div class="max-w-3xl">
+        <!-- Availability badge -->
+        <p
+          class="mb-8 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3.5 py-1.5 text-xs font-medium text-primary"
         >
-          View Projects
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </a>
-        <a
-          href="/contact"
-          class="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/30 hover:text-primary"
-        >
-          Contact Me
-        </a>
-      </div>
-
-      <!-- Hire me for — role tracks -->
-      <div class="mt-10 animate-fade-in-delay2">
-        <p class="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-          Hire me for
+          <span class="relative flex h-2 w-2" aria-hidden="true">
+            <span
+              class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60 motion-reduce:hidden"
+            ></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
+          </span>
+          {profile.remote}
         </p>
-        <div class="flex flex-wrap items-center justify-center gap-2">
-          {roles.map((r) => (
+
+        <p class="eyebrow mb-4">Backend · AI/ML · Cloud · Systems</p>
+
+        <h1
+          class="text-gradient w-fit pb-1 text-[clamp(2.5rem,6vw,4.25rem)] font-bold leading-[1.05] tracking-[-0.03em]"
+        >
+          Mubashir Rehman
+        </h1>
+
+        <p class="mt-6 max-w-[60ch] text-lg leading-relaxed text-muted-foreground sm:text-xl">
+          {profile.anchorTagline}. Primary backend engineer on a multi-tenant SaaS platform
+          (7 services, 60+ REST endpoints), team lead on real-time drone systems, and
+          co-author of peer-reviewed ML research.
+        </p>
+
+        <!-- CTAs: one primary, two subordinate -->
+        <div class="mt-10 flex flex-wrap items-center gap-3">
+          <a
+            href="/resume/Mubashir-Rehman-Backend.pdf"
+            download
+            class="press-feedback glow-primary inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            Download Résumé
+          </a>
+          <a
+            href="/projects"
+            class="press-feedback inline-flex items-center rounded-full border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-accent"
+          >
+            View Work
+          </a>
+          <a
+            href="/services"
+            class="press-feedback inline-flex items-center gap-1.5 rounded-full px-4 py-3 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Hire me
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <p class="mt-8 font-mono text-xs text-muted-foreground">
+          {profile.currentRole} · {profile.location}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       2. METRICS — defensible numbers only
+       ================================================================ -->
+  <section aria-labelledby="metrics-heading" class="border-b border-border bg-card">
+    <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+      <h2 id="metrics-heading" class="sr-only">Key metrics</h2>
+      <dl class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {
+          profile.metrics.map((m) => (
+            <div class="rounded-lg bg-muted/60 px-5 py-6">
+              <dd class="metric-value text-2xl text-primary sm:text-3xl">{m.value}</dd>
+              <dt class="mt-1.5 text-xs leading-snug text-muted-foreground">{m.label}</dt>
+            </div>
+          ))
+        }
+      </dl>
+
+      <!-- Affiliation strip -->
+      <p class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground/80">
+        <span>TransData</span>
+        <span aria-hidden="true">·</span>
+        <span>VeritusLabs</span>
+        <span aria-hidden="true">·</span>
+        <span>Information Technology University</span>
+        <span aria-hidden="true">·</span>
+        <span>Springer (CSSP 2025)</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       3. CASE STUDIES — flagship proof of work
+       ================================================================ -->
+  <section aria-labelledby="case-studies-heading" class="border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <p class="eyebrow reveal">Selected work</p>
+      <h2 id="case-studies-heading" class="reveal mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+        Case studies
+      </h2>
+
+      <div class="reveal-stagger mt-10 grid gap-6 lg:grid-cols-2">
+        {
+          caseStudies.map((p) => (
+            <article class="reveal flex flex-col rounded-lg border border-border bg-card p-7 transition-shadow hover:shadow-md sm:p-8">
+              <h3 class="text-xl font-semibold tracking-tight">{p.title}</h3>
+              <p class="mt-3 line-clamp-5 text-sm leading-relaxed text-muted-foreground">
+                {p.description}
+              </p>
+              <ul class="mt-5 space-y-2">
+                {p.metrics.slice(0, 4).map((m) => (
+                  <li class="flex items-start gap-2.5 text-sm text-foreground">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-primary" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                    {m}
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-5 flex flex-wrap gap-1.5">
+                {p.tags.slice(0, 6).map((t) => (
+                  <span class="chip">
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <div class="mt-auto flex items-center gap-4 pt-6">
+                {p.github && (
+                  <a
+                    href={p.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                  >
+                    Source
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+                  </a>
+                )}
+                {p.demo && (
+                  <a
+                    href={p.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                  >
+                    Live app
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+                  </a>
+                )}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       4. ROLE TRACKS — "hire me for"
+       ================================================================ -->
+  <section aria-labelledby="roles-heading" class="border-b border-border bg-card">
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <p class="eyebrow reveal">For recruiters</p>
+      <h2 id="roles-heading" class="reveal mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+        What I can own for your team
+      </h2>
+      <p class="reveal mt-4 max-w-[60ch] text-muted-foreground">
+        Four tracks, each with a tailored résumé and the receipts to back it up.
+      </p>
+
+      <div class="reveal-stagger mt-10 grid gap-5 sm:grid-cols-2">
+        {
+          roles.map((r) => (
             <a
               href={`/for/${r.slug}`}
-              class="rounded-full border border-border bg-card px-4 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:border-primary/40 hover:text-primary hover:bg-primary/5"
+              class="reveal press-feedback group flex flex-col rounded-lg border border-border bg-background p-6 transition-colors hover:border-primary/50"
             >
-              {r.navLabel}
+              <h3 class="flex items-center justify-between text-lg font-semibold tracking-tight">
+                {r.headline}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-primary" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{r.tagline}</p>
+              <div class="mt-4 flex flex-wrap gap-1.5">
+                {r.skills.slice(0, 5).map((s) => (
+                  <span class="chip">
+                    {s}
+                  </span>
+                ))}
+              </div>
             </a>
-          ))}
-        </div>
-      </div>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground animate-bounce">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-    </div>
-  </section>
-
-
-  <!-- ====================================================================
-       2. SNAPSHOT METRICS
-       ==================================================================== -->
-  <section class="reveal border-y border-border bg-muted/30 py-12 px-4">
-    <div class="mx-auto max-w-6xl">
-      <p class="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-        By the numbers
-      </p>
-      <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
-        {profile.metrics.map((m) => (
-          <Metric value={m.value} label={m.label} />
-        ))}
+          ))
+        }
       </div>
     </div>
   </section>
 
-
-  <!-- ====================================================================
-       3. ROLE-TRACK CARDS
-       ==================================================================== -->
-  <section class="reveal mx-auto max-w-6xl px-4 py-16 sm:px-6">
-    <h2 class="font-heading text-2xl font-bold text-foreground sm:text-3xl mb-2">
-      What I do
-    </h2>
-    <p class="text-muted-foreground mb-8">
-      Four specialisations — pick the one that matches your need.
-    </p>
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {roles.map((role) => (
-        <RoleCard role={role} />
-      ))}
-    </div>
-  </section>
-
-
-  <!-- ====================================================================
-       4. FEATURED PROJECTS
-       ==================================================================== -->
-  <section class="reveal bg-card/30 py-16 px-4">
-    <div class="mx-auto max-w-6xl sm:px-6">
-      <div class="mb-8 flex items-end justify-between">
+  <!-- ================================================================
+       5. MORE PROJECTS
+       ================================================================ -->
+  <section aria-labelledby="projects-heading" class="border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 class="font-heading text-2xl font-bold text-foreground sm:text-3xl mb-2">
-            Featured Projects
+          <p class="eyebrow reveal">Production systems</p>
+          <h2 id="projects-heading" class="reveal mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            More shipped work
           </h2>
-          <p class="text-muted-foreground">Production work and open-source.</p>
         </div>
         <a
           href="/projects"
-          class="hidden text-sm font-semibold text-primary hover:underline sm:block"
+          class="reveal inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
         >
-          All projects →
+          All projects
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </div>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {featuredProjects.map((project) => (
-          <ProjectCard project={project} />
-        ))}
-      </div>
-      <div class="mt-6 sm:hidden text-center">
-        <a href="/projects" class="text-sm font-semibold text-primary hover:underline">
-          All projects →
-        </a>
+
+      <div class="reveal-stagger mt-10 grid gap-5 md:grid-cols-2">
+        {
+          moreProjects.map((p) => (
+            <article class="reveal rounded-lg border border-border bg-card p-6 transition-shadow hover:shadow-md">
+              <h3 class="text-base font-semibold tracking-tight">{p.title}</h3>
+              <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                {p.description}
+              </p>
+              <div class="mt-4 flex flex-wrap gap-1.5">
+                {p.tags.slice(0, 5).map((t) => (
+                  <span class="chip">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </article>
+          ))
+        }
       </div>
     </div>
   </section>
 
+  <!-- ================================================================
+       6. EXPERIENCE — compact timeline
+       ================================================================ -->
+  <section aria-labelledby="experience-heading" class="border-b border-border bg-card">
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <p class="eyebrow reveal">Track record</p>
+      <h2 id="experience-heading" class="reveal mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+        Experience
+      </h2>
 
-  <!-- ====================================================================
-       5. EXPERIENCE
-       ==================================================================== -->
-  <section class="reveal mx-auto max-w-6xl px-4 py-16 sm:px-6">
-    <h2 class="font-heading text-2xl font-bold text-foreground sm:text-3xl mb-8">
-      Experience
-    </h2>
-    <div class="space-y-10">
-      {profile.experience.map((exp) => (
-        <div class="relative pl-6 before:absolute before:left-0 before:top-2 before:bottom-0 before:w-px before:bg-border">
-          <div class="absolute left-[-4px] top-2 h-2 w-2 rounded-full bg-primary"></div>
-          <div class="mb-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <h3 class="font-heading text-lg font-bold text-foreground">{exp.role}</h3>
-            <span class="text-sm font-medium text-primary">{exp.company}</span>
-            <span class="text-xs text-muted-foreground">{exp.period}</span>
-          </div>
-          <ul class="mt-3 space-y-1.5">
-            {exp.highlights.slice(0, 5).map((h) => (
-              <li class="flex gap-2 text-sm text-muted-foreground leading-relaxed">
-                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60"></span>
-                {h}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <ol class="reveal-stagger mt-10 space-y-0">
+        {
+          experience.map((job) => (
+            <li class="reveal grid gap-2 border-l-2 border-border py-6 pl-6 first:pt-0 last:pb-0 sm:grid-cols-[220px_1fr] sm:gap-8">
+              <div>
+                <p class="font-mono text-xs text-muted-foreground">{job.period}</p>
+                <p class="mt-1 text-sm font-semibold">{job.company}</p>
+              </div>
+              <div>
+                <h3 class="text-base font-semibold tracking-tight">{job.role}</h3>
+                <ul class="mt-2 space-y-1.5">
+                  {job.highlights.slice(0, 2).map((h) => (
+                    <li class="text-sm leading-relaxed text-muted-foreground">{h}</li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <a
+        href="/about"
+        class="reveal mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+      >
+        Full background
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
     </div>
   </section>
 
-
-  <!-- ====================================================================
-       6. PUBLICATION
-       ==================================================================== -->
-  {profile.publications.length > 0 && (
-    <section class="reveal bg-card/30 py-16 px-4">
-      <div class="mx-auto max-w-6xl sm:px-6">
-        <h2 class="font-heading text-2xl font-bold text-foreground sm:text-3xl mb-8">
-          Research
-        </h2>
-        {(() => {
-          const pub = profile.publications[0];
-          return (
-            <div class="rounded-xl border border-border bg-card p-6 sm:p-8">
-              <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary mb-4">
-                Peer-Reviewed · Springer 2025
-              </div>
-              <h3 class="font-heading text-lg font-bold text-foreground leading-snug mb-3">
-                {pub.title}
-              </h3>
-              <p class="text-sm text-muted-foreground mb-1">
-                <span class="font-medium text-foreground">Authors:</span> {pub.authors}
-              </p>
-              <p class="text-sm text-muted-foreground mb-1 italic">
-                {pub.equalContribution}
-              </p>
-              <p class="text-sm text-muted-foreground mb-4">
-                <span class="font-medium text-foreground">My contribution:</span> {pub.contribution}
-              </p>
-              <p class="text-xs text-muted-foreground mb-4">
-                {pub.journal} · {pub.date}
-              </p>
-              <div class="flex flex-wrap gap-3">
-                <a
-                  href={pub.springer}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-1.5 rounded-lg border border-primary bg-primary/10 px-4 py-2 text-xs font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
-                >
-                  Springer / DOI →
-                </a>
-                <a
-                  href={pub.arxiv}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-xs font-semibold text-muted-foreground transition-all hover:border-primary/40 hover:text-primary"
-                >
-                  arXiv preprint
-                </a>
-              </div>
+  <!-- ================================================================
+       7. PUBLICATION
+       ================================================================ -->
+  {
+    pub && (
+      <section aria-labelledby="publication-heading" class="border-b border-border">
+        <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+          <p class="eyebrow reveal">Peer-reviewed research</p>
+          <h2 id="publication-heading" class="reveal mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            Publication
+          </h2>
+          <div class="reveal mt-10 rounded-lg border border-border bg-card p-7 sm:p-8">
+            <p class="font-mono text-xs text-muted-foreground">
+              {pub.journal} · {pub.date} · DOI {pub.doi}
+            </p>
+            <h3 class="mt-3 max-w-[75ch] text-lg font-semibold leading-snug tracking-tight">
+              {pub.title}
+            </h3>
+            <p class="mt-3 text-sm text-muted-foreground">{pub.equalContribution}.</p>
+            <p class="mt-2 max-w-[75ch] text-sm leading-relaxed text-muted-foreground">
+              <span class="font-medium text-foreground">My contribution:</span> {pub.contribution}
+            </p>
+            <div class="mt-5 flex gap-4">
+              <a
+                href={pub.springer}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-sm font-medium text-primary hover:underline"
+              >
+                Springer
+              </a>
+              <a
+                href={pub.arxiv}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-sm font-medium text-primary hover:underline"
+              >
+                arXiv preprint
+              </a>
             </div>
-          );
-        })()}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ================================================================
+       8. SERVICES TEASER — the client path
+       ================================================================ -->
+  <section aria-labelledby="services-heading" class="border-b border-border bg-card">
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <p class="eyebrow reveal">For clients</p>
+      <h2 id="services-heading" class="reveal mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+        Need this built, not hired?
+      </h2>
+      <p class="reveal mt-4 max-w-[60ch] text-muted-foreground">
+        I also take on contract and project work — the same production standards, scoped to
+        your problem.
+      </p>
+
+      <div class="reveal-stagger mt-10 grid gap-5 md:grid-cols-2">
+        <div class="reveal rounded-lg border border-border bg-background p-6">
+          <h3 class="text-lg font-semibold tracking-tight">Fixed-scope projects</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+            Backend APIs, AI/LLM features (RAG, semantic search, automation pipelines), and
+            ERP/HRMS customization — specced, built, deployed, documented.
+          </p>
+        </div>
+        <div class="reveal rounded-lg border border-border bg-background p-6">
+          <h3 class="text-lg font-semibold tracking-tight">Retainer &amp; contract</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+            Ongoing part-time or hourly engineering — own a backend, keep systems healthy,
+            ship features every week. Any timezone.
+          </p>
+        </div>
       </div>
-    </section>
-  )}
 
-
-  <!-- ====================================================================
-       7. CONTACT CTA
-       ==================================================================== -->
-  <section class="reveal mx-auto max-w-6xl px-4 py-16 sm:px-6 text-center">
-    <h2 class="font-heading text-2xl font-bold text-foreground sm:text-3xl mb-4">
-      Let's work together
-    </h2>
-    <p class="mx-auto max-w-lg text-muted-foreground mb-8">
-      Open to remote roles in any timezone. If you're looking for a backend engineer
-      who ships production-grade AI systems — let's talk.
-    </p>
-    <div class="flex flex-wrap items-center justify-center gap-4">
       <a
-        href={`mailto:${profile.socialLinks.email}`}
-        class="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
+        href="/services"
+        class="reveal mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-        {profile.socialLinks.email}
-      </a>
-      <a
-        href={profile.socialLinks.linkedin}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-muted-foreground transition-all hover:border-primary/40 hover:text-primary"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-        LinkedIn
-      </a>
-      <a
-        href={profile.socialLinks.github}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-sm font-semibold text-muted-foreground transition-all hover:border-primary/40 hover:text-primary"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-        GitHub
+        Services &amp; engagement details
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
     </div>
   </section>
 
+  <!-- ================================================================
+       9. CONTACT CTA
+       ================================================================ -->
+  <section aria-labelledby="contact-heading">
+    <div class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 id="contact-heading" class="reveal text-3xl font-bold tracking-tight sm:text-4xl">
+          Let's talk.
+        </h2>
+        <p class="reveal mt-4 text-muted-foreground">
+          Hiring for a backend or AI role, or need a system built?
+          I reply within a day — {profile.availabilityNote.toLowerCase()}.
+        </p>
+        <div class="reveal mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href={`mailto:${profile.email}`}
+            class="press-feedback inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            {profile.email}
+          </a>
+          <a
+            href="/contact"
+            class="press-feedback inline-flex items-center rounded-full border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-accent"
+          >
+            Contact page
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 </PageLayout>
-
-<!-- Scroll reveal script — activates .reveal elements as they scroll into view -->
-<script>
-  const observer = new IntersectionObserver(
-    (entries) =>
-      entries.forEach((e) => {
-        if (e.isIntersecting) e.target.classList.add("is-visible");
-      }),
-    { threshold: 0.08 }
-  );
-  document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-</script>
-
-<style>
-  @keyframes fade-in-up {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fade-in {
-    animation: fade-in-up 0.7s ease forwards;
-  }
-  .animate-fade-in-delay {
-    opacity: 0;
-    animation: fade-in-up 0.7s ease 0.25s forwards;
-  }
-  .animate-fade-in-delay2 {
-    opacity: 0;
-    animation: fade-in-up 0.7s ease 0.5s forwards;
-  }
-</style>

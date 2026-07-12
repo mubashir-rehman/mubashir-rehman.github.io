@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: ["./src/**/*.{astro,ts,tsx,md,mdx}"],
   prefix: "",
   theme: {
     container: {
@@ -14,8 +14,11 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ['"Playfair Display"', 'Georgia', 'serif'],
-        body: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        mono: ['"JetBrains Mono"', "ui-monospace", "SFMono-Regular", "monospace"],
+        // Legacy aliases (pre-redesign components; remove after teardown)
+        heading: ["Inter", "system-ui", "sans-serif"],
+        body: ["Inter", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -2,11 +2,12 @@
 /**
  * PageLayout.astro
  *
- * Layout for Astro-rendered pages (/, /for/*).
- * Wraps Base.astro and adds:
+ * Layout for Astro-rendered pages. Wraps Base.astro and adds:
  *  - Astro View Transitions (ClientRouter) for smooth MPA navigation
+ *  - Skip link (a11y), fixed-navbar offset, mobile bottom-nav offset
  *  - Astro chrome: Navbar, BottomNav, Footer
- *  - Global islands: ThemeFABIsland (mobile), AskMe (chatbot)
+ *  - Global islands: AskMe (chatbot)
+ *  - Scroll-reveal IntersectionObserver (CSS-only animation, reduced-motion safe)
  */
 
 import Base from "@/layouts/Base.astro";
@@ -15,7 +16,6 @@ import Navbar from "@/components/astro/Navbar.astro";
 import BottomNav from "@/components/astro/BottomNav.astro";
 import Footer from "@/components/astro/Footer.astro";
 import AskMe from "@/components/AskMe";
-import ThemeFABIsland from "@/components/ThemeFABIsland";
 
 interface Props {
   title?: string;
@@ -27,33 +27,52 @@ interface Props {
 const { title, description, canonicalPath = "/", schema } = Astro.props;
 ---
 
-<Base
-  title={title}
-  description={description}
-  canonicalPath={canonicalPath}
-  schema={schema}
->
-  <!-- View Transitions for smooth page switches between Astro pages -->
+<Base title={title} description={description} canonicalPath={canonicalPath} schema={schema}>
   <ClientRouter />
 
-  <!-- Top navbar (desktop) -->
+  <a href="#main" class="skip-link">Skip to content</a>
+
   <Navbar />
 
-  <!-- Page content — padded to clear fixed navbar (pt-16) and mobile bottom nav (pb-20 on mobile) -->
-  <main class="min-h-screen pt-16 pb-20 md:pb-0">
+  <!-- pt-16 clears the fixed 64px navbar; pb-16 clears the mobile bottom nav -->
+  <main id="main" class="min-h-dvh pt-16 pb-16 md:pb-0">
     <slot />
   </main>
 
-  <!-- Footer (desktop only in original design, but we show it everywhere) -->
   <Footer />
-
-  <!-- Mobile bottom nav (md:hidden inside component) -->
   <BottomNav />
 
-  <!-- Global islands — mounted once here so they're available on all Astro pages -->
   <!-- AskMe chatbot — idle hydration -->
   <AskMe client:idle />
 
-  <!-- Mobile theme FAB (sm:hidden inside component) -->
-  <ThemeFABIsland client:load />
+  <!-- Scroll-reveal activation (re-runs after view transitions) -->
+  <script is:inline>
+    (function () {
+      function activateReveals() {
+        var els = document.querySelectorAll(".reveal:not(.is-visible)");
+        if (!els.length) return;
+        if (
+          !("IntersectionObserver" in window) ||
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) {
+          els.forEach(function (el) { el.classList.add("is-visible"); });
+          return;
+        }
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+        );
+        els.forEach(function (el) { io.observe(el); });
+      }
+      activateReveals();
+      document.addEventListener("astro:page-load", activateReveals);
+    })();
+  </script>
 </Base>

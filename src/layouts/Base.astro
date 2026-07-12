@@ -99,18 +99,33 @@ const personSchema = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Theme FOUC prevention — runs synchronously before first paint -->
+    <!-- Theme FOUC prevention — runs synchronously before first paint.
+         Also re-applies after Astro view transitions (astro:after-swap),
+         because the swap replaces <html> and drops the theme class. -->
     <script is:inline>
       (function () {
-        var t = localStorage.getItem("theme");
-        // Only light/dark are supported; migrate any legacy/unknown value.
-        if (t !== "light" && t !== "dark") {
-          t = "light";
-          localStorage.setItem("theme", t);
+        function applyTheme() {
+          var t = localStorage.getItem("theme");
+          // Only light/dark are supported; migrate any legacy/unknown value.
+          if (t !== "light" && t !== "dark") {
+            t = "light";
+            localStorage.setItem("theme", t);
+          }
+          document.documentElement.classList.remove("light", "dark");
+          document.documentElement.classList.add(t);
         }
-        document.documentElement.classList.add(t);
+        applyTheme();
+        document.addEventListener("astro:after-swap", applyTheme);
       })();
     </script>
+
+    <!-- Fonts: Inter (UI) + JetBrains Mono (technical accents) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+    />
 
     <title>{fullTitle}</title>
     <meta name="description" content={description} />

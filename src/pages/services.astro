@@ -1,0 +1,212 @@
+---
+/**
+ * services.astro — the client path: what I build, how engagements work.
+ * Copy is draft-for-review; claims stay within the Master CV integrity rules.
+ */
+import PageLayout from "@/layouts/PageLayout.astro";
+import profile from "@/data/profile.json";
+
+const services = [
+  {
+    title: "Backend & API development",
+    desc: "REST APIs, database design, auth (OAuth2/JWT), background jobs, and deployment. Django, FastAPI, PostgreSQL, Redis, Docker — the stack I've shipped 7 production services and 60+ endpoints on.",
+    tags: ["Django / FastAPI", "PostgreSQL", "REST APIs", "Docker"],
+  },
+  {
+    title: "AI & LLM features",
+    desc: "RAG pipelines, semantic search (pgvector + embeddings), LLM integrations with fallbacks and cost control, prompt-management workflows, and self-hosted inference (vLLM/LiteLLM). AI as an engineering problem, not a demo.",
+    tags: ["OpenAI / Gemini", "LangChain / LangGraph", "pgvector", "vLLM"],
+  },
+  {
+    title: "ERP / HRMS customization",
+    desc: "ERPNext/Frappe custom doctypes and internal tooling, Horilla HRMS extension and migration, biometric attendance integration (ZKTeco), and reporting endpoints — done for a ~200-employee workforce.",
+    tags: ["ERPNext / Frappe", "Horilla HRMS", "ZKTeco", "Reporting"],
+  },
+  {
+    title: "Automation & integrations",
+    desc: "n8n workflows, third-party API integrations, data pipelines, web scraping with structured fallbacks, and healthcare HL7 integration tooling.",
+    tags: ["n8n", "Celery", "HL7", "Integrations"],
+  },
+];
+
+const steps = [
+  { n: "01", title: "Brief", desc: "You send a short description of the problem, current stack, and timeline." },
+  { n: "02", title: "Scope", desc: "I reply with questions, then a fixed scope or retainer proposal — deliverables, milestones, price." },
+  { n: "03", title: "Build", desc: "Weekly demos and async updates. Code in your repo from day one; CI, tests, and docs included." },
+  { n: "04", title: "Hand-off", desc: "Deployment, documentation, and a hand-off call. Optional retainer for maintenance." },
+];
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Mubashir Rehman — Backend & AI Engineering Services",
+  url: "https://mubashir-rehman.is-a.dev/services",
+  provider: { "@type": "Person", name: "Mubashir Rehman" },
+  areaServed: "Worldwide (remote)",
+  serviceType: [
+    "Backend development",
+    "AI/LLM integration",
+    "ERP/HRMS customization",
+    "Workflow automation",
+  ],
+};
+---
+
+<PageLayout
+  title="Services"
+  description="Hire Mubashir Rehman for backend APIs, AI/LLM features, ERP/HRMS customization, and automation — fixed-scope projects or ongoing retainer, remote, any timezone."
+  canonicalPath="/services"
+  schema={serviceSchema}
+>
+  <section class="border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-20">
+      <p class="eyebrow">For clients</p>
+      <h1 class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+        Production engineering, scoped to your problem.
+      </h1>
+      <p class="mt-5 max-w-[65ch] text-lg text-muted-foreground">
+        The same standards I hold as a full-time backend engineer — clean contracts,
+        failure handling, zero-downtime deploys — available as fixed-scope projects or an
+        ongoing retainer. Remote, any timezone.
+      </p>
+      <div class="mt-8">
+        <a
+          href={`mailto:${profile.email}?subject=Project%20brief`}
+          class="press-feedback inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          Send a project brief
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- What I build -->
+  <section aria-labelledby="offerings-heading" class="border-b border-border bg-card">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <p class="eyebrow reveal">Offerings</p>
+      <h2 id="offerings-heading" class="reveal mt-3 text-3xl font-bold tracking-tight">
+        What I build
+      </h2>
+      <div class="reveal-stagger mt-10 grid gap-5 md:grid-cols-2">
+        {
+          services.map((s) => (
+            <div class="reveal rounded-lg border border-border bg-background p-6">
+              <h3 class="text-lg font-semibold tracking-tight">{s.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
+              <div class="mt-4 flex flex-wrap gap-1.5">
+                {s.tags.map((t) => (
+                  <span class="chip">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Engagement models -->
+  <section aria-labelledby="models-heading" class="border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <p class="eyebrow reveal">Engagement</p>
+      <h2 id="models-heading" class="reveal mt-3 text-3xl font-bold tracking-tight">
+        Two ways to work together
+      </h2>
+      <div class="reveal-stagger mt-10 grid gap-5 md:grid-cols-2">
+        <div class="reveal rounded-lg border border-border bg-card p-7">
+          <h3 class="text-lg font-semibold tracking-tight">Fixed-scope project</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+            A defined deliverable with milestones and a fixed price. Best for a new API,
+            an AI feature, an ERP customization, or an integration with a clear finish line.
+          </p>
+          <ul class="mt-4 space-y-2 text-sm text-muted-foreground">
+            <li class="flex items-start gap-2.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-primary" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Scoped proposal before any commitment
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-primary" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Weekly demos; code in your repo from day one
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-primary" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Docs, tests, and deployment included
+            </li>
+          </ul>
+        </div>
+        <div class="reveal rounded-lg border border-border bg-card p-7">
+          <h3 class="text-lg font-semibold tracking-tight">Retainer / contract</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+            Ongoing part-time or hourly engineering. Best when you need a backend owned,
+            systems kept healthy, and features shipped every week without a full-time hire.
+          </p>
+          <ul class="mt-4 space-y-2 text-sm text-muted-foreground">
+            <li class="flex items-start gap-2.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-primary" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Fixed weekly hours, any timezone overlap
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-primary" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Async-first: updates in your Slack/tracker
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-primary" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Cancel monthly — no lock-in
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section aria-labelledby="process-heading" class="border-b border-border bg-card">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <p class="eyebrow reveal">Process</p>
+      <h2 id="process-heading" class="reveal mt-3 text-3xl font-bold tracking-tight">
+        How it works
+      </h2>
+      <ol class="reveal-stagger mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          steps.map((s) => (
+            <li class="reveal rounded-lg border border-border bg-background p-5">
+              <p class="metric-value text-sm text-primary">{s.n}</p>
+              <h3 class="mt-2 font-semibold tracking-tight">{s.title}</h3>
+              <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="reveal text-3xl font-bold tracking-tight">Have something in mind?</h2>
+        <p class="reveal mt-4 text-muted-foreground">
+          Two sentences about your problem is enough to start.
+        </p>
+        <div class="reveal mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href={`mailto:${profile.email}?subject=Project%20brief`}
+            class="press-feedback inline-flex items-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            {profile.email}
+          </a>
+          <a
+            href={profile.socialLinks.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="press-feedback inline-flex items-center rounded-full border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-accent"
+          >
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>

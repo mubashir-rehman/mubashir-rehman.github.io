@@ -22,6 +22,9 @@ export default defineConfig({
     }),
   ],
   vite: {
+    // Allow overriding the Vite cache location (e.g. sandboxed/CI environments
+    // where node_modules/.vite is not writable). No effect when unset.
+    ...(process.env.VITE_CACHE_DIR ? { cacheDir: process.env.VITE_CACHE_DIR } : {}),
     resolve: {
       alias: {
         "@": "/src",
