@@ -1,0 +1,70 @@
+---
+/**
+ * Navbar.astro — fixed top navigation (Engineering Minimal).
+ * Static HTML; theme toggle is the only island.
+ * Active state derived from Astro.url.pathname at build time.
+ */
+import ThemeToggle from "@/components/ThemeToggle";
+
+const links = [
+  { href: "/projects", label: "Work" },
+  { href: "/services", label: "Services" },
+  { href: "/about", label: "About" },
+  { href: "/journal", label: "Blog" },
+  { href: "/contact", label: "Contact" },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) => path === href || path.startsWith(href + "/");
+---
+
+<header
+  class="fixed inset-x-0 top-0 z-[100] h-16 border-b border-border bg-background/85 backdrop-blur-md"
+>
+  <nav
+    class="mx-auto flex h-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6"
+    aria-label="Main"
+  >
+    <!-- Logo -->
+    <a
+      href="/"
+      class="font-mono text-sm font-semibold tracking-tight text-foreground transition-colors hover:text-primary"
+      aria-label="Mubashir Rehman — home"
+    >
+      mubashir<span class="text-primary">.</span>rehman
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden items-center gap-1 md:flex">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            aria-current={isActive(l.href) ? "page" : undefined}
+            class:list={[
+              "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+              isActive(l.href)
+                ? "text-primary"
+                : "text-muted-foreground hover:bg-accent hover:text-foreground",
+            ]}
+          >
+            {l.label}
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="flex items-center gap-2">
+      <ThemeToggle client:load />
+      <!-- Primary nav CTA -->
+      <a
+        href="/resume/Mubashir-Rehman-Backend.pdf"
+        class="press-feedback hidden items-center gap-2 rounded-full bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:inline-flex"
+        download
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+        Résumé
+      </a>
+    </div>
+  </nav>
+</header>

@@ -16,9 +16,10 @@
 
 ## Key source materials (on user's machine, outside repo)
 
-- **Master CV (source of truth):** `~/Downloads/resumes/Mubashir_Rehman_Master_CV_Source_of_Truth_Export.md` — positioning, role-segmented tailoring inventory, summary variants, and the **honesty/verification notes** (lines ~504–567). Canonical brain.
-- **Clean role-bucket résumés:** `~/Downloads/files (10) (1)/` — `Mubashir_Rehman_Resume_AI_Backend.pdf`, `..._Backend.pdf`, `..._ERP_HRMS.pdf`. (No clean Full-Stack bucket existed → drafting one.)
-- **All tailored résumés:** `~/Downloads/resumes/` (30+ role-specific variants).
+- **Résumé-tailoring workspace (NEW, 2026-06-28):** `~/development/resume-tailoring/` — a separate **git repo** with its own `CLAUDE.md`. Holds everything below.
+- **Master CV (source of truth):** `~/development/resume-tailoring/master-cv.md` (renamed; canonical) — positioning, role-segmented tailoring inventory, summary variants, and the **honesty/verification notes** section. Canonical brain. (Stale backup copy still in `~/Downloads/resumes/`.)
+- **Clean role-bucket résumés:** `~/development/resume-tailoring/templates/` — AI_Backend / Backend / ERP_HRMS (`.pdf` + `.docx`). Format references only.
+- **All tailored résumés:** `~/development/resume-tailoring/submitted-applications/` (39 files — history/audit trail).
 - **HireTrack project (to feature):** `~/development/job-application-tracker` — repo `github.com/mubashir-rehman/job-application-tracker`, live `https://job-application-tracker-sigma-liard.vercel.app/`. Stack: React 19, Vite 6, **LangGraph** (`@langchain/langgraph`), Supabase (Auth + RLS), `@google/genai`, client-side `docx`/`mammoth`/`pdfjs`, PWA. BYOK, 5 providers.
 
 ## Integrity rules (reconciliation)
@@ -41,7 +42,62 @@ Reframe these flagged claims as scope, not verified outcomes (per Master CV hone
   `Mubashir-Rehman-AI-Backend.pdf`, `Mubashir-Rehman-Backend.pdf`, `Mubashir-Rehman-ERP-HRMS.pdf` (paths already referenced in roles.json). Generate Full-Stack PDF from the .md.
 - [ ] **TODO:** user to review reconciled metrics and flag any he has *verified* and wants restored as hard numbers.
 
-### Phase 2 — Static HTML rendering (the LLM/SEO core) — ⬜ not started
+### Phase 2 — Static HTML rendering (the LLM/SEO core) — 🟡 Stage 1 DONE
+**Stage 1 (Foundation + Home + Role pages) complete & verified (2026-06-27):**
+- `PageLayout.astro` + `src/components/astro/` chrome (Navbar/BottomNav/Footer) + kit
+  (Section/Card/Badge/Metric/ProjectCard/RoleCard); global islands `ThemeToggle`,
+  `ThemeFABIsland`, `SakuraPetalsIsland` (localStorage + `themechange` event, no ThemeProvider).
+- `index.astro` = responsive native-Astro Home (hero → 6 metrics → 4 role cards → featured
+  projects → experience → publication → contact). `for/[role].astro` ×4 + FAQPage/ProfilePage JSON-LD.
+- Coexistence: removed `/` route from `ReactApp`; chrome Home links hard-nav; deleted
+  `Landing.tsx` + `mobile/Landing.tsx`. Build = 13 pages, 0 errors; body content confirmed static.
+- Build + content-in-body + Playwright QA (0 console errors) all PASS functionally.
+- **⛔ UI REJECTED by user (2026-06-27) — DO NOT COMMIT Stage 1 as-is.** The look is poor.
+  Concrete problems seen on the sakura-theme home screenshot (`scratchpad/qa/home-desktop.png`):
+  1. **Hero `<h1>` "Mubashir Rehman" is CLIPPED under the fixed navbar** — the Astro home/hero
+     has no top offset to clear the fixed `Navbar.astro` (need `pt` on the hero / main, like the
+     old React pages had `pt-24`). Real bug, theme-independent.
+  2. **Metrics use serif numerals + an unbalanced 2-column floaty layout** — looks dated and
+     sparse; weak alignment. Rethink the metric/snapshot treatment (cards? even grid? sans-serif
+     tabular numbers?).
+  3. **SakuraPetals render as sparse scattered ovals** — read as debris/seeds, not elegant petals;
+     looks cheap. Revisit density/shape/opacity or the petal SVG.
+  4. **Excessive vertical whitespace + weak hierarchy** — hero feels empty; sections float.
+  5. The **"Backend Engineer · AI/ML · Cloud · Systems ⌄"** subhead + chevron under the tagline
+     looks redundant/awkward — reconsider or remove.
+  6. Overall: generic, not recruiter-grade/premium.
+- **RESUME PLAN (next session):** dedicated **design/polish pass on the Astro pages BEFORE
+  committing or continuing Stage 2.2.** Only commit once the user likes the look. The React pages
+  (`/about` etc.) are untouched, so reverting = restore `index.astro` to mount ReactApp.
+  - **LOCKED (2026-06-27): DROP THE SAKURA THEME ENTIRELY** (minimize engineering effort). Themes
+    become **light + dark only**. Remove from the system: `SakuraPetals`/`SakuraPetalsIsland`,
+    sakura branch in `ThemeToggle`/`ThemeFAB`/`ThemeProvider`, sakura CSS tokens + `.sakura-only`
+    rules in `index.css`, the navbar/footer sakura decorations, and the 3-theme cycle → 2-theme.
+    (This also kills the "cheap petals" UI problem.) `fortyRules.json` footer quote is separate —
+    keep unless we decide otherwise.
+  - **LOCKED: drive the UI via the `/ui-ux-pro-max:ui-ux-pro-max` skill** — use it to decide
+    style/palette/typography/layout for the Astro pages, then implement. (Still fix the hero-clipped-
+    under-navbar bug, rework the serif/floaty metrics, tighten spacing/hierarchy as part of that.)
+- Résumé PDFs still absent in `public/resume/` (role-page download buttons 404).
+- **Stage 2.2 remaining:** About, Projects (vanilla filter), Contact (form island), Journal →
+  Astro; then delete `ReactApp` shell entirely + remove `client:only` mounts.
+
+- **2026-07-12 — Sakura dropped + Stage-1 UI polish pass (branch `revamp/stage2-polish`).**
+  - ✅ **Sakura theme removed system-wide** (per lock): deleted `SakuraPetals`/`SakuraPetalsIsland`
+    + `public/giscus-sakura.css`; `ThemeToggle`/`ThemeFABIsland`/`ThemeProvider`/`ThemeFAB` are now
+    a 2-state **light ↔ dark** toggle (no `Flower2`); removed sakura CSS tokens + `.sakura-only`
+    rules + petal keyframes from `index.css`; stripped sakura decorations from `astro/Navbar.astro`,
+    `astro/Footer.astro`, `Navbar.tsx`, `Footer.tsx`; removed sakura giscus branch in `Comments.tsx`;
+    FOUC scripts (`Base.astro`) + `ThemeProvider` migrate any legacy `"sakura"` value → `light`;
+    updated `AskMe.tsx` copy. Build green (13 pages), no new lint errors.
+  - ✅ **Home polish (addressed the 6 rejection points):** metrics → sans-serif tabular-nums in an
+    even carded grid (was serif/floaty) with a "By the numbers" eyebrow; hero height set to
+    `calc(100vh-4rem)` + `pt-16` on `<main>` so the `<h1>` clears the fixed navbar (clip fixed);
+    petals gone; tightened hero whitespace. Note: the LOCKED `ui-ux-pro-max` skill was NOT used
+    this pass (kept edits surgical); **visual sign-off still pending** — no browser automation was
+    available in-session, verified structurally against built HTML only.
+
+### Phase 2 (orig notes) — Static HTML rendering — ⬜
 The big architectural fix: pages currently render `client:only="react"` → **crawlers/LLMs see an empty `<body>`.** Convert content-heavy pages to **native Astro (server-rendered HTML)** from the JSON, keeping React islands only for interactivity (theme FAB, project filter, AskMe, animations).
 - [ ] `src/pages/index.astro` → server-render Home sections: Hero → Snapshot → **4 role-track cards** → Featured projects → Experience → Publication → Contact.
 - [ ] `src/pages/for/[role].astro` → NEW dynamic route, statically generated for the 4 roles (uses roles.json + projects.json).
@@ -49,14 +105,54 @@ The big architectural fix: pages currently render `client:only="react"` → **cr
 - [ ] Keep journal/habits/hobbies as React islands (not SEO-critical).
 - Note: current React pages live in `src/components/pages/` (+ `mobile/` variants). `ReactApp.tsx` uses BrowserRouter. Decide: keep islands for interactive widgets vs full Astro rewrite. See `CLAUDE.md` for the Astro-island architecture.
 
-### Phase 3 — GEO / technical SEO — ⬜ not started
-- [ ] `public/llms.txt` — concise machine-readable summary (identity, 4 tracks, top projects, contact) for LLM ingestion.
-- [ ] `public/robots.txt` — explicitly allow `GPTBot`, `ClaudeBot`, `PerplexityBot`, `OAI-SearchBot`, `Google-Extended`; fix sitemap URL → `sitemap-index.xml` (Astro sitemap, not old static `sitemap.xml`).
-- [ ] Schema: expand `Person` (hasOccupation, award, fuller knowsAbout), add **FAQPage** per role page (FAQ content already in roles.json), add **SoftwareSourceCode** schema for HireTrack. Files: `src/layouts/Base.astro`, `src/components/SEO.tsx`.
+### Phase 3 — GEO / technical SEO — ✅ done (2026-07-12, branch `revamp/stage2-polish`)
+- [x] `public/llms.txt` — machine-readable summary (identity, 4 tracks, featured projects, research, contact), generated from JSON.
+- [x] `public/robots.txt` — explicitly allows `GPTBot`, `OAI-SearchBot`, `ChatGPT-User`, `ClaudeBot`, `Claude-Web`, `anthropic-ai`, `PerplexityBot`, `Google-Extended`, `Applebot-Extended`, `CCBot`; `Sitemap:` → `sitemap-index.xml`; links `llms.txt`. Deleted stale static `public/sitemap.xml`.
+- [x] Also removed the site-wide `X-Robots-Tag: noindex` from `public/_headers` (it opposed the ranking goal; per-page canonical noindex lives in `Base.astro`). **Flagged to user** — likely inert on GitHub Pages, confirm hosting.
+- [x] Schema: expanded `Person` (hasOccupation + SOC category, nationality, image, fuller knowsAbout) in `Base.astro`; added **ScholarlyArticle** (CSSP paper) + **SoftwareSourceCode** (HireTrack) to the Home `schema` array, both built from JSON. **FAQPage + ProfilePage** per role page were already present in `for/[role].astro`. (`SEO.tsx` untouched — home/role schema lives in the Astro pages.)
 
 ### Phase 4 — Recruiter nav & hero polish — ⬜ not started
 - [ ] Navbar (`src/components/Navbar.tsx` + `BottomNav.tsx`): add **"Hire me for ▾"** (4 tracks) + prominent **Résumé** download; keep Journal/Habits/Hobbies secondary.
 - [ ] Hero (`src/components/pages/Landing.tsx` + `mobile/Landing.tsx`): rebuild for 10-second scan — title, remote-availability badge, value prop, defensible metrics, 3 CTAs (View Work / Download Résumé / Contact).
+
+### Phase 5 — Visibility (SEO/GEO) per Google's 2026 guidance — 🟡 diagnosed, action pending
+
+> **Reference docs captured in-repo:** [`docs/seo-references/`](docs/seo-references/)
+> (SEO starter guide, creating-helpful-content, AI-optimization-guide,
+> using-gen-ai-content — fetched 2026-07-12; each file lists its source URL).
+
+**Audit findings (2026-07-12, measured on `dist/public`):**
+- **⛔ #1 problem — blank `<body>` on 4 pages.** About / Projects / Journal /
+  Contact are still `client:only` React → **0 chars of body text** in static HTML
+  (Home ≈ 8.3k, `/for/*` ≈ 6k). Google's rule: *"see the page the same way an
+  average user does"*; AI features require a page *"indexed and eligible to be
+  shown with a snippet."* These pages — the ones a recruiter/LLM would cite — are
+  effectively invisible. **This is exactly Phase 2.2.** Titles/descriptions already
+  render fine in `<head>`; only the body is missing.
+- **`llms.txt` does nothing for Google.** The AI-optimization guide **explicitly
+  ignores `llms.txt`** ("no AI text files… including llms.txt"). Keep it — ChatGPT
+  / Perplexity / Claude *do* fetch it — but it is **not** a Google lever. For
+  Google: ordinary indexable HTML + snippet eligibility only.
+- **Zero images.** Static HTML ships **0 `<img>`** and there's no profile photo;
+  `Person.image` currently points at the generic OG card. Both guides call for
+  high-quality images + `alt` text (also unlocks Google Images + richer AI cards).
+
+**Prioritised plan (highest leverage first):**
+- [ ] **Do Phase 2.2** (static-render About → Projects → Journal → Contact). This is
+  the single change that moves Google + AI-Overview visibility. Start with
+  **Projects + About** (most recruiter/LLM signal).
+- [ ] Add a **real profile photo** (fix `Person.image` in `Base.astro`) + **project
+  screenshots** with descriptive `alt` text.
+- [ ] **E-E-A-T / helpful-content** (not a ranking dial, but the personal-site
+  levers): visible **author byline** + first-person About with credentials; keep
+  leaning on first-hand **journal** + project write-ups; keep the honesty/integrity
+  framing (= the Trust signal). E-E-A-T is **NOT** a direct ranking factor.
+- [ ] **Search Console** (already verified via `public/google…​.html`): submit
+  `sitemap-index.xml`; run **URL Inspection** on `/about` + `/projects` to confirm
+  the blank-body issue; watch the **Generative AI performance report**. No
+  third-party tool has real Google AI-ranking data.
+- [ ] AI-content disclosure: content is human-authored → compliant; only add a light
+  disclosure if a section becomes substantially AI-assisted.
 
 ---
 
@@ -131,9 +227,58 @@ The big architectural fix: pages currently render `client:only="react"` → **cr
   - **NEW FLAG (journal prose):** `journal.json` excerpt still says "shipping 11K lines" — personal
     dated post; left as voice, flag only.
 
+- **2026-06-27 — Phase 2 kicked off (executor: Sonnet agent).** Approved architecture:
+  proper Astro islands — content rendered as native Astro HTML from JSON at build; React kept
+  only as small islands (AskMe, theme toggle, SakuraPetals). Retire the one-`client:only`-shell.
+  Nav = Astro MPA + `<ClientRouter />`. Locked decisions: **(1) collapse desktop+mobile into ONE
+  responsive design** (drop the `useMobile()` dual-component split); **(2) staged scope** — do
+  Foundation + Home + Role pages first, then About/Projects/Contact/Journal in Phase 2.2;
+  (3) CSS scroll-reveal (not framer-motion); (4) vanilla-JS project filter.
+  Stage-1 deliverables: `PageLayout.astro` + Astro chrome + global islands + component kit;
+  `index.astro` responsive Astro Home; `/for/[role].astro` ×4 (+ FAQPage schema). Coexistence
+  rule: migrated routes owned by Astro; remove `/` route from `ReactApp` and hard-link to it.
+
+- **2026-06-28 — NEW EVIDENCE: the HL7 Platform (name under NDA) → site now UNDER-claims.** Verified via git that
+  **the HL7 Platform (name under NDA)** (TransData, Jan–Mar 2026) is real production full-stack work — Mubashir is **top
+  contributor (~248 commits)** on a Mirth/NextGen-Connect-style **HL7 healthcare integration**
+  platform: **React 19 + TypeScript + Vite** frontend, **Node.js + TypeScript** Express-style BFF
+  (Sequelize, Jest), proxying the platform's server API; PHI-access auditing, real-time message-
+  trends dashboards, accessibility (ARIA/focus/keyboard). This means **production TypeScript +
+  Node.js are now defensible** (the earlier reconciliation that said "no production Node.js/TS" is
+  outdated). Master CV `.md` + the résumé-tailoring prompt (`~/development/resume-tailoring/resume_tailoring_system_prompt.md`)
+  already updated; **Master CV `.pdf`/`.docx` still need regenerating from the `.md`.**
+  - **WEBSITE TODO (do alongside/after the UI pass):**
+    1. Add **the HL7 Platform (name under NDA)** to `src/data/projects.json` (healthcare HL7, full-stack React+Node/TS,
+       top contributor; honest framing — ops tooling not clinical software, PHI audit *features*
+       not HIPAA ownership, no invented metrics). Tag roles `["full-stack","backend"]` (+ healthcare).
+    2. Strengthen the **full-stack** role page/pitch in `roles.json` with real production TS+Node
+       (the HL7 Platform (name under NDA) + HireTrack), and consider a **healthcare-integration** angle.
+    3. Add the HL7 Platform (name under NDA) + "production TypeScript/Node.js" to `AskMe.tsx` grounding context; revisit
+       `profile.json` skills (add TypeScript/Node.js/React/Frontend) — mirror the Master CV update.
+    4. Reconcile honestly: the HL7 Platform (name under NDA) impact metrics NOT established (describe scope/ownership only).
+
 ## Watch-outs when resuming
 - Don't break components reading `profile.json` — keys preserved; only added keys + reframed values.
 - `projects.json` now has a `roles` array per project — Projects.tsx filtering uses `tags`, unaffected.
 - roles.json résumé paths point to PDFs not yet placed in `public/resume/`.
 - Repo is on `main`; branch before committing per repo policy. Docs already migrated to Astro (see `CLAUDE.md`).
-- Nothing in this revamp is committed yet — all changes are in the working tree.
+
+### Resume point — 2026-07-12 (branch `revamp/stage2-polish`, NOT merged to `main`)
+Committed this session (5 commits on the branch):
+1. `portfolio (enhancement)` — Stage-2 static home + role pages; **sakura dropped** (light/dark); home polish.
+2. `SEO/GEO` — `llms.txt`, AI-crawler `robots.txt`, sitemap fix, removed sitewide `noindex`.
+3. `SEO/GEO` — enriched `Person` + added `ScholarlyArticle` (paper) & `SoftwareSourceCode` (HireTrack).
+4. `docs (task)` — marked Phase 3 done.
+5. `docs` — captured Google SEO/GEO refs + Phase 5 visibility plan (this update).
+
+**⚠️ Two things still need the user:**
+- **Visual sign-off on the Astro home is pending** — the Stage-1 look was rejected once and this
+  session had **no browser automation** (verified structurally only). Next session is **Claude
+  cowork with the Playwright MCP + Chrome extension** → *screenshot the home (light + dark) at
+  `npm run preview` / `localhost:4321` and confirm before building more UI on top.*
+- Confirm the `_headers` `noindex` removal is fine for hosting (likely inert on GitHub Pages).
+
+**Highest-leverage next task = Phase 2.2** (static-render About/Projects/Journal/Contact) — see
+Phase 5 for why (those pages currently ship an empty `<body>` = invisible to Google + AI).
+Skill note: `ui-ux-pro-max` was **not** used for the home polish (kept surgical) — still LOCKED
+for the fuller design pass if wanted.

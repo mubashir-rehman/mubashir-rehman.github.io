@@ -59,19 +59,32 @@ const personSchema = {
   jobTitle: "Backend Software Engineer",
   description: BASE_DESC,
   url: SITE,
+  image: OG_IMAGE,
   email: "mubashirrehman66@gmail.com",
+  nationality: { "@type": "Country", name: "Pakistan" },
   address: {
     "@type": "PostalAddress",
     addressLocality: "Lahore",
-    addressCountry: "Pakistan",
+    addressCountry: "PK",
   },
   alumniOf: {
     "@type": "EducationalOrganization",
     name: "Information Technology University",
   },
+  hasOccupation: {
+    "@type": "Occupation",
+    name: "Backend Software Engineer",
+    occupationalCategory: "15-1252.00",
+    skills:
+      "Python, Django, Django REST Framework, FastAPI, PostgreSQL, Redis, " +
+      "Docker, AWS, LLM/RAG systems, LangChain/LangGraph, REST API design, " +
+      "microservices, ERPNext/Frappe, CI/CD",
+  },
   knowsAbout: [
-    "Python","Django","FastAPI","PostgreSQL","Docker",
-    "AWS","Redis","AI/ML","Distributed Systems","Microservices",
+    "Python","Django","Django REST Framework","FastAPI","PostgreSQL","Redis",
+    "Docker","AWS","REST API design","Microservices","Distributed Systems",
+    "Large Language Models","Retrieval-Augmented Generation","LangChain","LangGraph",
+    "pgvector","Machine Learning","ERPNext","Frappe","HL7","TypeScript","React",
   ],
   sameAs: [
     "https://github.com/mubashir-rehman",
@@ -86,13 +99,33 @@ const personSchema = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Theme FOUC prevention — runs synchronously before first paint -->
+    <!-- Theme FOUC prevention — runs synchronously before first paint.
+         Also re-applies after Astro view transitions (astro:after-swap),
+         because the swap replaces <html> and drops the theme class. -->
     <script is:inline>
       (function () {
-        var t = localStorage.getItem("theme") || "light";
-        document.documentElement.classList.add(t);
+        function applyTheme() {
+          var t = localStorage.getItem("theme");
+          // Only light/dark are supported; migrate any legacy/unknown value.
+          if (t !== "light" && t !== "dark") {
+            t = "light";
+            localStorage.setItem("theme", t);
+          }
+          document.documentElement.classList.remove("light", "dark");
+          document.documentElement.classList.add(t);
+        }
+        applyTheme();
+        document.addEventListener("astro:after-swap", applyTheme);
       })();
     </script>
+
+    <!-- Fonts: Inter (UI) + JetBrains Mono (technical accents) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+    />
 
     <title>{fullTitle}</title>
     <meta name="description" content={description} />

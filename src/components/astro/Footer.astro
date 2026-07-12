@@ -1,0 +1,133 @@
+---
+/**
+ * Footer.astro — Engineering Minimal.
+ * Four columns: identity/availability · navigate · hire me for (role tracks) · connect.
+ * All data from JSON at build time.
+ */
+import profile from "@/data/profile.json";
+import roles from "@/data/roles.json";
+
+const nav = [
+  { href: "/projects", label: "Work" },
+  { href: "/services", label: "Services" },
+  { href: "/about", label: "About" },
+  { href: "/journal", label: "Blog" },
+  { href: "/contact", label: "Contact" },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-card">
+  <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      <!-- Identity -->
+      <div>
+        <a href="/" class="font-mono text-sm font-semibold text-foreground">
+          mubashir<span class="text-primary">.</span>rehman
+        </a>
+        <p class="mt-3 max-w-[28ch] text-sm leading-relaxed text-muted-foreground">
+          {profile.anchorTagline}.
+        </p>
+        <p class="mt-4 inline-flex items-center gap-2 text-xs text-muted-foreground">
+          <span class="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true"></span>
+          {profile.availabilityNote}
+        </p>
+      </div>
+
+      <!-- Navigate -->
+      <nav aria-label="Footer">
+        <h2 class="eyebrow">Navigate</h2>
+        <ul class="mt-4 space-y-2.5">
+          {
+            nav.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <!-- Role tracks -->
+      <nav aria-label="Hire me for">
+        <h2 class="eyebrow">Hire me for</h2>
+        <ul class="mt-4 space-y-2.5">
+          {
+            roles.map((r) => (
+              <li>
+                <a
+                  href={`/for/${r.slug}`}
+                  class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {r.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <!-- Connect -->
+      <div>
+        <h2 class="eyebrow">Connect</h2>
+        <ul class="mt-4 space-y-2.5">
+          <li>
+            <a
+              href={profile.socialLinks.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              GitHub
+            </a>
+          </li>
+          <li>
+            <a
+              href={profile.socialLinks.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              LinkedIn
+            </a>
+          </li>
+          <li>
+            <a
+              href={`mailto:${profile.email}`}
+              class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {profile.email}
+            </a>
+          </li>
+          <li>
+            <a
+              href={profile.socialLinks.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              WhatsApp
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="mt-12 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 sm:flex-row sm:items-center"
+    >
+      <p class="text-xs text-muted-foreground">
+        &copy; {year} Mubashir Rehman · {profile.location}
+      </p>
+      <p class="font-mono text-xs text-muted-foreground">
+        Built with Astro · Open source
+      </p>
+    </div>
+  </div>
+</footer>

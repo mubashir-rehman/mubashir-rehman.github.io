@@ -1,0 +1,34 @@
+---
+interface Role {
+  slug: string;
+  label: string;
+  tagline: string;
+  skills: string[];
+}
+
+interface Props {
+  role: Role;
+  class?: string;
+}
+
+const { role, class: className = "" } = Astro.props;
+---
+<a
+  href={`/for/${role.slug}`}
+  class={`press-feedback group flex flex-col rounded-lg border border-border bg-card p-6 transition-colors hover:border-primary/50 ${className}`}
+>
+  <h3 class="text-lg font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+    {role.label}
+  </h3>
+  <p class="mt-2 text-sm text-muted-foreground leading-relaxed">
+    {role.tagline}
+  </p>
+  <div class="mt-4 flex flex-wrap gap-1.5">
+    {role.skills.slice(0, 5).map((skill) => (
+      <span class="chip">{skill}</span>
+    ))}
+  </div>
+  <span class="mt-4 text-sm font-medium text-primary group-hover:underline">
+    View profile →
+  </span>
+</a>

@@ -1,0 +1,14 @@
+---
+interface Props {
+  id?: string;
+  class?: string;
+  reveal?: boolean;
+}
+const { id, class: className = "", reveal = false } = Astro.props;
+---
+<section
+  {id}
+  class={`py-16 px-4 sm:px-6 max-w-6xl mx-auto ${reveal ? "reveal" : ""} ${className}`}
+>
+  <slot />
+</section>

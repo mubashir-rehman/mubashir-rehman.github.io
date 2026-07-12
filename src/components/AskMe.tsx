@@ -185,7 +185,7 @@ Stack: Unity, C#, Android
 ### Personal Portfolio Website
 Stack: Astro 6, React 18, TypeScript, Tailwind CSS, Framer Motion, shadcn/ui, GitHub Actions
 - Astro pre-renders an SEO-optimized HTML shell per route, mounting React islands for interactivity
-- 3 themes (Sakura / Dark / Light); role-targeted landing pages; full SEO/GEO (JSON-LD, llms.txt, sitemap)
+- Light / dark themes; role-targeted landing pages; full SEO/GEO (JSON-LD, llms.txt, sitemap)
 - Fully static, deployed to GitHub Pages via CI/CD
 
 ## ACHIEVEMENTS

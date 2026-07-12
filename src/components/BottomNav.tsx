@@ -27,11 +27,17 @@ export default function BottomNav() {
           const isActive =
             to === "/" ? pathname === "/" : pathname.startsWith(to);
 
+          // Home is now a static Astro page — use hard navigation
+          const LinkEl = to === "/" ? "a" : NavLink;
+          const linkProps =
+            to === "/"
+              ? { href: "/", "aria-label": label }
+              : { to, "aria-label": label };
+
           return (
-            <NavLink
+            <LinkEl
               key={to}
-              to={to}
-              aria-label={label}
+              {...(linkProps as any)}
               className="relative flex flex-1 items-center justify-center"
             >
               {/* Active pill wraps icon + label together */}
@@ -71,7 +77,7 @@ export default function BottomNav() {
                   {label}
                 </span>
               </motion.span>
-            </NavLink>
+            </LinkEl>
           );
         })}
       </nav>

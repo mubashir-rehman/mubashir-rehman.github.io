@@ -1,0 +1,14 @@
+---
+/**
+ * Badge.astro — thin wrapper over the canonical `.chip` class (see index.css).
+ * One chip style site-wide per design-system/MASTER.md; variants removed.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<span class={`chip ${className}`}>
+  <slot />
+</span>

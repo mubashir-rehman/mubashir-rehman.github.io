@@ -1,6 +1,13 @@
 ---
-import Base from "@/layouts/Base.astro";
-import ReactApp from "@/components/ReactApp";
+/**
+ * about.astro — static About page (Engineering Minimal).
+ * First-person, E-E-A-T-oriented: bio, skills, experience, education,
+ * publication with contribution note, achievements. All from profile.json.
+ */
+import PageLayout from "@/layouts/PageLayout.astro";
+import profile from "@/data/profile.json";
+
+const pub = profile.publications[0];
 
 const schema = {
   "@context": "https://schema.org",
@@ -18,11 +25,159 @@ const schema = {
 };
 ---
 
-<Base
+<PageLayout
   title="About"
   description="Mubashir Rehman — Backend Engineer in Lahore, Pakistan. Python, Django, FastAPI, AWS, Docker. Primary backend owner — 7 services, 60+ REST endpoints; co-author of peer-reviewed ML research (CSSP 2025)."
   canonicalPath="/about"
   schema={schema}
 >
-  <ReactApp client:only="react" />
-</Base>
+  <!-- Intro -->
+  <section class="border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-20">
+      <p class="eyebrow">About</p>
+      <h1 class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+        Hi, I'm Mubashir.
+      </h1>
+      <p class="mt-6 max-w-[70ch] text-lg leading-relaxed text-muted-foreground">
+        {profile.bio}
+      </p>
+      <p class="mt-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground">
+        <span class="h-2 w-2 rounded-full bg-primary" aria-hidden="true"></span>
+        {profile.remote}
+      </p>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section aria-labelledby="skills-heading" class="border-b border-border bg-card">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <p class="eyebrow reveal">Toolbox</p>
+      <h2 id="skills-heading" class="reveal mt-3 text-3xl font-bold tracking-tight">Skills</h2>
+      <div class="reveal-stagger mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          Object.entries(profile.skills).map(([group, items]) => (
+            <div class="reveal rounded-lg border border-border bg-background p-5">
+              <h3 class="font-mono text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                {group}
+              </h3>
+              <div class="mt-3 flex flex-wrap gap-1.5">
+                {(items as string[]).map((s) => (
+                  <span class="chip">
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section aria-labelledby="exp-heading" class="border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <p class="eyebrow reveal">Track record</p>
+      <h2 id="exp-heading" class="reveal mt-3 text-3xl font-bold tracking-tight">Experience</h2>
+      <ol class="mt-10">
+        {
+          profile.experience.map((job) => (
+            <li class="reveal grid gap-2 border-l-2 border-border py-7 pl-6 first:pt-0 last:pb-0 sm:grid-cols-[220px_1fr] sm:gap-8">
+              <div>
+                <p class="font-mono text-xs text-muted-foreground">{job.period}</p>
+                <p class="mt-1 text-sm font-semibold">{job.company}</p>
+                <p class="text-xs text-muted-foreground">{job.location}</p>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold tracking-tight">{job.role}</h3>
+                <ul class="mt-3 space-y-2">
+                  {job.highlights.map((h) => (
+                    <li class="flex items-start gap-2.5 text-sm leading-relaxed text-muted-foreground">
+                      <span class="mt-[0.55em] h-1 w-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Publication -->
+  {
+    pub && (
+      <section aria-labelledby="pub-heading" class="border-b border-border bg-card">
+        <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <p class="eyebrow reveal">Peer-reviewed research</p>
+          <h2 id="pub-heading" class="reveal mt-3 text-3xl font-bold tracking-tight">
+            Publication
+          </h2>
+          <div class="reveal mt-8 rounded-lg border border-border bg-background p-7">
+            <p class="font-mono text-xs text-muted-foreground">
+              {pub.journal} · {pub.date} · DOI {pub.doi}
+            </p>
+            <h3 class="mt-3 max-w-[75ch] text-lg font-semibold leading-snug tracking-tight">
+              {pub.title}
+            </h3>
+            <p class="mt-3 text-sm text-muted-foreground">{pub.authors}</p>
+            <p class="mt-1 text-sm text-muted-foreground">{pub.equalContribution}.</p>
+            <p class="mt-3 max-w-[75ch] text-sm leading-relaxed text-muted-foreground">
+              <span class="font-medium text-foreground">My contribution:</span> {pub.contribution}
+            </p>
+            <div class="mt-5 flex gap-4">
+              <a href={pub.springer} target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-primary hover:underline">
+                Springer
+              </a>
+              <a href={pub.arxiv} target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-primary hover:underline">
+                arXiv preprint
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Education + achievements -->
+  <section aria-labelledby="edu-heading">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <div class="grid gap-12 lg:grid-cols-2">
+        <div>
+          <p class="eyebrow reveal">Foundations</p>
+          <h2 id="edu-heading" class="reveal mt-3 text-3xl font-bold tracking-tight">Education</h2>
+          <ol class="mt-8 space-y-6">
+            {
+              profile.education.map((e) => (
+                <li class="reveal rounded-lg border border-border bg-card p-5">
+                  <p class="font-mono text-xs text-muted-foreground">{e.period}</p>
+                  <h3 class="mt-1.5 font-semibold tracking-tight">{e.degree}</h3>
+                  <p class="text-sm text-muted-foreground">
+                    {e.institution} · {e.location}
+                  </p>
+                  {e.note && <p class="mt-2 text-xs text-muted-foreground">{e.note}</p>}
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+        <div>
+          <p class="eyebrow reveal">Receipts</p>
+          <h2 class="reveal mt-3 text-3xl font-bold tracking-tight">Achievements</h2>
+          <ul class="mt-8 space-y-3">
+            {
+              profile.achievements.map((a) => (
+                <li class="reveal flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-primary" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+                  {a}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>

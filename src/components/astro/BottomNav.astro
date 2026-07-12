@@ -1,0 +1,73 @@
+---
+/**
+ * BottomNav.astro — mobile bottom navigation (md:hidden).
+ * Engineering Minimal: flat bar on card surface, semantic tokens only.
+ * 5 items max; icons + labels (nav-label-icon).
+ */
+
+const links = [
+  { href: "/", label: "Home", icon: "house" },
+  { href: "/projects", label: "Work", icon: "folder" },
+  { href: "/services", label: "Services", icon: "briefcase" },
+  { href: "/about", label: "About", icon: "user" },
+  { href: "/contact", label: "Contact", icon: "mail" },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+---
+
+<nav
+  class="fixed inset-x-0 bottom-0 z-[100] border-t border-border bg-background/95 backdrop-blur-md md:hidden"
+  aria-label="Mobile navigation"
+  style="padding-bottom: env(safe-area-inset-bottom);"
+>
+  <div class="flex h-16">
+    {
+      links.map(({ href, label, icon }) => {
+        const isActive = href === "/" ? path === "/" : path.startsWith(href);
+        return (
+          <a
+            href={href}
+            aria-label={label}
+            aria-current={isActive ? "page" : undefined}
+            class:list={[
+              "flex min-w-[44px] flex-1 flex-col items-center justify-center gap-1 transition-colors",
+              isActive ? "text-primary" : "text-muted-foreground",
+            ]}
+          >
+            {icon === "house" && (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+            )}
+            {icon === "folder" && (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+              </svg>
+            )}
+            {icon === "briefcase" && (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="20" height="14" x="2" y="7" rx="2" />
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+              </svg>
+            )}
+            {icon === "user" && (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            )}
+            {icon === "mail" && (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+            )}
+            <span class="text-[10px] font-medium leading-none">{label}</span>
+          </a>
+        );
+      })
+    }
+  </div>
+</nav>
