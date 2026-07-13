@@ -30,3 +30,9 @@ dist-ssr
 
 # Playwright MCP screenshot/output artifacts
 .playwright-mcp/
+
+# Astro build-time cache/types
+.astro/
+
+# Claude session config
+.claude/

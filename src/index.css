@@ -108,9 +108,22 @@
     background: hsl(var(--primary) / 0.2);
   }
 
-  /* Wire Tailwind Typography to theme tokens */
+  /* Themed scrollbar — thin, token-driven, adapts to light/dark.
+     scrollbar-color inherits, so nested scroll areas (chat panel) match too. */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+}
+
+@layer components {
+  /* Wire Tailwind Typography to theme tokens.
+     MUST live in the components layer: the typography plugin defines .prose
+     (light-mode grays) in this layer, and base-layer overrides lose to it —
+     that made blog posts unreadable in dark mode. Same layer + later source
+     order wins. */
   .prose {
-    --tw-prose-body:          hsl(var(--foreground));
+    --tw-prose-body:          hsl(var(--foreground) / 0.9);
     --tw-prose-headings:      hsl(var(--foreground));
     --tw-prose-lead:          hsl(var(--muted-foreground));
     --tw-prose-links:         hsl(var(--primary));
@@ -127,9 +140,7 @@
     --tw-prose-th-borders:    hsl(var(--border));
     --tw-prose-td-borders:    hsl(var(--border));
   }
-}
 
-@layer components {
   /* Mono eyebrow label — section markers, metric labels */
   .eyebrow {
     @apply font-mono text-xs font-medium uppercase tracking-[0.14em] text-primary;

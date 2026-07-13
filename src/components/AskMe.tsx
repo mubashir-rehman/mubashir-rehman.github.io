@@ -272,6 +272,14 @@ export default function AskMe() {
     }
   }, [open]);
 
+  // Re-focus input after a reply finishes — the textarea is disabled while
+  // loading, which drops focus; without this the user must click again.
+  useEffect(() => {
+    if (!loading && open && hasStarted) {
+      inputRef.current?.focus();
+    }
+  }, [loading, open, hasStarted]);
+
   const sendMessage = useCallback(async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || loading) return;
@@ -361,8 +369,8 @@ export default function AskMe() {
             exit={{ opacity: 0, scale: 0.92, y: 16 }}
             transition={{ type: "spring", stiffness: 400, damping: 30 }}
             className={[
-              "fixed z-50 flex flex-col overflow-hidden",
-              "bottom-[5.5rem] right-4 sm:bottom-24 sm:right-6",
+              "fixed z-[110] flex flex-col overflow-hidden",
+              "bottom-[calc(8.5rem+env(safe-area-inset-bottom,0px))] right-4 md:bottom-24 md:right-6",
               "w-[calc(100vw-2rem)] sm:w-[380px]",
               "h-[min(500px,calc(100dvh-7rem))]",
               "rounded-2xl border border-border bg-background shadow-2xl",
@@ -523,7 +531,9 @@ export default function AskMe() {
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.93 }}
         className={[
-          "fixed bottom-[5.5rem] right-4 sm:bottom-6 sm:right-6 z-50",
+          // Mobile: sit above the 64px bottom nav (+ safe area); desktop (md+, nav hidden): bottom corner.
+          // z-[110] keeps it above the bottom nav (z-[100]).
+          "fixed bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] right-4 md:bottom-6 md:right-6 z-[110]",
           "flex h-13 w-13 items-center justify-center",
           "h-[52px] w-[52px] rounded-full",
           "bg-primary text-primary-foreground shadow-lg shadow-primary/25",
