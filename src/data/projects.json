@@ -46,7 +46,10 @@
     "github": "https://github.com/mubashir-rehman/job-application-tracker",
     "demo": "https://job-application-tracker-sigma-liard.vercel.app/",
     "featured": true,
-    "roles": ["full-stack", "ai-backend"],
+    "roles": [
+      "full-stack",
+      "ai-backend"
+    ],
     "metrics": [
       "5 AI providers (BYOK)",
       "LangGraph JD pipeline",
@@ -73,7 +76,10 @@
     "github": "",
     "demo": "",
     "featured": true,
-    "roles": ["backend", "ai-backend"],
+    "roles": [
+      "backend",
+      "ai-backend"
+    ],
     "metrics": [
       "7 backend services",
       "60+ REST endpoints",
@@ -100,7 +106,10 @@
     "github": "",
     "demo": "",
     "featured": true,
-    "roles": ["ai-backend", "backend"],
+    "roles": [
+      "ai-backend",
+      "backend"
+    ],
     "metrics": [
       "~10 microservices",
       "6 chains analyzed",
@@ -127,7 +136,10 @@
     "github": "",
     "demo": "",
     "featured": true,
-    "roles": ["erp-hrms", "backend"],
+    "roles": [
+      "erp-hrms",
+      "backend"
+    ],
     "metrics": [
       "~200-employee workforce",
       "ZKTeco biometric sync",
@@ -151,7 +163,10 @@
     "github": "",
     "demo": "",
     "featured": true,
-    "roles": ["erp-hrms", "full-stack"],
+    "roles": [
+      "erp-hrms",
+      "full-stack"
+    ],
     "metrics": [
       "Custom doctypes + scripts",
       "Asana-style task tree",
@@ -174,7 +189,10 @@
     "github": "",
     "demo": "",
     "featured": false,
-    "roles": ["backend", "erp-hrms"],
+    "roles": [
+      "backend",
+      "erp-hrms"
+    ],
     "metrics": [
       "Mirth Connect web tooling",
       "Channel operations",
@@ -196,7 +214,9 @@
     "github": "",
     "demo": "",
     "featured": false,
-    "roles": ["ai-backend"],
+    "roles": [
+      "ai-backend"
+    ],
     "metrics": [
       "vLLM on 12GB VRAM",
       "LiteLLM OpenAI-compatible proxy",
@@ -218,7 +238,10 @@
     "github": "",
     "demo": "",
     "featured": false,
-    "roles": ["ai-backend", "backend"],
+    "roles": [
+      "ai-backend",
+      "backend"
+    ],
     "metrics": [
       "7-member team",
       "MindsDB + Databricks",
@@ -242,7 +265,9 @@
     "github": "",
     "demo": "https://link.springer.com/article/10.1007/s00034-025-03048-2",
     "featured": true,
-    "roles": ["ai-backend"],
+    "roles": [
+      "ai-backend"
+    ],
     "metrics": [
       "42 subjects · 6,131 segments",
       "R²=0.99 (Random Forest)",
@@ -267,7 +292,9 @@
     "github": "",
     "demo": "",
     "featured": false,
-    "roles": ["backend"],
+    "roles": [
+      "backend"
+    ],
     "metrics": [
       "Led team of 4",
       "10+ UAVs · 50Hz telemetry",
@@ -289,7 +316,9 @@
     "github": "",
     "demo": "",
     "featured": false,
-    "roles": ["backend"],
+    "roles": [
+      "backend"
+    ],
     "metrics": [
       "Normalized PostgreSQL schemas",
       "Authenticated data APIs",
@@ -313,7 +342,10 @@
     "github": "",
     "demo": "",
     "featured": false,
-    "roles": ["ai-backend", "full-stack"],
+    "roles": [
+      "ai-backend",
+      "full-stack"
+    ],
     "metrics": [
       "GPT-4 streaming",
       "RBAC + S3 storage",
@@ -335,7 +367,9 @@
     "github": "",
     "demo": "",
     "featured": false,
-    "roles": ["backend"],
+    "roles": [
+      "backend"
+    ],
     "metrics": [
       "VPC + EC2 + ECS automation",
       "ECS Fargate deployment",
@@ -355,7 +389,9 @@
     "github": "",
     "demo": "",
     "featured": false,
-    "roles": ["backend"],
+    "roles": [
+      "backend"
+    ],
     "metrics": [
       "50+ simultaneous jobs",
       "Fork/Exec isolation"
@@ -374,7 +410,9 @@
     "github": "",
     "demo": "",
     "featured": false,
-    "roles": ["backend"],
+    "roles": [
+      "backend"
+    ],
     "metrics": [
       "Redis + SQL persistence",
       "Delivery acknowledgments"
@@ -397,12 +435,38 @@
     "github": "https://github.com/mubashir-rehman/mubashir-rehman.github.io",
     "demo": "https://mubashir-rehman.is-a.dev",
     "featured": false,
-    "roles": ["full-stack"],
+    "roles": [
+      "full-stack"
+    ],
     "metrics": [
       "Astro static + React islands",
       "3 themes",
       "100% static",
       "CI/CD on push"
+    ]
+  },
+  {
+    "id": "quetta-tea",
+    "title": "The Quetta Tea 2.0 — Café Landing Site",
+    "description": "Marketing site for a rooftop chai café in Barkat Market, Lahore — designed, built, and deployed end to end. Astro 5 + Tailwind with a Swiper photo gallery, local-SEO metadata and sitemap, and geolocation-aware directions, shipped on Vercel. A small, real client-style engagement: from brief to live site.",
+    "tags": [
+      "Astro",
+      "Tailwind CSS",
+      "TypeScript",
+      "Swiper",
+      "Vercel",
+      "Local SEO"
+    ],
+    "github": "https://github.com/mubashir-rehman/the-quetta-tea-20",
+    "demo": "https://the-quetta-tea-20.vercel.app/",
+    "featured": false,
+    "roles": [
+      "full-stack"
+    ],
+    "metrics": [
+      "Designed → deployed end to end",
+      "Fully static Astro, zero backend",
+      "Local SEO metadata + sitemap"
     ]
   },
   {
