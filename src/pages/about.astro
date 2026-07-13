@@ -9,6 +9,18 @@ import profile from "@/data/profile.json";
 
 const pub = profile.publications[0];
 
+// Semantic Lucide icon per achievement (keyword match on the text).
+// Icon markup lives in the template below; this picks which one.
+function achievementIcon(text: string): string {
+  const t = text.toLowerCase();
+  if (t.includes("research") || t.includes("peer-reviewed") || t.includes("doi")) return "scroll-text";
+  if (t.includes("scholarship")) return "graduation-cap";
+  if (t.includes("open-sourced") || t.includes("open source")) return "package";
+  if (t.includes("team") || t.includes("led")) return "users";
+  if (t.includes("backend") || t.includes("services")) return "server";
+  return "award";
+}
+
 const schema = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
@@ -166,14 +178,39 @@ const schema = {
         <div>
           <p class="eyebrow reveal">Receipts</p>
           <h2 class="reveal mt-3 text-3xl font-bold tracking-tight">Achievements</h2>
-          <ul class="mt-8 space-y-3">
+          <ul class="mt-8 space-y-4">
             {
-              profile.achievements.map((a) => (
-                <li class="reveal flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-primary" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
-                  {a}
-                </li>
-              ))
+              profile.achievements.map((a) => {
+                const icon = achievementIcon(a);
+                return (
+                  <li class="reveal flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+                    <span
+                      class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
+                      aria-hidden="true"
+                    >
+                      {icon === "scroll-text" && (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5" /><path d="M15 8h-5" /><path d="M19 17V5a2 2 0 0 0-2-2H4" /><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" /></svg>
+                      )}
+                      {icon === "graduation-cap" && (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" /><path d="M22 10v6" /><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" /></svg>
+                      )}
+                      {icon === "package" && (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" /><path d="M12 22V12" /><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7" /><path d="m7.5 4.27 9 5.15" /></svg>
+                      )}
+                      {icon === "users" && (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                      )}
+                      {icon === "server" && (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2" ry="2" /><rect width="20" height="8" x="2" y="14" rx="2" ry="2" /><line x1="6" x2="6.01" y1="6" y2="6" /><line x1="6" x2="6.01" y1="18" y2="18" /></svg>
+                      )}
+                      {icon === "award" && (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526" /><circle cx="12" cy="8" r="6" /></svg>
+                      )}
+                    </span>
+                    <span class="pt-1">{a}</span>
+                  </li>
+                );
+              })
             }
           </ul>
         </div>
