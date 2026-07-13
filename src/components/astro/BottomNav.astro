@@ -16,12 +16,16 @@ const links = [
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 ---
 
-<!-- Opaque background (no backdrop-blur): blur smears/"stretches" during mobile
-     scroll repaints. translateZ(0) promotes it to its own layer for stable painting. -->
+<!-- Opaque background (no backdrop-blur): blur smears during mobile scroll repaints.
+     position:fixed anchors to the LAYOUT viewport, which Android Chrome resizes
+     asynchronously while the URL bar collapses/expands — bottom-fixed elements lag
+     behind the gesture. The inline script below pins the nav to the VISUAL viewport
+     via the visualViewport API so it stays glued during browser-UI animation. -->
 <nav
+  id="bottom-nav"
   class="fixed inset-x-0 bottom-0 z-[100] border-t border-border bg-background md:hidden"
   aria-label="Mobile navigation"
-  style="padding-bottom: env(safe-area-inset-bottom); transform: translateZ(0);"
+  style="padding-bottom: env(safe-area-inset-bottom); transform: translateZ(0); will-change: transform;"
 >
   <div class="flex h-16">
     {
@@ -73,3 +77,35 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
     }
   </div>
 </nav>
+
+<!-- Pin the nav to the visual viewport during Android URL-bar show/hide.
+     Compensates the gap between layout and visual viewport each frame.
+     Large offsets (soft keyboard) slide the nav out of the way instead. -->
+<script is:inline>
+  (function () {
+    function initBottomNavPin() {
+      var nav = document.getElementById("bottom-nav");
+      var vv = window.visualViewport;
+      if (!nav || !vv) return;
+      var raf = 0;
+      function place() {
+        raf = 0;
+        var offset = window.innerHeight - (vv.height + vv.offsetTop);
+        if (offset > 150) {
+          // Soft keyboard open — move the nav out of the way.
+          nav.style.transform = "translateY(100%)";
+        } else {
+          nav.style.transform = "translateY(" + -Math.max(0, offset) + "px) translateZ(0)";
+        }
+      }
+      function schedule() {
+        if (!raf) raf = requestAnimationFrame(place);
+      }
+      vv.addEventListener("resize", schedule);
+      vv.addEventListener("scroll", schedule);
+      place();
+    }
+    initBottomNavPin();
+    document.addEventListener("astro:page-load", initBottomNavPin);
+  })();
+</script>
