@@ -2,7 +2,6 @@
 
 **Full-Stack Engineer (Backend-Leaning)**
 
-Lahore, Pakistan · Open to remote (any timezone) · On-site in Lahore
 mubashirrehman66@gmail.com · +92 309 552 8384
 [Portfolio](https://mubashir-rehman.is-a.dev) · [GitHub](https://github.com/mubashir-rehman) · [LinkedIn](https://linkedin.com/in/mubashir-rehman)
 
@@ -71,10 +70,3 @@ Backend-leaning full-stack engineer with 3+ years building backend-heavy product
 
 **Evaluation of a Low-Cost Single-Lead ECG Module for Vascular Ageing Prediction** — *Circuits, Systems, and Signal Processing (CSSP)*, Springer, 2025 · co-author (equal contribution) · DOI [10.1007/s00034-025-03048-2](https://link.springer.com/article/10.1007/s00034-025-03048-2)
 Role: data collection, ML pipeline, and model training/evaluation (Random Forest, ResNet-18 transfer learning).
-
-<!--
-DRAFT NOTE (remove before publishing): This is the first-draft full-stack résumé in Markdown.
-PDF generation deferred. Metrics reconciled to Master CV honesty notes — verify any number
-against production data / source before external submission. roles.json points to
-/resume/Mubashir-Rehman-Full-Stack.pdf (to be generated from this .md).
--->

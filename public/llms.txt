@@ -24,6 +24,7 @@
 
 ## Featured projects
 
+- Healthcare HL7 Integration Platform (product name under NDA): Production full-stack work — React 19 + TypeScript frontend and Node.js + TypeScript BFF — on a commercial HL7 integration engine; top contributor.
 - [HireTrack — AI Résumé Builder & Job Pipeline Tracker](https://mubashir-rehman.is-a.dev/projects): Open-source, bring-your-own-key web app that tailors ATS-ready résumés and tracks a job-application pipeline (React 19, Vite, LangGraph, Supabase, Gemini).
 - AI-Powered LinkedIn Content Platform: Primary Django REST Framework backend developer on a production AI content platform.
 - AI-Driven Cryptocurrency Intelligence Platform: Real-time intelligence backend (data ingestion, LLM analysis) built as sole engineer.
@@ -34,12 +35,18 @@
 
 - Evaluation of a Low-Cost Single-Lead ECG Module for Vascular Ageing Prediction and Studying Smoking-Induced Changes in ECG. Circuits, Systems, and Signal Processing (CSSP), Springer, 2025. DOI: 10.1007/s00034-025-03048-2. One of three equal-contribution authors; contributed data collection, ML pipeline, and model training/evaluation.
 
+## Services (for clients)
+
+- Fixed-scope projects and retainer/contract work: backend & API development, AI/LLM features (RAG, semantic search, automation pipelines), ERP/HRMS customization, and integrations.
+- Details: https://mubashir-rehman.is-a.dev/services
+
 ## Key pages
 
 - [Home](https://mubashir-rehman.is-a.dev/)
 - [About](https://mubashir-rehman.is-a.dev/about)
 - [Projects](https://mubashir-rehman.is-a.dev/projects)
-- [Journal](https://mubashir-rehman.is-a.dev/journal)
+- [Services](https://mubashir-rehman.is-a.dev/services)
+- [Blog](https://mubashir-rehman.is-a.dev/journal)
 - [Contact](https://mubashir-rehman.is-a.dev/contact)
 
 ## Contact

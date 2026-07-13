@@ -16,6 +16,11 @@ import Navbar from "@/components/astro/Navbar.astro";
 import BottomNav from "@/components/astro/BottomNav.astro";
 import Footer from "@/components/astro/Footer.astro";
 import AskMe from "@/components/AskMe";
+import { buildSystemPrompt } from "@/lib/askmePrompt";
+
+// Built once per page at build time from the JSON data — the chatbot's
+// grounding can no longer drift from profile/projects/roles.
+const askMePrompt = buildSystemPrompt();
 
 interface Props {
   title?: string;
@@ -44,8 +49,8 @@ const { title, description, canonicalPath = "/", schema } = Astro.props;
   <Footer />
   <BottomNav />
 
-  <!-- AskMe chatbot — idle hydration -->
-  <AskMe client:idle />
+  <!-- AskMe chatbot — idle hydration; prompt generated from JSON at build -->
+  <AskMe client:idle systemPrompt={askMePrompt} />
 
   <!-- Scroll-reveal activation (re-runs after view transitions) -->
   <script is:inline>
