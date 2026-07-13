@@ -34,8 +34,10 @@ const { title, description, canonicalPath = "/", schema } = Astro.props;
 
   <Navbar />
 
-  <!-- pt-16 clears the fixed 64px navbar; pb-16 clears the mobile bottom nav -->
-  <main id="main" class="min-h-dvh pt-16 pb-16 md:pb-0">
+  <!-- pt-16 clears the fixed 64px navbar. Bottom-nav clearance lives on the
+       Footer (the document's last element), not here — padding on <main> left
+       the footer's final line hidden behind the fixed mobile nav. -->
+  <main id="main" class="min-h-dvh pt-16">
     <slot />
   </main>
 
