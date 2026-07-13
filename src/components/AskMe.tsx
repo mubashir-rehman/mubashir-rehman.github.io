@@ -249,13 +249,41 @@ function TypingIndicator() {
 // ---------------------------------------------------------------------------
 // Main component
 // ---------------------------------------------------------------------------
+// Session persistence — the island remounts on every Astro view transition,
+// so chat state must live in sessionStorage to survive page navigation.
+const STORAGE_KEY = "askme-chat-v1";
+
+function restoreSession(): { messages: Message[]; open: boolean } {
+  if (typeof sessionStorage === "undefined") return { messages: [], open: false };
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    if (!raw) return { messages: [], open: false };
+    const parsed = JSON.parse(raw);
+    return {
+      messages: Array.isArray(parsed.messages) ? parsed.messages : [],
+      open: Boolean(parsed.open),
+    };
+  } catch {
+    return { messages: [], open: false };
+  }
+}
+
 export default function AskMe() {
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [open, setOpen] = useState(() => restoreSession().open);
+  const [messages, setMessages] = useState<Message[]>(() => restoreSession().messages);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [hasStarted, setHasStarted] = useState(false);
+  const [hasStarted, setHasStarted] = useState(() => restoreSession().messages.length > 0);
+
+  // Persist chat across page navigations (session-scoped, not localStorage)
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ messages, open }));
+    } catch {
+      /* storage full/unavailable — chat still works, just won't persist */
+    }
+  }, [messages, open]);
 
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -297,10 +325,12 @@ export default function AskMe() {
     setInput("");
     setLoading(true);
 
-    // Build history for Groq (system + all prior turns + new user message)
+    // Build history for Groq: system + last 6 turns only. The system prompt is
+    // large; resending the full transcript each turn burns through the free-tier
+    // tokens-per-minute limit after a few messages.
     const history: GroqMessage[] = [
       { role: "system", content: SYSTEM_PROMPT },
-      ...messages.map((m) => ({ role: m.role, content: m.content })),
+      ...messages.slice(-6).map((m) => ({ role: m.role, content: m.content })),
       { role: "user", content: trimmed },
     ];
 
@@ -322,8 +352,13 @@ export default function AskMe() {
       });
 
       if (!res.ok) {
-        const body = await res.json().catch(() => ({})) as { error?: { message?: string } };
-        throw new Error(body.error?.message ?? `Groq API error ${res.status}`);
+        // Never surface raw provider errors (they leak org/account details).
+        if (res.status === 429) {
+          throw new Error(
+            "I'm getting a lot of questions right now — give it a few seconds and ask again."
+          );
+        }
+        throw new Error("The assistant hit a temporary error. Please try again in a moment.");
       }
 
       const data = await res.json() as { choices: Array<{ message: { content: string } }> };
