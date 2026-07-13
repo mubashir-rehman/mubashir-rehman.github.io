@@ -119,12 +119,14 @@ const personSchema = {
       })();
     </script>
 
-    <!-- Fonts: Inter (UI) + JetBrains Mono (technical accents) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fonts are self-hosted (declared in index.css) — preload the primary
+         face so text renders without a swap flash. -->
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+      rel="preload"
+      href="/fonts/inter-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
 
     <title>{fullTitle}</title>

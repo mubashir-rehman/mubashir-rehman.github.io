@@ -157,7 +157,8 @@ const homeSchemas = [websiteSchema, scholarlyArticleSchema, softwareSourceCodeSc
       </dl>
 
       <!-- Affiliation strip -->
-      <p class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground/80">
+      <!-- Full-opacity muted-foreground: the /80 alpha variant failed WCAG 4.5:1 (PSI a11y audit) -->
+      <p class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
         <span>TransData</span>
         <span aria-hidden="true">·</span>
         <span>VeritusLabs</span>
