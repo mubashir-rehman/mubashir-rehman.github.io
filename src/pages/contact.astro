@@ -11,7 +11,7 @@ import roles from "@/data/roles.json";
 <PageLayout
   title="Contact"
   description="Get in touch with Mubashir Rehman — Backend Engineer open to remote roles in any timezone (and on-site in Lahore), and available for contract/project work."
-  canonicalPath="/contact"
+  canonicalPath="/contact/"
 >
   <section class="border-b border-border">
     <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-20">
@@ -65,7 +65,7 @@ import roles from "@/data/roles.json";
             {
               roles.map((r) => (
                 <li>
-                  <a href={`/for/${r.slug}`} class="text-sm font-medium text-primary hover:underline">
+                  <a href={`/for/${r.slug}/`} class="text-sm font-medium text-primary hover:underline">
                     {r.label} →
                   </a>
                 </li>
@@ -83,7 +83,7 @@ import roles from "@/data/roles.json";
             rough timeline. I'll reply with questions or a scoped proposal.
           </p>
           <p class="mt-5">
-            <a href="/services" class="text-sm font-medium text-primary hover:underline">
+            <a href="/services/" class="text-sm font-medium text-primary hover:underline">
               Services &amp; engagement models →
             </a>
           </p>

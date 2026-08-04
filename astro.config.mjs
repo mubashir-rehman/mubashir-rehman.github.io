@@ -6,6 +6,10 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://mubashir-rehman.is-a.dev",
   output: "static",
+  // GitHub Pages serves directory-format URLs (/about/ → about/index.html) and
+  // 301-redirects the slash-less form. Standardize on trailing slashes so
+  // internal links, canonicals, and the sitemap all agree.
+  trailingSlash: "always",
   outDir: "dist/public",
   build: {
     // Match existing output structure so GitHub Actions workflow needs no changes

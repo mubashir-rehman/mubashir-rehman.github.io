@@ -8,11 +8,11 @@ import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
 
 const nav = [
-  { href: "/projects", label: "Work" },
-  { href: "/services", label: "Services" },
-  { href: "/about", label: "About" },
-  { href: "/journal", label: "Blog" },
-  { href: "/contact", label: "Contact" },
+  { href: "/projects/", label: "Work" },
+  { href: "/services/", label: "Services" },
+  { href: "/about/", label: "About" },
+  { href: "/journal/", label: "Blog" },
+  { href: "/contact/", label: "Contact" },
 ];
 
 const year = new Date().getFullYear();
@@ -63,7 +63,7 @@ const year = new Date().getFullYear();
             roles.map((r) => (
               <li>
                 <a
-                  href={`/for/${r.slug}`}
+                  href={`/for/${r.slug}/`}
                   class="text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {r.label}
