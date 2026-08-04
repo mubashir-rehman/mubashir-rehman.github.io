@@ -59,7 +59,7 @@ const occupationSchema = {
     name: "Mubashir Rehman",
     jobTitle: role.headline,
     description: role.pitch,
-    url: `https://mubashir-rehman.is-a.dev/for/${role.slug}`,
+    url: `https://mubashir-rehman.is-a.dev/for/${role.slug}/`,
     knowsAbout: role.skills,
     sameAs: [
       "https://github.com/mubashir-rehman",
@@ -68,15 +68,46 @@ const occupationSchema = {
   },
 };
 
-const schemas = [faqSchema, occupationSchema];
+// Breadcrumb trail.
+//
+// Deliberately flat (Home → {role}) rather than Home → Services → {role}:
+// /services/ is the client-facing contract-work page and never links to a role
+// page, while role pages are recruiter-facing and are reached from the home
+// page's "What I can own for your team" section, the footer's "Hire me for"
+// list, and /contact/. There is no /for/ index page either. Claiming /services/
+// as the parent would assert a hierarchy that neither the navigation nor the
+// URL path actually has. If a /for/ hub page is ever added, insert it here.
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://mubashir-rehman.is-a.dev/",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: role.label,
+      item: `https://mubashir-rehman.is-a.dev/for/${role.slug}/`,
+    },
+  ],
+};
 
-const description = `${role.tagline} ${role.pitch.slice(0, 120)}…`;
+const schemas = [faqSchema, occupationSchema, breadcrumbSchema];
+
+// Meta description: prefer the hand-written `metaDescription` in roles.json.
+// The old formula (tagline + 120 chars of pitch) always overshot Google's
+// ~155-char truncation point, so the fallback is now the tagline alone.
+const description = role.metaDescription ?? role.tagline;
 ---
 
 <PageLayout
   title={role.label}
   description={description}
-  canonicalPath={`/for/${role.slug}`}
+  canonicalPath={`/for/${role.slug}/`}
   schema={schemas}
 >
 
