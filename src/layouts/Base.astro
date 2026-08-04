@@ -77,7 +77,7 @@ const alma = profile.education[0].institution;
 // filtered heuristically) so adding a socialLink can't silently change the claim.
 // `scholar` is the strongest identity anchor available here: it ties this site to
 // an authoritative, third-party-verified author record for the CSSP 2025 paper.
-const sameAs = ["github", "linkedin", "scholar", "stackoverflow"].map((k) => profile.socialLinks[k]);
+const sameAs = ["github", "linkedin", "scholar", "orcid", "stackoverflow"].map((k) => profile.socialLinks[k]);
 
 // Shared person + website structured data (included on every page)
 const personSchema = {

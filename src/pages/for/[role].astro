@@ -34,7 +34,7 @@ const { role } = Astro.props;
 
 // Off-site profile URLs for schema.org sameAs — sourced from profile.json so
 // they can't drift from Base.astro's Person schema.
-const profileLinks = ["github", "linkedin", "scholar", "stackoverflow"].map((k) => profile.socialLinks[k]);
+const profileLinks = ["github", "linkedin", "scholar", "orcid", "stackoverflow"].map((k) => profile.socialLinks[k]);
 
 // Resolve featured project IDs → full project objects
 const featuredProjects = role.featuredProjects
