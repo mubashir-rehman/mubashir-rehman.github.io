@@ -1,8 +1,8 @@
 # mubashir-rehman.github.io
 
-A fully static, open source developer portfolio built with Astro 6, React 18, TypeScript, Tailwind CSS, and shadcn/ui. Astro pre-renders a static HTML + SEO shell for every route and mounts the React app as a single client-side island. Features a GitHub-style habit tracker, a personal journal with [giscus](https://giscus.app/) comments powered by GitHub Discussions, and three themes (dark / light / sakura).
+A fully static, open source developer portfolio built with Astro 5, TypeScript, and Tailwind CSS. Every route is a real Astro page rendered to HTML at build time from JSON data — React survives only as a couple of tiny islands (an AI chatbot and a theme toggle). Features an "Ask Me Anything" chatbot whose grounding is generated from the site's own data at build time, role-targeted hire-me pages, a Markdown journal, and light / dark themes.
 
-**Live site:** https://mubashir-rehman.github.io
+**Live site:** https://mubashir-rehman.is-a.dev
 
 ---
 
@@ -16,15 +16,15 @@ The source code (components, pages, utilities, configuration) is available under
 
 ## Features
 
-- 🤖 **AI chatbot** — floating "Ask Me Anything" assistant powered by Groq (llama-3.3-70b), answers questions about skills, experience, and projects based on injected resume context
-- ⚡ **Static Site Generation** — pre-rendered at build time via Astro (`output: "static"`), no server needed
-- 🎨 **Three themes** — dark, light, and sakura (cherry blossom spring theme) with smooth cycling
-- 📊 **GitHub-style habit tracker** — contribution grids with month labels, streaks, radar chart overview, year switcher
-- ✍️ **Journal** — Markdown-rendered entries with [giscus](https://giscus.app/) comments via GitHub Discussions
-- 📬 **Contact form** — powered by [Formspree](https://formspree.io/), zero backend
-- 🔍 **SEO ready** — canonical URLs, Open Graph, Twitter Card, JSON-LD structured data, sitemap
+- 🤖 **AI chatbot** — floating "Ask Me Anything" assistant powered by Groq (llama-3.3-70b). Its system prompt is **generated at build time** from `profile.json` / `projects.json` / `roles.json`, so the answers can never drift from the site's content
+- ⚡ **Static Site Generation** — every page pre-rendered at build time via Astro (`output: "static"`), no server needed
+- 🏝️ **Islands, not an SPA** — the shipped JS is just the chatbot and the theme toggle; navigation is plain MPA links with Astro's `<ClientRouter />` view transitions
+- 🎯 **Role-targeted landing pages** — `/for/<role>/` pages generated from `roles.json`, each with its own tailored résumé PDF
+- ✍️ **Journal** — Markdown entries rendered to static HTML at build time (zero client JS)
+- 🎨 **Two themes** — light and dark, with a no-FOUC inline theme script
+- 🔍 **SEO ready** — canonical URLs, Open Graph, Twitter Card, JSON-LD structured data, auto-generated sitemap, `llms.txt` for AI crawlers
 - 🚀 **Auto deploy** — GitHub Actions deploys to GitHub Pages on every push to `main`
-- 📱 **Responsive** — mobile-first, works across all screen sizes
+- 📱 **Responsive** — mobile-first, with a mobile bottom nav
 
 ---
 
@@ -32,15 +32,16 @@ The source code (components, pages, utilities, configuration) is available under
 
 | Layer | Technology |
 |---|---|
-| Framework | Astro 6 (static) + React 18 island |
+| Framework | Astro 5 (static output) |
+| Interactivity | React 18 islands (`AskMe`, `ThemeToggle`) |
 | Language | TypeScript |
-| Styling | Tailwind CSS v3 + shadcn/ui |
-| Animation | Framer Motion |
-| Routing | react-router-dom v6 (client-side, inside the island) |
-| SEO | Static `<head>` via `Base.astro` + `react-helmet-async` inside the island |
-| Comments | @giscus/react |
+| Styling | Tailwind CSS v3 (+ `@tailwindcss/typography`) |
+| Animation | Framer Motion (chatbot only) + CSS scroll-reveal |
+| Routing | Astro file-based MPA + `<ClientRouter />` view transitions |
+| SEO | Static `<head>` emitted by `src/layouts/Base.astro` |
+| Markdown | react-markdown, rendered at build time |
+| Icons | lucide-react |
 | AI Chatbot | Groq API (llama-3.3-70b-versatile) |
-| Contact | Formspree |
 | Deploy | GitHub Pages + GitHub Actions |
 
 ---
@@ -49,7 +50,7 @@ The source code (components, pages, utilities, configuration) is available under
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 20+ (CI uses Node 22)
 - npm
 
 ### 1. Clone the repo
@@ -76,17 +77,13 @@ Then fill in your values in `.env`:
 ```env
 # Groq API key — get a free key at https://console.groq.com
 PUBLIC_GROQ_API_KEY=your_groq_api_key_here
-
-# Giscus — get values at https://giscus.app/
-PUBLIC_GISCUS_REPO=your-username/your-repo
-PUBLIC_GISCUS_REPO_ID=your_repo_id
-PUBLIC_GISCUS_CATEGORY=General
-PUBLIC_GISCUS_CATEGORY_ID=your_category_id
 ```
 
 > **Note:** Astro exposes client-side env vars only when prefixed with `PUBLIC_` (read via `import.meta.env.PUBLIC_*`). They are baked into the JS bundle at build time — there is no runtime server. The Groq API key will be visible in the compiled output; Groq's free-tier rate limits provide natural abuse protection.
 >
-> In CI the GitHub Actions secrets are still named `VITE_*` and the workflow maps them onto the `PUBLIC_*` env vars at build time — so keep the **secret** names as `VITE_*` but use `PUBLIC_*` in your local `.env`.
+> In CI the GitHub Actions secret is still named `VITE_GROQ_API_KEY` and the workflow maps it onto `PUBLIC_GROQ_API_KEY` at build time — so keep the **secret** name as `VITE_*` but use `PUBLIC_*` in your local `.env`.
+>
+> `.env.example` also lists `PUBLIC_GISCUS_*` variables. These are leftovers from a removed comments feature and are not read by any code.
 
 ### 4. Start the dev server
 
@@ -100,16 +97,16 @@ The site runs at `http://localhost:4321` (Astro's default dev port).
 
 ## Customising for Your Own Portfolio
 
-All personal content lives in `src/data/`. Edit these JSON files — the UI updates automatically.
+All personal content lives in `src/data/`. Edit these JSON files — the pages (and the chatbot's system prompt) are built from them.
 
 ### `src/data/profile.json`
-Your name, bio, skills, work experience, education, publications, and social links.
+Your name, tagline, bio, skills, work experience, education, publications, metrics, and social links.
 
 ```jsonc
 {
   "name": "Your Name",
   "tagline": "Your tagline",
-  "email": "you @example.com",
+  "email": "you@example.com",
   "bio": "...",
   "skills": { "Backend": ["Python", "Django"] },
   "experience": [...],
@@ -136,21 +133,17 @@ Each project entry:
 }
 ```
 
-### `src/data/habits.json`
-Each habit has a name, emoji, and a log of completed dates:
+### `src/data/roles.json`
+Drives the `/for/<slug>/` hire-me pages — one page is generated per entry, each pointing at its own résumé PDF in `public/resume/`:
 
 ```jsonc
 {
-  "habit": "Read 30 mins",
-  "emoji": "📚",
-  "log": {
-    "2026-03-14": true,
-    "2026-03-13": true
-  }
+  "slug": "backend",
+  "label": "Backend Engineer",
+  "tagline": "One line on why you fit this role.",
+  "resume": "/resume/Your-Name-Backend.pdf"
 }
 ```
-
-> **Tip:** The "Journal entry" habit is special — it automatically reads dates from `journal.json` and lights up the corresponding days on the grid. No manual logging needed for that habit.
 
 ### `src/data/journal.json`
 Journal entries with Markdown content:
@@ -168,52 +161,8 @@ Journal entries with Markdown content:
 
 New entries go at the **top** of the array so they appear first.
 
-### `src/data/anime.json` / `src/data/books.json`
-Lists shown on the Hobbies page. Edit freely.
-
 ### Sitemap
-The sitemap is generated automatically at build by `@astrojs/sitemap` (output `dist/public/sitemap-index.xml`) — no manual editing needed.
-
----
-
-## Setting Up Giscus Comments
-
-Journal posts support comments via [giscus](https://giscus.app/), which stores comments as GitHub Discussion threads.
-
-### Steps
-
-1. **Enable GitHub Discussions** on your repo:
-   `Settings → Features → check Discussions`
-
-2. **Install the giscus GitHub App** on your repo:
-   https://github.com/apps/giscus
-
-3. **Get your config values:**
-   - Go to https://giscus.app/
-   - Enter your repo name
-   - Set mapping to **pathname**
-   - Create a Discussion category called `Blog Comments` (use **Announcements** type)
-   - Copy the generated `data-repo-id` and `data-category-id` values
-
-4. **Update `src/components/Comments.tsx`:**
-
-```tsx
-<Giscus
-  repo="your-username/your-repo"
-  repoId="YOUR_REPO_ID"          // paste here
-  category="Blog Comments"
-  categoryId="YOUR_CATEGORY_ID"  // paste here
-  ...
-/>
-```
-
-5. **Update the `THEME_BASE_URL`** constant in `Comments.tsx` to your live domain:
-
-```tsx
-const THEME_BASE_URL = "https://your-username.github.io";
-```
-
-The three custom CSS theme files (`public/giscus-dark.css`, `giscus-light.css`, `giscus-sakura.css`) are already included and will automatically match your site's active theme.
+The sitemap is generated automatically at build by `@astrojs/sitemap` (output `dist/public/sitemap-index.xml` + `sitemap-0.xml`) — no manual editing needed.
 
 ---
 
@@ -235,101 +184,78 @@ The floating "Ask Me Anything" button is powered by [Groq](https://console.groq.
    - Click **New repository secret**
    - Name: `VITE_GROQ_API_KEY`, Value: your key (the workflow maps this secret onto `PUBLIC_GROQ_API_KEY` at build time)
 
-4. **Update the system prompt** in `src/components/AskMe.tsx` — replace the `--- CONTEXT START ---` block with your own resume text and project descriptions. The more detail you provide, the better the answers.
+4. **Don't hand-write the system prompt.** It is assembled at build time by `src/lib/askmePrompt.ts` from `profile.json`, `projects.json` and `roles.json`, and passed into the island as a prop by `PageLayout.astro`. Update the JSON and the chatbot updates with it. Only edit `askmePrompt.ts` if you want to change the prompt's *structure* or rules.
 
-5. **Update the suggested questions** in the `SUGGESTED_QUESTIONS` array at the top of `AskMe.tsx` to reflect your own background.
+5. **Update the suggested questions** in the `SUGGESTED_QUESTIONS` array at the top of `src/components/AskMe.tsx` to reflect your own background.
 
-> The chatbot is instructed to only answer questions based on the injected context and to redirect off-topic questions. It maintains full conversation history within the session.
+> The chatbot is instructed to only answer questions based on the generated context and to redirect off-topic questions. It keeps conversation history within the session (and across page navigations).
 
 ---
 
-## Setting Up the Contact Form
+## Contact
 
-The contact form uses [Formspree](https://formspree.io/) — no backend or server required.
-
-### Steps
-
-1. **Create a free Formspree account** at https://formspree.io/
-
-2. **Create a new form** in your Formspree dashboard
-   - You'll get a form endpoint URL like `https://formspree.io/f/xxxxxxxx`
-
-3. **Update `src/components/pages/Contact.tsx`** — replace the existing endpoint:
-
-```tsx
-const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
-```
-
-That's it. Form submissions will be delivered to your Formspree-linked email.
+There is no contact form and no form backend. `/contact/` links straight out to email (`mailto:`), WhatsApp, and LinkedIn, all read from `src/data/profile.json`. To change them, edit `profile.json`.
 
 ---
 
 ## Project Structure
 
 ```
-├── public/                     # Static assets (served at root)
-│   ├── giscus-dark.css         # Giscus theme — dark
-│   ├── giscus-light.css        # Giscus theme — light
-│   ├── giscus-sakura.css       # Giscus theme — sakura
+├── public/                     # Static assets (copied to the build root as-is)
+│   ├── fonts/                  # Self-hosted Inter + JetBrains Mono woff2
+│   ├── resume/                 # Résumé PDFs linked from the /for/<role>/ pages
+│   ├── llms.txt                # Site summary for AI crawlers
 │   ├── robots.txt
+│   ├── favicon.svg
 │   └── og-image.png            # Open Graph / social preview image
 │
 ├── src/
-│   ├── pages/                  # ← Astro routes (static HTML + SEO shell, NOT React)
-│   │   ├── index.astro         # Home /
-│   │   ├── about.astro         # /about
-│   │   ├── projects.astro      # /projects
-│   │   ├── habits.astro        # /habits
-│   │   ├── journal.astro       # /journal
-│   │   ├── hobbies.astro       # /hobbies
-│   │   ├── contact.astro       # /contact
+│   ├── pages/                  # ← Astro routes — the real pages (static HTML)
+│   │   ├── index.astro         # /
+│   │   ├── about.astro         # /about/
+│   │   ├── projects.astro      # /projects/
+│   │   ├── services.astro      # /services/
+│   │   ├── journal.astro       # /journal/
+│   │   ├── journal/[slug].astro# /journal/<slug>/ (from journal.json)
+│   │   ├── for/[role].astro    # /for/<role>/    (from roles.json)
+│   │   ├── contact.astro       # /contact/
 │   │   └── 404.astro           # 404
-│   │                           # Each mounts <ReactApp client:only="react" />
-│   │                           # with route-specific SEO props.
 │   │
 │   ├── layouts/
-│   │   └── Base.astro          # HTML shell: <head>, OG/Twitter, JSON-LD, theme FOUC guard
+│   │   ├── Base.astro          # <head>: title, OG/Twitter, canonical, JSON-LD, theme FOUC guard
+│   │   └── PageLayout.astro    # Base + ClientRouter, skip link, Navbar/Footer/BottomNav, AskMe island
 │   │
 │   ├── components/
-│   │   ├── ReactApp.tsx        # React app root — BrowserRouter + providers + all routes
-│   │   ├── pages/              # ← Actual React page components (lazy-loaded by ReactApp)
-│   │   │   ├── Landing.tsx     #   /
-│   │   │   ├── About.tsx       #   /about
-│   │   │   ├── Projects.tsx    #   /projects
-│   │   │   ├── Habits.tsx      #   /habits — GitHub-style tracker + radar chart
-│   │   │   ├── Journal.tsx     #   exports JournalList + JournalEntry (/journal, /journal/:slug)
-│   │   │   ├── Hobbies.tsx     #   /hobbies
-│   │   │   ├── Contact.tsx     #   /contact — Formspree form
-│   │   │   ├── NotFound.tsx    #   404
-│   │   │   └── mobile/         #   mobile variants (desktop pages early-return these via useMobile)
-│   │   ├── ui/                 # shadcn/ui primitives (auto-generated, don't edit)
-│   │   ├── AskMe.tsx           # Floating AI chatbot (Groq-powered)
-│   │   ├── Comments.tsx        # Giscus comments widget
-│   │   ├── Footer.tsx          # Footer with sakura road scene
-│   │   ├── Navbar.tsx          # Navigation with theme cycler
-│   │   ├── SakuraPetals.tsx    # Falling petal animation (sakura theme only)
-│   │   ├── ThemeProvider.tsx   # dark / light / sakura theme context
-│   │   └── ...
+│   │   ├── astro/              # ← Presentational Astro components (zero client JS)
+│   │   │   ├── Navbar.astro
+│   │   │   ├── BottomNav.astro
+│   │   │   ├── Footer.astro
+│   │   │   ├── Section.astro  Card.astro  ProjectCard.astro
+│   │   │   └── RoleCard.astro  Badge.astro  Metric.astro
+│   │   ├── AskMe.tsx           # React island — AI chatbot (client:idle)
+│   │   ├── ThemeToggle.tsx     # React island — light/dark toggle (client:load)
+│   │   └── Markdown.tsx        # React, NO client directive → rendered to HTML at build
+│   │
+│   ├── lib/
+│   │   └── askmePrompt.ts      # Builds the chatbot system prompt from the JSON at build time
 │   │
 │   ├── data/                   # ← ALL personal content lives here
-│   │   ├── profile.json        # Bio, skills, experience, education
+│   │   ├── profile.json        # Bio, skills, experience, education, links
 │   │   ├── projects.json       # Project cards
-│   │   ├── journal.json        # Blog/journal entries (Markdown)
-│   │   ├── habits.json         # Habit tracker logs
-│   │   ├── anime.json          # Hobbies — anime list
-│   │   ├── books.json          # Hobbies — books list
-│   │   └── fortyRules.json     # Forty Rules of Love quotes (footer)
+│   │   ├── journal.json        # Journal entries (Markdown)
+│   │   └── roles.json          # Hire-me role tracks → /for/<slug>/ pages
 │   │
 │   ├── env.d.ts                # Types for PUBLIC_* env vars
-│   └── index.css               # Design tokens (CSS custom properties)
+│   └── index.css               # Design tokens (CSS custom properties) + self-hosted @font-face
 │
+├── archive/hobbies/            # Removed Hobbies page + its data, kept for reference
 ├── .github/workflows/deploy.yml  # GitHub Actions deploy pipeline (static.yml is an identical duplicate)
-├── astro.config.mjs              # Astro config (static output → dist/public, sitemap, @ alias)
+├── astro.config.mjs              # static output → dist/public, trailingSlash: "always", sitemap, @ alias
 ├── tailwind.config.ts            # Tailwind theme tokens
 └── package.json
 ```
 
-> **Sitemap** is generated automatically at build by `@astrojs/sitemap` (with `/404` filtered out) — there is no longer a hand-maintained `public/sitemap.xml`.
+> **Leftovers:** `index.html` at the repo root, `public/giscus-*.css` and `components.json` are unused remnants of earlier iterations (a Vite SPA, giscus comments, shadcn/ui). They are not referenced by the build.
 
 ---
 
@@ -353,6 +279,19 @@ npm run preview
 npm test
 ```
 
+> **Heads-up:** `vitest.config.ts` currently imports `@vitejs/plugin-react-swc`, which is not installed (`@vitejs/plugin-react` is), so `npm test` fails to load its config. Fix the import or add the dependency before relying on the suite.
+
+---
+
+## URL Conventions (important)
+
+The site builds with `trailingSlash: "always"`, because GitHub Pages serves directory-format URLs (`/about/` → `about/index.html`) and 301-redirects the slash-less form. So:
+
+- every internal link, every `canonicalPath`, and every absolute URL inside JSON-LD ends with `/`;
+- **except** links to files with an extension (`/resume/foo.pdf`), which never get one.
+
+Keeping these consistent is what makes each page's `<link rel="canonical">` byte-identical to its `<loc>` in the sitemap.
+
 ---
 
 ## Deploying to GitHub Pages
@@ -370,9 +309,8 @@ Every push to `main` triggers the GitHub Actions workflow at `.github/workflows/
 **One-time setup:**
 1. Go to your repo → `Settings → Pages`
 2. Under **Source**, select **GitHub Actions**
-3. Add all required secrets under `Settings → Secrets and variables → Actions`:
+3. Add the required secret under `Settings → Secrets and variables → Actions`:
    - `VITE_GROQ_API_KEY` — your Groq API key
-   - `VITE_GISCUS_REPO`, `VITE_GISCUS_REPO_ID`, `VITE_GISCUS_CATEGORY`, `VITE_GISCUS_CATEGORY_ID` — your Giscus config
 4. Push to `main` — the workflow runs automatically
 
 Your site will be live at `https://your-username.github.io` within ~2 minutes.
@@ -385,30 +323,38 @@ Your site will be live at `https://your-username.github.io` within ~2 minutes.
    ```
 2. Configure your DNS provider to point to GitHub Pages
 3. Enable HTTPS in `Settings → Pages → Enforce HTTPS`
+4. Update `site` in `astro.config.mjs` and the `SITE` constant in `src/layouts/Base.astro` so canonicals, OG URLs and the sitemap point at your domain
+
+> This site uses `https://mubashir-rehman.is-a.dev`; the `mubashir-rehman.github.io` URL 301-redirects to it, and non-canonical hosts are served with `noindex`.
 
 ---
 
 ## Adding a New Page
 
-A route lives in two layers — add both:
+One file. Create `src/pages/your-page.astro`:
 
-1. Create the React page component in `src/components/pages/YourPage.tsx`.
-2. Register it in `src/components/ReactApp.tsx` — add a lazy import and a `<Route>`:
-   ```tsx
-   const YourPage = lazy(() => import("@/components/pages/YourPage"));
-   // ...inside <Routes>:
-   <Route path="/your-page" element={<YourPage />} />
-   ```
-3. Create the Astro shell `src/pages/your-page.astro` so the route pre-renders with correct SEO and works on hard load / direct link:
-   ```astro
-   ---
-   import Base from "@/layouts/Base.astro";
-   import ReactApp from "@/components/ReactApp";
-   ---
-   <Base title="Your Page" description="..." canonicalPath="/your-page">
-     <ReactApp client:only="react" />
-   </Base>
-   ```
+```astro
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import profile from "@/data/profile.json";
+---
+<PageLayout
+  title="Your Page"
+  description="Under 155 characters — Google truncates past that."
+  canonicalPath="/your-page/"
+>
+  <h1>Your Page</h1>
+  <p>{profile.tagline}</p>
+</PageLayout>
+```
+
+House rules for a new page:
+
+- one `<h1>`, meta description ≤ 155 chars, title ≤ 60 chars (`Base.astro` appends the site name);
+- `canonicalPath` and all internal links carry a trailing slash;
+- content comes from `src/data/*.json` — don't hand-duplicate taglines or bios;
+- images go in `src/assets/` and render through Astro's built-in `<Image />` (`astro:assets`), never a raw `<img>` from `public/`;
+- after `npm run build`, confirm the route is in `dist/public/sitemap-0.xml` and its canonical matches that `<loc>` exactly.
 
 The sitemap updates automatically on the next build (`@astrojs/sitemap`).
 
@@ -420,10 +366,10 @@ Verifying your site with [Google Search Console](https://search.google.com/searc
 
 ### Verification (HTML file method — already used in this repo)
 
-1. Go to https://search.google.com/search-console and add your property URL (`https://your-username.github.io`)
+1. Go to https://search.google.com/search-console and add your property URL
 2. Choose **HTML file** verification
 3. Download the verification file (e.g. `google970de44929ca96e5.html`)
-4. Place it in the `public/` directory — Astro copies everything in `public/` to the build root, so it will be served at `https://your-username.github.io/google970de44929ca96e5.html`
+4. Place it in the `public/` directory — Astro copies everything in `public/` to the build root, so it will be served at the site root
 5. Push to `main` and wait for CI to deploy, then click **Verify** in Search Console
 
 ### Submit your sitemap
