@@ -11,7 +11,7 @@ const blogSchema = {
   "@context": "https://schema.org",
   "@type": "Blog",
   name: "Mubashir Rehman — Blog",
-  url: "https://mubashir-rehman.is-a.dev/journal",
+  url: "https://mubashir-rehman.is-a.dev/journal/",
   author: { "@type": "Person", name: "Mubashir Rehman" },
 };
 ---
@@ -19,7 +19,7 @@ const blogSchema = {
 <PageLayout
   title="Blog"
   description="Technical writing by Mubashir Rehman — articles on backend engineering, distributed systems, Python, and software architecture."
-  canonicalPath="/journal"
+  canonicalPath="/journal/"
   schema={blogSchema}
 >
   <section class="border-b border-border">
@@ -30,6 +30,13 @@ const blogSchema = {
         Notes from building things — engineering decisions, trade-offs, and the occasional
         detour.
       </p>
+      <a
+        href="/rss.xml"
+        class="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+        RSS feed
+      </a>
     </div>
   </section>
 
@@ -40,7 +47,7 @@ const blogSchema = {
           posts.map((post) => (
             <li>
               <a
-                href={`/journal/${post.slug}`}
+                href={`/journal/${post.slug}/`}
                 class="press-feedback group block rounded-lg border border-border bg-background p-6 transition-colors hover:border-primary/50"
               >
                 <p class="font-mono text-xs text-muted-foreground">{post.date}</p>
