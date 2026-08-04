@@ -12,7 +12,7 @@
   "email": "mubashirrehman66@gmail.com",
   "phone": "+92 309 552 8384",
   "website": "https://mubashir-rehman.is-a.dev",
-  "bio": "Backend-focused Software Engineer with 3+ years building production systems for AI automation, distributed architectures, and cloud infrastructure. I've shipped backend platforms across [...]",
+  "bio": "Backend-focused Software Engineer with 3+ years building production systems for AI automation, distributed architectures, and cloud infrastructure. I've shipped backend platforms across AI/LLM products, real-time crypto intelligence, ERP/HRMS, and healthcare integration — and co-authored peer-reviewed ML research.",
   "available": true,
   "availabilityNote": "Open to remote roles · any timezone",
   "metrics": [
@@ -122,7 +122,7 @@
       "location": "Lahore, Pakistan",
       "period": "Mar 2025 – Present",
       "highlights": [
-        "Primary backend engineer — owned the core backend of a multi-tenant SaaS platform (7 services, 60+ REST endpoints) end to end, from schema to deploy, authoring the bulk of the codebase[...]",
+        "Primary backend engineer — owned the core backend of a multi-tenant SaaS platform (7 services, 60+ REST endpoints) end to end, from schema to deploy, authoring the bulk of the codebase.",
         "Built 7 backend services and 60+ REST endpoints with Django REST Framework, including auth, background jobs, and integration workflows",
         "Cut prompt deployment from hours to minutes with versioned prompt management + n8n across AI content pipelines",
         "Multi-tier profile extraction (LinkedIn API → scraper → OpenAI fallback) for high-completeness data enrichment",
