@@ -14,7 +14,7 @@ interface Props {
 const { role, class: className = "" } = Astro.props;
 ---
 <a
-  href={`/for/${role.slug}`}
+  href={`/for/${role.slug}/`}
   class={`press-feedback group flex flex-col rounded-lg border border-border bg-card p-6 transition-colors hover:border-primary/50 ${className}`}
 >
   <h3 class="text-lg font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">

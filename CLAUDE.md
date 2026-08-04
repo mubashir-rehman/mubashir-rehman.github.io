@@ -4,48 +4,86 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Personal portfolio for Mubashir Rehman, deployed as a fully static site to GitHub Pages at https://mubashir-rehman.is-a.dev. No backend — all dynamic features (AI chatbot, comments, contact form) are client-side calls to third-party APIs.
+Personal portfolio for Mubashir Rehman, deployed as a fully static site to GitHub Pages at https://mubashir-rehman.is-a.dev. No backend — the only runtime-dynamic feature is the AskMe chatbot, which calls the Groq API directly from the browser.
 
-> **History:** The project began as a Vite + `vite-react-ssg` SPA (entry `main.tsx`/`App.tsx`, pages in `src/pages/*.tsx`, HashRouter) and **migrated to Astro 6** in commit `76787d8`. `README.md` has been updated to match; the old `QWEN.md` and `replit.md` docs were removed in favor of this file. If you see references to `vite.config.ts`, `main.tsx`, or `build:dev` anywhere, they're stale — trust the actual code and this file.
+> **History:** Two migrations, both worth knowing because stale references survive in odd corners.
+> 1. Began as a Vite + `vite-react-ssg` SPA (entry `main.tsx`/`App.tsx`, pages in `src/pages/*.tsx`, HashRouter) and **migrated to Astro** in commit `76787d8`. That left Astro as a thin SEO shell mounting one `client:only` React SPA island.
+> 2. Commit `0dd729d` **deleted that React SPA layer entirely** (`ReactApp.tsx`, `src/components/pages/**` incl. mobile variants, `src/components/ui/**` shadcn primitives, `ThemeProvider`, `Comments.tsx`, legacy chrome). Every route is now a real `.astro` page; React survives only as three small islands.
+>
+> If you see references to `vite.config.ts`, `main.tsx`, `build:dev`, `ReactApp.tsx`, `src/components/pages/`, react-router, react-helmet, giscus, the habits tracker, the hobbies page, or the sakura theme, they're stale — trust the actual code and this file. Known stale leftovers still on disk: root `index.html` (Vite-era, references sakura), `public/giscus-*.css`, `components.json`, `PUBLIC_GISCUS_*` in `.env.example`/`src/env.d.ts`/the deploy workflow (nothing reads them), and the portfolio's own self-description in `src/data/projects.json`.
 
 ## Commands
 
 ```bash
-npm run dev          # astro dev server
+npm run dev          # astro dev server (http://localhost:4321)
 npm run build        # astro build → outputs to dist/public/
 npm run preview      # preview the production build
 npm run lint         # eslint .
-npm test             # vitest run (one-shot)
+npm test             # vitest run (one-shot) — currently broken, see Tests
 npm run test:watch   # vitest watch mode
-npx vitest run src/test/example.test.ts   # run a single test file
 ```
 
 Node 22 in CI. Lockfiles for both npm (`package-lock.json`) and bun (`bun.lock`) exist; CI uses `npm ci`.
 
 ## Architecture
 
-The key thing to understand: **Astro is only a static HTML+SEO shell. The entire app is one React SPA island.**
+The key thing to understand: **this is a static Astro MPA. Every route renders to HTML at build time from JSON. React is only three small islands.**
 
-- `src/pages/*.astro` — one thin file per route (`index`, `about`, `projects`, `hobbies`, `habits`, `journal`, `contact`, `404`). Each renders `<Base>` with route-specific SEO props (title, description, `canonicalPath`, JSON-LD `schema`) and then mounts the **same** `<ReactApp client:only="react" />`. These `.astro` files exist purely so crawlers/social scrapers get correct per-route `<head>` metadata without JS.
-- `src/layouts/Base.astro` — the HTML `<head>`: title, OG/Twitter tags, canonical, Person + WebSite JSON-LD, and an inline script that applies the saved theme class before first paint (FOUC prevention). Adds `noindex` on non-canonical hosts (e.g. raw `*.github.io`).
-- `src/components/ReactApp.tsx` — the real app root. Wraps everything in `BrowserRouter` + providers (HelmetProvider, QueryClient, ThemeProvider, TooltipProvider) and defines all client-side routes. Because it's `client:only`, `BrowserRouter` reads `window.location` on load, so whichever `.astro` page served the request renders the matching React route; SPA navigation takes over after that. Renders global chrome (Navbar, Footer, BottomNav, AskMe, SakuraPetals, theme/scroll FABs).
-- `src/components/pages/*.tsx` — the actual React page components (Landing, About, Projects, Hobbies, Habits, Journal, Contact, NotFound). **Note the path:** React pages live under `src/components/pages/`, NOT `src/pages/` (which is Astro routes). Lazy-loaded in `ReactApp.tsx`.
-- `src/components/pages/mobile/*.tsx` — mobile variants. Desktop page components early-return the mobile version via `useMobile()` (e.g. `if (isMobile) return <MobileLanding />`). When editing a page's layout, check whether there's a separate mobile component to update too.
+- `src/pages/**/*.astro` — the real pages, one file per route. Each imports its content from `src/data/*.json` and renders it inside `<PageLayout>` with SEO props (`title`, `description`, `canonicalPath`, JSON-LD `schema`). Routes: `/`, `/about/`, `/projects/`, `/services/`, `/journal/`, `/journal/[slug]/`, `/contact/`, `/for/[role]/` (4 pages generated from `roles.json` via `getStaticPaths`), `/404`.
+- `src/layouts/Base.astro` — the HTML `<head>`: title, description, canonical, OG/Twitter, Person JSON-LD (on every page) plus optional per-page `schema`, and an inline script that applies the saved theme class before first paint (FOUC prevention, re-run on `astro:after-swap`). Adds `noindex` on non-canonical hosts (e.g. raw `*.github.io`). It also normalizes `canonicalPath` to exactly one leading and one trailing slash.
+- `src/layouts/PageLayout.astro` — what pages actually use. Wraps `Base` and adds `<ClientRouter />` (Astro view transitions), the skip link, `<main id="main">`, the Astro chrome (`src/components/astro/Navbar|BottomNav|Footer.astro`), the AskMe island, and the scroll-reveal IntersectionObserver script.
+- `src/components/astro/*.astro` — presentational Astro components (Navbar, BottomNav, Footer, Card, ProjectCard, RoleCard, Section, Badge, Metric). Zero client JS.
+- **React islands (all of them):**
+  - `src/components/AskMe.tsx` — the chatbot, mounted `client:idle` in `PageLayout`.
+  - `src/components/ThemeToggle.tsx` — `client:load` in the Navbar. Standalone: reads/writes `localStorage` directly and dispatches a `themechange` event; there is no `ThemeProvider`.
+  - `src/components/Markdown.tsx` — used in `journal/[slug].astro` with **no client directive**, so react-markdown runs at build time and ships zero client JS. Don't add a directive to it.
+- **AskMe's system prompt is generated at build time** by `src/lib/askmePrompt.ts` (`buildSystemPrompt()`), which reads `profile.json`, `projects.json` and `roles.json` and is passed to the island as a prop from `PageLayout`. This replaced a hand-maintained ~585-line prompt string that kept drifting from the data. **Never hand-edit chatbot facts — change the JSON.**
 
 ### Adding a route
 
-You must touch two layers: create the React page in `src/components/pages/`, register its lazy import + `<Route>` in `ReactApp.tsx`, AND create a matching `src/pages/<route>.astro` shell (so it pre-renders with correct SEO and serves on hard load / direct link). The sitemap is generated by `@astrojs/sitemap` at build (404 filtered out).
+One layer only: create a single `.astro` file under `src/pages/`. Read its content from `src/data/*.json`, wrap it in `<PageLayout>`, done. The sitemap is generated by `@astrojs/sitemap` at build (`/404` filtered out).
+
+```astro
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import profile from "@/data/profile.json";
+---
+<PageLayout
+  title="Your Page"
+  description="≤155 chars."
+  canonicalPath="/your-page/"
+  schema={yourJsonLd}
+>
+  <h1>…</h1>
+</PageLayout>
+```
+
+### SEO conventions
+
+These came out of an SEO audit. Do not regress them.
+
+1. **Trailing slashes, always.** The site builds with `trailingSlash: "always"` and GitHub Pages serves directory-format URLs (`/about/` → `about/index.html`), 301-redirecting the slash-less form. Every internal `href`, every `canonicalPath` prop, and every absolute URL inside JSON-LD must end in `/`. **Exception:** file links with an extension (`/resume/Mubashir-Rehman-Backend.pdf`) never get one.
+2. **Meta descriptions ≤ 155 characters; titles ≤ 60.** Google truncates past that. Note `Base.astro` appends ` | Mubashir Rehman — Backend Engineer` to the `title` prop — count the full string.
+3. **Exactly one `<h1>` per page.**
+4. **Images go through `astro:assets`.** Put source files in `src/assets/` and render them with Astro's built-in `<Image />` (no extra package needed in Astro 5) for automatic resizing, modern formats, `srcset` and lazy-loading. Never a raw `<img src="/foo.jpg">` out of `public/`. The site currently ships zero content images — this rule is preventative.
+5. **Never hand-duplicate positioning copy** (taglines, descriptions, bios) across files. Derive it from `src/data/profile.json` at build time, the way `src/lib/askmePrompt.ts` already does. Duplicated copy drifts and reads as boilerplate to crawlers.
+6. **Pre-merge smoke test for any new page:**
+   - `npm run build` succeeds;
+   - the route appears in `dist/public/sitemap-0.xml`;
+   - its `<link rel="canonical">` is **byte-identical** to its `<loc>` in the sitemap;
+   - its meta description is ≤ 155 chars;
+   - the built HTML contains exactly one `<h1>`.
 
 ### Data
 
-All content is static JSON in `src/data/` (`profile`, `projects`, `journal`, `habits`, `books`, `anime`, `fortyRules`). Edit JSON to change content — pages read it directly. Per the README, `src/data/*.json` is Mubashir's personal content and is *not* MIT-licensed. The "Journal entry" habit auto-derives its completed dates from `journal.json`.
+All content is static JSON in `src/data/`: `profile.json`, `projects.json`, `journal.json`, `roles.json`. Edit the JSON to change content — pages read it directly at build time. Per the README, `src/data/*.json` is Mubashir's personal content and is *not* MIT-licensed. (`habits.json`, `books.json`, `anime.json` and `fortyRules.json` were deleted with their pages; `books`/`anime` are archived under `archive/hobbies/`.)
 
 ## Conventions
 
 - **Path alias:** `@/*` → `src/*` (configured in `tsconfig.json`, `astro.config.mjs`, and `vitest.config.ts` — keep all three in sync).
-- **Env vars:** Astro requires the `PUBLIC_` prefix for client-exposed vars (`PUBLIC_GROQ_API_KEY`, `PUBLIC_GISCUS_*`) — see `src/env.d.ts`. These are baked into the bundle at build time and are publicly visible (Groq key relies on free-tier rate limits for abuse protection). In CI, the workflow maps the older `VITE_*` GitHub secrets onto these `PUBLIC_*` env vars.
+- **Env vars:** Astro requires the `PUBLIC_` prefix for client-exposed vars. Only `PUBLIC_GROQ_API_KEY` is actually read (by `AskMe.tsx`); the `PUBLIC_GISCUS_*` entries in `src/env.d.ts`, `.env.example` and the workflow are dead. Values are baked into the bundle at build time and publicly visible (the Groq key relies on free-tier rate limits for abuse protection). In CI, the workflow maps the older `VITE_*` GitHub secrets onto these `PUBLIC_*` env vars.
 - **TypeScript:** extends `astro/tsconfigs/strict` but loosened — `strictNullChecks`, `noImplicitAny`, `noUnused*` all off.
-- **Themes:** three themes (light / dark / sakura) via `ThemeProvider`; the sakura theme triggers `SakuraPetals`. Theme persisted to `localStorage` under key `theme`.
+- **Themes:** two themes, light and dark. No provider — the FOUC script in `Base.astro` applies the class and `ThemeToggle.tsx` flips it; persisted to `localStorage` under key `theme` (any legacy value, e.g. `sakura`, is migrated to `light`). Tokens live in `src/index.css` (`:root` + `.dark`).
 - **Commit messages:** `<page/module/component> (<fix/refactor/enhancement/add/remove/feat>) : <details>`, e.g. `SEO (enhancement) : dynamic canonical URLs per route`.
 
 ## Deploy
@@ -55,3 +93,5 @@ Push to `main` auto-deploys to GitHub Pages (build → upload `dist/public` → 
 ## Tests
 
 Vitest + React Testing Library + jsdom. Setup in `src/test/setup.ts`; tests match `src/**/*.{test,spec}.{ts,tsx}`. Currently minimal (`src/test/example.test.ts`).
+
+**Broken:** `vitest.config.ts` imports `@vitejs/plugin-react-swc`, which is not in `package.json` (the installed plugin is `@vitejs/plugin-react`), so `npm test` fails at config load with `ERR_MODULE_NOT_FOUND`. Fix the import (or add the dep) before relying on the test suite. `npm run lint` also currently reports errors, mostly from generated (`.astro/types.d.ts`) and archived (`archive/hobbies/`) files.

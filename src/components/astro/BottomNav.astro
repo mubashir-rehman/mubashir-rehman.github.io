@@ -7,13 +7,15 @@
 
 const links = [
   { href: "/", label: "Home", icon: "house" },
-  { href: "/projects", label: "Work", icon: "folder" },
-  { href: "/services", label: "Services", icon: "briefcase" },
-  { href: "/about", label: "About", icon: "user" },
-  { href: "/contact", label: "Contact", icon: "mail" },
+  { href: "/projects/", label: "Work", icon: "folder" },
+  { href: "/services/", label: "Services", icon: "briefcase" },
+  { href: "/about/", label: "About", icon: "user" },
+  { href: "/contact/", label: "Contact", icon: "mail" },
 ];
 
-const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+// Compare slash-insensitively: links carry trailing slashes (trailingSlash: "always")
+// but Astro.url.pathname can arrive with or without one depending on the request.
+const path = Astro.url.pathname.replace(/\/+$/, "") || "/";
 ---
 
 <!-- Opaque background (no backdrop-blur): blur smears during mobile scroll repaints.
@@ -30,7 +32,9 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
   <div class="flex h-16">
     {
       links.map(({ href, label, icon }) => {
-        const isActive = href === "/" ? path === "/" : path.startsWith(href);
+        const base = href.replace(/\/+$/, "") || "/";
+        const isActive =
+          base === "/" ? path === "/" : path === base || path.startsWith(base + "/");
         return (
           <a
             href={href}

@@ -421,15 +421,14 @@
   {
     "id": "portfolio-site",
     "title": "Personal Portfolio — mubashir-rehman.is-a.dev",
-    "description": "Fully static personal portfolio built with Astro 6 and React 18 — Astro pre-renders an SEO-optimized HTML shell per route and mounts React islands for interactivity. Features a custom 3-theme system (Sakura / Dark / Light) with an animated cherry-blossom scene, a markdown-rendered journal with Giscus comment threads, Framer Motion transitions, role-targeted landing pages, and full SEO/GEO (JSON-LD structured data, Open Graph, auto-generated sitemap, llms.txt, AI-crawler-friendly robots). Deployed to GitHub Pages via GitHub Actions CI/CD.",
+    "description": "Fully static personal portfolio built with Astro 5 — every route renders to HTML at build time from a single JSON data layer, with React reduced to small hydrated islands (an AI chatbot grounded in that same data, and the theme toggle). Features light/dark theming, a markdown-rendered journal, role-targeted landing pages, Astro view transitions, and a full SEO/AEO layer: JSON-LD structured data (Person, FAQPage, BreadcrumbList, BlogPosting, ScholarlyArticle), Open Graph, auto-generated sitemap, llms.txt, and AI-crawler-friendly robots.txt. Deployed to GitHub Pages via GitHub Actions CI/CD.",
     "tags": [
       "Astro",
       "React 18",
       "TypeScript",
       "Tailwind CSS",
       "Framer Motion",
-      "shadcn/ui",
-      "SEO / GEO",
+      "SEO / AEO",
       "GitHub Actions"
     ],
     "github": "https://github.com/mubashir-rehman/mubashir-rehman.github.io",
@@ -440,7 +439,7 @@
     ],
     "metrics": [
       "Astro static + React islands",
-      "3 themes",
+      "Light + dark themes",
       "100% static",
       "CI/CD on push"
     ]

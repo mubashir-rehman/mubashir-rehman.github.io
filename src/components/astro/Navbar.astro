@@ -7,15 +7,20 @@
 import ThemeToggle from "@/components/ThemeToggle";
 
 const links = [
-  { href: "/projects", label: "Work" },
-  { href: "/services", label: "Services" },
-  { href: "/about", label: "About" },
-  { href: "/journal", label: "Blog" },
-  { href: "/contact", label: "Contact" },
+  { href: "/projects/", label: "Work" },
+  { href: "/services/", label: "Services" },
+  { href: "/about/", label: "About" },
+  { href: "/journal/", label: "Blog" },
+  { href: "/contact/", label: "Contact" },
 ];
 
-const path = Astro.url.pathname.replace(/\/$/, "") || "/";
-const isActive = (href: string) => path === href || path.startsWith(href + "/");
+// Compare slash-insensitively: links carry trailing slashes (trailingSlash: "always")
+// but Astro.url.pathname can arrive with or without one depending on the request.
+const path = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const isActive = (href: string) => {
+  const base = href.replace(/\/+$/, "") || "/";
+  return base === "/" ? path === "/" : path === base || path.startsWith(base + "/");
+};
 ---
 
 <header

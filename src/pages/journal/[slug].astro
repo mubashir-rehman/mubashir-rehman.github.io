@@ -18,32 +18,68 @@ export function getStaticPaths() {
 const { entry } = Astro.props;
 const SITE = "https://mubashir-rehman.is-a.dev";
 
+// `updated` is an optional per-entry field in journal.json (ISO date string).
+// Absent on posts that have never been revised — in that case dateModified
+// falls back to the publish date rather than claiming a revision that never
+// happened.
+const dateModified = entry.updated ?? entry.date;
+const wasRevised = Boolean(entry.updated) && entry.updated !== entry.date;
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   headline: entry.title,
   description: entry.excerpt,
   datePublished: entry.date,
-  dateModified: entry.date,
-  url: `${SITE}/journal/${entry.slug}`,
+  dateModified,
+  url: `${SITE}/journal/${entry.slug}/`,
   image: `${SITE}/og-image.png`,
   inLanguage: "en",
   keywords: entry.tags?.join(", "),
   author: { "@type": "Person", name: "Mubashir Rehman", url: SITE },
   publisher: { "@type": "Person", name: "Mubashir Rehman", url: SITE },
-  isPartOf: { "@type": "Blog", name: "Mubashir Rehman — Blog", url: `${SITE}/journal` },
+  isPartOf: { "@type": "Blog", name: "Mubashir Rehman — Blog", url: `${SITE}/journal/` },
 };
+
+// Breadcrumb trail: Home → Blog → this post. "Blog" matches the navbar label
+// for /journal/ and the "All posts" link at the top of the article.
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: `${SITE}/`,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Blog",
+      item: `${SITE}/journal/`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: entry.title,
+      item: `${SITE}/journal/${entry.slug}/`,
+    },
+  ],
+};
+
+const schemas = [articleSchema, breadcrumbSchema];
 ---
 
 <PageLayout
   title={entry.title}
-  description={entry.excerpt}
-  canonicalPath={`/journal/${entry.slug}`}
-  schema={articleSchema}
+  description={entry.seoDescription ?? entry.excerpt}
+  canonicalPath={`/journal/${entry.slug}/`}
+  schema={schemas}
 >
   <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-20">
     <a
-      href="/journal"
+      href="/journal/"
       class="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
@@ -54,6 +90,11 @@ const articleSchema = {
       <p class="font-mono text-xs text-muted-foreground">
         {entry.date} · Mubashir Rehman
       </p>
+      {wasRevised && (
+        <p class="mt-1 font-mono text-xs text-muted-foreground">
+          Updated {entry.updated}
+        </p>
+      )}
       <h1 class="mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
         {entry.title}
       </h1>

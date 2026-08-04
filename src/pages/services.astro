@@ -36,11 +36,45 @@ const steps = [
   { n: "04", title: "Hand-off", desc: "Deployment, documentation, and a hand-off call. Optional retainer for maintenance." },
 ];
 
+/**
+ * Buyer FAQs. Every answer is grounded in copy already on this page (services,
+ * steps, engagement bullets) or in profile.json — no rates, turnaround
+ * guarantees, or team sizes, none of which are documented anywhere in the repo.
+ * Rendered visibly below AND emitted as FAQPage JSON-LD; the two must stay in
+ * sync (schema-only FAQ content is a Google guidelines violation).
+ */
+const faqs = [
+  {
+    q: "What kinds of projects do you take on?",
+    a: "Four areas: backend and API development (Django, FastAPI, PostgreSQL, Redis, Docker), AI and LLM features (RAG pipelines, semantic search on pgvector, LLM integrations with fallbacks and cost control, self-hosted inference), ERP and HRMS customization (ERPNext/Frappe, Horilla HRMS, ZKTeco biometric attendance), and automation and integrations (n8n workflows, data pipelines, third-party and HL7 integrations). If your problem sits in one of those, two sentences describing it is enough to start.",
+  },
+  {
+    q: "How does an engagement start, and what happens before I commit?",
+    a: "It starts with a short brief — the problem, your current stack, and your timeline. I reply with questions, then send a scoped proposal covering deliverables, milestones, and price, so nothing is committed until you have that proposal in front of you. From there the build runs on weekly demos and async updates, and closes with deployment, documentation, and a hand-off call.",
+  },
+  {
+    q: "How is pricing decided?",
+    a: "Pricing is quoted per engagement in the scoped proposal rather than from a rate card. After your brief I ask questions to pin down the scope, then price it either as a fixed-scope project against a defined deliverable and milestone set, or as a retainer against fixed weekly hours. You see the number before any commitment, so there is nothing to sign before you know the cost.",
+  },
+  {
+    q: "Should I choose a fixed-scope project or a retainer?",
+    a: "Choose fixed-scope when the work has a clear finish line — a new API, an AI feature, an ERP customization, or a specific integration — and you want defined milestones at a fixed price. Choose a retainer when you need a backend owned continuously: fixed weekly hours, features shipped every week, and systems kept healthy without a full-time hire. Retainers are cancelled monthly, so there is no long lock-in either way.",
+  },
+  {
+    q: "Which timezones do you work across, and how do we stay in sync?",
+    a: "Remote, any timezone. I am based in Lahore, Pakistan, and retainers are set up with fixed weekly hours picked for overlap with your team; on-site work in Lahore is also possible. The default rhythm is async-first — updates land in your Slack or tracker — with a weekly demo, so you see working software rather than a status report.",
+  },
+  {
+    q: "Who owns the code, and what do I get at hand-off?",
+    a: "You own it. Code goes into your repository from day one rather than being handed over at the end, and docs, tests, and deployment are part of the deliverable, not extras. Every engagement finishes with a hand-off call so your team can run and extend the system; a maintenance retainer afterwards is optional, never a condition.",
+  },
+];
+
 const serviceSchema = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
   name: "Mubashir Rehman — Backend & AI Engineering Services",
-  url: "https://mubashir-rehman.is-a.dev/services",
+  url: "https://mubashir-rehman.is-a.dev/services/",
   provider: { "@type": "Person", name: "Mubashir Rehman" },
   areaServed: "Worldwide (remote)",
   serviceType: [
@@ -50,13 +84,29 @@ const serviceSchema = {
     "Workflow automation",
   ],
 };
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  url: "https://mubashir-rehman.is-a.dev/services/",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
+    },
+  })),
+};
+
+const schemas = [serviceSchema, faqSchema];
 ---
 
 <PageLayout
   title="Services"
-  description="Hire Mubashir Rehman for backend APIs, AI/LLM features, ERP/HRMS customization, and automation — fixed-scope projects or ongoing retainer, remote, any timezone."
-  canonicalPath="/services"
-  schema={serviceSchema}
+  description="Hire Mubashir Rehman for backend APIs, AI/LLM features, ERP/HRMS work, and automation — fixed-scope projects or retainer. Remote, any timezone."
+  canonicalPath="/services/"
+  schema={schemas}
 >
   <section class="border-b border-border">
     <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-20">
@@ -179,6 +229,26 @@ const serviceSchema = {
           ))
         }
       </ol>
+    </div>
+  </section>
+
+  <!-- FAQ — visible copy must stay identical to the FAQPage JSON-LD above -->
+  <section aria-labelledby="faq-heading" class="border-b border-border">
+    <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+      <p class="eyebrow reveal">FAQ</p>
+      <h2 id="faq-heading" class="reveal mt-3 text-3xl font-bold tracking-tight">
+        Common questions
+      </h2>
+      <div class="reveal-stagger mt-10 space-y-4">
+        {
+          faqs.map((faq) => (
+            <div class="reveal rounded-lg border border-border bg-card p-6">
+              <h3 class="text-base font-semibold tracking-tight">{faq.q}</h3>
+              <p class="mt-2.5 text-sm leading-relaxed text-muted-foreground">{faq.a}</p>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </section>
 

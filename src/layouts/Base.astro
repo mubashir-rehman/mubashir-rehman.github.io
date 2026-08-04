@@ -11,6 +11,7 @@
  */
 
 import "../index.css";
+import profile from "@/data/profile.json";
 
 interface ArticleMeta {
   publishedTime: string;
@@ -26,11 +27,16 @@ interface Props {
   articleMeta?: ArticleMeta;
 }
 
+// SITE stays a literal: it is the root of the canonical/sitemap URL contract
+// (and must match astro.config.mjs `site`), so it must not move with content
+// edits. It is identical to profile.website — keep the two in step by hand.
 const SITE        = "https://mubashir-rehman.is-a.dev";
-const BASE_TITLE  = "Mubashir Rehman — Backend Engineer";
-const BASE_DESC   =
-  "Backend engineer (Python, Django, FastAPI, AWS, AI/ML). " +
-  "Primary backend owner of multi-tenant production platforms; co-author of peer-reviewed ML research. Open to remote roles, any timezone.";
+
+// Title/description are NOT typed here — they live in profile.json under `seo`,
+// the same single-source-of-truth pattern src/lib/askmePrompt.ts uses for the
+// chatbot prompt. Edit the copy there, not here.
+const BASE_TITLE  = profile.seo.baseTitle;
+const BASE_DESC   = profile.seo.baseDescription;
 const OG_IMAGE    = `${SITE}/og-image.png`;
 
 const {
@@ -42,7 +48,14 @@ const {
 } = Astro.props;
 
 const fullTitle   = title ? `${title} | ${BASE_TITLE}` : BASE_TITLE;
-const canonicalURL = canonicalPath === "/" ? SITE : `${SITE}${canonicalPath}`;
+
+// The site is built with `trailingSlash: "always"` and deployed to GitHub Pages,
+// which serves directory-format URLs (/about/ → about/index.html) and 301-redirects
+// the slash-less form. The canonical must therefore match the served URL exactly —
+// and the same string the sitemap emits. Normalize whatever the caller passed:
+// exactly one leading slash, exactly one trailing slash ("/" stays "/").
+const trimmedPath  = (canonicalPath ?? "/").replace(/^\/+/, "").replace(/\/+$/, "");
+const canonicalURL = trimmedPath ? `${SITE}/${trimmedPath}/` : `${SITE}/`;
 const ogType       = articleMeta ? "article" : "website";
 
 // Only suppress indexing on non-canonical deployments (e.g. raw github.io URL)
@@ -51,45 +64,53 @@ const isCanonical =
   Astro.url.hostname === "localhost" ||
   Astro.url.hostname === "127.0.0.1";
 
+// --- Person schema inputs, derived from profile.json ---------------------
+// profile.location is "<city>, <country>" — split it rather than re-typing both.
+const [locality, countryName] = profile.location.split(",").map((s) => s.trim());
+
+// Education is listed most-recent/highest-first, so [0] is the degree-granting
+// institution schema.org's alumniOf wants.
+const alma = profile.education[0].institution;
+
+// sameAs must contain only off-site *profile* URLs: `website` duplicates `url`
+// and `email` is not a URL, so both are excluded. Named explicitly (rather than
+// filtered heuristically) so adding a socialLink can't silently change the claim.
+const sameAs = ["github", "linkedin"].map((k) => profile.socialLinks[k]);
+
 // Shared person + website structured data (included on every page)
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Mubashir Rehman",
-  jobTitle: "Backend Software Engineer",
+  name: profile.name,
+  jobTitle: profile.seo.jobTitle,
   description: BASE_DESC,
-  url: SITE,
+  url: profile.website,
   image: OG_IMAGE,
-  email: "mubashirrehman66@gmail.com",
-  nationality: { "@type": "Country", name: "Pakistan" },
+  email: profile.email,
+  nationality: { "@type": "Country", name: countryName },
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Lahore",
+    addressLocality: locality,
+    // ISO 3166-1 alpha-2; no equivalent in profile.json, same as the SOC code below.
     addressCountry: "PK",
   },
   alumniOf: {
     "@type": "EducationalOrganization",
-    name: "Information Technology University",
+    name: alma,
   },
   hasOccupation: {
     "@type": "Occupation",
-    name: "Backend Software Engineer",
+    name: profile.seo.jobTitle,
+    // O*NET-SOC code for Software Developers — no JSON equivalent, stays literal.
     occupationalCategory: "15-1252.00",
-    skills:
-      "Python, Django, Django REST Framework, FastAPI, PostgreSQL, Redis, " +
-      "Docker, AWS, LLM/RAG systems, LangChain/LangGraph, REST API design, " +
-      "microservices, ERPNext/Frappe, CI/CD",
+    skills: profile.seo.occupationSkills,
   },
-  knowsAbout: [
-    "Python","Django","Django REST Framework","FastAPI","PostgreSQL","Redis",
-    "Docker","AWS","REST API design","Microservices","Distributed Systems",
-    "Large Language Models","Retrieval-Augmented Generation","LangChain","LangGraph",
-    "pgvector","Machine Learning","ERPNext","Frappe","HL7","TypeScript","React",
-  ],
-  sameAs: [
-    "https://github.com/mubashir-rehman",
-    "https://linkedin.com/in/mubashir-rehman",
-  ],
+  // Curated in profile.json rather than flattened from profile.skills: flattening
+  // yields 55 entries, drops 10 current claims (Distributed Systems, Machine
+  // Learning, RAG, Microservices, REST API design, …) and introduces 9 slash-
+  // compound values ("OAuth2 / JWT / RBAC") that are poor schema.org terms.
+  knowsAbout: profile.seo.knowsAbout,
+  sameAs,
 };
 ---
 
@@ -132,6 +153,16 @@ const personSchema = {
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+
+    <!-- Feed discovery. /rss.xml is a FILE, not a directory — no trailing slash
+         (trailingSlash: "always" applies to routes, not static assets). -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Mubashir Rehman — Blog"
+      href="/rss.xml"
+    />
+
     {!isCanonical && <meta name="robots" content="noindex" />}
 
     <!-- Open Graph -->
