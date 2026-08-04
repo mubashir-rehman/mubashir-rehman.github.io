@@ -100,6 +100,16 @@ const year = new Date().getFullYear();
           </li>
           <li>
             <a
+              href={profile.socialLinks.stackoverflow}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Stack Overflow
+            </a>
+          </li>
+          <li>
+            <a
               href={`mailto:${profile.email}`}
               class="text-sm text-muted-foreground transition-colors hover:text-foreground"
             >

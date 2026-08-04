@@ -11,7 +11,7 @@ const pub = profile.publications[0];
 
 // Off-site profile URLs for schema.org sameAs. Named explicitly (not filtered)
 // so adding a socialLink can't silently change the claim — same rule as Base.astro.
-const profileLinks = ["github", "linkedin", "scholar"].map((k) => profile.socialLinks[k]);
+const profileLinks = ["github", "linkedin", "scholar", "stackoverflow"].map((k) => profile.socialLinks[k]);
 
 // Semantic Lucide icon per achievement (keyword match on the text).
 // Icon markup lives in the template below; this picks which one.
