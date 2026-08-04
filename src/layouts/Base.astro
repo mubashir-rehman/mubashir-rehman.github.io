@@ -75,7 +75,9 @@ const alma = profile.education[0].institution;
 // sameAs must contain only off-site *profile* URLs: `website` duplicates `url`
 // and `email` is not a URL, so both are excluded. Named explicitly (rather than
 // filtered heuristically) so adding a socialLink can't silently change the claim.
-const sameAs = ["github", "linkedin"].map((k) => profile.socialLinks[k]);
+// `scholar` is the strongest identity anchor available here: it ties this site to
+// an authoritative, third-party-verified author record for the CSSP 2025 paper.
+const sameAs = ["github", "linkedin", "scholar"].map((k) => profile.socialLinks[k]);
 
 // Shared person + website structured data (included on every page)
 const personSchema = {

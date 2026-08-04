@@ -19,6 +19,7 @@ import PageLayout from "@/layouts/PageLayout.astro";
 import ProjectCard from "@/components/astro/ProjectCard.astro";
 import Badge from "@/components/astro/Badge.astro";
 
+import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
 import projects from "@/data/projects.json";
 
@@ -30,6 +31,10 @@ export function getStaticPaths() {
 }
 
 const { role } = Astro.props;
+
+// Off-site profile URLs for schema.org sameAs — sourced from profile.json so
+// they can't drift from Base.astro's Person schema.
+const profileLinks = ["github", "linkedin", "scholar"].map((k) => profile.socialLinks[k]);
 
 // Resolve featured project IDs → full project objects
 const featuredProjects = role.featuredProjects
@@ -61,10 +66,7 @@ const occupationSchema = {
     description: role.pitch,
     url: `https://mubashir-rehman.is-a.dev/for/${role.slug}/`,
     knowsAbout: role.skills,
-    sameAs: [
-      "https://github.com/mubashir-rehman",
-      "https://linkedin.com/in/mubashir-rehman",
-    ],
+    sameAs: profileLinks,
   },
 };
 
