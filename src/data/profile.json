@@ -226,5 +226,36 @@
     "website": "https://mubashir-rehman.is-a.dev",
     "email": "mubashirrehman66@gmail.com",
     "whatsapp": "https://wa.me/923095528384"
+  },
+  "seo": {
+    "_comment": "Canonical, purpose-written SEO copy. Base.astro reads these instead of hand-typed literals so the <title>/<meta description>/Person JSON-LD can never drift from this file. baseDescription must stay <= 155 chars (Google truncates beyond ~155).",
+    "baseTitle": "Mubashir Rehman — Backend Engineer",
+    "baseDescription": "Backend engineer (Python, Django, FastAPI, AWS, AI/ML). Primary backend owner of multi-tenant SaaS platforms; peer-reviewed ML co-author. Open to remote.",
+    "jobTitle": "Backend Software Engineer",
+    "knowsAbout": [
+      "Python",
+      "Django",
+      "Django REST Framework",
+      "FastAPI",
+      "PostgreSQL",
+      "Redis",
+      "Docker",
+      "AWS",
+      "REST API design",
+      "Microservices",
+      "Distributed Systems",
+      "Large Language Models",
+      "Retrieval-Augmented Generation",
+      "LangChain",
+      "LangGraph",
+      "pgvector",
+      "Machine Learning",
+      "ERPNext",
+      "Frappe",
+      "HL7",
+      "TypeScript",
+      "React"
+    ],
+    "occupationSkills": "Python, Django, Django REST Framework, FastAPI, PostgreSQL, Redis, Docker, AWS, LLM/RAG systems, LangChain/LangGraph, REST API design, microservices, ERPNext/Frappe, CI/CD"
   }
 }
