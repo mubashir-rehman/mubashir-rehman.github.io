@@ -46,7 +46,14 @@ const scholarlyArticleSchema = pub && {
   "@type": "ScholarlyArticle",
   headline: pub.title,
   name: pub.title,
-  author: pub.authors.split(";").map((a) => ({ "@type": "Person", name: a.trim() })),
+  // Attach the ORCID iD to Mubashir's entry only — it is the canonical, machine-
+  // readable way to bind this specific co-author to this specific paper.
+  author: pub.authors.split(";").map((a) => {
+    const name = a.trim();
+    return name === profile.name
+      ? { "@type": "Person", name, "@id": profile.socialLinks.orcid, identifier: profile.socialLinks.orcid }
+      : { "@type": "Person", name };
+  }),
   datePublished: pub.date,
   isPartOf: { "@type": "Periodical", name: pub.journal },
   publisher: { "@type": "Organization", name: "Springer" },

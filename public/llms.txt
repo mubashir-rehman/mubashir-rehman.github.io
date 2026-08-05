@@ -55,3 +55,5 @@
 - GitHub: https://github.com/mubashir-rehman
 - LinkedIn: https://www.linkedin.com/in/mubashir-rehman
 - Google Scholar: https://scholar.google.com/citations?user=-N7lsKsAAAAJ
+- ORCID: https://orcid.org/0009-0000-5804-0759
+- Stack Overflow: https://stackoverflow.com/users/23617259/mubashir-rehman
