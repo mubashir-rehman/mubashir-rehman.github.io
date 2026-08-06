@@ -70,6 +70,13 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
+      // The 3-step elevation scale from MASTER.md — shadow-1/2/3. Prefer these
+      // over Tailwind's default shadow-* utilities, which are neutral black.
+      boxShadow: {
+        1: "var(--shadow-1)",
+        2: "var(--shadow-2)",
+        3: "var(--shadow-3)",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

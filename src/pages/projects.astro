@@ -58,7 +58,7 @@ const filters = [
           projects.map((p) => (
             <article
               data-roles={(p.roles ?? []).join(" ")}
-              class="project-card flex flex-col rounded-lg border border-border bg-background p-6 transition-shadow hover:shadow-md"
+              class="project-card flex flex-col rounded-lg border border-border bg-background p-6 transition-shadow hover:shadow-2"
             >
               <h2 class="text-base font-semibold tracking-tight">{p.title}</h2>
               <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{p.description}</p>

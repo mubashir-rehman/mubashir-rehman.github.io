@@ -38,6 +38,8 @@ const SITE        = "https://mubashir-rehman.is-a.dev";
 const BASE_TITLE  = profile.seo.baseTitle;
 const BASE_DESC   = profile.seo.baseDescription;
 const OG_IMAGE    = `${SITE}/og-image.png`;
+// Person.image wants an actual photo of the person, not the site's social card.
+const HEADSHOT    = `${SITE}${profile.image}`;
 
 const {
   title,
@@ -87,7 +89,7 @@ const personSchema = {
   jobTitle: profile.seo.jobTitle,
   description: BASE_DESC,
   url: profile.website,
-  image: OG_IMAGE,
+  image: HEADSHOT,
   email: profile.email,
   nationality: { "@type": "Country", name: countryName },
   address: {

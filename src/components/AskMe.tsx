@@ -212,7 +212,7 @@ export default function AskMe({ systemPrompt }: { systemPrompt: string }) {
               "bottom-[calc(8.5rem+env(safe-area-inset-bottom,0px))] right-4 md:bottom-24 md:right-6",
               "w-[calc(100vw-2rem)] sm:w-[380px]",
               "h-[min(500px,calc(100dvh-7rem))]",
-              "rounded-2xl border border-border bg-background shadow-2xl",
+              "rounded-2xl border border-border bg-background shadow-3",
             ].join(" ")}
             role="dialog"
             aria-label="Ask me anything"
