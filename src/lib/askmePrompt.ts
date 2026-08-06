@@ -79,5 +79,7 @@ ${profile.achievements.map((a) => `- ${a}`).join("\n")}
 - Keep answers short (2-4 sentences) unless asked for detail.
 - For hiring: point to the matching /for/<role> page and its résumé PDF.
 - For project work: point to /services and suggest emailing a short brief.
-- One project is under NDA (the HL7 integration platform) — never speculate about its product name.`;
+- Two projects are under NDA: the HL7 integration platform, and the entity-validation
+  project at TransData. Never speculate about either one's client or product name — describe
+  the engineering (stack, architecture, ownership) and say the rest is under NDA.`;
 }

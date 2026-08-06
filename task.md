@@ -180,12 +180,25 @@ The big architectural fix: pages currently render `client:only="react"` → **cr
     deliberately not used** — no raw-HTML path into content.
   - **Posts gained** optional `faq: [{q,a}]` → `<dl>` + FAQPage JSON-LD, and a byline
     with a real headshot (`Person.image` now points at the photo, not the OG card).
-  - ⚠️ **Open integrity item:** the Tavily post's `~15 min → ~3 min per 10-record batch`
-    figure has **no artifact in `~/development/pod/`** — the only Tavily code there is the
-    provider registry + `/usage` quota check in `outreach-engine`. The Serper→Tavily
-    *ingestion* pipeline the LinkedIn post describes is not in that repo. Published
-    hedged ("a stopwatch on one batch of mine, not a benchmark"). **Confirm which repo
-    that pipeline lives in**, and replace with a measured figure if one exists.
+  - **Tavily post attribution — RESOLVED 2026-08-06.** The Serper→Tavily ingestion
+    pipeline is **not** in `~/development/pod/` because it is **NDA client work at
+    TransData** — the *entity-validation project*, which Mubashir leads with a team of
+    two and had already revamped (duplicated AI-assisted validation flows consolidated
+    into one Python/MySQL pipeline; already published at `roles.json:77` under the
+    `backend` role). The post now says so and describes pipeline *shape*, not domain.
+    `pod/projects/outreach-engine` is a **separate tool of his own** — that's where the
+    provider registry + `/usage` quota check live, and the post keeps the two codebases
+    explicitly distinct.
+    - **NDA projects are now TWO** (HL7 platform + entity validation). `askmePrompt.ts`
+      updated so the chatbot never speculates about either client/product name.
+    - ⚠️ **Still open:** the `~15 min → ~3 min per 10-record batch` figure remains a
+      hand-timed single batch with no artifact. Published explicitly hedged. Replace if a
+      real measurement is ever run.
+    - ⚠️ **Not done — needs user call:** "leads a team of two on the entity-validation
+      project" is a *new* leadership claim, stated by Mubashir directly. It is currently
+      **only in the journal post** — `profile.json` `experience[0]`, the `backend` role
+      bullets, and `~/development/resume-tailoring/master-cv.md` do not mention it. Decide
+      whether to add it, and if so add it in all three so the résumé and site don't drift.
 
 - **2026-06-27 — Removed Hobbies & Habits** (no recruiter signal). Habits deleted outright
   (stale log, last entry 2026-03-14 → undercut the discipline narrative). Hobbies content
