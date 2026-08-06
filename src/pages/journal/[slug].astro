@@ -199,8 +199,10 @@ const schemas = [articleSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : 
             '<rect x="9" y="9" width="11" height="11" rx="2"/>' +
             '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
           btn.addEventListener("click", function () {
+            // textContent, not innerText: innerText is layout-dependent and
+            // renormalises whitespace, which mangles indentation in a fence.
             var code = pre.querySelector("code");
-            var text = code ? code.innerText : pre.innerText;
+            var text = code ? code.textContent : pre.textContent;
             navigator.clipboard.writeText(text).then(
               function () {
                 btn.classList.add("is-copied");
