@@ -158,6 +158,35 @@ The big architectural fix: pages currently render `client:only="react"` → **cr
 
 ## Decisions log
 
+- **2026-08-06 — Journal reading experience rebuilt** (commits `0c788ca`, `1d1677c`, +
+  the Tavily post). Reference was `mikareyes.com/ai/how-to-audit-website-seo-aeo-with-ai`,
+  analysed from its HTML + compiled CSS. The thing that makes it read well is *absence*:
+  ~27 paragraphs, 7 figures, 1 code card, 1 blockquote, **0 bordered cards** inside the
+  article, one accent colour, one narrow column.
+  - **Measure enforced.** `MASTER.md:47` had mandated 60–75ch since July and it was
+    implemented in zero files. Posts were `max-w-3xl` + `prose max-w-none` = no measure.
+    Now `max-w-[42rem] px-6` ≈ 66ch.
+  - **Mobile body-size bug fixed** — `prose-sm` was rendering 14px body text under the
+    16px floor.
+  - **Elevation scale built** (`MASTER.md:65`) — `--shadow-1/2/3` from one
+    `--shadow-color`: deep indigo in light so shadows carry the palette, near-black in
+    dark where a tint doesn't register on `#0B0D19`.
+  - **Borders deliberately NOT changed.** `--border` is already indigo-tinted
+    (`#E2E1F0`), which is the whole point of the pattern; making it literally warm would
+    fight the indigo identity. Documented so it doesn't get "fixed" later.
+  - **Renderer gained** tables (`remark-gfm`), captioned figures via markdown image
+    titles (+ `rehype-unwrap-images`, because `<figure>` inside `<p>` is invalid HTML),
+    GitHub-style callouts (`> [!NOTE]`), and a code-fence copy button. **`rehype-raw` was
+    deliberately not used** — no raw-HTML path into content.
+  - **Posts gained** optional `faq: [{q,a}]` → `<dl>` + FAQPage JSON-LD, and a byline
+    with a real headshot (`Person.image` now points at the photo, not the OG card).
+  - ⚠️ **Open integrity item:** the Tavily post's `~15 min → ~3 min per 10-record batch`
+    figure has **no artifact in `~/development/pod/`** — the only Tavily code there is the
+    provider registry + `/usage` quota check in `outreach-engine`. The Serper→Tavily
+    *ingestion* pipeline the LinkedIn post describes is not in that repo. Published
+    hedged ("a stopwatch on one batch of mine, not a benchmark"). **Confirm which repo
+    that pipeline lives in**, and replace with a measured figure if one exists.
+
 - **2026-06-27 — Removed Hobbies & Habits** (no recruiter signal). Habits deleted outright
   (stale log, last entry 2026-03-14 → undercut the discipline narrative). Hobbies content
   **archived to `archive/hobbies/`** (not built/served) with a restore README — revisit later
