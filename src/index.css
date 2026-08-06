@@ -281,7 +281,7 @@
   .prose pre {
     position: relative; /* anchor for the code-fence copy button */
     margin: 1.5rem 0;
-    padding: 1rem;
+    padding: 1rem 3rem 1rem 1rem;
     border: 1px solid hsl(var(--border));
     border-radius: 10px;
     background: hsl(var(--muted));
@@ -315,6 +315,126 @@
   .prose hr {
     margin: 2.5rem 0;
     border-color: hsl(var(--border));
+  }
+
+  /* Captioned figure — authored as `![alt](/x.webp "Caption")`. */
+  .prose figure {
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+
+  .prose figure img {
+    margin-bottom: 0;
+  }
+
+  .prose figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Tables scroll in their own container so the page body never does. */
+  .prose .table-scroll {
+    margin: 1.5rem 0;
+    border: 1px solid hsl(var(--border));
+    border-radius: 10px;
+    overflow-x: auto;
+  }
+
+  .prose .table-scroll table {
+    margin: 0;
+    width: 100%;
+    font-size: 0.875rem;
+  }
+
+  .prose th,
+  .prose td {
+    padding: 0.625rem 0.875rem;
+    text-align: left;
+  }
+
+  .prose thead th {
+    background: hsl(var(--muted));
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Callouts — authored as `> [!NOTE]` / `[!TIP]` / `[!WARNING]`.
+     Tonal fill rather than a bordered card: it stays part of the reading
+     column instead of interrupting it. */
+  .prose .callout {
+    margin: 1.5rem 0;
+    padding: 1rem 1.125rem;
+    border-left: 4px solid hsl(var(--primary));
+    border-radius: 0 10px 10px 0;
+    background: hsl(var(--primary) / 0.05);
+  }
+
+  .prose .callout-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: hsl(var(--primary));
+  }
+
+  .prose .callout > p:last-child {
+    margin-bottom: 0;
+  }
+
+  .prose .callout-warning {
+    border-left-color: hsl(var(--destructive));
+    background: hsl(var(--destructive) / 0.05);
+  }
+
+  .prose .callout-warning .callout-label {
+    color: hsl(var(--destructive));
+  }
+
+  /* Code-fence copy button — injected by the inline script on post pages.
+     Sticky so it stays reachable while a wide fence is scrolled sideways. */
+  .prose .code-copy {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 8px;
+    background: hsl(var(--background));
+    color: hsl(var(--muted-foreground));
+    cursor: pointer;
+    transition: color 150ms ease-out, border-color 150ms ease-out;
+  }
+
+  .prose .code-copy:hover {
+    color: hsl(var(--foreground));
+    border-color: hsl(var(--primary) / 0.5);
+  }
+
+  .prose .code-copy.is-copied {
+    color: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+  }
+
+  .prose .code-copy.is-copied::after {
+    content: "Copied";
+    position: absolute;
+    right: calc(100% + 0.5rem);
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    font-size: 0.6875rem;
+    font-weight: 600;
+    white-space: nowrap;
   }
 
   /* Mono eyebrow label — section markers, metric labels */

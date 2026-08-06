@@ -177,4 +177,49 @@ const schemas = [articleSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : 
       )
     }
   </article>
+
+  <!-- Copy button on code fences. Plain DOM rather than an island: posts are
+       server-rendered markdown and this is the only interactive affordance
+       they need. Re-runs after view transitions, like the scroll-reveal
+       script in PageLayout. -->
+  <script is:inline>
+    (function () {
+      function addCopyButtons() {
+        var blocks = document.querySelectorAll("article pre:not([data-copy])");
+        if (!blocks.length) return;
+        blocks.forEach(function (pre) {
+          pre.setAttribute("data-copy", "");
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "code-copy";
+          btn.setAttribute("aria-label", "Copy code");
+          btn.innerHTML =
+            '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" ' +
+            'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+            '<rect x="9" y="9" width="11" height="11" rx="2"/>' +
+            '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+          btn.addEventListener("click", function () {
+            var code = pre.querySelector("code");
+            var text = code ? code.innerText : pre.innerText;
+            navigator.clipboard.writeText(text).then(
+              function () {
+                btn.classList.add("is-copied");
+                btn.setAttribute("aria-label", "Copied");
+                setTimeout(function () {
+                  btn.classList.remove("is-copied");
+                  btn.setAttribute("aria-label", "Copy code");
+                }, 1600);
+              },
+              function () {
+                btn.setAttribute("aria-label", "Copy failed");
+              }
+            );
+          });
+          pre.appendChild(btn);
+        });
+      }
+      addCopyButtons();
+      document.addEventListener("astro:page-load", addCopyButtons);
+    })();
+  </script>
 </PageLayout>
