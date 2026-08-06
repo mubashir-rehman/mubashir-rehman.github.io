@@ -88,7 +88,11 @@ All content is static JSON in `src/data/`: `profile.json`, `projects.json`, `jou
 
 ## Deploy
 
-Push to `main` auto-deploys to GitHub Pages (build → upload `dist/public` → deploy). **Gotcha:** `.github/workflows/static.yml` and `deploy.yml` are byte-identical and both trigger on push to `main` with the same `concurrency.group: pages` — they're redundant; consider consolidating rather than editing only one.
+Push to `main` auto-deploys to GitHub Pages (build → upload `dist/public` → deploy) via the single workflow `.github/workflows/deploy.yml`.
+
+> **Resolved 2026-08-06:** there used to be a second, byte-identical workflow (`static.yml`). Both fired on every push and both declared `concurrency.group: pages` with `cancel-in-progress: true`, so whichever registered second cancelled the other — every commit showed 2 cancelled + 2 successful checks. Deleting `static.yml` fixed it. If you ever add another Pages workflow, do **not** reuse the `pages` concurrency group.
+
+**Cloudflare Pages** also builds this repo, configured on Cloudflare's side (there is no `wrangler.toml` or Cloudflare config in the repo). The canonical domain is served by **GitHub Pages** (`curl -sI https://mubashir-rehman.is-a.dev/` → `server: GitHub.com`), so the Cloudflare `*.pages.dev` deployment receives no traffic. It's harmless — `Base.astro`'s `isCanonical` check emits `noindex` on any host other than `mubashir-rehman.is-a.dev` — but it is a redundant build. Left in place deliberately.
 
 ## Tests
 
