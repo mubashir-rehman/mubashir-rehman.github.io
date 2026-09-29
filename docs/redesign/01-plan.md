@@ -92,8 +92,10 @@ pages on static hosts).
 - **Dark-first.** Black ~70% of the surface, purple ~20% (identity, primary action), blue ~10%
   (live/interactive/system signals: links in diagrams, focus, status, data flow). A light theme
   is still required (recruiters in bright offices, printing) and must feel like the same brand.
-- **Workshop / lab notebook:** grid paper and schematic cues used sparingly, monospace labels,
-  numbered sections, annotations. Typography carries the design.
+- **Workshop / lab notebook** as a mood, expressed mainly through typography and diagrams.
+  Avoid the generated-design defaults listed in the `frontend-design` skill (monospace data
+  labels, 01/02/03 markers on non-sequences, ALL-CAPS eyebrows, tinted near-black standing in
+  for black, identical rounded cards). Numbering only where content really is a sequence.
 - **Interaction budget:** at most one "signature" interactive element per page (e.g. an
   explorable architecture diagram on a case study) and light micro-interactions elsewhere
   (hover, focus, reveal). Nothing auto-plays, nothing blocks reading, everything respects
@@ -175,6 +177,19 @@ Nothing ships to `main` without Mubashir's approval.
 | **SEO / AEO / GEO lead** | Technical audit, intent map, schema plan, entity plan, off-site levers | Repo, built output, web | `40-search-strategy.md` | Change code yet |
 | **Editorial lead** | Blog strategy, story selection, titles, outlines, one sample post | master-resume evidence, brief | `50-editorial-plan.md` | Name NDA products; include colleagues' names |
 | **QA lead** (phase 4) | Visual, accessibility, performance, copy audit | Built site | `60-qa-report.md` | Fix without reporting |
+
+**Skills each role uses** (Anthropic's official plugins; in cloud sessions, cloned from
+`anthropics/claude-plugins-official` and `anthropics/knowledge-work-plugins`):
+
+| Role | Skills |
+|---|---|
+| UI designer | `frontend-design`, `design:design-system`, `design:design-critique` |
+| UX strategist | `design:accessibility-review`, `design:ux-copy`, `frontend-design` (principles) |
+| Content strategist | `design:ux-copy`, `frontend-design` (writing) |
+| SEO / AEO / GEO lead | `marketing:seo-audit` |
+| Editorial lead | `marketing:content-creation`, `marketing:brand-review` |
+| QA lead | `design:accessibility-review`, `design:design-critique`, `marketing:seo-audit` |
+| Build | `frontend-design`, `design:design-handoff` |
 
 **Anti-anchoring rule:** the UX and UI roles work from the brief, not from the current design.
 They do not open `src/index.css`, `tailwind.config.ts`, `design-system/`, component or layout
