@@ -88,7 +88,7 @@
   ],
   "teaching": "For five semesters I was a teaching assistant for operating systems at Information Technology University: I ran undergraduate labs on file systems, threads, scheduling, system calls and synchronisation, discussed classic systems papers with graduate students, wrote assignments under the instructor and graded projects.",
   "paper": {
-    "title": "Evaluation of a Low-Cost Single-Lead ECG Module for Vascular Ageing Prediction",
+    "title": "Evaluation of a low-cost single-lead ECG module for vascular ageing prediction and studying smoking-induced changes in ECG",
     "journal": "Circuits, Systems, and Signal Processing",
     "publisher": "Springer",
     "year": 2025,
@@ -98,7 +98,8 @@
     "authorship": "Co-author with equal contribution, third of seven authors",
     "contribution": "Data collection, the signal-processing and feature pipeline, and model training and evaluation.",
     "result": "42 subjects and 6,131 segmented samples; a random forest reached R² 0.99 on segmented data and R² 0.87 with transfer learning on unsegmented data.",
-    "caseStudy": "/projects/ecg-vascular-age-research/"
+    "caseStudy": "/projects/ecg-vascular-age-research/",
+    "citation": "Circuits, Systems, and Signal Processing (Springer), 44(8), 5852 to 5875, 2025"
   },
   "education": {
     "degree": "BS Computer Science",
@@ -106,10 +107,22 @@
     "place": "Lahore"
   },
   "resumes": {
-    "backend": { "label": "Backend", "file": "/resume/Mubashir-Rehman-Backend.pdf" },
-    "ai-backend": { "label": "AI backend", "file": "/resume/Mubashir-Rehman-AI-Backend.pdf" },
-    "full-stack": { "label": "Full-stack", "file": "/resume/Mubashir-Rehman-Full-Stack.pdf" },
-    "erp-hrms": { "label": "ERP and AI", "file": "/resume/Mubashir-Rehman-ERP-HRMS.pdf" }
+    "backend": {
+      "label": "Backend",
+      "file": "/resume/Mubashir-Rehman-Backend.pdf"
+    },
+    "ai-backend": {
+      "label": "AI backend",
+      "file": "/resume/Mubashir-Rehman-AI-Backend.pdf"
+    },
+    "full-stack": {
+      "label": "Full-stack",
+      "file": "/resume/Mubashir-Rehman-Full-Stack.pdf"
+    },
+    "erp-hrms": {
+      "label": "ERP and AI",
+      "file": "/resume/Mubashir-Rehman-ERP-HRMS.pdf"
+    }
   },
   "defaultResume": "backend",
   "seo": {
