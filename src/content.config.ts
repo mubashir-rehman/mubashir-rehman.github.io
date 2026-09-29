@@ -65,11 +65,19 @@ const work = defineCollection({
       edges: z.array(z.tuple([z.string(), z.string()])),
     }),
     decisions: z.array(decision).min(2).max(3),
-    broke: z.array(z.object({ title: z.string(), symptom: z.string(), cause: z.string(), fix: z.string() })).max(2).default([]),
-    results: z.array(z.string()).max(5),
+    broke: z.array(z.object({ title: z.string(), symptom: z.string(), cause: z.string(), fix: z.string() })).max(3).default([]),
+    // When nothing broke, say what the honest boundary is instead of inventing an incident.
+    brokeNote: z.string().optional(),
+    results: z.array(z.string()).min(1).max(5),
     rule: z.object({ n: z.number(), text: z.string() }).optional(),
-    links: z.object({ repo: z.string().url().optional(), demo: z.string().url().optional() }).default({}),
+    // Only for work that was designed but not built by me: shown as a separate list.
+    specified: z.array(z.string()).max(12).optional(),
+    asOf: z.coerce.date().optional(),
+    links: z
+      .object({ repo: z.string().url().optional(), demo: z.string().url().optional(), paper: z.string().url().optional() })
+      .default({}),
     relatedPost: z.string().optional(),
+    related: z.array(z.string()).max(2).default([]),
   }),
 });
 
