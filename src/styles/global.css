@@ -412,3 +412,12 @@ code,kbd,samp{font-family:var(--font-mono);font-stretch:90%;font-size:.84em}
 .statement--home{margin-top:clamp(10px,2vh,24px)}
 @media(max-height:700px) and (min-width:1100px){.who__img{width:48px;height:48px}.panel{padding:12px 16px}.panels{gap:8px}.panel__s{margin-top:4px}}
 .btn{max-width:100%;white-space:normal;text-align:center;line-height:1.2;padding-block:8px}
+
+/* ---- sticky header: always pinned on desktop; on phones it hides while scrolling down and
+   returns on scroll up. scroll-padding keeps anchor targets and focused elements clear of it
+   (WCAG 2.2 2.4.11). ---- */
+.site-head{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg-0) 88%,transparent);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);transition:transform var(--dur-3) var(--ease-out)}
+.site-head.is-hidden{transform:translateY(-100%)}
+html{scroll-padding-top:148px}
+@media(min-width:760px){html{scroll-padding-top:88px}.site-head.is-hidden{transform:none}}
+.sec__head{top:96px}.post__meta{top:96px}

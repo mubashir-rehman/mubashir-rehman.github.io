@@ -37,6 +37,14 @@ const current = (href: string) => path === href || (href !== "/" && path.startsW
     if (!b) return;
     function label() { b.setAttribute("aria-label", d.dataset.theme === "dark" ? "Switch to light theme" : "Switch to dark theme"); }
     label();
+    // Phones: hide the header while scrolling down, bring it back on any scroll up or focus.
+    var h = document.querySelector(".site-head"), last = scrollY;
+    addEventListener("scroll", function () {
+      var y = scrollY;
+      if (h) h.classList.toggle("is-hidden", y > last && y > 120);
+      last = y;
+    }, { passive: true });
+    if (h) h.addEventListener("focusin", function () { h.classList.remove("is-hidden"); });
     b.addEventListener("click", function () {
       var t = d.dataset.theme === "dark" ? "light" : "dark";
       d.dataset.theme = t;
