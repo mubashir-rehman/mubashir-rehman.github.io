@@ -111,7 +111,7 @@ code,kbd,samp{font-family:var(--font-mono);font-stretch:90%;font-size:.84em}
 @media(max-width:899px){.statement .s3{font-stretch:110%}}
 @media(max-width:599px){.statement .s3{font-stretch:100%}.statement .s1{font-stretch:72%}}
 .trace{display:block;width:100%;height:auto;margin-top:clamp(18px,3vw,40px);overflow:visible}
-.trace .ln{fill:none;stroke:var(--signal);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:trace-draw var(--dur-trace) var(--ease-trace) 300ms forwards}
+.trace .ln{fill:none;stroke:var(--signal-text);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:trace-draw var(--dur-trace) var(--ease-trace) 300ms forwards}
 .trace .mk{fill:var(--accent);opacity:0;animation:trace-mark 260ms var(--ease-out) 1720ms forwards}
 .trace--narrow{display:none}
 @media(max-width:639px){.trace--wide{display:none}.trace--narrow{display:block}}

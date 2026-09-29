@@ -52,7 +52,7 @@ export const PALETTES = {
     name: "A. Amethyst and Cobalt (recommended)",
     neutral: { h: 285, dark: 0.55, light: 0.7 }, // greys carry a whisper of violet; the page itself is true black / true white
     purple: { h: 305, peak: 0.25 },              // amethyst
-    blue: { h: 260, peak: 0.2 },                 // cobalt
+    blue: { h: 72, peak: 0.16 },                 // amber gold: purple's complement, warm like the camel panels
     danger: 24, warning: 78, success: 158,
   },
   b: {
