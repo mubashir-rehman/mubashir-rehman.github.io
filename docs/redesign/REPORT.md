@@ -20,9 +20,12 @@
 | Lighthouse mobile, home | 100 / 100 / 100 / 100, LCP 1.5 s, CLS 0 |
 | Lighthouse mobile, case study | 100 / 100 / 100 / 100, LCP 1.7 s, CLS 0 |
 | Keyboard (skip link, nav, theme, diagram, chat) | passes |
-| Live QA | see `live-qa.md` |
+| Live, via the AIML environment | all 21 sitemap URLs 200, canonicals match, slash-less URLs 301, redirects and PDFs correct, real 404; screenshots render cleanly with no JS errors (`live-qa.md`, `live-qa/`) |
 
 ## Known issues and cuts
+
+- **Chat answer not verified live.** The Groq key is present in the deployed bundle, but no environment here could complete a Groq call. Please ask it one question on the live site.
+- **Home page redesigned after your first look** (CTAs above the fold, your photo, separated panels). Other pages still use the quieter list style; tell me which feel too text-heavy.
 
 - One site-wide social card instead of one per page (cut for budget; `scripts/og.mjs` is the starting point).
 - The chat still uses a public Groq key baked into the bundle (free-tier limits are the only protection).
