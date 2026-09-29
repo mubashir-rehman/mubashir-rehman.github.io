@@ -2,6 +2,8 @@
 import { getCollection } from "astro:content";
 import Base from "@/layouts/Base.astro";
 import Trace from "@/components/Trace.astro";
+import { Image } from "astro:assets";
+import headshot from "@/assets/mubashir-rehman.webp";
 import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
 import { graph, website, personFull, webPage, SITE } from "@/lib/schema";
@@ -18,35 +20,36 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
 <Base title={profile.seo.homeTitle} description={profile.seo.homeDescription} path="/" schema={schema}>
   <section class="hero wrap" aria-labelledby="hero-h">
     <div class="hero__grid">
-      <div>
-        <h1 class="statement" id="hero-h">
+      <div class="hero__main">
+        <div class="who">
+          <Image src={headshot} alt={profile.name} width={64} height={64} loading="eager" class="who__img" />
+          <p class="who__txt"><strong>{profile.name}</strong><span>{profile.jobTitle}, {profile.location.city}. {profile.yearsFullTime} years.</span></p>
+        </div>
+        <h1 class="statement statement--home" id="hero-h">
           <span class="s1">{profile.heroLine[0]}</span> <span class="s2">{profile.heroLine[1]}</span> <span class="s3">{profile.heroLine[2]}</span>
         </h1>
-        <Trace />
-        <div class="hero__foot">
-          <p class="hero__id"><strong>{profile.name}. {profile.identity}</strong> {profile.positioning}</p>
-          <p class="hero__stack">{profile.stackLine}</p>
-          <div class="actions">
-            <a class="btn btn--primary" href={resume.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé (PDF)</a>
-            <a class="btn btn--secondary" href={`mailto:${profile.email}`}>Email me</a>
-          </div>
-          <p class="router">Hiring for a specific role? {roles.map((r, i) => <><a href={`/for/${r.slug}/`}>{r.label}</a>{i < roles.length - 1 ? ", " : "."}</>)}</p>
+        <p class="hero__id">{profile.positioning} Open to remote roles.</p>
+        <div class="actions">
+          <a class="btn btn--primary btn--lg" href={resume.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé (PDF)</a>
+          <a class="btn btn--secondary btn--lg" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>Email me</a>
         </div>
+        <p class="router">Hiring for a specific role? {roles.map((r, i) => <><a href={`/for/${r.slug}/`}>{r.label}</a>{i < roles.length - 1 ? ", " : "."}</>)}</p>
       </div>
       <div class="hero__side">
         <h2 class="label" id="sel-h">Selected work</h2>
-        <ul class="works" aria-labelledby="sel-h">
+        <ul class="panels" aria-labelledby="sel-h">
           {flagships.map((w) => (
-            <li class="work">
-              <h3 class="work__title"><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
-              <p class="work__sum">{w.data.summary}</p>
-              <p class="work__meta small">{w.data.role.split(":")[0]}. {w.data.period}.</p>
+            <li class="panel">
+              <p class="panel__k">{w.data.pillar}</p>
+              <h3 class="panel__t"><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
+              <p class="panel__s">{w.data.outcome}</p>
             </li>
           ))}
         </ul>
-        <p class="small" style="margin-top:12px"><a class="link" href="/projects/">All work</a></p>
+        <p class="small" style="margin-top:12px"><a class="link" href="/projects/">All nine case studies</a></p>
       </div>
     </div>
+    <Trace />
   </section>
 
   {posts.length > 0 && (
@@ -57,12 +60,12 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
           <p class="small"><a class="link" href="/journal/">All writing</a></p>
         </div>
         <div class="sec__body">
-          <ul class="works works--compact">
+          <ul class="panels panels--grid">
             {posts.map((p) => (
-              <li class="work">
-                <h3 class="work__title"><a href={`/journal/${p.id}/`}>{p.data.title}</a></h3>
-                <p class="work__sum">{p.data.lede}</p>
-                <p class="work__meta small"><time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time></p>
+              <li class="panel">
+                <p class="panel__k"><time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time></p>
+                <h3 class="panel__t"><a href={`/journal/${p.id}/`}>{p.data.title}</a></h3>
+                <p class="panel__s">{p.data.lede}</p>
               </li>
             ))}
           </ul>
