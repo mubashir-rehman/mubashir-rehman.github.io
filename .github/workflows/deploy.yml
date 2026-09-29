@@ -18,10 +18,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      PUBLIC_GISCUS_REPO:        ${{ secrets.VITE_GISCUS_REPO }}
-      PUBLIC_GISCUS_REPO_ID:     ${{ secrets.VITE_GISCUS_REPO_ID }}
-      PUBLIC_GISCUS_CATEGORY:    ${{ secrets.VITE_GISCUS_CATEGORY }}
-      PUBLIC_GISCUS_CATEGORY_ID: ${{ secrets.VITE_GISCUS_CATEGORY_ID }}
       PUBLIC_GROQ_API_KEY:       ${{ secrets.VITE_GROQ_API_KEY }}
     steps:
       - uses: actions/checkout@v4.2.2
@@ -30,7 +26,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - run: npm test
+      - run: npm run build   # includes scripts/check-dist.mjs, the post-build gate
       - uses: actions/upload-pages-artifact@v3.0.1
         with:
           path: dist/public
