@@ -15,7 +15,20 @@ engineering", not "this is a well-designed résumé".
 
 **Do not try to make the site more impressive. Make it more specific.**
 
-## 1. Triage of the external review
+### 0.1 Thesis (from the second review, adopted)
+The differentiator is not "backend + AI". It is the pattern every case study already shows: **walk into a real,
+messy system, find where reality diverges from what people think it does, and build the missing reliability.**
+The visual thesis follows from that: **an engineer's systems notebook crossed with an incident report.** Traces,
+system diagrams, numbered sections, annotations, and one recurring grammar:
+`SYMPTOM → CAUSE → FIX`, `DECISION / REJECTED / WHY / COST`, `RULE`. These labels are how the content is already
+written; the design makes them visible. It is not a startup landing page, not an agency site, not a résumé.
+
+Emotional progression to design for: 5 s "this person has a point of view" → 20 s "builds serious systems" →
+60 s "understands failure, not just happy paths" → 3 min "I would hand him a difficult backend problem" → contact.
+
+## 1. Triage of the external reviews
+
+Where the first-review triage below and the second-review triage or §3 disagree, the second triage and §3 win.
 
 ### Already fixed (do nothing)
 - Six-metric dashboard, "60+ REST endpoints", "7 services", "8+ production systems": gone.
@@ -43,8 +56,27 @@ engineering", not "this is a well-designed résumé".
 - **Hero copy "I build software for messy systems."**: the tagline is **pending the owner's decision**. Keep rendering `profile.heroLine` from data so it swaps in one edit. Do not hardcode tagline text in templates.
 - **Remove Résumé from everywhere prominent**: the owner explicitly asked for the résumé download and email to be visible above the fold. Keep both as hero CTAs. Remove them from the nav instead (see 3.1).
 - **"Got a difficult system? … work with me"**: freelancing must stay low profile. The CTA speaks to roles first (see 3.7).
-- **Invented principles** ("Deterministic first. Model second.", "Don't hide uncertainty", "If I don't know, I say I don't know"): not in the data. Use only the nine rules in `src/content/work/*.md` (`rule.n`, `rule.text`). If you think a rule is missing, ask the advisor; never add one.
+- **Invented principles** ("Don't hide uncertainty", "If I don't know, I say I don't know", "correctness over impressive architecture", "Thinking about…"): not in the data. Use only the nine rules in `src/content/work/*.md` (`rule.n`, `rule.text`). Note: "Deterministic first, model second." **is** real (rule 8, HireTrack) and may be used. If you think a rule is missing, ask the advisor; never add one.
 - **Numbers the review invents or suggests** (10+ UAVs, ~10 services, etc.): never. Every figure must already exist in `src/data/*.json` or `src/content/**`.
+
+### Second review (after the live site), triage
+- **Adopt**: the thesis in 0.1; keep the hero line's three-weight treatment; demote "3+ years" to metadata; a
+  `Backend / systems engineer` identity label; "How I work" as the first section after the hero; three projects on home,
+  one per pillar (Ownership, Systems, Applied AI), each with incident markers; a **When things break** section using
+  `SYMPTOM → CAUSE → FIX`; "Problems I solve" promoted to a compact home section titled **Where I usually get called**;
+  a **Currently** block; the chat reframed as **Ask the engineer** with example questions; a simpler footer that
+  **keeps** "Work under NDA is described by function, never by name."; case studies presented as investigations with
+  causality made visual; role pages as filtered evidence with a persistent role switcher and Backend first;
+  Writing kept intentionally small with an honest post count; mobile designed as its own one-column narrative.
+- **Already true / stale in the review**: the About page no longer has a toolbox, n8n, or achievements list (it
+  reviewed a cached version); no progress bars exist; no gradients exist.
+- **Reject**: a new accent colour (owner chose purple + gold; keep, flat, no gradients); paper/noise/grid textures
+  (skip; hierarchy must come from type, rules and spacing); invented About prose ("I started close to the machine,
+  teaching operating systems and distributed systems…") and invented "What I care about" bullets (use bio + rules
+  only); "Thinking about" in Currently (not a fact we have); n8n in any stack list (retired); "Have a broken system?"
+  as a primary CTA (freelancing stays low profile: roles first, problems second and quiet).
+- **Owner decision pending**: the tagline. Both reviews say keep "I like difficult systems…"; the owner said he does
+  not like it. It stays data-driven (`profile.heroLine`); do not change it.
 
 ## 2. Non-negotiable guardrails
 
@@ -68,34 +100,52 @@ engineering", not "this is a well-designed résumé".
 
 ### 3.1 Navigation (`src/components/Header.astro`)
 ```
-[mark] Mubashir Rehman            Work   Writing   About            [theme]
+[mark] MUBASHIR REHMAN                         Work   Writing   About   Contact      [theme]
+       backend / systems engineer
 ```
-- Wordmark (existing star mark + name) is the home link.
-- Links: Work (`/projects/`), Writing (`/journal/`), About (`/about/`). **Contact and Résumé leave the nav.**
-- Keep the theme toggle. Keep sticky behaviour and hide-on-scroll on phones (already implemented).
-- Phones: one row if it fits at 320px; otherwise links on a second row as today. No hamburger.
+- Wordmark (existing star mark + name, name may be set in caps) is the home link, with a small mono identity label
+  under it on desktop (`profile.label`, see §3.10). Hide the label on phones.
+- Links: Work, Writing, About, Contact. **Résumé leaves the nav** (it lives in the hero, the contact block and footer).
+- Quiet bar: no pills, no glass, no shadow. Keep sticky + hide-on-scroll on phones (already implemented).
+- Phones: one row if it fits at 320px, otherwise links on a second row as today. No hamburger.
 
 ### 3.2 Home (`src/pages/index.astro`), in this order and nothing else
-1. **Hero** (left-aligned, 12-col grid, text spans ~7 cols, portrait ~3 cols on desktop)
-   - Mono eyebrow: `profile.jobTitle` (e.g. `LEAD SOFTWARE ENGINEER`), small caps via mono, `--text-3`.
-   - `h1`: `profile.heroLine` (keep the three-weight treatment, it is the site's signature).
-   - One supporting sentence (shortened `profile.positioning` or `profile.roleLine`; pick the shorter, do not write new facts).
-   - Meta row, mono: `Lahore, Pakistan · UTC+5 · Open to remote roles` (from `profile.location` + availability).
-   - Actions: primary **Download résumé (PDF)**, secondary **Email me**, tertiary text link **See the work ↓** (anchor to selected work). Must stay above the fold at 1280×590 and 1366×625 (the owner's real viewport with 150% scaling) and at 390×844.
-   - Headshot stays (human element), smaller, round, purple ring. On phones it sits beside the name/eyebrow, not above the h1.
-   - The trace (`Trace.astro`) stays under the hero as the section divider.
-2. **Selected work**: four artifacts, numbered `01` to `04` in mono:
-   1. `dental-ai-front-desk` 2. `social-signal-intelligence-backend` 3. `erp-ai-agents` 4. `hiretrack`.
-   - Layout: alternating asymmetric rows on desktop (text 5 cols / artifact 7 cols, then flipped). Single column on phones.
-   - Each artifact: number, title, one line (`summary`, shortened only if the data provides a shorter field), mono meta row (`pillar · role (short) · period`), **a real system fragment** (see 3.4), a block titled "The interesting part" holding the first decision's `chose` + `why` (or the first `broke` item for HireTrack if better), and "Read the case study" link.
-   - Below the four: one line, `+ 5 more case studies and 8 smaller builds →` linking to `/projects/` (counts computed from collections, never hardcoded).
-3. **How I work**: the nine rules, but show **3 on home** (1, 3, 5 by default, i.e. "Read the number that does not add up", "Prove the path end to end before you tune the thresholds", "A partial result should look partial"). Big type, mono rule numbers, each links to the case study that earned it. Link: `All nine rules →` to `/about/#rules`.
-4. **Currently**: 3 to 4 mono-labelled lines from `profile.timeline` / `profile.current` / `profile.education`:
-   `NOW` Lead Software Engineer, TransData (leading five engineers) · `BEFORE` Team Lead, VeritusLabs · `RESEARCH` Springer CSSP 2025 (link) · `STUDIED` BS Computer Science, ITU. Link: `Full background →` `/about/`.
-5. **CTA**: heading "Hiring for a backend or AI role?" (roles first), one line, Email + Résumé buttons, and a quiet small line `Or tell me about a system that needs fixing.` linking to `/services/`. No pricing, no "work with me".
-6. Footer (3.8).
+Sections are numbered in mono (`01 / HOW I WORK`) and separated by full-width 1px rules. Each section must fit in
+about one desktop screen; if it does not, cut, do not add.
 
-Remove from home: "Latest writing" panels (move to a one-line "Latest note: <title>" inside the Currently block, optional), the "Hiring for a specific role?" router (moves to footer), the "Questions about my work?" chat section (chat becomes a footer link).
+0. **Hero** (left-aligned; text ~7 cols, portrait ~3 cols on desktop)
+   - Identity: small round headshot + `MUBASHIR REHMAN` + mono label `Backend / systems engineer`.
+   - `h1`: `profile.heroLine` (three weights, unchanged).
+   - One supporting sentence: `profile.roleLine`.
+   - Evidence meta, mono, one or two short lines: `Lead Software Engineer, TransData · leading five engineers` and
+     `3+ years in production · Lahore · UTC+5 · Open to remote roles` (all from `profile`).
+   - Actions: primary **Download résumé (PDF)**, secondary **Email me**, tertiary text link **See the work ↓**.
+     Must stay above the fold at 1280×590, 1366×625 and 390×844.
+   - A small text link under the actions: `Hiring for a specific role? →` to `/for/backend/` (role switcher there).
+   - The trace (`Trace.astro`) closes the hero.
+1. **01 / How I work**: four rules, big type, mono numbers, each linking to the case study that earned it:
+   rule 1 "Read the number that does not add up.", rule 2 "Split diagnosis from fixing where the blast radius
+   changes.", rule 3 "Prove the path end to end before you tune the thresholds.", rule 8 "Deterministic first, model
+   second." Under each, one mono line `from: <case study title>`; no new explanatory sentences. Link `All nine rules →`.
+2. **02 / Selected work**: the three flagships only (dental = Ownership, social-signal = Systems, erp = Applied AI).
+   Editorial rows, not cards, alternating asymmetric on desktop, one column on phones. Each row: mono number + pillar +
+   period, title, `summary`, `MiniDiagram`, **incident markers** (the `broke[].title` values as small mono tags),
+   "The interesting part" (`decisions[0].chose` + `why`), and "Read the case study". Then one line computed from the
+   collections: `+ N more case studies, open source and research →` to `/projects/`.
+3. **03 / When things break**: three incidents as the `Incident` component (§3.11), one each from dental, social-signal
+   and healthcare console (pick the clearest `broke[]` item; one from each keeps it varied). Each links to its case study.
+4. **04 / Where I usually get called**: the five problem headlines from `/services/`, as a plain numbered list, one
+   line each, each linking to its case study; then `Problems I solve →`. Move the `problems` array from
+   `services.astro` into `src/data/problems.json` so both pages read one source.
+5. **05 / Currently**: mono-labelled lines. `NOW` Lead Software Engineer at TransData, leading five engineers ·
+   `WRITING` the latest 2 published post titles, linked · `RESEARCH` the paper, venue and year, linked ·
+   `OPEN TO` remote backend and AI backend roles (from `availabilityShort` + role labels). Link `Full background →`.
+6. **Contact + Ask the engineer** (one section): heading "Hiring for a backend or AI role?", Email + Résumé buttons,
+   one quiet line `Or tell me about a system that is misbehaving.` → `/services/`. Beside it (below on phones):
+   **Ask the engineer**, one line ("Answers come only from what is published here"), and three example questions as
+   buttons that open the chat with that question filled in: "What has he built alone?", "What has he actually done
+   with AI?", "Show me a production failure he fixed." `<noscript>` fallback: "Email me instead."
+7. Footer (§3.8).
 
 ### 3.3 Visual system (`design/tokens.mjs` → `src/styles/tokens.css`, and `src/styles/global.css`)
 - **Width**: content max 1160px, 12-col grid with 24px gutters desktop, 16px side gutter on phones. Prose measure stays ~68ch.
@@ -103,7 +153,7 @@ Remove from home: "Latest writing" panels (move to a one-line "Latest note: <tit
 - **Colour**: tokens unchanged in hue. Purple = the only UI accent. Gold = trace and at most one highlight per view. Neutrals from existing tokens. Keep the grey (dark) and camel (light) panel surfaces, but **only** as the artifact surface behind diagrams and as code blocks; everything else sits on the page background separated by 1px `--line-2` dividers.
 - **Surfaces**: no shadows, radius ≤ 6px, no glass, no gradients.
 - **Spacing**: generous vertical rhythm between sections (clamp ~64px to 128px), tight within a section.
-- **Motion**: trace draw (existing), link underline and artifact hover (border/translate ≤ 2px), diagram node focus (existing). Everything respects `prefers-reduced-motion`. No scroll-triggered reveals, no counters, no parallax.
+- **Motion**: trace draw (existing); a MiniDiagram's edges may draw once when it enters the viewport (IntersectionObserver, <1 KB inline script, content fully visible without JS); `SYMPTOM → CAUSE → FIX` arrows may connect once on view; link underline and row hover (≤ 2px). Everything respects `prefers-reduced-motion`. No paragraph fade-ups, no counters, no parallax, no cursor effects.
 - Delete CSS that becomes unused (the file has grown by appending; consolidate as you go, do not append a new layer on top of old rules).
 
 ### 3.4 Project artifacts (the visual core)
@@ -112,35 +162,67 @@ Remove from home: "Latest writing" panels (move to a one-line "Latest note: <tit
 - The full interactive `Diagram.astro` stays on case-study pages.
 
 ### 3.5 `/projects/`
-Four groups, each with a mono heading and a one-line intro:
-- **Featured**: the four home artifacts, same component in a compact variant.
-- **More systems**: the other five case studies as a divided list (title, one line, mono meta), not cards.
-- **Smaller builds**: `builds.json`, a compact divided list.
-- **Research**: the paper, as an artifact (title, venue, "My part:" from `profile.paper.contribution`, DOI + arXiv links, link to the ECG case study).
-Optional filter by pillar only if it adds no more than a single row of plain text buttons; skip it if in doubt.
+Groups, each with a mono heading and one-line intro:
+- **Featured**: the three flagships, compact artifact rows.
+- **More systems**: aws-backend-hipaa-eligible, ai-agent-engineering-harness, healthcare-integration-console,
+  multi-tenant-saas-architecture, as a divided list (title, `summary`, mono meta). Not cards.
+- **Open source**: HireTrack (case study link + repo + live demo) and the "This portfolio site" build entry.
+- **Smaller builds**: the remaining `builds.json` entries, compact divided list.
+- **Research**: the ECG paper as an artifact (title, venue, "My part:" from `profile.paper.contribution`, DOI + arXiv,
+  link to the ECG case study). ECG appears here only.
+No filters.
 
 ### 3.6 Case study pages (`/projects/[slug]/`)
-Keep the current structure (it was just fixed: facts strip, problem beside diagram). Restyle to the new system: mono meta, dividers instead of panels except the diagram surface, section headings consistent with home. No content changes.
+Keep the content and the recent header fix (facts strip, problem beside diagram). Present it as an investigation:
+numbered mono section labels (`01 PROBLEM`, `02 SYSTEM`, `03 DECISIONS`, `04 WHAT BROKE`, `05 OUTCOME`, `06 RULE`),
+decisions in the `DECISION / REJECTED / WHY / COST` grammar (already the data shape), **What broke** rendered with the
+`Incident` component (§3.11), the rule as a large pull quote. No content changes.
 
 ### 3.7 `/about/`
-Order: short intro (existing bio, first paragraph as lead) → **How I work: all nine rules** (`id="rules"`), each with its source link → background timeline → teaching and research → education. Résumé + email actions near the top. It should read like an essay about the engineer, not a résumé dump. Keep the at-a-glance card but make it a compact mono-labelled list.
+Engineer first, résumé second. Order: lead (bio paragraph 1) + actions → the rest of the bio → **How I work: all nine
+rules** (`id="rules"`), each with its source link → background timeline → teaching and research → education → a
+compact **Stack** line (`profile.stackLine`) and links to the four role pages. No invented narrative; bio text only.
+The at-a-glance card becomes a compact mono-labelled list.
 
 ### 3.8 Footer (`src/components/Footer.astro`)
 ```
-[mark] Mubashir Rehman
-Lead Software Engineer. Backend systems, automation, and AI where it helps.
-GitHub · LinkedIn · Email · Résumé · RSS
-Role pages: Backend · AI backend · Full-stack · ERP and AI
-Ask the site · Problems I solve                          © 2026
+MUBASHIR REHMAN
+Backend / systems engineer · Lahore, Pakistan · Open to remote roles
+Work · Writing · About · Contact           GitHub · LinkedIn · Scholar · Résumé · RSS
+Roles: Backend · AI backend · Full-stack · ERP and AI         Problems I solve
+mubashirrehman66@gmail.com
+© 2026 · Work under NDA is described by function, never by name. · Source
 ```
-Compact, 3 short rows on desktop. The role links and `/services/` live here only.
+Keep the NDA sentence and the Source link. The chat link leaves the footer (it lives in the contact block).
 
 ### 3.9 Other pages
-- `/journal/` and posts: restyle only (mono dates, dividers).
-- `/for/<role>/`: restyle only; they remain targeted landing pages.
-- `/services/`: restyle only; stays out of the nav; visually quieter than home.
-- `/contact/`: keep (linked from footer and CTAs); restyle.
+- `/journal/`: keep "Build logs and incident write-ups. The answer comes first."; add an honest computed count
+  (`2 posts`); mono dates, dividers. Posts: restyle only.
+- `/for/<role>/`: filtered evidence. A persistent role switcher at the top (Backend first, then AI backend,
+  Full-stack, ERP and AI; current one marked), then what I bring, relevant case studies (as compact rows), stack,
+  résumé for that role. Restyle; no content changes beyond layout.
+- `/services/`: restyle only; stays out of the nav; quieter than home; reads `problems.json`.
+- `/contact/`: keep; restyle; counts computed.
 - `404`: restyle.
+
+### 3.10 Data additions (the only ones allowed)
+- `profile.label`: `"Backend / systems engineer"`.
+- `profile.availabilityShort`: `"Open to remote roles"` (already shown on the current hero).
+- `src/data/problems.json`: moved verbatim from `services.astro`.
+Add each to the schema/types if one exists. Nothing else.
+
+### 3.11 The incident grammar (`src/components/Incident.astro`)
+Input: one `broke[]` item (`title`, `symptom`, `cause`, `fix`) plus the case-study link.
+Desktop: title on top, then three columns `SYMPTOM → CAUSE → FIX` with mono labels and thin arrows.
+Mobile: stacked, labels above each block, arrows turn downward. Text is the data verbatim (no shortening that changes
+meaning). Used on home (§3.2 item 3) and case studies (§3.6).
+
+## 3.12 Advisor answers to the P0 questions
+1. `/projects/` groups: see §3.5 (Featured 3, More systems 4, Open source, Smaller builds, Research = ECG only).
+2. Footer: keep the NDA sentence, Scholar and Source; Contact stays in the footer links (§3.8).
+3. `availabilityShort`: yes (§3.10).
+4. Remove the résumé prop plumbing from Header only; leave Base's prop. Yes.
+5. Moot: home now shows the three existing flagships only. Do **not** set `flagship` on HireTrack (D1 withdrawn).
 
 ## 4. Phases and gates
 
@@ -149,9 +231,9 @@ Work strictly in order. **Do not mix phases.** At the end of each phase: build, 
 | Phase | Scope | Must not touch |
 |---|---|---|
 | P0 Inventory | Read the code and data; list every home/about/projects element and where it will go; confirm the component list and any new frontmatter fields. No code changes. | everything |
-| P1 Structure | Header, home order and content, footer, `/projects/` grouping, `/about/` order. Use existing styles; ugly is fine. | tokens, colours, fonts |
+| P1 Structure | Header, home order and content, footer, `/projects/` grouping, `/about/` order, `problems.json`, data additions (§3.10). Use existing styles; ugly is fine. | tokens, colours, fonts |
 | P2 Visual system | Grid, width, type scale usage, mono metadata, dividers vs panels, spacing, CSS consolidation. | copy, data |
-| P3 Artifacts | `MiniDiagram`, the four home artifacts, research artifact, compact variants. | other pages |
+| P3 Artifacts | `MiniDiagram`, `Incident`, the three home artifact rows, research artifact, compact variants. | other pages |
 | P4 Inner pages | Case study, journal, role pages, services, contact, 404 restyle. | home |
 | P5 Polish and QA | Hover/motion, responsive sweep, a11y, performance, final copy trim. | new features |
 
@@ -192,9 +274,9 @@ CHROME_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome node scripts/view
 ## 7. Definition of done
 
 - Home contains only §3.2 items; résumé + email visible above the fold at 1280×590, 1366×625, 390×844.
-- Four artifact rows with real mini diagrams, correct in light and dark.
-- `/about/#rules` shows all nine rules with source links; home shows three.
-- Nav is wordmark + Work, Writing, About + theme toggle.
+- Three selected-work rows with real mini diagrams and incident markers, correct in light and dark; three Incident blocks.
+- `/about/#rules` shows all nine rules with source links; home shows four.
+- Nav is wordmark + label, Work, Writing, About, Contact + theme toggle.
 - All gates pass: build (25 pages), denylist, viewport matrix, 0 contrast failures, tests, lint no worse than before.
 - No new facts, numbers or names; no em dashes; no new colours or fonts; no new runtime JS beyond what exists.
 - `global.css` is smaller or no larger than before, with dead rules removed.
