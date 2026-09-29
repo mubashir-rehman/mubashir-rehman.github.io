@@ -1,0 +1,11 @@
+$ curl / (is-a.dev root)
+200 
+$ curl /about
+301 https://mubashir-rehman.is-a.dev/about/
+$ curl github.io
+301
+$ ls /opt/pw-browsers
+chromium
+chromium-1194
+chromium_headless_shell-1194
+ffmpeg-1011
