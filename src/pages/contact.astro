@@ -1,6 +1,8 @@
 ---
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
+import { Image } from "astro:assets";
+import headshot from "@/assets/mubashir-rehman.webp";
 import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
 import { graph, breadcrumb, webPage, SITE, PERSON_ID } from "@/lib/schema";
@@ -14,19 +16,45 @@ const schema = graph([
 ]);
 ---
 <Base title={title} description={description} path="/contact/" schema={schema}>
-  <div class="wrap page-head" style="max-width:calc(68ch + var(--gutter) * 2);margin-inline:0">
+  <div class="wrap page-head">
     <Crumbs items={[{ name: "Contact" }]} />
-    <h1 class="h1">Contact</h1>
-    <p class="lead">Email is fastest. A role or a problem, in two lines, is enough.</p>
-    <p class="actions" style="margin-top:var(--s-6)">
-      <a class="btn btn--primary" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>{profile.email}</a>
-    </p>
-    <dl class="dl" style="margin-top:var(--s-7)">
-      <div><dt>Where</dt><dd>{profile.location.city}, {profile.location.country}, {profile.location.timezone}</dd></div>
-      <div><dt>Works</dt><dd>{profile.availability} Open to select engagements.</dd></div>
-      <div><dt>Elsewhere</dt><dd><a class="link" href={profile.links.linkedin}>LinkedIn</a>, <a class="link" href={profile.links.github}>GitHub</a>, <a class="link" href={profile.links.scholar}>Google Scholar</a></dd></div>
-      <div><dt>Résumé by role</dt><dd>{roles.map((r, i) => <><a class="link" href={profile.resumes[r.slug as keyof typeof profile.resumes].file}>{r.label}</a>{i < roles.length - 1 ? ", " : ""}</>)}</dd></div>
-    </dl>
-    <p class="small" style="margin-top:var(--s-6)">Have a problem rather than a role? <a class="link" href="/services/">Read how I approach it</a>. Quick question? <button class="btn btn--secondary btn--sm" type="button" data-ask-open>Ask about my work</button></p>
+    <div class="cs-top">
+      <div>
+        <h1 class="h1">Contact</h1>
+        <p class="lead">Email is fastest. A role or a problem, in two lines, is enough.</p>
+        <p class="actions" style="margin-top:var(--s-6)">
+          <a class="btn btn--primary btn--lg" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>{profile.email}</a>
+        </p>
+        <dl class="dl" style="margin-top:var(--s-7)">
+          <div><dt>Where</dt><dd>{profile.location.city}, {profile.location.country}, {profile.location.timezone}</dd></div>
+          <div><dt>Works</dt><dd>{profile.availability} Open to select engagements.</dd></div>
+          <div><dt>Elsewhere</dt><dd><a class="link" href={profile.links.linkedin}>LinkedIn</a>, <a class="link" href={profile.links.github}>GitHub</a>, <a class="link" href={profile.links.scholar}>Google Scholar</a></dd></div>
+          <div><dt>Résumé by role</dt><dd>{roles.map((r, i) => <><a class="link" href={profile.resumes[r.slug as keyof typeof profile.resumes].file}>{r.label}</a>{i < roles.length - 1 ? ", " : ""}</>)}</dd></div>
+        </dl>
+      </div>
+      <aside aria-label="Other ways in">
+        <div class="who" style="margin-bottom:var(--s-5)">
+          <Image src={headshot} alt={profile.name} width={64} height={64} loading="eager" class="who__img" />
+          <p class="who__txt"><strong>{profile.name}</strong><span>{profile.jobTitle}, {profile.location.city}</span></p>
+        </div>
+        <ul class="panels">
+          <li class="panel">
+            <p class="panel__k">Quick question</p>
+            <h2 class="panel__t"><button class="linkbtn" type="button" data-ask-open>Ask about my work</button></h2>
+            <p class="panel__s">Answers come only from this site and link to the page they come from.</p>
+          </li>
+          <li class="panel">
+            <p class="panel__k">A problem, not a role</p>
+            <h2 class="panel__t"><a href="/services/">Problems I solve</a></h2>
+            <p class="panel__s">Workflows across systems that do not talk to each other, and AI on top of them.</p>
+          </li>
+          <li class="panel">
+            <p class="panel__k">See the work first</p>
+            <h2 class="panel__t"><a href="/projects/">Nine case studies</a></h2>
+            <p class="panel__s">Problem, system, decisions and what broke, for each one.</p>
+          </li>
+        </ul>
+      </aside>
+    </div>
   </div>
 </Base>
