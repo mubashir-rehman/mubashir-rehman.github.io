@@ -228,7 +228,7 @@ code,kbd,samp{font-family:var(--font-mono);font-stretch:90%;font-size:.84em}
 /* ---- prose (posts, long copy) ------------------------------------------------ */
 .prose{max-width:var(--measure)}
 .prose>*+*{margin-top:1em}
-.prose p{margin:0;color:var(--text-2)}
+.prose p{margin-bottom:0;color:var(--text-2)}
 .prose p strong,.prose li strong{color:var(--text-1);font-weight:600}
 .prose h2{font-size:var(--fs-h3);line-height:var(--lh-h3);letter-spacing:var(--ls-h3);font-weight:620;margin-top:1.8em;scroll-margin-top:16px}
 .prose h3{font-size:var(--fs-h4);line-height:var(--lh-h4);font-weight:600;margin-top:1.4em}
@@ -421,3 +421,30 @@ code,kbd,samp{font-family:var(--font-mono);font-stretch:90%;font-size:.84em}
 html{scroll-padding-top:148px}
 @media(min-width:760px){html{scroll-padding-top:88px}.site-head.is-hidden{transform:none}}
 .sec__head{top:96px}.post__meta{top:96px}
+.linkbtn{all:unset;cursor:pointer}.linkbtn::after{content:"";position:absolute;inset:0}.linkbtn:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+
+/* ---- case-study header v2: smaller title, facts in one tinted strip, problem beside the system ---- */
+.cs-head{padding-bottom:var(--s-6)}
+.cs-h1{font-size:clamp(2rem,1.3rem + 2.2vw,3.1rem);line-height:1.06;letter-spacing:-.028em;font-weight:680;max-width:24ch;margin-top:6px}
+.cs-head .lead{margin-top:var(--s-4);max-width:62ch}
+.facts-strip{display:grid;grid-template-columns:1fr;margin-top:var(--s-6);background:var(--panel-bg);border:1px solid var(--panel-line);border-radius:var(--r-press)}
+.facts-strip>div{padding:14px 18px;border-top:1px solid var(--panel-line)}
+.facts-strip>div:first-child{border-top:0}
+.facts-strip dt{font-size:var(--fs-label);font-stretch:78%;font-weight:600;color:var(--accent-text);margin-bottom:4px}
+.facts-strip dd{font-size:var(--fs-small);line-height:1.45;color:var(--text-1)}
+@media(min-width:760px){.facts-strip{grid-template-columns:repeat(2,1fr)}.facts-strip>div:nth-child(2){border-top:0}.facts-strip>div:nth-child(even){border-left:1px solid var(--panel-line)}}
+@media(min-width:1100px){.facts-strip{grid-template-columns:1fr 1fr 1fr 1.6fr}.facts-strip>div{border-top:0}.facts-strip>div+div{border-left:1px solid var(--panel-line)}}
+.cs-duo{display:grid;gap:var(--s-7);padding-block:var(--s-7);border-top:1px solid var(--line-2)}
+@media(min-width:1100px){.cs-duo{grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:var(--s-8);align-items:start}}
+.cs-h2,.cs-sec>h2{font-size:var(--fs-h4);line-height:var(--lh-h4);font-weight:620;letter-spacing:var(--ls-h4);margin-bottom:var(--s-4)}
+.cs-p{margin:0;color:var(--text-2);max-width:var(--measure)}
+.btn--lg[href^="mailto"]{overflow-wrap:anywhere}
+
+/* prose: paragraphs keep their spacing; last child adds none */
+.prose>:last-child{margin-bottom:0}
+
+/* about: at-a-glance card */
+.glance{background:var(--panel-bg);border:1px solid var(--panel-line);border-radius:var(--r-press);padding:20px 22px}
+.glance .dl{margin-top:16px;border-top-color:var(--panel-line)}
+.glance .dl>div{border-bottom-color:var(--panel-line)}
+.glance .dl>div:last-child{border-bottom:0}

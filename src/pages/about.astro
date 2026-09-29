@@ -26,19 +26,23 @@ const schema = graph([
     <Crumbs items={[{ name: "About" }]} />
     <div class="cs-top">
       <div>
-        <h1 class="h1">About {profile.name}</h1>
-        <div class="prose" style="margin-top:var(--s-5)">{profile.bio.about.map((p) => <p>{p}</p>)}</div>
+        <h1 class="cs-h1">About {profile.name}</h1>
+        <p class="lead" style="margin-top:var(--s-5)">{profile.bio.about[0]}</p>
         <p class="actions" style="margin-top:var(--s-5)">
-          <a class="btn btn--primary" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>Email me</a>
-          <a class="btn btn--secondary" href={profile.resumes.backend.file}>Download résumé (PDF)</a>
+          <a class="btn btn--primary" href={profile.resumes.backend.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé (PDF)</a>
+          <a class="btn btn--secondary" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>Email me</a>
         </p>
+        <div class="prose" style="margin-top:var(--s-6)">{profile.bio.about.slice(1).map((p) => <p>{p}</p>)}</div>
       </div>
-      <div>
-        <Image src={headshot} alt={profile.name} width={176} height={176} loading="eager" style="display:block;margin-bottom:var(--s-5);border:1px solid var(--line-2)" />
-        <h2 class="label">At a glance</h2>
-        <dl class="dl" style="margin-top:8px">
+      <div class="glance">
+        <div class="who">
+          <Image src={headshot} alt={profile.name} width={64} height={64} loading="eager" class="who__img" />
+          <p class="who__txt"><strong>{profile.name}</strong><span>At a glance</span></p>
+        </div>
+        <dl class="dl">
           <div><dt>Role</dt><dd>{profile.jobTitle}</dd></div>
-          <div><dt>Based in</dt><dd>{profile.location.city}, {profile.location.country} ({profile.location.timezone})</dd></div>
+          <div><dt>Based in</dt><dd>{profile.location.city}, {profile.location.country}</dd></div>
+          <div><dt>Time zone</dt><dd>{profile.location.timezone}</dd></div>
           <div><dt>Works</dt><dd>{profile.availability}</dd></div>
           <div><dt>Experience</dt><dd>{profile.yearsFullTime} years, full-time</dd></div>
           <div><dt>Now</dt><dd>{profile.current.title}, {profile.current.employer}</dd></div>
