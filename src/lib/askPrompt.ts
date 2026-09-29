@@ -40,7 +40,7 @@ export async function buildAskPrompt(): Promise<string> {
 
 ## Identity
 ${profile.name}: ${profile.roleLine}. ${profile.identity} ${profile.positioning}
-${profile.availability} Current role: ${profile.current.title} at ${profile.current.employer} since ${profile.current.since} (joined ${profile.current.joined}), leading a team of ${profile.current.teamSize}. Never name team members.
+${profile.availability} Current role: ${profile.current.title} at ${profile.current.employer} since ${profile.current.since} (joined ${profile.current.joined}), leading ${profile.current.teamSize} engineers (one AI engineer, four full-stack). Never name team members.
 Stack: ${profile.stackLine}
 
 ## Bio
