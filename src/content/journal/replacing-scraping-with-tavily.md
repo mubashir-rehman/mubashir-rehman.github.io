@@ -1,7 +1,7 @@
 ---
 title: "Replacing my scraping layer with Tavily Extract and Crawl"
 seoTitle: "Replacing a scraping layer with Tavily"
-description: "Why I replaced a hand-rolled fetch-and-parse layer with Tavily Extract and Crawl, kept Serper for discovery, and how to check Tavily credits."
+description: "Why I replaced a hand-rolled fetch-and-parse layer with Tavily Extract and Crawl, kept Serper for discovery, and what is still rough."
 lede: "Tavily Extract and Crawl replaced the fetch-and-parse stage of an ingestion pipeline. Serper still handles discovery. Everything after the URL list is now one API call instead of code I maintain."
 status: published
 type: build-log
@@ -49,29 +49,6 @@ Tavily Extract took over retrieval: hand it URLs, get content back. Tavily Crawl
 
 The part I am confident about is the part that is not a number: the retrieval stage stopped being code I maintain. Deleting a dependency you were only carrying to parse HTML is a real win even when you cannot put a clean figure on it.
 
-## Checking credits on a provider that has no quota header
-
-Tavily bills in credits. When it sits behind a registry of several metered providers, each with a priority, an enabled flag and timestamps for its last use, last error and exhaustion, the registry needs to know how much of each provider is left.
-
-Most providers tell you in a response header. Tavily does not, so the quota check asks it directly:
-
-```typescript
-// Tavily exposes no quota header, but /usage is authoritative:
-// plan_limit and plan_usage, not a guess.
-const r = await fetch("https://api.tavily.com/usage", {
-  headers: { Authorization: `Bearer ${key}` },
-});
-const { account } = await r.json();
-return {
-  remaining: account.plan_limit - account.plan_usage,
-  allocated: account.plan_limit,
-};
-```
-
-Two things I would tell anyone integrating it. The `/usage` call does not itself cost credits, so you can poll it without paying to find out what you have paid. And it returns the plan, so the check is authoritative rather than an estimate kept in your own config. When I checked it live on 5 August 2026 it reported the Researcher plan with a limit of 1,000.
-
-That distinction matters more than it sounds. A hardcoded quota is a number that goes stale silently the first time a plan changes.
-
 ## What the certification actually covers
 
 It is a course certificate, not a proctored exam, and it carries no credential ID. I would not present it as a qualification.
@@ -87,6 +64,5 @@ I defaulted to the Search endpoint for pages I already had URLs for. It worked, 
 ## What is still rough
 
 - **I have not measured cost per record.** Credits per ingested record is the number that would tell me whether this was a good trade, and I have not run it.
-- **Exhaustion is recorded, not handled.** The registry knows when a provider ran out. Falling over to the next one is still a manual decision, which is fine until it happens at 2am.
 - **Crawl depth is guesswork.** I tuned it by looking at results, not by any principle. On a site with a different link structure I would be starting over.
 - **The timing deserves a real benchmark.** I would rather publish a boring measured figure than an impressive remembered one.
