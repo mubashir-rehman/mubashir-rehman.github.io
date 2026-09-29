@@ -1,0 +1,80 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import Base from "@/layouts/Base.astro";
+import Crumbs from "@/components/Crumbs.astro";
+import profile from "@/data/profile.json";
+import { graph, breadcrumb, faqPage, personRef, SITE } from "@/lib/schema";
+
+// Only published posts get a page. Drafts and archived posts are never built; an archived post
+// that was once public keeps its URL through a redirect (astro.config.mjs).
+export async function getStaticPaths() {
+  const posts = await getCollection("journal", (p) => p.data.status === "published");
+  return posts.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+interface Props { entry: CollectionEntry<"journal"> }
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content, headings } = await render(entry);
+const path = `/journal/${entry.id}/`;
+const canonical = `${SITE}${path}`;
+const types: Record<string, string> = { incident: "Incident report", "lab-note": "Lab note", "build-log": "Build log", essay: "Essay" };
+const fmt = (x: Date) => x.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+const words = (entry.body ?? "").split(/\s+/).length;
+const minutes = Math.max(1, Math.round(words / 230));
+const title = d.seoTitle ?? d.title;
+const h2s = headings.filter((h) => h.depth === 2);
+const schema = graph([
+  {
+    "@type": "BlogPosting",
+    "@id": `${canonical}#article`,
+    headline: d.title,
+    description: d.description,
+    url: canonical,
+    datePublished: d.date.toISOString().slice(0, 10),
+    ...(d.updated ? { dateModified: d.updated.toISOString().slice(0, 10) } : {}),
+    author: personRef,
+    inLanguage: "en",
+    keywords: d.tags.join(", "),
+    wordCount: words,
+  },
+  breadcrumb(canonical, [{ name: "Writing", path: "/journal/" }, { name: d.title, path }]),
+  ...(d.faq?.length ? [faqPage(canonical, d.faq)] : []),
+]);
+---
+<Base title={title} description={d.description} path={path} schema={schema} article={{ published: d.date, modified: d.updated, section: types[d.type], tags: d.tags }}>
+  <article class="wrap page-head">
+    <Crumbs items={[{ name: "Writing", path: "/journal/" }, { name: d.title }]} />
+    <div class="post">
+      <div class="post__meta">
+        <span>{types[d.type]}</span>
+        <span>Published <time datetime={d.date.toISOString()}>{fmt(d.date)}</time></span>
+        {d.updated && <span>Updated <time datetime={d.updated.toISOString()}>{fmt(d.updated)}</time></span>}
+        <span>{minutes} minute read</span>
+        <span>By <a class="link" href="/about/">{profile.name}</a></span>
+      </div>
+      <div class="post__main">
+        <h1 class="h1">{d.title}</h1>
+        <p class="post__lede" style="margin-top:var(--s-5)">{d.lede}</p>
+        {d.note && <p class="post__note" style="margin-top:var(--s-5)">{d.note}</p>}
+        {h2s.length >= 3 && words > 700 && (
+          <nav aria-label="On this page" class="small" style="margin-top:var(--s-6)">
+            <p class="label" style="margin:0 0 6px">On this page</p>
+            <ol style="list-style:none;display:grid;gap:4px">{h2s.map((h) => <li><a class="link" href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+          </nav>
+        )}
+        <div class="prose" style="margin-top:var(--s-7)"><Content /></div>
+        {d.rule && <div class="rule-line" style="margin-top:var(--s-7)"><b aria-hidden="true">*</b><p><span class="sr">The rule I took from this: </span>{d.rule}</p></div>}
+        {d.faq?.length ? (
+          <section style="margin-top:var(--s-7)" aria-labelledby="faq-h">
+            <h2 class="h3" id="faq-h" style="margin-bottom:var(--s-5)">Questions</h2>
+            <div class="qa">{d.faq.map((f) => <div><h3>{f.q}</h3><p>{f.a}</p></div>)}</div>
+          </section>
+        ) : null}
+        <div class="next" style="margin-top:var(--s-7)">
+          <p>Working on something similar? <a class="link" href={`mailto:${profile.email}?subject=${encodeURIComponent(`About: ${d.title}`)}`}>Email me</a>.</p>
+          <p>More: <a class="link" href="/journal/">all writing</a>, or <a class="link" href="/projects/">the case studies</a>.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+</Base>

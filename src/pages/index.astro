@@ -1,0 +1,89 @@
+---
+import { getCollection } from "astro:content";
+import Base from "@/layouts/Base.astro";
+import Trace from "@/components/Trace.astro";
+import profile from "@/data/profile.json";
+import roles from "@/data/roles.json";
+import { graph, website, personFull, webPage, SITE } from "@/lib/schema";
+
+const flagships = (await getCollection("work", (w) => w.data.flagship)).sort((a, b) => a.data.order - b.data.order);
+const posts = (await getCollection("journal", (p) => p.data.status === "published"))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 2);
+const resume = profile.resumes[profile.defaultResume as keyof typeof profile.resumes];
+const fmt = (d: Date) => d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+
+const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, profile.seo.homeTitle, profile.seo.homeDescription, { about: { "@id": `${SITE}/#person` } })]);
+---
+<Base title={profile.seo.homeTitle} description={profile.seo.homeDescription} path="/" schema={schema}>
+  <section class="hero wrap" aria-labelledby="hero-h">
+    <div class="hero__grid">
+      <div>
+        <h1 class="statement" id="hero-h">
+          <span class="s1">{profile.heroLine[0]}</span> <span class="s2">{profile.heroLine[1]}</span> <span class="s3">{profile.heroLine[2]}</span>
+        </h1>
+        <Trace />
+        <div class="hero__foot">
+          <p class="hero__id"><strong>{profile.name}. {profile.identity}</strong> {profile.positioning}</p>
+          <p class="hero__stack">{profile.stackLine}</p>
+          <div class="actions">
+            <a class="btn btn--primary" href={resume.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé (PDF)</a>
+            <a class="btn btn--secondary" href={`mailto:${profile.email}`}>Email me</a>
+          </div>
+          <p class="router">Hiring for a specific role? {roles.map((r, i) => <><a href={`/for/${r.slug}/`}>{r.label}</a>{i < roles.length - 1 ? ", " : "."}</>)}</p>
+        </div>
+      </div>
+      <div class="hero__side">
+        <h2 class="label" id="sel-h">Selected work</h2>
+        <ul class="works" aria-labelledby="sel-h">
+          {flagships.map((w) => (
+            <li class="work">
+              <h3 class="work__title"><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
+              <p class="work__sum">{w.data.summary}</p>
+              <p class="work__meta small">{w.data.role.split(":")[0]}. {w.data.period}.</p>
+            </li>
+          ))}
+        </ul>
+        <p class="small" style="margin-top:12px"><a class="link" href="/projects/">All work</a></p>
+      </div>
+    </div>
+  </section>
+
+  {posts.length > 0 && (
+    <section class="sec wrap" aria-labelledby="writing-h">
+      <div class="sec__grid">
+        <div class="sec__head">
+          <h2 class="h2" id="writing-h">Latest writing</h2>
+          <p class="small"><a class="link" href="/journal/">All writing</a></p>
+        </div>
+        <div class="sec__body">
+          <ul class="works works--compact">
+            {posts.map((p) => (
+              <li class="work">
+                <h3 class="work__title"><a href={`/journal/${p.id}/`}>{p.data.title}</a></h3>
+                <p class="work__sum">{p.data.lede}</p>
+                <p class="work__meta small"><time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time></p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="sec wrap" aria-labelledby="ask-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="h2" id="ask-h">Questions about my work?</h2></div>
+      <div class="sec__body">
+        <div class="ask">
+          <p class="lead">Ask the site. Answers come only from what is published here, and point to the page they come from.</p>
+          <div class="actions">
+            <button class="btn btn--secondary" type="button" data-ask-open>Ask about my work</button>
+            <a class="link" href={`/projects/hiretrack/`}>Or read some code: HireTrack</a>
+          </div>
+          <noscript><p class="small">The chat needs JavaScript. Email me instead.</p></noscript>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

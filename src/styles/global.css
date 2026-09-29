@@ -123,7 +123,7 @@ code,kbd,samp{font-family:var(--font-mono);font-stretch:90%;font-size:.84em}
 .hero__stack{margin:0;color:var(--text-3);font-size:var(--fs-small)}
 .actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .router{margin:0;color:var(--text-2);font-size:var(--fs-small);max-width:60ch}
-.router a{display:inline-block;padding-block:10px;margin-right:6px}
+.router a{display:inline-block;padding-block:10px}
 @media(min-width:1100px){
   .hero__grid{grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:var(--s-8);align-items:start}
   .hero__side{padding-top:clamp(8px,1vw,16px)}

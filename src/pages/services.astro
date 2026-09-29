@@ -1,0 +1,51 @@
+---
+// Low-profile by design: not in the nav, no pricing, no packages. A candid statement of the
+// problems I like, each backed by the case study that shows it.
+import Base from "@/layouts/Base.astro";
+import Crumbs from "@/components/Crumbs.astro";
+import profile from "@/data/profile.json";
+import { graph, breadcrumb, webPage, personRef, SITE } from "@/lib/schema";
+
+const problems = [
+  { h: "People re-key data between tools that do not talk to each other.", what: "I connect the systems and make the handoff a job with retries and an audit trail.", slug: "erp-ai-agents", link: "AI agents working inside a live ERP" },
+  { h: "We want AI, but our data lives in an ERP or a scheduling system.", what: "I build the AI layer on top of the system of record, not a second copy of it.", slug: "dental-ai-front-desk", link: "An AI voice front desk for dental clinics" },
+  { h: "The AI demo works. Production does not.", what: "I find what breaks between the demo and real traffic, and fix it at the root.", slug: "aws-backend-hipaa-eligible", link: "A production AWS backend" },
+  { h: "Signals arrive from everywhere and nobody sees the important ones.", what: "I build ingestion, search and alerting that says why it fired.", slug: "social-signal-intelligence-backend", link: "A social and market signal intelligence backend" },
+  { h: "The system runs, and nobody trusts what it shows.", what: "I trace the numbers back to their source until they add up.", slug: "healthcare-integration-console", link: "An operations console for a healthcare integration engine" },
+];
+const title = "Problems I Solve";
+const description = "Messy multi-system workflows, AI on top of a system of record, demos that fail in production. The problems Mubashir Rehman likes to solve.";
+const canonical = `${SITE}/services/`;
+const schema = graph([webPage("WebPage", canonical, title, description, { about: personRef }), breadcrumb(canonical, [{ name: "Problems I solve", path: "/services/" }])]);
+---
+<Base title={title} description={description} path="/services/" schema={schema}>
+  <div class="wrap page-head">
+    <Crumbs items={[{ name: "Problems I solve" }]} />
+    <h1 class="h1">Problems I solve</h1>
+    <p class="lead">Workflows that span systems that do not talk to each other. I make them reliable, and add AI where it helps.</p>
+  </div>
+  <section class="wrap" aria-label="Problems">
+    <ul class="works">
+      {problems.map((p) => (
+        <li class="work">
+          <h2 class="work__title">{p.h}</h2>
+          <p class="work__sum">{p.what}</p>
+          <p class="work__meta small">Shown in <a class="link" href={`/projects/${p.slug}/`}>{p.link}</a>.</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+  <section class="sec wrap" aria-labelledby="start-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="h2" id="start-h">How it starts</h2></div>
+      <div class="sec__body">
+        <ol class="steps" style="margin:0">
+          <li><span><b>Send the problem.</b> Two or three lines on what is broken and where it lives is enough.</span></li>
+          <li><span><b>Get my read.</b> I reply with what I see and what I would check first.</span></li>
+        </ol>
+        <p class="actions"><a class="btn btn--primary" href={`mailto:${profile.email}?subject=${encodeURIComponent("A problem worth a look")}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>Describe the problem</a></p>
+        <p class="small">Open to select engagements.</p>
+      </div>
+    </div>
+  </section>
+</Base>

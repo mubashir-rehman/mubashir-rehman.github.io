@@ -1,0 +1,32 @@
+---
+import Base from "@/layouts/Base.astro";
+import Crumbs from "@/components/Crumbs.astro";
+import profile from "@/data/profile.json";
+import roles from "@/data/roles.json";
+import { graph, breadcrumb, webPage, SITE, PERSON_ID } from "@/lib/schema";
+
+const title = "Contact";
+const description = "Email Mubashir Rehman about backend, AI automation or integration roles. Based in Lahore, Pakistan, open to remote work in any timezone.";
+const canonical = `${SITE}/contact/`;
+const schema = graph([
+  webPage("ContactPage", canonical, title, description, { about: { "@type": "Person", "@id": PERSON_ID, name: profile.name, email: `mailto:${profile.email}` } }),
+  breadcrumb(canonical, [{ name: "Contact", path: "/contact/" }]),
+]);
+---
+<Base title={title} description={description} path="/contact/" schema={schema}>
+  <div class="wrap page-head" style="max-width:calc(68ch + var(--gutter) * 2);margin-inline:0">
+    <Crumbs items={[{ name: "Contact" }]} />
+    <h1 class="h1">Contact</h1>
+    <p class="lead">Email is fastest. A role or a problem, in two lines, is enough.</p>
+    <p class="actions" style="margin-top:var(--s-6)">
+      <a class="btn btn--primary" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>{profile.email}</a>
+    </p>
+    <dl class="dl" style="margin-top:var(--s-7)">
+      <div><dt>Where</dt><dd>{profile.location.city}, {profile.location.country}, {profile.location.timezone}</dd></div>
+      <div><dt>Works</dt><dd>{profile.availability} Open to select engagements.</dd></div>
+      <div><dt>Elsewhere</dt><dd><a class="link" href={profile.links.linkedin}>LinkedIn</a>, <a class="link" href={profile.links.github}>GitHub</a>, <a class="link" href={profile.links.scholar}>Google Scholar</a></dd></div>
+      <div><dt>Résumé by role</dt><dd>{roles.map((r, i) => <><a class="link" href={profile.resumes[r.slug as keyof typeof profile.resumes].file}>{r.label}</a>{i < roles.length - 1 ? ", " : ""}</>)}</dd></div>
+    </dl>
+    <p class="small" style="margin-top:var(--s-6)">Have a problem rather than a role? <a class="link" href="/services/">Read how I approach it</a>. Quick question? <button class="btn btn--secondary btn--sm" type="button" data-ask-open>Ask about my work</button></p>
+  </div>
+</Base>

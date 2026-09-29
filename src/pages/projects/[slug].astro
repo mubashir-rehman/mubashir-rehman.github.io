@@ -1,0 +1,156 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Base from "@/layouts/Base.astro";
+import Crumbs from "@/components/Crumbs.astro";
+import Diagram from "@/components/Diagram.astro";
+import profile from "@/data/profile.json";
+import roles from "@/data/roles.json";
+import { graph, breadcrumb, personRef, SITE } from "@/lib/schema";
+
+export async function getStaticPaths() {
+  const work = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+  return work.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, next: work[(i + 1) % work.length] } }));
+}
+interface Props { entry: CollectionEntry<"work">; next: CollectionEntry<"work"> }
+const { entry, next } = Astro.props;
+const d = entry.data;
+const path = `/projects/${entry.id}/`;
+const canonical = `${SITE}${path}`;
+const all = await getCollection("work");
+const related = d.related.map((s) => all.find((w) => w.id === s)).filter(Boolean) as CollectionEntry<"work">[];
+const role = roles.find((r) => d.tracks.includes(r.slug as never));
+const post = d.relatedPost ? (await getCollection("journal")).find((p) => p.id === d.relatedPost && p.data.status === "published") : undefined;
+const title = d.seoTitle ?? d.title;
+
+const extra: object[] = [];
+if (entry.id === "hiretrack" && d.links.repo) extra.push({ "@type": "SoftwareSourceCode", name: "HireTrack", codeRepository: d.links.repo, author: personRef, programmingLanguage: ["TypeScript"] });
+if (d.links.paper)
+  extra.push({
+    "@type": "ScholarlyArticle",
+    headline: profile.paper.title,
+    sameAs: [profile.paper.url, profile.paper.arxiv],
+    datePublished: String(profile.paper.year),
+    isPartOf: { "@type": "Periodical", name: profile.paper.journal, publisher: { "@type": "Organization", name: profile.paper.publisher } },
+    author: personRef,
+  });
+const schema = graph([
+  {
+    "@type": "Article",
+    "@id": `${canonical}#article`,
+    headline: d.title,
+    description: d.description,
+    url: canonical,
+    articleSection: "Case study",
+    author: personRef,
+    inLanguage: "en",
+    ...(d.asOf ? { dateModified: d.asOf.toISOString().slice(0, 10) } : {}),
+    about: d.stack.slice(0, 6),
+  },
+  breadcrumb(canonical, [{ name: "Work", path: "/projects/" }, { name: d.title, path }]),
+  ...extra,
+]);
+const fmt = (x: Date) => x.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+---
+<Base title={title} description={d.description} path={path} schema={schema} article={{ published: d.asOf ?? new Date("2026-09-29"), section: "Case study", tags: d.stack.slice(0, 4) }} resume={(role?.slug as never) ?? undefined}>
+  <article>
+    <div class="wrap page-head">
+      <Crumbs items={[{ name: "Work", path: "/projects/" }, { name: d.title }]} />
+      <div class="cs-top">
+        <div>
+          <h1 class="h1">{d.title}</h1>
+          <p class="lead">{d.summary}</p>
+          <dl class="dl" style="margin-top:var(--s-6)">
+            <div><dt>Role</dt><dd>{d.role}</dd></div>
+            <div><dt>Period</dt><dd>{d.period}</dd></div>
+            <div><dt>Status</dt><dd>{d.status}{d.asOf && <span class="small"> (as of {fmt(d.asOf)})</span>}</dd></div>
+            <div><dt>Outcome</dt><dd>{d.outcome}</dd></div>
+          </dl>
+          {(d.links.repo || d.links.demo || d.links.paper) && (
+            <p class="actions" style="margin-top:var(--s-5)">
+              {d.links.repo && <a class="link" href={d.links.repo}>View the code<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
+              {d.links.demo && <a class="link" href={d.links.demo}>View the demo<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
+              {d.links.paper && <a class="link" href={d.links.paper}>Read the paper<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
+            </p>
+          )}
+        </div>
+        <section aria-labelledby="problem-h">
+          <h2 class="h3" id="problem-h">Problem</h2>
+          <p class="prose" style="margin-top:var(--s-4);color:var(--text-2)">{d.problem}</p>
+        </section>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <section class="cs-sec" aria-labelledby="system-h">
+        <h2 id="system-h">System</h2>
+        <Diagram id={entry.id} caption={d.diagram.caption} nodes={d.diagram.nodes} edges={d.diagram.edges} />
+      </section>
+
+      <section class="cs-sec" aria-labelledby="decisions-h">
+        <h2 id="decisions-h">Decisions</h2>
+        <div class="stack-list">
+          {d.decisions.map((x) => (
+            <div class="decision">
+              <h3>{x.title}</h3>
+              <dl class="dl">
+                <div><dt>Chose</dt><dd>{x.chose}</dd></div>
+                <div><dt>Rejected</dt><dd>{x.rejected}</dd></div>
+                <div><dt>Why</dt><dd>{x.why}</dd></div>
+                <div><dt>Cost</dt><dd>{x.cost}</dd></div>
+              </dl>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="cs-sec" aria-labelledby="broke-h">
+        <h2 id="broke-h">What broke</h2>
+        {d.broke.length ? (
+          <div class="stack-list">
+            {d.broke.map((b) => (
+              <div class="broke">
+                <svg class="broke__z" viewBox="0 0 104 16" aria-hidden="true"><rect x="0" y="0" width="46" height="16" /><path d="M0 8H6L12 0L19 16L26 0L33 16L39 5L45 8" /></svg>
+                <h3>{b.title}</h3>
+                <dl class="dl">
+                  <div><dt>Symptom</dt><dd>{b.symptom}</dd></div>
+                  <div><dt>Cause</dt><dd>{b.cause}</dd></div>
+                  <div><dt>Fix</dt><dd>{b.fix}</dd></div>
+                </dl>
+              </div>
+            ))}
+          </div>
+        ) : null}
+        {d.brokeNote && <p>{d.brokeNote}</p>}
+      </section>
+
+      <section class="cs-sec" aria-labelledby="outcome-h">
+        <h2 id="outcome-h">Outcome</h2>
+        <ul class="results">{d.results.map((r) => <li>{r}</li>)}</ul>
+      </section>
+
+      {d.rule && (
+        <section class="cs-sec" aria-labelledby="rule-h">
+          <h2 id="rule-h" class="sr">The rule I took from this</h2>
+          <div class="rule-line"><b>{d.rule.n}</b><p><a href={`/about/#rule-${d.rule.n}`}><span>{d.rule.text}</span></a></p></div>
+        </section>
+      )}
+
+      <section class="cs-sec" aria-labelledby="stack-h">
+        <h2 id="stack-h">Stack</h2>
+        <ul class="tags">{d.stack.map((s) => <li class="tag">{s}</li>)}</ul>
+        {d.specified && <><p class="small spec" style="margin:0">Specified, not built by me:</p><ul class="tags">{d.specified.map((s) => <li class="tag">{s}</li>)}</ul></>}
+      </section>
+
+      <section class="cs-sec" aria-labelledby="next-h">
+        <h2 id="next-h" class="sr">Next</h2>
+        <div class="next">
+          <p>Working on something similar? <a class="link" href={`mailto:${profile.email}?subject=${encodeURIComponent(`About: ${d.title}`)}`}>Email me about this build</a>.</p>
+          {related.length > 0 && <p>Related: {related.map((r, i) => <><a class="link" href={`/projects/${r.id}/`}>{r.data.title}</a>{i < related.length - 1 ? ", " : ""}</>)}.</p>}
+          {post && <p>Read the post: <a class="link" href={`/journal/${post.id}/`}>{post.data.title}</a>.</p>}
+          {role && <p>Hiring for this kind of work? <a class="link" href={`/for/${role.slug}/`}>{role.h1}</a>.</p>}
+          <p>Next case study: <a class="link" href={`/projects/${next.id}/`}>{next.data.title}</a>.</p>
+        </div>
+      </section>
+    </div>
+  </article>
+</Base>

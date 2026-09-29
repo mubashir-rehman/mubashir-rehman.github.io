@@ -1,0 +1,97 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import Base from "@/layouts/Base.astro";
+import Crumbs from "@/components/Crumbs.astro";
+import headshot from "@/assets/mubashir-rehman.webp";
+import profile from "@/data/profile.json";
+import { graph, breadcrumb, personFull, webPage, SITE } from "@/lib/schema";
+
+// The numbered rules are citation keys: each comes from the case study that earned it.
+const work = await getCollection("work");
+const rules = work.filter((w) => w.data.rule).map((w) => ({ ...w.data.rule!, slug: w.id, title: w.data.title })).sort((a, b) => a.n - b.n);
+const ym = (s: string) => (s === "present" ? "now" : new Date(`${s}-01`).toLocaleDateString("en-GB", { month: "short", year: "numeric" }));
+
+const title = "About Mubashir Rehman, Backend Engineer in Lahore";
+const description = "Mubashir Rehman is a backend engineer in Lahore. His timeline, the rules he works by, and his peer-reviewed ECG and ML paper (Springer, 2025).";
+const canonical = `${SITE}/about/`;
+const schema = graph([
+  webPage("ProfilePage", canonical, title, description, { mainEntity: { "@id": `${SITE}/#person` } }),
+  personFull(true),
+  breadcrumb(canonical, [{ name: "About", path: "/about/" }]),
+]);
+---
+<Base title={title} description={description} path="/about/" schema={schema}>
+  <div class="wrap page-head">
+    <Crumbs items={[{ name: "About" }]} />
+    <div class="cs-top">
+      <div>
+        <h1 class="h1">About {profile.name}</h1>
+        <div class="prose" style="margin-top:var(--s-5)">{profile.bio.about.map((p) => <p>{p}</p>)}</div>
+        <p class="actions" style="margin-top:var(--s-5)">
+          <a class="btn btn--primary" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>Email me</a>
+          <a class="btn btn--secondary" href={profile.resumes.backend.file}>Download résumé (PDF)</a>
+        </p>
+      </div>
+      <div>
+        <Image src={headshot} alt={profile.name} width={176} height={176} loading="eager" style="display:block;margin-bottom:var(--s-5);border:1px solid var(--line-2)" />
+        <h2 class="label">At a glance</h2>
+        <dl class="dl" style="margin-top:8px">
+          <div><dt>Role</dt><dd>{profile.jobTitle}</dd></div>
+          <div><dt>Based in</dt><dd>{profile.location.city}, {profile.location.country} ({profile.location.timezone})</dd></div>
+          <div><dt>Works</dt><dd>{profile.availability}</dd></div>
+          <div><dt>Experience</dt><dd>{profile.yearsFullTime} years, full-time</dd></div>
+          <div><dt>Now</dt><dd>{profile.current.title}, {profile.current.employer}</dd></div>
+          <div><dt>Published</dt><dd><a class="link" href={profile.paper.url}>{profile.paper.journal}, {profile.paper.year}</a></dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <section class="sec wrap" aria-labelledby="rules-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="h2" id="rules-h">Rules I work by</h2><p class="small">Each one came out of real work. The link is the evidence.</p></div>
+      <div class="sec__body">
+        <ol class="rules">
+          {rules.map((r) => (
+            <li class="rule" id={`rule-${r.n}`}>
+              <span class="rule__n" aria-hidden="true">{r.n}</span>
+              <div><p class="rule__t"><span class="sr">Rule {r.n}: </span>{r.text}</p><p class="rule__w">From <a class="link" href={`/projects/${r.slug}/`}>{r.title}</a></p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="tl-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="h2" id="tl-h">Timeline</h2><p class="small">Full-time roles count toward the {profile.yearsFullTime} years; teaching and the internship do not.</p></div>
+      <div class="sec__body">
+        <ol class="timeline">
+          {profile.timeline.map((t, i) => (
+            <li class={`tl${i === 0 ? " is-now" : ""}`}>
+              <span class="tl__mk" aria-hidden="true"></span>
+              <p class="tl__when small"><time datetime={t.start}>{ym(t.start)}</time> to {t.end === "present" ? "now" : <time datetime={t.end}>{ym(t.end)}</time>}</p>
+              <div class="tl__body"><h3>{t.title}, {t.org}</h3><p><span class="small">{t.type}.</span> {t.scope}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="tr-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="h2" id="tr-h">Teaching and research</h2></div>
+      <div class="sec__body">
+        <div class="prose">
+          <p>{profile.teaching}</p>
+          <p><strong>{profile.paper.title}.</strong> {profile.paper.citation}. {profile.paper.authorship}. My part: {profile.paper.contribution.toLowerCase()} {profile.paper.result}</p>
+          <p><a href={profile.paper.url}>DOI {profile.paper.doi}</a> , <a href={profile.paper.arxiv}>arXiv preprint</a>, <a href={profile.paper.caseStudy}>How the study was built</a></p>
+          <p>{profile.education.degree}, {profile.education.institution}, {profile.education.place}.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

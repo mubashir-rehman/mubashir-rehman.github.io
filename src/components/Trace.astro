@@ -1,0 +1,7 @@
+---
+import { TRACE_WIDE as W, TRACE_NARROW as N } from "@/lib/trace";
+const mk = (t: typeof W, s: number) => ({ x: t.mx - s, y: t.my - s, s: s * 2, t: `rotate(45 ${t.mx} ${t.my})` });
+const a = mk(W, 5.5), b = mk(N, 4.5);
+---
+<svg class="trace trace--wide" viewBox={`0 0 ${W.W} ${W.H}`} aria-hidden="true" focusable="false"><path class="ln" pathLength="1" d={W.d} /><rect class="mk" x={a.x} y={a.y} width={a.s} height={a.s} transform={a.t} /></svg>
+<svg class="trace trace--narrow" viewBox={`0 0 ${N.W} ${N.H}`} aria-hidden="true" focusable="false"><path class="ln" pathLength="1" d={N.d} /><rect class="mk" x={b.x} y={b.y} width={b.s} height={b.s} transform={b.t} /></svg>

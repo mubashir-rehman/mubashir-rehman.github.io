@@ -1,0 +1,81 @@
+---
+import { getCollection } from "astro:content";
+import Base from "@/layouts/Base.astro";
+import Crumbs from "@/components/Crumbs.astro";
+import profile from "@/data/profile.json";
+import roles from "@/data/roles.json";
+import { graph, breadcrumb, faqPage, webPage, personRef, SITE } from "@/lib/schema";
+
+export function getStaticPaths() {
+  return roles.map((role) => ({ params: { role: role.slug }, props: { role } }));
+}
+const { role } = Astro.props as { role: (typeof roles)[number] };
+const work = await getCollection("work");
+const resume = profile.resumes[role.slug as keyof typeof profile.resumes];
+const path = `/for/${role.slug}/`;
+const canonical = `${SITE}${path}`;
+const others = roles.filter((r) => r.slug !== role.slug);
+const schema = graph([
+  webPage("WebPage", canonical, role.seoTitle, role.description, { about: personRef }),
+  breadcrumb(canonical, [{ name: role.h1, path }]),
+  faqPage(canonical, role.faqs),
+]);
+---
+<Base title={role.seoTitle} description={role.description} path={path} schema={schema} resume={role.slug as never}>
+  <div class="wrap page-head">
+    <Crumbs items={[{ name: `Hiring: ${role.label}` }]} />
+    <div class="cs-top">
+      <div>
+        <h1 class="h1">{role.h1}</h1>
+        <p class="lead">{role.fit}</p>
+        <p class="actions" style="margin-top:var(--s-6)">
+          <a class="btn btn--primary" href={resume.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé for {role.label} (PDF)</a>
+          <a class="btn btn--secondary" href={`mailto:${profile.email}`}>Email me</a>
+        </p>
+      </div>
+      <div>
+        <h2 class="label">Practicalities</h2>
+        <dl class="dl" style="margin-top:8px">
+          <div><dt>Based in</dt><dd>{profile.location.city}, {profile.location.country} ({profile.location.timezone})</dd></div>
+          <div><dt>Works</dt><dd>{profile.availability}</dd></div>
+          <div><dt>Experience</dt><dd>{profile.yearsFullTime} years, full-time</dd></div>
+          <div><dt>Now</dt><dd>{profile.current.title}, {profile.current.employer}</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <section class="sec wrap" aria-labelledby="ev-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="h2" id="ev-h">Evidence</h2><p class="small">Three builds that match this role.</p></div>
+      <div class="sec__body">
+        <ul class="works">
+          {role.evidence.map((e) => {
+            const w = "slug" in e ? work.find((x) => x.id === e.slug) : undefined;
+            const href = w ? `/projects/${w.id}/` : (e as { href: string }).href;
+            return (
+              <li class="work">
+                <h3 class="work__title"><a href={href}>{w ? w.data.title : "Smaller builds"}</a></h3>
+                <p class="work__sum">{e.line}</p>
+              </li>
+            );
+          })}
+        </ul>
+        <div>
+          <h3 class="h4" style="margin-bottom:12px">Stack for this role</h3>
+          <ul class="tags">{role.stack.map((s) => <li class="tag">{s}</li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="q-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="h2" id="q-h">Questions</h2></div>
+      <div class="sec__body">
+        <div class="qa">{role.faqs.map((f) => <div><h3>{f.q}</h3><p>{f.a}</p></div>)}</div>
+        <p class="small">Other roles: {others.map((r, i) => <><a class="link" href={`/for/${r.slug}/`}>{r.h1}</a>{i < others.length - 1 ? ", " : "."}</>)}</p>
+      </div>
+    </div>
+  </section>
+</Base>
