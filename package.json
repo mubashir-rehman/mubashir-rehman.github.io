@@ -10,7 +10,8 @@
     "tokens": "node design/tokens.mjs --site > src/styles/tokens.css",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check:viewports": "node scripts/viewport-check.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
@@ -24,6 +25,7 @@
     "@types/node": "^22.16.5",
     "eslint": "^9.32.0",
     "globals": "^15.15.0",
+    "playwright": "^1.63.0",
     "satori": "^0.33.5",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",

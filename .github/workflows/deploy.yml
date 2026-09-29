@@ -28,6 +28,12 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build   # includes scripts/check-dist.mjs, the post-build gate
+      - name: Layout check across 13 viewports (phones, scaled laptops, desktops, 200% zoom)
+        run: |
+          npx playwright install --with-deps chromium
+          npx astro preview --port 4321 &
+          sleep 3
+          node scripts/viewport-check.mjs
       - uses: actions/upload-pages-artifact@v3.0.1
         with:
           path: dist/public
