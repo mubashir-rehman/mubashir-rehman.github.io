@@ -17,7 +17,7 @@ export const GET: APIRoute = async () => {
     `> ${profile.bio.short}`,
     "",
     "## Facts",
-    `- Role: ${profile.jobTitle}, ${profile.current.title} at ${profile.current.employer} since ${profile.current.since}`,
+    `- Role: ${profile.current.title} at ${profile.current.employer}, lead since ${profile.current.since}, joined ${profile.current.joined}`,
     `- Location: ${profile.location.city}, ${profile.location.country}. ${profile.availability}`,
     `- Experience: ${profile.yearsFullTime} years of full-time engineering`,
     `- Stack: ${profile.stackLine}`,

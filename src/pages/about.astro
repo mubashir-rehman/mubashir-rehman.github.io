@@ -45,7 +45,7 @@ const schema = graph([
           <div><dt>Time zone</dt><dd>{profile.location.timezone}</dd></div>
           <div><dt>Works</dt><dd>{profile.availability}</dd></div>
           <div><dt>Experience</dt><dd>{profile.yearsFullTime} years, full-time</dd></div>
-          <div><dt>Now</dt><dd>{profile.current.title}, {profile.current.employer}</dd></div>
+          <div><dt>Now</dt><dd>Team lead at {profile.current.employer} since {ym(profile.current.since)}</dd></div>
           <div><dt>Published</dt><dd><a class="link" href={profile.paper.url}>{profile.paper.journal}, {profile.paper.year}</a></dd></div>
         </dl>
       </div>

@@ -3,7 +3,7 @@
   "name": "Mubashir Rehman",
   "givenName": "Mubashir",
   "familyName": "Rehman",
-  "jobTitle": "Backend Software Engineer",
+  "jobTitle": "Lead Software Engineer",
   "roleLine": "Backend software engineer, with AI and automation where they help",
   "heroLine": [
     "I like difficult systems.",
@@ -11,7 +11,7 @@
     "Then I like making them boring."
   ],
   "identity": "Backend engineer in Lahore with 3+ years in production, open to remote work in any timezone.",
-  "positioning": "Now at TransData, turning messy multi-system workflows into reliable software, with AI where it earns its place.",
+  "positioning": "Leading a team at TransData, turning messy multi-system workflows into reliable software, with AI where it earns its place.",
   "stackLine": "Python, Django, FastAPI, PostgreSQL, Docker and AWS.",
   "yearsFullTime": "3+",
   "location": {
@@ -22,10 +22,11 @@
   },
   "availability": "Open to remote roles in any timezone, and on-site work in Lahore.",
   "current": {
-    "title": "Software Engineer",
+    "title": "Lead Software Engineer",
     "employer": "TransData",
     "employerUrl": "https://transdata.biz/",
-    "since": "2025-03"
+    "since": "2026-03",
+    "joined": "2025-03"
   },
   "email": "mubashirrehman66@gmail.com",
   "links": {
@@ -37,21 +38,29 @@
   },
   "bio": {
     "short": "Mubashir Rehman is a backend software engineer in Lahore, Pakistan (3+ years, full-time) who builds the systems behind messy, multi-system workflows and adds AI where it helps.",
-    "medium": "Mubashir Rehman is a backend software engineer in Lahore, Pakistan, with 3+ years of full-time experience. He builds the systems behind messy business workflows and then owns them after launch. Right now that is an AI voice front desk for dental clinics and its AWS backend. He co-authored a peer-reviewed Springer journal paper in 2025.",
+    "medium": "Mubashir Rehman is a backend software engineer in Lahore, Pakistan, with 3+ years of full-time experience. He is a Lead Software Engineer at TransData, where he has led the team since March 2026. He builds the systems behind messy business workflows and then owns them after launch. Right now that is an AI voice front desk for dental clinics and its AWS backend. He co-authored a peer-reviewed Springer journal paper in 2025.",
     "about": [
       "I build the systems behind messy, multi-system workflows, and then I keep them running. My habit is to find the problem, understand the system underneath it, build the fix, and stay for what breaks next.",
-      "At TransData I took an AI voice front desk for dental clinics from AI-scaffolded code to a production launch, then designed and deployed its AWS backend on services verified as HIPAA-eligible. I have also built agents that work inside a live ERP, and a social-signal intelligence backend I wrote alone for a client.",
+      "At TransData, where I have led the team since March 2026, I took an AI voice front desk for dental clinics from AI-scaffolded code to a production launch, then designed and deployed its AWS backend on services verified as HIPAA-eligible. I have also built agents that work inside a live ERP, and a social-signal intelligence backend I wrote alone for a client.",
       "Before that, at VeritusLabs, I was promoted to team lead about three months in and led four engineers on drone-control software. For five semesters I was a teaching assistant for operating systems at Information Technology University."
     ]
   },
   "timeline": [
     {
       "org": "TransData",
-      "title": "Software Engineer",
-      "start": "2025-03",
+      "title": "Lead Software Engineer",
+      "start": "2026-03",
       "end": "present",
       "type": "Full-time",
-      "scope": "Backend, AI and infrastructure across healthcare, ERP and AI products. Now: an AI voice front desk for dental clinics and its AWS backend."
+      "scope": "Team lead. Backend, AI and infrastructure across healthcare, ERP and AI products. Now: an AI voice front desk for dental clinics and its AWS backend."
+    },
+    {
+      "org": "TransData",
+      "title": "Software Engineer",
+      "start": "2025-03",
+      "end": "2026-03",
+      "type": "Full-time",
+      "scope": "Backend, AI and infrastructure across healthcare, ERP and AI products."
     },
     {
       "org": "VeritusLabs",
