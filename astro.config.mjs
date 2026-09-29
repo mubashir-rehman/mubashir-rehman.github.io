@@ -1,42 +1,61 @@
 import { defineConfig } from "astro/config";
-import react from "@astrojs/react";
-import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
+import { readFileSync, readdirSync } from "node:fs";
+import rehypeJournal from "./src/lib/rehype-journal.mjs";
+
+const SITE = "https://mubashir-rehman.is-a.dev";
+
+// Frontmatter read straight from the content files, because the config cannot use
+// getCollection. Two jobs: redirects for archived posts that were once public, and sitemap
+// <lastmod> from real content dates only (never a build timestamp).
+function frontmatter(dir) {
+  return readdirSync(dir)
+    .filter((f) => f.endsWith(".md"))
+    .map((f) => {
+      const src = readFileSync(`${dir}/${f}`, "utf8");
+      const fm = src.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? "";
+      const get = (k) => fm.match(new RegExp(`^${k}:\\s*"?([^"\\n]+)"?`, "m"))?.[1]?.trim();
+      return { slug: f.replace(/\.md$/, ""), status: get("status"), redirectTo: get("redirectTo"), date: get("date"), updated: get("updated"), asOf: get("asOf") };
+    });
+}
+const posts = frontmatter("./src/content/journal");
+const work = frontmatter("./src/content/work");
+
+const redirects = Object.fromEntries(
+  posts.filter((p) => p.status === "archived" && p.redirectTo).map((p) => [`/journal/${p.slug}`, p.redirectTo]),
+);
+redirects["/for"] = "/";
+
+const lastmod = new Map([
+  ...posts.filter((p) => p.status === "published").map((p) => [`${SITE}/journal/${p.slug}/`, p.updated ?? p.date]),
+  ...work.filter((w) => w.asOf).map((w) => [`${SITE}/projects/${w.slug}/`, w.asOf]),
+]);
 
 export default defineConfig({
-  site: "https://mubashir-rehman.is-a.dev",
+  site: SITE,
   output: "static",
-  // GitHub Pages serves directory-format URLs (/about/ → about/index.html) and
-  // 301-redirects the slash-less form. Standardize on trailing slashes so
-  // internal links, canonicals, and the sitemap all agree.
+  // GitHub Pages serves directory-format URLs (/about/ -> about/index.html) and 301-redirects the
+  // slash-less form. Trailing slashes everywhere keep links, canonicals and the sitemap in step.
   trailingSlash: "always",
   outDir: "dist/public",
-  build: {
-    // Match existing output structure so GitHub Actions workflow needs no changes
-    assets: "_astro",
+  build: { assets: "_astro", inlineStylesheets: "always" },
+  redirects,
+  markdown: {
+    rehypePlugins: [rehypeJournal],
+    shikiConfig: { theme: "css-variables" },
   },
   integrations: [
-    react(),
-    tailwind({
-      // We manage our own @tailwind directives in src/index.css
-      applyBaseStyles: false,
-    }),
     sitemap({
-      filter: (page) => !page.includes("/404"),
+      filter: (page) => !page.includes("/404") && !Object.keys(redirects).some((r) => page === `${SITE}${r}/`),
+      serialize(item) {
+        const d = lastmod.get(item.url);
+        if (d) item.lastmod = new Date(d).toISOString();
+        return item;
+      },
     }),
   ],
   vite: {
-    // Allow overriding the Vite cache location (e.g. sandboxed/CI environments
-    // where node_modules/.vite is not writable). No effect when unset.
     ...(process.env.VITE_CACHE_DIR ? { cacheDir: process.env.VITE_CACHE_DIR } : {}),
-    resolve: {
-      alias: {
-        "@": "/src",
-      },
-    },
-    ssr: {
-      // react-helmet-async touches the DOM on SSR, skip it
-      noExternal: ["react-helmet-async"],
-    },
+    resolve: { alias: { "@": "/src" } },
   },
 });
