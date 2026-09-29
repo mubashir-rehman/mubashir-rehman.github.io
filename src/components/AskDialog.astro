@@ -1,0 +1,47 @@
+---
+// "Ask about my work": opened by any [data-ask-open] button. No floating bubble. The client
+// script and the context file load only when the dialog opens.
+---
+<dialog class="ask-dialog" id="ask" aria-labelledby="ask-title">
+  <div class="ask-dialog__in" data-ask-root>
+    <header>
+      <h2 id="ask-title">Ask about my work</h2>
+      <button class="icon-btn" type="button" data-ask-close aria-label="Close"><svg class="i" aria-hidden="true"><use href="#i-x" /></svg></button>
+    </header>
+    <ol class="ask-log" data-ask-log aria-live="polite">
+      <li class="ask-empty-row">
+        <p class="ask-empty">Ask about a project, a stack, or how I work. Answers come only from this site, and link to the page they come from.</p>
+        <div class="ask-suggest">
+          <button class="btn btn--secondary btn--sm" type="button" data-ask-suggest>What does he build?</button>
+          <button class="btn btn--secondary btn--sm" type="button" data-ask-suggest>Is he open to remote roles?</button>
+          <button class="btn btn--secondary btn--sm" type="button" data-ask-suggest>What broke, and how did he fix it?</button>
+        </div>
+      </li>
+    </ol>
+    <form class="ask-form" data-ask-form>
+      <label class="sr" for="ask-input">Your question</label>
+      <div class="ask-row">
+        <textarea class="input" id="ask-input" rows="1" data-ask-input placeholder="Ask a question" maxlength="500"></textarea>
+        <button class="btn btn--primary" type="submit" data-ask-send>Ask</button>
+      </div>
+      <p class="ask-status" data-ask-status role="status"></p>
+    </form>
+  </div>
+</dialog>
+<script>
+  const dialog = document.getElementById("ask") as HTMLDialogElement | null;
+  let ready = false;
+  document.addEventListener("click", async (e) => {
+    const t = e.target as HTMLElement;
+    if (t.closest("[data-ask-open]") && dialog) {
+      dialog.showModal();
+      if (!ready) {
+        ready = true;
+        const { initAsk } = await import("../scripts/ask");
+        initAsk(dialog.querySelector("[data-ask-root]") as HTMLElement);
+      }
+      (dialog.querySelector("[data-ask-input]") as HTMLTextAreaElement)?.focus();
+    }
+    if (t.closest("[data-ask-close]")) dialog?.close();
+  });
+</script>

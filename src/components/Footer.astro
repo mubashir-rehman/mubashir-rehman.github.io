@@ -1,0 +1,45 @@
+---
+// Footer groups are labelled with paragraphs, not headings, so every page's outline ends with
+// its own content. The email sits in the same place on every page.
+import profile from "@/data/profile.json";
+import roles from "@/data/roles.json";
+const year = new Date().getFullYear();
+---
+<footer class="foot wrap">
+  <div class="foot__grid">
+    <div>
+      <a class="brand" href="/"><svg class="i" aria-hidden="true"><use href="#mark" /></svg>{profile.name}</a>
+      <p>{profile.roleLine}. {profile.location.city}, {profile.location.country}. {profile.availability}</p>
+      <p><a href={`mailto:${profile.email}`}>{profile.email}</a></p>
+    </div>
+    <nav aria-label="Site">
+      <p class="foot__h">Site</p>
+      <ul>
+        <li><a href="/projects/">Work</a></li>
+        <li><a href="/journal/">Writing</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/contact/">Contact</a></li>
+        <li><a href="/services/">Problems I solve</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Roles">
+      <p class="foot__h">Roles</p>
+      <ul>{roles.map((r) => <li><a href={`/for/${r.slug}/`}>{r.label}</a></li>)}</ul>
+    </nav>
+    <nav aria-label="Elsewhere">
+      <p class="foot__h">Elsewhere</p>
+      <ul>
+        <li><a href={profile.links.linkedin} rel="me">LinkedIn</a></li>
+        <li><a href={profile.links.github} rel="me">GitHub</a></li>
+        <li><a href={profile.links.scholar} rel="me">Google Scholar</a></li>
+        <li><a href="/rss.xml">RSS</a></li>
+        <li><a href={profile.resumes[profile.defaultResume as keyof typeof profile.resumes].file}>Résumé (PDF)</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="foot__base">
+    <span>© {year} {profile.name}</span>
+    <span>Work under NDA is described by function, never by name.</span>
+    <span><a href="https://github.com/mubashir-rehman/mubashir-rehman.github.io">Source</a></span>
+  </div>
+</footer>

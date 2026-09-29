@@ -1,84 +1,26 @@
 [
   {
-    "slug": "ai-backend",
-    "label": "AI Backend Engineer",
-    "navLabel": "AI Backend",
-    "headline": "AI Backend Engineer",
-    "tagline": "Backend systems for LLMs, RAG, and AI automation — in production.",
-    "metaDescription": "Backend systems for LLMs, RAG, and AI automation — in production. Django, FastAPI, pgvector, LangGraph. Open to remote roles, any timezone.",
-    "pitch": "I build the backend that makes AI features actually ship: retrieval pipelines, semantic search, LLM integrations, and the async infrastructure around them. I've built crypto/social intelligence and AI content platforms with Google Gemini and OpenAI, semantic search over pgvector, and deployed local LLM inference (vLLM + LiteLLM) behind an OpenAI-compatible API for a team. I treat AI as an engineering problem — evaluation, fallbacks, caching, and cost — not a demo.",
-    "bullets": [
-      "Designed a crypto/social intelligence backend ingesting Telegram, Discord, and X, processed through AI summarization, embeddings, semantic search, and alerting",
-      "Integrated Google Gemini embeddings with pgvector semantic search and Redis caching/queueing for retrieval and background processing",
-      "Deployed local LLM inference with vLLM on constrained GPU hardware and configured LiteLLM for OpenAI-compatible team access",
-      "Built AI content pipelines with versioned prompt management (n8n) so prompt changes deploy without code changes",
-      "Built and open-sourced HireTrack — a deterministic-first LangGraph pipeline for résumé tailoring across 5 AI providers"
-    ],
-    "skills": [
-      "Python",
-      "FastAPI",
-      "Django",
-      "OpenAI API",
-      "Google Gemini",
-      "LangChain",
-      "LangGraph",
-      "pgvector",
-      "Redis",
-      "vLLM / LiteLLM",
-      "Celery",
-      "Docker"
-    ],
-    "featuredProjects": [
-      "hiretrack",
-      "crypto-intelligence",
-      "brandmate",
-      "local-llm-infra",
-      "ecg-cardiovascular"
-    ],
-    "resume": "/resume/Mubashir-Rehman-AI-Backend.pdf",
-    "faqs": [
-      {
-        "q": "What AI/LLM backend experience does Mubashir Rehman have?",
-        "a": "Mubashir has built production AI backends including a crypto/social intelligence platform using Google Gemini embeddings and pgvector semantic search, AI content pipelines with versioned prompt management, and local LLM inference infrastructure with vLLM and LiteLLM. He also built HireTrack, an open-source LangGraph-based résumé-tailoring tool supporting 5 AI providers."
-      },
-      {
-        "q": "What is his core AI backend stack?",
-        "a": "Python with FastAPI and Django, OpenAI API and Google Gemini, LangChain/LangGraph, pgvector for embeddings and semantic search, Redis for caching and queueing, Celery for background work, and Docker — plus vLLM/LiteLLM for self-hosted inference."
-      },
-      {
-        "q": "Has he shipped AI features to production, or only prototypes?",
-        "a": "To production. At TransData he architected a real-time crypto/social intelligence platform (FastAPI, ~10 services) ingesting Telegram, Discord, and X, and built semantic search on Google Gemini embeddings with pgvector (768-d) and Redis caching for an AI content platform. He also introduced versioned prompt management with n8n, which cut prompt deployment from hours to minutes because prompt changes no longer required a code release."
-      },
-      {
-        "q": "Can he run self-hosted or open-source models instead of paid APIs?",
-        "a": "Yes. He deployed internal LLM inference with vLLM on a single RTX 3080 Ti (12 GB VRAM) and put a LiteLLM proxy in front of it to expose a unified OpenAI-compatible API for team use. That involved benchmarking local models under real hardware constraints, selecting Qwen3-8B-AWQ for coding and automation workflows, and tuning context-window and prefix-caching settings."
-      },
-      {
-        "q": "Does he have machine-learning experience beyond calling LLM APIs?",
-        "a": "Yes. He co-authored (equal contribution) a peer-reviewed paper in Circuits, Systems, and Signal Processing (Springer, 2025), DOI 10.1007/s00034-025-03048-2, on cardiovascular age prediction from single-lead ECG. His contribution was data collection, the ML pipeline (signal preprocessing, segmentation, feature engineering), and model training and evaluation — Random Forest (R²=0.99) and ResNet-18 transfer learning (R²=0.87) over 6,131 segments from 42 subjects. He works with Keras, scikit-learn, PyTorch, and OpenCV alongside the LLM stack."
-      },
-      {
-        "q": "Is he available for remote AI backend roles?",
-        "a": "Yes — he is open to remote roles in any timezone. He is based in Lahore, Pakistan, and on-site work in Lahore is also an option."
-      }
-    ]
-  },
-  {
     "slug": "backend",
-    "label": "Backend Engineer",
-    "navLabel": "Backend",
-    "headline": "Backend / API Engineer",
-    "tagline": "Python, Django/FastAPI, PostgreSQL, Docker — REST APIs and systems that hold up.",
-    "metaDescription": "Python, Django/FastAPI, PostgreSQL, Docker — REST APIs that hold up. Primary backend owner: 7 services, 60+ endpoints. Remote, any timezone.",
-    "pitch": "Backend is my home turf. I design REST APIs, normalized PostgreSQL schemas, authentication flows, background jobs, and the deployment around them. As primary backend contributor at TransData I authored the majority of a multi-tenant SaaS codebase; at VeritusLabs I led a 4-engineer team on real-time drone systems. I care about clean contracts, observability, failure handling, and zero-downtime deploys.",
-    "bullets": [
-      "Owned the core backend of a multi-tenant SaaS platform end to end as primary backend engineer — 7 services and 60+ REST endpoints with Django REST Framework",
-      "Built REST APIs and normalized PostgreSQL schemas for an industrial parts-estimation workflow with authenticated, user-scoped access",
-      "Refactored duplicated AI-assisted entity-validation flows into a unified Python/MySQL pipeline, cutting maintenance overhead",
-      "Built real-time WebSocket notifications (Django Channels), OAuth2 + JWT refresh auth, and Stripe-based subscription billing",
-      "Deployed multi-service backends with Docker, Nginx, Celery, and zero-downtime rolling updates on DigitalOcean"
+    "label": "Backend",
+    "h1": "Python backend engineer",
+    "seoTitle": "Python Backend Engineer: Django, FastAPI",
+    "description": "Python backend engineer in Lahore: Django, FastAPI, PostgreSQL and Docker, with systems owned from schema to production. Open to remote roles.",
+    "fit": "Python backend engineer with 3+ years in production. I build Django and FastAPI services, PostgreSQL schemas, background workers and the deployment around them, and I stay for what breaks after launch.",
+    "evidence": [
+      {
+        "slug": "social-signal-intelligence-backend",
+        "line": "Wrote 154 of 155 commits of a FastAPI, pgvector and Redis backend for a client, then handed it over."
+      },
+      {
+        "slug": "healthcare-integration-console",
+        "line": "Wrote 272 of 389 commits on a console for operating an HL7 integration engine."
+      },
+      {
+        "slug": "aws-backend-hipaa-eligible",
+        "line": "Designed and deployed a production AWS backend and root-caused its boot-time crash loop."
+      }
     ],
-    "skills": [
+    "stack": [
       "Python",
       "Django",
       "Django REST Framework",
@@ -87,168 +29,172 @@
       "Redis",
       "Celery",
       "Docker",
-      "Nginx",
+      "AWS",
       "REST APIs",
-      "OAuth2 / JWT",
-      "WebSockets"
+      "OAuth2",
+      "Linux"
     ],
-    "featuredProjects": [
-      "brandmate",
-      "crypto-intelligence",
-      "industrial-estimation",
-      "horilla-hrms",
-      "drone-swarm"
-    ],
-    "resume": "/resume/Mubashir-Rehman-Backend.pdf",
     "faqs": [
       {
-        "q": "What backend engineering experience does Mubashir Rehman have?",
-        "a": "Mubashir has 3+ years of backend experience in Python with Django, Django REST Framework, and FastAPI. He was the primary backend engineer on a multi-tenant SaaS platform (7 services, 60+ REST endpoints), owning it end to end, and has built database-backed APIs, background-job pipelines, real-time WebSocket systems, and Dockerized deployments."
+        "q": "Which backend stacks has he shipped in production?",
+        "a": "Python with Django, Django REST Framework and FastAPI on PostgreSQL, with Celery or ARQ workers and Redis. Also a Node.js and TypeScript backend-for-frontend on a healthcare operations console."
       },
       {
-        "q": "What databases and infrastructure does he work with?",
-        "a": "PostgreSQL and MySQL with Redis for caching, Celery and n8n for async workflows, and Docker, Nginx, GitHub Actions, AWS, and DigitalOcean for deployment."
+        "q": "Does he handle deployment and operations too?",
+        "a": "Yes. Docker, Nginx and Traefik on DigitalOcean and internal servers, and a production AWS backend built with the CDK on ECS, RDS and Lambda."
       },
       {
-        "q": "Has he led a team?",
-        "a": "Yes. At VeritusLabs (Jul 2023 – Mar 2025) his title was Team Lead & Software Engineer, and he led a team of 4 building a QGroundControl-based drone swarm control system for 10+ UAVs at 50Hz telemetry. He also spent over two years as a Teaching Assistant at Information Technology University, mentoring 60+ graduate students in Advanced OS, Virtualization, and Distributed Systems and guiding 15+ research projects."
-      },
-      {
-        "q": "What real-time and async experience does he have?",
-        "a": "He has built real-time notifications with WebSockets via Django Channels, background-job pipelines with Celery, ARQ, and asyncio, and an MQTT telemetry pipeline designed for roughly 10K messages/sec using multithreading and multiprocessing. On the data side he uses Redis for caching, queueing, and token-bucket rate limiting across async services."
-      },
-      {
-        "q": "Does he handle deployment and DevOps, or only application code?",
-        "a": "Both. He deploys the backends he builds: multi-service Docker and Docker Compose setups behind Nginx, GitHub Actions CI/CD, and zero-downtime rolling updates on DigitalOcean. He has also automated AWS infrastructure with Boto3 — VPCs, EC2, IAM, and ECS Fargate deployments."
-      },
-      {
-        "q": "Is he available for remote backend roles?",
-        "a": "Yes — he is open to remote roles in any timezone. He is based in Lahore, Pakistan, and on-site work in Lahore is also an option."
+        "q": "How much backend experience does he have?",
+        "a": "3+ years of full-time engineering, now as a Software Engineer at TransData in Lahore."
       }
     ]
   },
   {
-    "slug": "erp-hrms",
-    "label": "ERP / HRMS Engineer",
-    "navLabel": "ERP / HRMS",
-    "headline": "ERP / HRMS & Internal Tools Engineer",
-    "tagline": "Django HRMS, ERPNext/Frappe, biometric attendance, and internal workflow automation.",
-    "metaDescription": "Django HRMS, ERPNext/Frappe, biometric attendance, and workflow automation — shipped for a ~200-employee org. Remote, any timezone.",
-    "pitch": "I build and customize the operational systems companies actually run on. I migrated and extended a Django-based HRMS for a ~200-employee workforce with biometric attendance sync, reporting endpoints, and manager dashboards; customized ERPNext/Frappe v16 with custom doctypes and a task-tree interface; and built a healthcare HL7 integration operations tool. This is unglamorous, high-trust work — and I'm good at it.",
-    "bullets": [
-      "Migrated a Django-based HRMS (Horilla) for a ~200-employee workforce with attendance, contract, and reporting modules",
-      "Implemented ZKTeco biometric attendance sync via Web API and designed a multi-device biometric schema",
-      "Customized ERPNext/Frappe v16 with custom doctypes, server/client scripts, and an Asana-style task-tree view",
-      "Built monthly and day-level worksheet reporting endpoints for attendance auditing and manager exports",
-      "Added Celery/n8n automation, structured logging, and zero-downtime deploys for HRMS reliability"
+    "slug": "ai-backend",
+    "label": "AI backend",
+    "h1": "AI backend engineer",
+    "seoTitle": "AI Backend Engineer: Agents and pgvector",
+    "description": "AI backend engineer in Lahore: agent tool-calling on live systems, pgvector search and self-hosted inference, run as production. Open to remote roles.",
+    "fit": "I build the backend around the model: agents that call tools on live systems, semantic search on pgvector, and self-hosted inference, with the same failure handling as any other production service.",
+    "evidence": [
+      {
+        "slug": "erp-ai-agents",
+        "line": "Built an agent platform over an ERP: forced tool-calling, one versioned contract, multi-company resolution."
+      },
+      {
+        "slug": "ai-agent-engineering-harness",
+        "line": "Ran AI coding agents next to production with 11 project skills, 3 agent definitions and human-approved fixes."
+      },
+      {
+        "slug": "social-signal-intelligence-backend",
+        "line": "Built ingestion, AI summaries, pgvector search and alerting alone for a client."
+      }
     ],
-    "skills": [
+    "stack": [
       "Python",
-      "Django",
-      "ERPNext / Frappe v16",
-      "Horilla HRMS",
-      "ZKTeco Biometric API",
+      "FastAPI",
+      "LLM tool-calling",
+      "pgvector",
+      "Embeddings",
+      "vLLM",
+      "LiteLLM",
+      "LangGraph",
       "PostgreSQL",
-      "Celery",
-      "n8n",
+      "Redis",
       "Docker",
-      "Nginx",
-      "REST APIs"
+      "MCP"
     ],
-    "featuredProjects": [
-      "horilla-hrms",
-      "erpnext-frappe",
-      "healthcare-hl7",
-      "industrial-estimation"
-    ],
-    "resume": "/resume/Mubashir-Rehman-ERP-HRMS.pdf",
     "faqs": [
       {
-        "q": "What ERP and HRMS experience does Mubashir Rehman have?",
-        "a": "Mubashir migrated and extended a Django-based HRMS (Horilla) for a ~200-employee workforce, including ZKTeco biometric attendance sync, multi-device biometric schema design, and reporting endpoints. He also customized ERPNext/Frappe v16 with custom doctypes, server/client scripts, and a task-tree interface, and built a healthcare HL7 integration operations tool."
+        "q": "Has he run language models himself, or only called APIs?",
+        "a": "Both. He set up self-hosted inference with vLLM behind an OpenAI-compatible LiteLLM proxy on one 12 GB GPU, and the engineering team adopted it."
       },
       {
-        "q": "Can he handle biometric and attendance integrations?",
-        "a": "Yes — he integrated ZKTeco biometric attendance via Web API, designed schema for multi-device setups, and built monthly/day-level worksheet reporting for attendance auditing and manager review."
+        "q": "Does he train models?",
+        "a": "His production AI work is the backend around models: agents, tool-calling, search and inference. His model training was research, in a peer-reviewed ECG paper (Springer, 2025)."
       },
       {
-        "q": "How deep does his ERPNext / Frappe customization go?",
-        "a": "Beyond configuration and into code. On ERPNext/Frappe v16 he has built custom doctypes, server scripts, client scripts, and page-level UI, including an Asana-style task-tree view for internal task management. He uses the bench CLI and Frappe REST APIs for programmatic data management and bulk fixes, and has researched ERPNext authentication/SSO options for giving a custom dashboard ERP-backed access."
-      },
-      {
-        "q": "Can he connect an ERP or HRMS to other systems?",
-        "a": "Yes — integration work is most of what he does. Examples include ZKTeco biometric devices over Web API, reporting and export endpoints for manager dashboards, Celery and n8n automation for scheduled workflows, and a healthcare HL7 integration operations tool that replicates key Mirth Connect actions (message export, channel start/stop, deploy/undeploy) as a browser-accessible interface."
-      },
-      {
-        "q": "How does he keep an internal system reliable once it is live?",
-        "a": "Through the deployment layer, not just the application code. The Horilla HRMS work ran Dockerized on DigitalOcean behind Nginx with Celery background jobs, structured logging, and zero-downtime rolling deploys, so upgrades did not interrupt a ~200-employee workforce."
-      },
-      {
-        "q": "Is he available for remote ERP / HRMS work?",
-        "a": "Yes — he is open to remote roles in any timezone. He is based in Lahore, Pakistan, and on-site work in Lahore is also an option."
+        "q": "How does he use AI coding tools?",
+        "a": "As a supervised team: read-only analysis agents in parallel, a stronger reviewer model on decisions, and a human approving every fix, with rules that trace to real incidents."
       }
     ]
   },
   {
     "slug": "full-stack",
-    "label": "Full-Stack Engineer",
-    "navLabel": "Full-Stack",
-    "headline": "Full-Stack Engineer (Backend-Leaning)",
-    "tagline": "Backend depth with shipped React/TypeScript front-ends and product workflows.",
-    "metaDescription": "Backend depth with shipped React/TypeScript front-ends. Production Node/TS on a healthcare HL7 platform. Remote, any timezone.",
-    "pitch": "I'm a backend-leaning full-stack engineer: strong on APIs, data, and infrastructure, with real production front-end work. I've shipped React/TypeScript for clients at TransData, built this Astro + React portfolio, and designed and built HireTrack end to end — React 19, Supabase (Auth + RLS), a LangGraph pipeline, client-side document tooling, and a PWA. I can own a feature from schema to UI.",
-    "bullets": [
-      "Designed and built HireTrack end to end — React 19 front-end, Supabase Auth + row-level security, LangGraph pipeline, and PWA",
-      "Shipped production React/TypeScript front-end work for clients at TransData",
-      "Built full-stack AI prompt-management tooling (Django/FastAPI backend, streaming UI, RBAC, S3)",
-      "Customized ERPNext/Frappe with page-level UI and backend scripts for internal task-management workflows",
-      "Built this portfolio on Astro + React with SEO/GEO, role-targeted pages, and CI/CD to GitHub Pages"
+    "label": "Full-stack",
+    "h1": "Full-stack engineer, backend-leaning",
+    "seoTitle": "Full-Stack Engineer, Backend-Leaning",
+    "description": "Backend-leaning full-stack engineer in Lahore: Python and Node.js APIs with React and TypeScript front ends, built and shipped. Open to remote roles.",
+    "fit": "Backend-leaning full-stack engineer. I build the API and the database first, then the React and TypeScript front end on top, and I have shipped both halves of the same product.",
+    "evidence": [
+      {
+        "slug": "healthcare-integration-console",
+        "line": "Top contributor on a React 19 and Node.js/TypeScript console: API layer, dashboards and PHI-access auditing."
+      },
+      {
+        "slug": "dental-ai-front-desk",
+        "line": "Built an internal platform-admin console end to end, backend and interface, on a live multi-tenant product."
+      },
+      {
+        "slug": "hiretrack",
+        "line": "Wrote HireTrack alone: an open-source React 19, TypeScript and Supabase app with a LangGraph pipeline."
+      }
     ],
-    "skills": [
+    "stack": [
       "React",
       "TypeScript",
-      "Vite",
-      "Astro",
+      "Node.js",
+      "Next.js",
       "Tailwind CSS",
-      "shadcn/ui",
       "Python",
-      "Django",
       "FastAPI",
-      "Supabase",
+      "Django",
       "PostgreSQL",
-      "Vercel"
+      "Supabase",
+      "Docker",
+      "Astro"
     ],
-    "featuredProjects": [
-      "hiretrack",
-      "portfolio-site",
-      "ai-prompt-platform",
-      "erpnext-frappe"
-    ],
-    "resume": "/resume/Mubashir-Rehman-Full-Stack.pdf",
     "faqs": [
       {
-        "q": "Is Mubashir Rehman a full-stack developer?",
-        "a": "Yes — he's a backend-leaning full-stack engineer. He has shipped production React/TypeScript for clients at TransData and built HireTrack end to end (React 19, Supabase Auth + RLS, a LangGraph pipeline, client-side DOCX/PDF tooling, and a PWA), as well as this Astro + React portfolio."
+        "q": "Is he a frontend or a backend engineer?",
+        "a": "Backend first. He builds front ends in React and TypeScript when the product needs one, and has shipped both halves of the same system."
       },
       {
-        "q": "What front-end stack does he use?",
-        "a": "React with TypeScript, Vite and Astro, Tailwind CSS, and shadcn/ui — paired with Python/Django/FastAPI and Supabase/PostgreSQL on the backend."
+        "q": "Is there public code to read?",
+        "a": "Yes. HireTrack is open source on GitHub, written entirely by him, and this site's source is public too."
       },
       {
-        "q": "Has he done commercial front-end work, or only side projects?",
-        "a": "Commercial. At TransData he was the top contributor (~248 commits) on a production HL7 healthcare integration platform, building a React 19 + TypeScript + Vite frontend and a Node.js + TypeScript Express-style BFF (Sequelize, Jest) that proxies the platform's server API. That work included PHI-access auditing features and real-time message-trend dashboards."
+        "q": "Which frontend work was in production?",
+        "a": "A React 19 console for operating an HL7 integration engine, and an internal admin console on a live multi-tenant product."
+      }
+    ]
+  },
+  {
+    "slug": "erp-hrms",
+    "label": "ERP and AI",
+    "h1": "ERPNext developer, with AI on top",
+    "seoTitle": "ERPNext Developer: Frappe, HRMS, AI Agents",
+    "description": "ERPNext and HRMS developer in Lahore: Frappe customization, AI agents inside a live ERP, and an HRMS with biometric attendance. Open to remote roles.",
+    "fit": "I build on systems of record: AI agents that work inside a live ERP, an internal ERP that replaced three tools, and an HRMS with biometric attendance sync.",
+    "evidence": [
+      {
+        "slug": "erp-ai-agents",
+        "line": "Built an agent platform over an ERP that grew from expense claims into multi-company procurement."
       },
       {
-        "q": "Can he own a feature end to end, from database schema to UI?",
-        "a": "Yes — HireTrack is the clearest proof. He designed and built it end to end: PostgreSQL schema on Supabase with Auth and row-level security, a deterministic-first LangGraph pipeline for job-description extraction and match scoring, a React 19 front-end, client-side DOCX/PDF/Markdown export, and an offline-first PWA deployed on Vercel. This portfolio is a second example — Astro + React with SEO/GEO structured data and CI/CD to GitHub Pages."
+        "slug": "dental-ai-front-desk",
+        "line": "Layered an AI voice agent onto a practice's existing scheduling system, kept apart per practice."
       },
       {
-        "q": "How is his time split between front-end and back-end?",
-        "a": "He is backend-leaning: 3+ years of Python with Django, Django REST Framework, and FastAPI, including owning the core backend of a multi-tenant SaaS platform (7 services, 60+ REST endpoints) end to end as primary backend engineer. The front-end work — React, TypeScript, Vite, Astro, Tailwind, shadcn/ui — is real and shipped, but the deepest expertise is in APIs, data modelling, and infrastructure."
+        "href": "/projects/#smaller-builds",
+        "line": "Extended an HRMS with 138 employee records and biometric sync from two devices, then built the ERP that replaced it."
+      }
+    ],
+    "stack": [
+      "ERPNext",
+      "Frappe",
+      "Python",
+      "Django",
+      "REST APIs",
+      "OAuth2",
+      "PostgreSQL",
+      "LLM tool-calling",
+      "ZKTeco biometric API",
+      "Docker",
+      "Traefik"
+    ],
+    "faqs": [
+      {
+        "q": "Which ERP and HR systems has he customised?",
+        "a": "ERPNext and Frappe, including an internal ERP for HR, CRM and projects, and a Django HRMS extended with biometric attendance from two devices."
       },
       {
-        "q": "Is he available for remote full-stack roles?",
-        "a": "Yes — he is open to remote roles in any timezone. He is based in Lahore, Pakistan, and on-site work in Lahore is also an option."
+        "q": "What does AI on an ERP look like in practice?",
+        "a": "Agents that read documents and call the ERP's API through a versioned contract, resolving company, currency and warehouse per order instead of hard-coding them."
+      },
+      {
+        "q": "Can he integrate hardware like attendance devices?",
+        "a": "Yes. He synced attendance from two ZKTeco biometric devices into a Django HRMS."
       }
     ]
   }

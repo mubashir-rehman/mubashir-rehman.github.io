@@ -1,227 +1,80 @@
 ---
-/**
- * journal/[slug].astro — static blog post pages.
- * Markdown rendered to static HTML at build time via react-markdown
- * (no client directive → zero client JS).
- */
-import PageLayout from "@/layouts/PageLayout.astro";
-import Markdown from "@/components/Markdown";
-import journal from "@/data/journal.json";
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import Base from "@/layouts/Base.astro";
+import Crumbs from "@/components/Crumbs.astro";
 import profile from "@/data/profile.json";
+import { graph, breadcrumb, faqPage, personRef, SITE } from "@/lib/schema";
 
-export function getStaticPaths() {
-  return journal.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+// Only published posts get a page. Drafts and archived posts are never built; an archived post
+// that was once public keeps its URL through a redirect (astro.config.mjs).
+export async function getStaticPaths() {
+  const posts = await getCollection("journal", (p) => p.data.status === "published");
+  return posts.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
-
+interface Props { entry: CollectionEntry<"journal"> }
 const { entry } = Astro.props;
-const SITE = "https://mubashir-rehman.is-a.dev";
-
-// `updated` is an optional per-entry field in journal.json (ISO date string).
-// Absent on posts that have never been revised — in that case dateModified
-// falls back to the publish date rather than claiming a revision that never
-// happened.
-const dateModified = entry.updated ?? entry.date;
-const wasRevised = Boolean(entry.updated) && entry.updated !== entry.date;
-
-const articleSchema = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: entry.title,
-  description: entry.excerpt,
-  datePublished: entry.date,
-  dateModified,
-  url: `${SITE}/journal/${entry.slug}/`,
-  image: `${SITE}/og-image.png`,
-  inLanguage: "en",
-  keywords: entry.tags?.join(", "),
-  author: { "@type": "Person", name: "Mubashir Rehman", url: SITE },
-  publisher: { "@type": "Person", name: "Mubashir Rehman", url: SITE },
-  isPartOf: { "@type": "Blog", name: "Mubashir Rehman — Blog", url: `${SITE}/journal/` },
-};
-
-// Breadcrumb trail: Home → Blog → this post. "Blog" matches the navbar label
-// for /journal/ and the "All posts" link at the top of the article.
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: `${SITE}/`,
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Blog",
-      item: `${SITE}/journal/`,
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: entry.title,
-      item: `${SITE}/journal/${entry.slug}/`,
-    },
-  ],
-};
-
-// Optional per-entry `faq: [{ q, a }]` — same field names as roles.json, so
-// this mirrors the FAQPage builder in for/[role].astro. Posts without an FAQ
-// emit no FAQPage node at all rather than an empty one.
-const faqs = entry.faq ?? [];
-const faqSchema = faqs.length
-  ? {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: faqs.map((faq) => ({
-        "@type": "Question",
-        name: faq.q,
-        acceptedAnswer: { "@type": "Answer", text: faq.a },
-      })),
-    }
-  : null;
-
-const schemas = [articleSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])];
+const d = entry.data;
+const { Content, headings } = await render(entry);
+const path = `/journal/${entry.id}/`;
+const canonical = `${SITE}${path}`;
+const types: Record<string, string> = { incident: "Incident report", "lab-note": "Lab note", "build-log": "Build log", essay: "Essay" };
+const fmt = (x: Date) => x.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+const words = (entry.body ?? "").split(/\s+/).length;
+const minutes = Math.max(1, Math.round(words / 230));
+const title = d.seoTitle ?? d.title;
+const h2s = headings.filter((h) => h.depth === 2);
+const schema = graph([
+  {
+    "@type": "BlogPosting",
+    "@id": `${canonical}#article`,
+    headline: d.title,
+    description: d.description,
+    url: canonical,
+    datePublished: d.date.toISOString().slice(0, 10),
+    ...(d.updated ? { dateModified: d.updated.toISOString().slice(0, 10) } : {}),
+    author: personRef,
+    inLanguage: "en",
+    keywords: d.tags.join(", "),
+    wordCount: words,
+  },
+  breadcrumb(canonical, [{ name: "Writing", path: "/journal/" }, { name: d.title, path }]),
+  ...(d.faq?.length ? [faqPage(canonical, d.faq)] : []),
+]);
 ---
-
-<PageLayout
-  title={entry.title}
-  description={entry.seoDescription ?? entry.excerpt}
-  canonicalPath={`/journal/${entry.slug}/`}
-  schema={schemas}
->
-  <!-- 42rem + 1.5rem gutters ≈ 600px of text ≈ 66ch at 16px Inter — inside the
-       60–75ch measure design-system/MASTER.md mandates. The padding is pinned
-       (not sm:-scaled) because it sets the measure as much as max-width does. -->
-  <article class="mx-auto max-w-[42rem] px-6 py-16 md:py-20">
-    <a
-      href="/journal/"
-      class="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-      All posts
-    </a>
-
-    <header class="mt-8">
-      <p class="font-mono text-xs text-muted-foreground">
-        <time datetime={entry.date}>{entry.date}</time>
-        {wasRevised && <> · updated {entry.updated}</>}
-      </p>
-      <h1 class="mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
-        {entry.title}
-      </h1>
-      <div class="mt-4 flex flex-wrap gap-1.5">
-        {
-          entry.tags?.map((t) => (
-            <span class="chip">
-              {t}
-            </span>
-          ))
-        }
+<Base title={title} description={d.description} path={path} schema={schema} article={{ published: d.date, modified: d.updated, section: types[d.type], tags: d.tags }}>
+  <article class="wrap page-head">
+    <Crumbs items={[{ name: "Writing", path: "/journal/" }, { name: d.title }]} />
+    <div class="post">
+      <div class="post__meta">
+        <span>{types[d.type]}</span>
+        <span>Published <time datetime={d.date.toISOString()}>{fmt(d.date)}</time></span>
+        {d.updated && <span>Updated <time datetime={d.updated.toISOString()}>{fmt(d.updated)}</time></span>}
+        <span>{minutes} minute read</span>
+        <span>By <a class="link" href="/about/">{profile.name}</a></span>
       </div>
-
-      {/* Byline with a real photo — an author identity a reader (and an answer
-          engine assessing E-E-A-T) can attach the writing to. */}
-      <div class="mt-6 flex items-center gap-3">
-        <img
-          src={profile.image}
-          srcset={`/mubashir-rehman-176.webp 1x, ${profile.image} 2x`}
-          alt=""
-          width="44"
-          height="44"
-          loading="lazy"
-          decoding="async"
-          class="h-11 w-11 flex-none rounded-full border border-border object-cover"
-        />
-        <div class="min-w-0">
-          <a href="/about/" class="text-sm font-semibold transition-colors hover:text-primary">
-            {profile.name}
-          </a>
-          <p class="mt-0.5 text-xs text-muted-foreground">
-            {profile.currentRole.role} at {profile.currentRole.company} · co-author,
-            peer-reviewed ECG/ML research
-          </p>
+      <div class="post__main">
+        <h1 class="h1">{d.title}</h1>
+        <p class="post__lede" style="margin-top:var(--s-5)">{d.lede}</p>
+        {d.note && <p class="post__note" style="margin-top:var(--s-5)">{d.note}</p>}
+        {h2s.length >= 3 && words > 700 && (
+          <nav aria-label="On this page" class="small" style="margin-top:var(--s-6)">
+            <p class="label" style="margin:0 0 6px">On this page</p>
+            <ol style="list-style:none;display:grid;gap:4px">{h2s.map((h) => <li><a class="link" href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+          </nav>
+        )}
+        <div class="prose" style="margin-top:var(--s-7)"><Content /></div>
+        {d.rule && <div class="rule-line" style="margin-top:var(--s-7)"><b aria-hidden="true">*</b><p><span class="sr">The rule I took from this: </span>{d.rule}</p></div>}
+        {d.faq?.length ? (
+          <section style="margin-top:var(--s-7)" aria-labelledby="faq-h">
+            <h2 class="h3" id="faq-h" style="margin-bottom:var(--s-5)">Questions</h2>
+            <div class="qa">{d.faq.map((f) => <div><h3>{f.q}</h3><p>{f.a}</p></div>)}</div>
+          </section>
+        ) : null}
+        <div class="next" style="margin-top:var(--s-7)">
+          <p>Working on something similar? <a class="link" href={`mailto:${profile.email}?subject=${encodeURIComponent(`About: ${d.title}`)}`}>Email me</a>.</p>
+          <p>More: <a class="link" href="/journal/">all writing</a>, or <a class="link" href="/projects/">the case studies</a>.</p>
         </div>
       </div>
-    </header>
-
-    <!-- Plain `prose` (16px), not `prose-sm` — prose-sm is 14px and put mobile
-         body text under the 16px floor in MASTER.md. The article constrains the
-         width, so prose's own measure is released with max-w-none. -->
-    <div class="prose mt-10 max-w-none">
-      <Markdown content={entry.content} />
     </div>
-
-    {
-      faqs.length > 0 && (
-        <section class="mt-16 border-t border-border pt-10" aria-labelledby="faq-heading">
-          <h2 id="faq-heading" class="text-2xl font-semibold tracking-tight">
-            Frequently asked questions
-          </h2>
-          {/* A <dl> rather than the bordered cards role pages use: this is a
-              long-form article, and keeping it card-free preserves the reading
-              column. Role pages stay as cards — different surface, different job. */}
-          <dl class="mt-6 space-y-8">
-            {faqs.map((faq) => (
-              <div>
-                <dt class="text-lg font-semibold tracking-tight">{faq.q}</dt>
-                <dd class="mt-2 leading-relaxed text-muted-foreground">{faq.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      )
-    }
   </article>
-
-  <!-- Copy button on code fences. Plain DOM rather than an island: posts are
-       server-rendered markdown and this is the only interactive affordance
-       they need. Re-runs after view transitions, like the scroll-reveal
-       script in PageLayout. -->
-  <script is:inline>
-    (function () {
-      function addCopyButtons() {
-        var blocks = document.querySelectorAll("article pre:not([data-copy])");
-        if (!blocks.length) return;
-        blocks.forEach(function (pre) {
-          pre.setAttribute("data-copy", "");
-          var btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "code-copy";
-          btn.setAttribute("aria-label", "Copy code");
-          btn.innerHTML =
-            '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" ' +
-            'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-            '<rect x="9" y="9" width="11" height="11" rx="2"/>' +
-            '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-          btn.addEventListener("click", function () {
-            // textContent, not innerText: innerText is layout-dependent and
-            // renormalises whitespace, which mangles indentation in a fence.
-            var code = pre.querySelector("code");
-            var text = code ? code.textContent : pre.textContent;
-            navigator.clipboard.writeText(text).then(
-              function () {
-                btn.classList.add("is-copied");
-                btn.setAttribute("aria-label", "Copied");
-                setTimeout(function () {
-                  btn.classList.remove("is-copied");
-                  btn.setAttribute("aria-label", "Copy code");
-                }, 1600);
-              },
-              function () {
-                btn.setAttribute("aria-label", "Copy failed");
-              }
-            );
-          });
-          pre.appendChild(btn);
-        });
-      }
-      addCopyButtons();
-      document.addEventListener("astro:page-load", addCopyButtons);
-    })();
-  </script>
-</PageLayout>
+</Base>

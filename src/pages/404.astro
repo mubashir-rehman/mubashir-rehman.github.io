@@ -1,34 +1,11 @@
 ---
-/**
- * 404.astro — static not-found page.
- */
-import PageLayout from "@/layouts/PageLayout.astro";
+import Base from "@/layouts/Base.astro";
 ---
-
-<PageLayout title="404 — Not Found" canonicalPath="/404/">
-  <section class="flex min-h-[60vh] items-center">
-    <div class="mx-auto max-w-6xl px-4 py-20 text-center sm:px-6">
-      <p class="metric-value text-7xl text-primary sm:text-8xl">404</p>
-      <h1 class="mt-6 text-2xl font-bold tracking-tight sm:text-3xl">
-        This page doesn't exist.
-      </h1>
-      <p class="mx-auto mt-3 max-w-[45ch] text-muted-foreground">
-        The link may be stale — everything worth seeing is one click away.
-      </p>
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <a
-          href="/"
-          class="press-feedback inline-flex items-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-        >
-          Back home
-        </a>
-        <a
-          href="/projects/"
-          class="press-feedback inline-flex items-center rounded-full border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-accent"
-        >
-          View work
-        </a>
-      </div>
-    </div>
-  </section>
-</PageLayout>
+<Base title="Page Not Found" description="That address does not exist on mubashir-rehman.is-a.dev, or the page moved. Try the home page, the work index or the writing." path="/404/" noindex>
+  <div class="wrap page-head">
+    <h1 class="h1">Nothing here.</h1>
+    <p class="lead">That address does not exist, or the page moved. Try one of these.</p>
+    <p class="actions" style="margin-top:var(--s-6)"><a class="btn btn--primary" href="/">Go to the home page</a></p>
+    <p class="small" style="margin-top:var(--s-5)"><a class="link" href="/projects/">Work</a>, <a class="link" href="/journal/">Writing</a>, <a class="link" href="/contact/">Contact</a></p>
+  </div>
+</Base>

@@ -2,17 +2,12 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "jsx": "react-jsx",
-    "jsxImportSource": "react",
+    "paths": { "@/*": ["./src/*"] },
     "allowJs": true,
-    "noImplicitAny": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "strictNullChecks": false,
     "skipLibCheck": true
   },
-  "include": ["src", "astro.config.mjs"]
+  "include": ["src", ".astro/types.d.ts", "astro.config.mjs"],
+  "exclude": ["dist"]
 }

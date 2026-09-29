@@ -1,265 +1,154 @@
 {
+  "_comment": "Single source for every identity fact on the site: pages, JSON-LD, llms.txt, OG cards and the chat context all read this file. Facts trace to the master-resume record (verified or claimed only). Never hand-copy these strings into a page.",
   "name": "Mubashir Rehman",
-  "tagline": "Backend Engineer · AI/ML · Cloud · Systems",
-  "anchorTagline": "Backend engineer who ships AI & automation into production",
-  "currentRole": {
-    "role": "Software Engineer",
-    "company": "TransData",
-    "companyUrl": "https://transdata.biz/"
+  "givenName": "Mubashir",
+  "familyName": "Rehman",
+  "jobTitle": "Backend Software Engineer",
+  "roleLine": "Backend software engineer, with AI and automation where they help",
+  "heroLine": [
+    "I like difficult systems.",
+    "I like figuring out why they break.",
+    "Then I like making them boring."
+  ],
+  "identity": "Backend engineer in Lahore with 3+ years in production, open to remote work in any timezone.",
+  "positioning": "Now at TransData, turning messy multi-system workflows into reliable software, with AI where it earns its place.",
+  "stackLine": "Python, Django, FastAPI, PostgreSQL, Docker and AWS.",
+  "yearsFullTime": "3+",
+  "location": {
+    "city": "Lahore",
+    "country": "Pakistan",
+    "countryCode": "PK",
+    "timezone": "PKT (UTC+5)"
   },
-  "location": "Lahore, Pakistan",
-  "remote": "Open to remote roles (any timezone) · On-site in Lahore, PK",
+  "availability": "Open to remote roles in any timezone, and on-site work in Lahore.",
+  "current": {
+    "title": "Software Engineer",
+    "employer": "TransData",
+    "employerUrl": "https://transdata.biz/",
+    "since": "2025-03"
+  },
   "email": "mubashirrehman66@gmail.com",
-  "phone": "+92 309 552 8384",
-  "website": "https://mubashir-rehman.is-a.dev",
-  "image": "/mubashir-rehman.webp",
-  "bio": "Backend-focused Software Engineer with 3+ years building production systems for AI automation, distributed architectures, and cloud infrastructure. I've shipped backend platforms across AI/LLM products, real-time crypto intelligence, ERP/HRMS, and healthcare integration — and co-authored peer-reviewed ML research.",
-  "available": true,
-  "availabilityNote": "Open to remote roles · any timezone",
-  "metrics": [
-    {
-      "label": "Years Building Backends",
-      "value": "3+"
-    },
-    {
-      "label": "REST Endpoints Built",
-      "value": "60+"
-    },
-    {
-      "label": "Production Systems Shipped",
-      "value": "8+"
-    },
-    {
-      "label": "Open-Source Tools",
-      "value": "2"
-    },
-    {
-      "label": "Peer-Reviewed Paper",
-      "value": "CSSP 2025"
-    },
-    {
-      "label": "Engineers Led",
-      "value": "4"
-    }
-  ],
-  "skills": {
-    "Languages": [
-      "Python",
-      "SQL",
-      "C++",
-      "JavaScript",
-      "TypeScript",
-      "C",
-      "C#",
-      "Bash"
-    ],
-    "Backend": [
-      "Django",
-      "Django REST Framework",
-      "FastAPI",
-      "Flask",
-      "REST APIs",
-      "WebSockets / Django Channels",
-      "OAuth2 / JWT / RBAC"
-    ],
-    "AI / ML / LLM": [
-      "OpenAI API",
-      "Google Gemini",
-      "LangChain",
-      "LangGraph",
-      "pgvector / Embeddings",
-      "Semantic Search",
-      "vLLM / LiteLLM",
-      "Keras",
-      "scikit-learn",
-      "PyTorch",
-      "OpenCV"
-    ],
-    "Databases & Caching": [
-      "PostgreSQL",
-      "MySQL",
-      "Redis",
-      "pgvector",
-      "SQLAlchemy / Alembic"
-    ],
-    "Cloud & DevOps": [
-      "Docker",
-      "Docker Compose",
-      "GitHub Actions",
-      "CI/CD",
-      "Nginx",
-      "AWS (EC2, ECS, S3, VPC, IAM)",
-      "Boto3",
-      "DigitalOcean",
-      "Vercel"
-    ],
-    "Async & Automation": [
-      "Celery",
-      "n8n",
-      "asyncio",
-      "ARQ",
-      "MQTT",
-      "Background Workers"
-    ],
-    "Enterprise / ERP": [
-      "ERPNext / Frappe v16",
-      "Horilla HRMS",
-      "ZKTeco Biometric API",
-      "HL7 / Mirth Connect workflows"
-    ],
-    "Frontend": [
-      "React",
-      "TypeScript",
-      "Vite",
-      "Astro",
-      "Tailwind CSS",
-      "shadcn/ui"
-    ]
-  },
-  "experience": [
-    {
-      "role": "Software Engineer",
-      "company": "TransData",
-      "location": "Lahore, Pakistan",
-      "period": "Mar 2025 – Present",
-      "highlights": [
-        "Primary backend engineer — owned the core backend of a multi-tenant SaaS platform (7 services, 60+ REST endpoints) end to end, from schema to deploy, authoring the bulk of the codebase.",
-        "Built 7 backend services and 60+ REST endpoints with Django REST Framework, including auth, background jobs, and integration workflows",
-        "Cut prompt deployment from hours to minutes with versioned prompt management + n8n across AI content pipelines",
-        "Multi-tier profile extraction (LinkedIn API → scraper → OpenAI fallback) for high-completeness data enrichment",
-        "Real-time notifications with WebSockets via Django Channels; Stripe-based subscription billing; OAuth2 + JWT refresh auth",
-        "Semantic search using Google Gemini embeddings + pgvector (768-d) with Redis caching",
-        "Architected a real-time crypto/social intelligence platform (FastAPI, ~10 services) ingesting Telegram, Discord, and X",
-        "Async multi-chain blockchain analysis; ML-based DEX scam-token detection (~92% on internal test set)",
-        "Integrated MindsDB and Databricks for enterprise AI workflows; optimized PostgreSQL schemas",
-        "Migrated and extended a Django-based HRMS for a ~200-employee workforce: biometric attendance sync (ZKTeco), reporting endpoints, and zero-downtime rolling deploys",
-        "Built a healthcare HL7 integration operations web tool replicating key Mirth Connect actions; customized ERPNext/Frappe v16 with custom doctypes and a task-tree view",
-        "Deployed internal LLM inference (vLLM + LiteLLM, Qwen3-8B-AWQ) behind an OpenAI-compatible API for team use"
-      ]
-    },
-    {
-      "role": "Team Lead & Software Engineer",
-      "company": "VeritusLabs",
-      "location": "Lahore, Pakistan",
-      "period": "Jul 2023 – Mar 2025",
-      "highlights": [
-        "Led a team of 4 building QGroundControl-based drone swarm control (C++ / Qt / QML) for 10+ UAVs at 50Hz telemetry",
-        "Built an MQTT telemetry pipeline designed for ~10K msg/sec with multithreading and multiprocessing",
-        "Custom mission-planning tools that meaningfully cut planning time; Gazebo SITL multi-drone simulation",
-        "Python ground control with Olympe/Sphinx, real-time video streaming, and OpenCV object detection to Android GCS",
-        "AWS infrastructure automation (Boto3): VPCs, EC2, IAM, ECS Fargate Flask deployment",
-        "Dockerized CI/CD + Vagrant cross-platform testing across Agile sprints",
-        "Built an AI prompt-management web app (FastAPI/Django, OpenAI GPT-4 streaming, LangChain, RBAC, S3)"
-      ]
-    },
-    {
-      "role": "Teaching Assistant",
-      "company": "Information Technology University",
-      "location": "Lahore, Pakistan",
-      "period": "Sep 2022 – Jan 2025",
-      "highlights": [
-        "Mentored 60+ graduate students in Advanced OS, Virtualization, and Distributed Systems",
-        "Analyzed foundational research papers including Scheduler Activations, Exokernel, and GFS",
-        "Designed lab assignments for 100+ undergraduates in multithreading, file systems, and system calls",
-        "Guided 15+ research projects in memory management and distributed systems"
-      ]
-    },
-    {
-      "role": "Game Development Intern",
-      "company": "GameBole",
-      "location": "Lahore, Pakistan",
-      "period": "Mar 2022 – Aug 2022",
-      "highlights": [
-        "Endless runner (Unity/C#) with object pooling for reduced memory footprint; 5K+ downloads, 4.2★ rating",
-        "Web game (PlayCanvas/JS) with scene pre-loading, object pooling, and cross-browser optimization",
-        "Integrated Google Play Services for leaderboards and achievements"
-      ]
-    }
-  ],
-  "education": [
-    {
-      "degree": "BS Computer Science",
-      "institution": "Information Technology University",
-      "location": "Lahore, Pakistan",
-      "period": "Sep 2018 – Dec 2024",
-      "note": "PEEF Scholarship for academic excellence"
-    },
-    {
-      "degree": "FSc Pre-Engineering",
-      "institution": "Govt. Millat Degree College Mumtazabad",
-      "location": "Multan, Pakistan",
-      "period": "Sep 2016 – Jun 2018",
-      "note": "Fully funded STFS scholarship by Pakistan Science Foundation"
-    },
-    {
-      "degree": "Matriculation Science",
-      "institution": "Govt. M. A. Jinnah High School",
-      "location": "Multan, Pakistan",
-      "period": "Sep 2014 – Jun 2016",
-      "note": "Dalda Scholarship for outstanding merit"
-    }
-  ],
-  "publications": [
-    {
-      "title": "Evaluation of a Low-Cost Single-Lead ECG Module for Vascular Ageing Prediction and Studying Smoking-Induced Changes in ECG",
-      "authors": "Syed Anas Ali; Muhammad Saqib Niaz; Mubashir Rehman; Ahsan Mehmood; M. Mahboob Ur Rahman; Kashif Riaz; Qammer H. Abbasi",
-      "equalContribution": "Ali, Niaz & Rehman contributed equally to this work",
-      "contribution": "Data collection, ML pipeline (signal preprocessing, segmentation, feature engineering), and model training & evaluation (Random Forest, ResNet-18 transfer learning).",
-      "journal": "Circuits, Systems, and Signal Processing (CSSP), Springer",
-      "date": "2025",
-      "arxiv": "https://arxiv.org/abs/2308.04355",
-      "springer": "https://link.springer.com/article/10.1007/s00034-025-03048-2",
-      "doi": "10.1007/s00034-025-03048-2"
-    }
-  ],
-  "achievements": [
-    "Co-authored (equal contribution) peer-reviewed ML/IoT research in Circuits, Systems, and Signal Processing (Springer, 2025) — DOI 10.1007/s00034-025-03048-2",
-    "Primary backend engineer at TransData — owned the core backend (7 services, 60+ REST endpoints) of a multi-tenant SaaS platform, authoring the bulk of the codebase",
-    "Led a 4-engineer team delivering a real-time drone swarm control system",
-    "Built and open-sourced HireTrack — an AI, bring-your-own-key résumé-tailoring and job-pipeline tool",
-    "PEEF Scholarship recipient for academic excellence",
-    "STFS (Science Talent Farming Scheme) Scholarship recipient",
-    "Dalda Scholarship recipient for academic merit"
-  ],
-  "socialLinks": {
+  "links": {
     "github": "https://github.com/mubashir-rehman",
     "linkedin": "https://www.linkedin.com/in/mubashir-rehman",
     "scholar": "https://scholar.google.com/citations?user=-N7lsKsAAAAJ",
-    "stackoverflow": "https://stackoverflow.com/users/23617259/mubashir-rehman",
     "orcid": "https://orcid.org/0009-0000-5804-0759",
-    "website": "https://mubashir-rehman.is-a.dev",
-    "email": "mubashirrehman66@gmail.com",
-    "whatsapp": "https://wa.me/923095528384"
+    "stackoverflow": "https://stackoverflow.com/users/23617259/mubashir-rehman"
   },
+  "bio": {
+    "short": "Mubashir Rehman is a backend software engineer in Lahore, Pakistan (3+ years, full-time) who builds the systems behind messy, multi-system workflows and adds AI where it helps.",
+    "medium": "Mubashir Rehman is a backend software engineer in Lahore, Pakistan, with 3+ years of full-time experience. He builds the systems behind messy business workflows and then owns them after launch. Right now that is an AI voice front desk for dental clinics and its AWS backend. He co-authored a peer-reviewed Springer journal paper in 2025.",
+    "about": [
+      "I build the systems behind messy, multi-system workflows, and then I keep them running. My habit is to find the problem, understand the system underneath it, build the fix, and stay for what breaks next.",
+      "At TransData I took an AI voice front desk for dental clinics from AI-scaffolded code to a production launch, then designed and deployed its AWS backend on services verified as HIPAA-eligible. I have also built agents that work inside a live ERP, and a social-signal intelligence backend I wrote alone for a client.",
+      "Before that, at VeritusLabs, I was promoted to team lead about three months in and led four engineers on drone-control software. For five semesters I was a teaching assistant for operating systems at Information Technology University."
+    ]
+  },
+  "timeline": [
+    {
+      "org": "TransData",
+      "title": "Software Engineer",
+      "start": "2025-03",
+      "end": "present",
+      "type": "Full-time",
+      "scope": "Backend, AI and infrastructure across healthcare, ERP and AI products. Now: an AI voice front desk for dental clinics and its AWS backend."
+    },
+    {
+      "org": "VeritusLabs",
+      "title": "Software Engineering Team Lead",
+      "start": "2023-10",
+      "end": "2025-03",
+      "type": "Full-time",
+      "scope": "Promoted about three months in. Led four engineers on drone-control software in C++ and Qt/QML. Built an AI prompt-management app and scripted AWS provisioning."
+    },
+    {
+      "org": "VeritusLabs",
+      "title": "Software Engineer",
+      "start": "2023-07",
+      "end": "2023-10",
+      "type": "Full-time",
+      "scope": "Drone ground-control features in C++ and Qt/QML."
+    },
+    {
+      "org": "Information Technology University",
+      "title": "Teaching Assistant",
+      "start": "2022-09",
+      "end": "2025-01",
+      "type": "Part-time, alongside full-time work",
+      "scope": "Operating systems: undergraduate labs for three semesters (50+ students), graduate Advanced Operating Systems for two (30+ students)."
+    },
+    {
+      "org": "GameBole Studios",
+      "title": "Game Development Intern",
+      "start": "2022-03",
+      "end": "2022-08",
+      "type": "Internship",
+      "scope": "Android and web endless-runner games in Unity and PlayCanvas."
+    }
+  ],
+  "teaching": "For five semesters I was a teaching assistant for operating systems at Information Technology University: I ran undergraduate labs on file systems, threads, scheduling, system calls and synchronisation, discussed classic systems papers with graduate students, wrote assignments under the instructor and graded projects.",
+  "paper": {
+    "title": "Evaluation of a low-cost single-lead ECG module for vascular ageing prediction and studying smoking-induced changes in ECG",
+    "journal": "Circuits, Systems, and Signal Processing",
+    "publisher": "Springer",
+    "year": 2025,
+    "doi": "10.1007/s00034-025-03048-2",
+    "url": "https://doi.org/10.1007/s00034-025-03048-2",
+    "arxiv": "https://arxiv.org/abs/2308.04355",
+    "authorship": "Co-author with equal contribution, third of seven authors",
+    "contribution": "Data collection, the signal-processing and feature pipeline, and model training and evaluation.",
+    "result": "42 subjects and 6,131 segmented samples; a random forest reached R² 0.99 on segmented data and R² 0.87 with transfer learning on unsegmented data.",
+    "caseStudy": "/projects/ecg-vascular-age-research/",
+    "citation": "Circuits, Systems, and Signal Processing (Springer), 44(8), 5852 to 5875, 2025"
+  },
+  "education": {
+    "degree": "BS Computer Science",
+    "institution": "Information Technology University",
+    "place": "Lahore"
+  },
+  "resumes": {
+    "backend": {
+      "label": "Backend",
+      "file": "/resume/Mubashir-Rehman-Backend.pdf"
+    },
+    "ai-backend": {
+      "label": "AI backend",
+      "file": "/resume/Mubashir-Rehman-AI-Backend.pdf"
+    },
+    "full-stack": {
+      "label": "Full-stack",
+      "file": "/resume/Mubashir-Rehman-Full-Stack.pdf"
+    },
+    "erp-hrms": {
+      "label": "ERP and AI",
+      "file": "/resume/Mubashir-Rehman-ERP-HRMS.pdf"
+    }
+  },
+  "defaultResume": "backend",
   "seo": {
-    "_comment": "Canonical, purpose-written SEO copy. Base.astro reads these instead of hand-typed literals so the <title>/<meta description>/Person JSON-LD can never drift from this file. baseDescription must stay <= 155 chars (Google truncates beyond ~155).",
-    "baseTitle": "Mubashir Rehman — Backend Engineer",
-    "baseDescription": "Backend engineer (Python, Django, FastAPI, AWS, AI/ML). Primary backend owner of multi-tenant SaaS platforms; peer-reviewed ML co-author. Open to remote.",
-    "jobTitle": "Backend Software Engineer",
+    "siteName": "Mubashir Rehman",
+    "homeTitle": "Mubashir Rehman: Backend Engineer, AI Automation, Lahore",
+    "homeDescription": "Mubashir Rehman is a backend engineer in Lahore building Python, Django and FastAPI systems, with AI and automation where they earn their place.",
     "knowsAbout": [
+      "Backend development",
       "Python",
       "Django",
-      "Django REST Framework",
       "FastAPI",
       "PostgreSQL",
-      "Redis",
-      "Docker",
-      "AWS",
       "REST API design",
-      "Microservices",
-      "Distributed Systems",
-      "Large Language Models",
-      "Retrieval-Augmented Generation",
-      "LangChain",
-      "LangGraph",
-      "pgvector",
-      "Machine Learning",
-      "ERPNext",
-      "Frappe",
-      "HL7",
+      "Multi-tenant architecture",
+      "Amazon Web Services",
+      "Docker",
+      "Node.js",
       "TypeScript",
-      "React"
+      "Large language models",
+      "AI agents",
+      "Semantic search",
+      "pgvector",
+      "ERPNext",
+      "HL7",
+      "Operating systems"
     ],
-    "occupationSkills": "Python, Django, Django REST Framework, FastAPI, PostgreSQL, Redis, Docker, AWS, LLM/RAG systems, LangChain/LangGraph, REST API design, microservices, ERPNext/Frappe, CI/CD"
+    "occupationSkills": "Python, Django, FastAPI, PostgreSQL, REST APIs, AWS, Docker, Node.js, TypeScript, LLM integration, AI agents"
   }
 }

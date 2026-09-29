@@ -1,5 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#0f1117"/>
-  <text x="16" y="22" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="15" fill="#7c3aed">MR</text>
-  <circle cx="27" cy="22" r="2" fill="#7c3aed"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><style>.b{fill:#000}.s{fill:none;stroke:#ae4efe;stroke-width:1.9}.c{fill:#3883ff}@media(prefers-color-scheme:light){.b{fill:#fff}.s{stroke:#922adf}.c{fill:#1866e0}}</style><rect class="b" width="24" height="24" rx="5"/><path class="s" d="M22 12L19.07 14.93V19.07H14.93L12 22L9.07 19.07H4.93V14.93L2 12L4.93 9.07V4.93H9.07L12 2L14.93 4.93H19.07V9.07Z" transform="translate(12 12) scale(.8) translate(-12 -12)"/><rect class="c" x="10" y="10" width="4" height="4" transform="rotate(45 12 12)"/></svg>

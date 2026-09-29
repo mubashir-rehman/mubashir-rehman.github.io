@@ -1,30 +1,24 @@
-/**
- * rss.xml.ts — RSS 2.0 feed for the blog, built from the same static
- * `src/data/journal.json` that `journal.astro` renders.
- *
- * A feed gives readers (and crawlers / AI ingestion pipelines) a standard
- * freshness signal without any backend. Items are newest-first and link to
- * the canonical trailing-slash post URLs.
- */
 import rss from "@astrojs/rss";
 import type { APIContext } from "astro";
-import journal from "@/data/journal.json";
+import { getCollection } from "astro:content";
+import profile from "@/data/profile.json";
 
 export async function GET(context: APIContext) {
-  const posts = [...journal].sort((a, b) => (a.date < b.date ? 1 : -1));
-
+  const posts = (await getCollection("journal", (p) => p.data.status === "published")).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+  );
   return rss({
-    title: "Mubashir Rehman — Blog",
-    description:
-      "Technical writing by Mubashir Rehman — articles on backend engineering, distributed systems, Python, and software architecture.",
+    title: `Writing: ${profile.name}`,
+    description: "Build logs and incident write-ups on backend systems and applied AI.",
     site: context.site!,
-    items: posts.map((post) => ({
-      title: post.title,
-      description: post.excerpt,
-      // Dates in journal.json are plain `YYYY-MM-DD`; parsed as UTC midnight.
-      pubDate: new Date(`${post.date}T00:00:00Z`),
-      link: `/journal/${post.slug}/`,
-      categories: post.tags,
+    xmlns: { atom: "http://www.w3.org/2005/Atom" },
+    customData: `<language>en</language><lastBuildDate>${new Date().toUTCString()}</lastBuildDate><atom:link href="${new URL("/rss.xml", context.site)}" rel="self" type="application/rss+xml"/>`,
+    items: posts.map((p) => ({
+      title: p.data.title,
+      description: p.data.lede,
+      pubDate: p.data.date,
+      link: `/journal/${p.id}/`,
+      categories: p.data.tags,
     })),
   });
 }

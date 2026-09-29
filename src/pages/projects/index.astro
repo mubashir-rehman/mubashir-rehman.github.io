@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content";
+import Base from "@/layouts/Base.astro";
+import Crumbs from "@/components/Crumbs.astro";
+import builds from "@/data/builds.json";
+import { graph, breadcrumb, webPage, personRef, SITE } from "@/lib/schema";
+
+const work = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+const title = "Work: Backend, AI and Automation Systems";
+const description = "Case studies by Mubashir Rehman: AI backends, integrations, ERP agents, a production AWS backend, open-source tools and published research.";
+const canonical = `${SITE}/projects/`;
+const schema = graph([
+  webPage("CollectionPage", canonical, title, description, {
+    author: personRef,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: work.map((w, i) => ({ "@type": "ListItem", position: i + 1, url: `${SITE}/projects/${w.id}/`, name: w.data.title })),
+    },
+  }),
+  breadcrumb(canonical, [{ name: "Work", path: "/projects/" }]),
+]);
+---
+<Base title={title} description={description} path="/projects/" schema={schema}>
+  <div class="wrap page-head">
+    <Crumbs items={[{ name: "Work" }]} />
+    <h1 class="h1">Selected work</h1>
+    <p class="lead">Case studies first, in the order I would read them. Each covers the problem, the system, the decisions, what broke and what came of it.</p>
+  </div>
+  <section class="wrap" aria-labelledby="cs-h">
+    <h2 class="sr" id="cs-h">Case studies</h2>
+    <ul class="works works--wide">
+      {work.map((w) => (
+        <li class="work">
+          <div>
+            <h3 class="work__title"><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
+            <p class="work__sum">{w.data.summary}</p>
+          </div>
+          <p class="work__side small">{w.data.pillar}<br />{w.data.period}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+  <section class="sec wrap" id="smaller-builds" aria-labelledby="sb-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="h2" id="sb-h">Smaller builds</h2><p class="small">One line each. Work under NDA is described by function.</p></div>
+      <div class="sec__body">
+        <ul class="builds">
+          {builds.map((b) => (
+            <li class="build">
+              <b>{b.href ? <a class="link" href={b.href}>{b.title}</a> : b.title}</b>
+              <p>{b.line}</p>
+              <p class="yr small">{b.year}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>

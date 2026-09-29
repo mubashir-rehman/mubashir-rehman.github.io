@@ -1,0 +1,16 @@
+---
+// One inline SVG sprite: icons are drawn at a single stroke width and only where they carry
+// meaning (download, mail, external, theme, close).
+import { STAR } from "@/lib/trace";
+---
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="mark" viewBox="0 0 24 24"><path d={STAR} fill="none" stroke="currentColor" stroke-linejoin="miter" /><rect x="10" y="10" width="4" height="4" transform="rotate(45 12 12)" fill="var(--signal)" stroke="none" /></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.5v11M7 10l5 5 5-5M4.5 20h15" /></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><path d="M3.5 5.5h17v13h-17zM3.5 6l8.5 7 8.5-7" /></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24"><path d="M8 16L17 7M9 7h8v8" /></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1" /></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" /></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></symbol>
+  </defs>
+</svg>

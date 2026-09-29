@@ -1,0 +1,89 @@
+---
+// The case-study signature element: the system as numbered components along the request path.
+// Works fully without JavaScript (the numbered list below the figure carries the same words).
+// With JavaScript, components become buttons that show their note, and the path draws once
+// when the figure first comes into view.
+import { layoutWide, layoutNarrow, type Layout } from "@/lib/diagram";
+
+interface Props {
+  id: string;
+  caption: string;
+  nodes: { id: string; label: string; text: string }[];
+  edges: [string, string][];
+}
+const { id, caption, nodes, edges } = Astro.props;
+const wide = layoutWide(nodes, edges);
+const narrow = layoutNarrow(nodes, edges);
+const views: [string, Layout][] = [["wide", wide], ["narrow", narrow]];
+---
+<figure class="fig" data-diagram>
+  <span class="tick-bl"></span><span class="tick-br"></span>
+  {views.map(([kind, L]) => (
+    <svg class={`dg dg--${kind}`} viewBox={`0 0 ${L.W} ${L.H}`} role="group" aria-label={`${caption} Components, in order: ${nodes.map((n) => n.label).join(", ")}.`}>
+      <defs><marker id={`ah-${id}-${kind}`} class="ah" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 1L9 5L0 9z" /></marker></defs>
+      {L.extras.map((d) => <path class="e e--x" d={d} />)}
+      {L.hops.map((d) => <path class="e" d={d} marker-end={`url(#ah-${id}-${kind})`} />)}
+      <path class="path" pathLength="1" d={L.path} />
+      {L.boxes.map((b) => (
+        <g class="node" data-node={b.id} tabindex="-1" aria-label={`${b.n}. ${b.label}. ${b.text}`}>
+          <rect class="n" x={b.x} y={b.y} width={b.w} height={b.h} rx="2" />
+          <text class="t" x={b.x + 16} y={b.y + b.h / 2 + 5}>{b.label}</text>
+          <g class="bdg"><circle cx={b.x} cy={b.y} r="10" /><text x={b.x} y={b.y + 4}>{b.n}</text></g>
+        </g>
+      ))}
+    </svg>
+  ))}
+  <figcaption>{caption}</figcaption>
+  <p class="dg-hint">Select a component to read what it does and how it fails.</p>
+  <p class="dg-cap" data-dg-cap aria-live="polite" hidden></p>
+  <ol class="steps" data-dg-steps>
+    {nodes.map((n) => <li data-step={n.id}><span><b>{n.label}.</b> {n.text}</span></li>)}
+  </ol>
+</figure>
+<style>
+  .dg--narrow{display:block;max-width:420px}
+  .dg--wide{display:none}
+  @media(min-width:900px){.dg--narrow{display:none}.dg--wide{display:block}}
+</style>
+<script>
+  document.querySelectorAll<HTMLElement>("[data-diagram]").forEach((fig) => {
+    const cap = fig.querySelector<HTMLElement>("[data-dg-cap]")!;
+    const steps = [...fig.querySelectorAll<HTMLElement>("[data-step]")];
+    const nodes = [...fig.querySelectorAll<SVGGElement>(".node")];
+    const select = (id: string) => {
+      nodes.forEach((n) => {
+        const on = n.dataset.node === id;
+        n.classList.toggle("is-on", on);
+        n.setAttribute("aria-pressed", String(on));
+      });
+      steps.forEach((s) => s.classList.toggle("is-on", s.dataset.step === id));
+      const step = steps.find((s) => s.dataset.step === id);
+      cap.hidden = false;
+      cap.textContent = step?.textContent?.trim() ?? "";
+    };
+    nodes.forEach((n) => {
+      n.setAttribute("role", "button");
+      n.setAttribute("tabindex", "0");
+      n.setAttribute("aria-pressed", "false");
+      n.addEventListener("click", () => select(n.dataset.node!));
+      n.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          select(n.dataset.node!);
+        }
+      });
+    });
+    // The one motion moment on this page: the request path draws once, when first seen.
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          fig.querySelectorAll(".dg").forEach((s) => s.classList.add("is-tracing"));
+          io.disconnect();
+        }
+      }, { threshold: 0.4 });
+      io.observe(fig);
+    } else {
+      fig.querySelectorAll<SVGPathElement>(".dg .path").forEach((p) => (p.style.strokeDashoffset = "0"));
+    }
+  });
+</script>
