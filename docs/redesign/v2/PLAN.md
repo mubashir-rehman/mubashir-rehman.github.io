@@ -103,6 +103,31 @@ Its visual diagnosis still applies, and it overrides §3 where they differ:
 - **Typography first** (new phase P1.5, below). Reject from this review: "no purple" (owner's colour; flat purple,
   never glowing, never a gradient).
 
+### Fourth review (ends of the page), triage: adopt, overrides §3 where they differ
+Principle: **reduce the amount of interface.** The header navigates, the footer closes; neither explains the career.
+- **Chat dialog markup after the footer (confirmed bug)**: `AskDialog` renders its full markup (heading, intro, three
+  suggested questions, form) after `<footer>` in every page's HTML, so reader mode, crawlers and text extractors see a
+  second "Ask about my work" after the footer. Fix: ship only an empty `<dialog>` shell (or none) in the HTML and build
+  its contents in `src/scripts/ask.ts` on first open. No chat text may appear in the static HTML outside the one home
+  "Ask the engineer" block. Verify by stripping tags from `dist/public/index.html`: nothing after the footer text.
+- **Ask the engineer appears once**, on home, directly **before** the closing section.
+- **Closing section** (home only): one final statement, the email as the action, one quiet line of availability.
+  Almost no copy, like a command, not a pitch. Candidate statements (owner picks; default C):
+  A "Have a difficult system? Let's talk." · B "If something doesn't add up, I want to see it." ·
+  C "Tell me what the system is doing. Tell me what it should be doing." Then `mubashirrehman66@gmail.com →` and
+  `Lahore, Pakistan · Open to remote roles`. A small `Download résumé` text link may sit under the email.
+  This replaces §3.2 item 6's heading "Hiring for a backend or AI role?" and its `/services/` line.
+- **Footer (all pages), tiny and administrative**, replaces §3.8:
+  ```
+  MUBASHIR REHMAN · Backend / systems engineer
+  Work · Writing · About · GitHub · LinkedIn · Scholar · Résumé
+  © 2026 · Work under NDA is described by function, never by name. · Source
+  ```
+  No Site/Roles/Elsewhere columns, no positioning sentence, no email block, no role links, no chat link, no RSS in the
+  visible footer (RSS stays as `<link rel="alternate">` in the head). Role pages stay reachable from the hero's
+  "Hiring for a specific role?" link, `/about/` and the sitemap. `/services/` stays reachable from home section 04.
+- **Header**: Work, Writing, About, Contact; Résumé as the quiet text utility (per the third review). No more.
+
 ## 2. Non-negotiable guardrails
 
 - No client or internal product names. Only **The Quetta Tea 2.0** and **HireTrack** may be named.
