@@ -78,6 +78,31 @@ Where the first-review triage below and the second-review triage or §3 disagree
 - **Owner decision pending**: the tagline. Both reviews say keep "I like difficult systems…"; the owner said he does
   not like it. It stays data-driven (`profile.heroLine`); do not change it.
 
+### Third review (scroll and typography), triage
+The third review read the repo's **stale README** (Inter + JetBrains Mono, Tailwind, card/badge/metric components,
+scroll-reveal, view transitions, a bottom nav). None of that is in the code; the README was rewritten to match reality.
+Its visual diagnosis still applies, and it overrides §3 where they differ:
+- **Scroll rhythm**: every major section has **one dominant idea**; at most two high-information blocks visible in any
+  viewport; large vertical pauses between sections (clamp roughly 96px to 176px). Low-information space is a feature.
+- **Varying widths** instead of one container: hero ~1160px, principles ~720px, project titles wide, prose ~650px,
+  diagrams ~1000px, writing ~800px, contact ~1100px. Left edges stay aligned to the grid so it reads as intentional.
+- **Scale contrast**: hero > project titles > section titles. Section titles become a small mono label
+  (`01 / WORK`) plus at most one short line; the **project titles** are the big type after the hero.
+- **Section lines with personality**: the agent may propose one short line per home section (e.g. "Systems I have had to
+  understand."). They are copy, not facts; list them in the report; the advisor approves before they ship.
+- **Header**: name + small mono descriptor on the left, nav on the right, **Résumé as a quiet text utility**
+  (`Résumé ↗`, not a button). This replaces §3.1's "Résumé leaves the nav". No pill, no glass, no shadow. The owner
+  explicitly asked for a sticky header, so it stays sticky, but it is **transparent at the top and only gains a
+  background and a 1px bottom rule after scrolling**; phones keep hide-on-scroll-down.
+- **Portrait**: small and secondary in the hero (next to the name, ~40 to 48px); the larger portrait lives on /about/.
+- **Motion**: no reveal animations on text, headings, nav, footer or metadata (none exist today; keep it that way).
+- **No visible boxiness**: border + typography + whitespace. Panels only behind diagrams and code.
+- **Project visuals must not all look identical**: MiniDiagram takes its shape from each project's own nodes and edges
+  (the dental flow is a chain, the signal backend fans in, the ERP agents hub). Keep those shapes distinct; do not force
+  one layout.
+- **Typography first** (new phase P1.5, below). Reject from this review: "no purple" (owner's colour; flat purple,
+  never glowing, never a gradient).
+
 ## 2. Non-negotiable guardrails
 
 - No client or internal product names. Only **The Quetta Tea 2.0** and **HireTrack** may be named.
@@ -232,6 +257,7 @@ Work strictly in order. **Do not mix phases.** At the end of each phase: build, 
 |---|---|---|
 | P0 Inventory | Read the code and data; list every home/about/projects element and where it will go; confirm the component list and any new frontmatter fields. No code changes. | everything |
 | P1 Structure | Header, home order and content, footer, `/projects/` grouping, `/about/` order, `problems.json`, data additions (§3.10). Use existing styles; ugly is fine. | tokens, colours, fonts |
+| P1.5 Type test (owner decides) | Three static specimen pages with identical content (hero, one How-I-work rule, one project row with its MiniDiagram placeholder, one writing item, the header), light and dark, desktop 1366×625 and phone 390×844. **A**: current Archivo (use its width axis for contrast) + Martian Mono. **B**: Instrument Serif display + Archivo body + Martian Mono. **C**: IBM Plex Sans + IBM Plex Mono. Build them as standalone HTML in `docs/redesign/v2/type/` loading fonts from `node_modules/@fontsource*` (add packages as devDependencies only), screenshot to the shots folder, then **stop**: the owner picks. Only the chosen family gets copied into `public/fonts/` in P2. | site pages |
 | P2 Visual system | Grid, width, type scale usage, mono metadata, dividers vs panels, spacing, CSS consolidation. | copy, data |
 | P3 Artifacts | `MiniDiagram`, `Incident`, the three home artifact rows, research artifact, compact variants. | other pages |
 | P4 Inner pages | Case study, journal, role pages, services, contact, 404 restyle. | home |
