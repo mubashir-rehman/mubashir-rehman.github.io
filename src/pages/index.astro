@@ -28,11 +28,11 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
         <h1 class="statement statement--home" id="hero-h">
           <span class="s1">{profile.heroLine[0]}</span> <span class="s2">{profile.heroLine[1]}</span> <span class="s3">{profile.heroLine[2]}</span>
         </h1>
-        <p class="hero__id">{profile.positioning} Open to remote roles.</p>
         <div class="actions">
           <a class="btn btn--primary btn--lg" href={resume.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé (PDF)</a>
           <a class="btn btn--secondary btn--lg" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>Email me</a>
         </div>
+        <p class="hero__id">{profile.positioning} Open to remote roles.</p>
         <p class="router">Hiring for a specific role? {roles.map((r, i) => <><a href={`/for/${r.slug}/`}>{r.label}</a>{i < roles.length - 1 ? ", " : "."}</>)}</p>
       </div>
       <div class="hero__side">

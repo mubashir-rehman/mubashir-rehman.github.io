@@ -403,3 +403,11 @@ code,kbd,samp{font-family:var(--font-mono);font-stretch:90%;font-size:.84em}
 :root[data-theme="light"]{--panel-bg:#f3e9d8;--panel-bg-hover:#ecdfc9;--panel-line:#dccbaf}
 .panel{background:var(--panel-bg);border-color:var(--panel-line);border-left-color:var(--accent-line)}
 .panel:hover{background:var(--panel-bg-hover);border-color:var(--panel-line);border-left-color:var(--accent-line)}
+
+/* ---- short screens (laptops with display scaling): keep the actions above the fold ---- */
+.statement--home{font-size:clamp(1.8rem,min(4.4vw,6.4vh),3.5rem)}
+.hero{padding-top:clamp(16px,4vh,64px)}
+.hero__main .actions{margin-top:clamp(16px,3vh,28px)}
+.hero__main .hero__id{margin:clamp(14px,2.5vh,24px) 0 0;font-size:clamp(1rem,.9rem + .5vw,1.2rem)}
+.statement--home{margin-top:clamp(10px,2vh,24px)}
+@media(max-height:700px) and (min-width:1100px){.who__img{width:48px;height:48px}.panel{padding:12px 16px}.panels{gap:8px}.panel__s{margin-top:4px}}
