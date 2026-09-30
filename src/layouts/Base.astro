@@ -6,7 +6,10 @@ import profile from "@/data/profile.json";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Icons from "@/components/Icons.astro";
-import AskDialog from "@/components/AskDialog.astro";
+// Ask feature disabled: no active LLM API key, and the dialog's script was an eager module on
+// every page, chaining off the initial navigation in the page-speed critical path.
+// To re-enable: uncomment this import and the <AskDialog /> mount at the end of <body>.
+// import AskDialog from "@/components/AskDialog.astro";
 import { SITE } from "@/lib/schema";
 
 interface Article {
@@ -105,6 +108,7 @@ const robots = noindex || !isCanonicalHost ? "noindex, follow" : "index, follow,
       <slot />
     </main>
     <Footer />
-    <AskDialog />
+    <!-- Ask feature disabled (see import above): uncomment to re-enable. Triggers are in index.astro and contact.astro. -->
+    <!-- <AskDialog /> -->
   </body>
 </html>

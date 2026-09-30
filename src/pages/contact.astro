@@ -38,11 +38,14 @@ const schema = graph([
           <p class="who__txt"><strong>{profile.name}</strong><span>{profile.jobTitle}, {profile.location.city}</span></p>
         </div>
         <ul class="panels">
+          {/* Ask feature disabled (no active LLM API key). Uncomment to re-enable — also re-enable <AskDialog /> in Base.astro. */}
+          {false && (
           <li class="panel">
             <p class="panel__k">Quick question</p>
             <h2 class="panel__t"><button class="linkbtn" type="button" data-ask-open>Ask about my work</button></h2>
             <p class="panel__s">Answers come only from this site and link to the page they come from.</p>
           </li>
+          )}
           <li class="panel">
             <p class="panel__k">A problem, not a role</p>
             <h2 class="panel__t"><a href="/services/">Problems I solve</a></h2>
