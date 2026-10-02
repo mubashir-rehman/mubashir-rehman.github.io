@@ -118,3 +118,11 @@ Done against PLAN v2.3. Supersedes the P0 proposals in sections 3 to 5 where the
 
 ## 8. Chat is off (owner decision, main 0a18977)
 The owner switched the chat off site-wide in 0a18977 (no active LLM API key). `Base.astro` does not mount `AskDialog`; the home "Ask the engineer" section and example buttons were removed from the redesign, and the contact chat panel stays removed. `ask.ts`, `AskDialog.astro`, `askPrompt.ts` and `/ask-context.json` stay in the repo untouched (the empty-shell and build-on-open change in `ask.ts` remains, nothing loads it). Planned `ask.json` is cancelled. Built pages ship zero `.js` files (`find dist/public -name '*.js'` is empty). bun.lock was removed on main (4416080, 41f067c); never re-add it.
+
+## 9. P2 (visual system) record
+Type A chosen by the owner (Archivo width axis + Martian Mono); no font files added, type-test devDependencies removed. `docs/redesign/v2/type/` kept as a record.
+- `global.css` rewritten in place: 31,313 bytes (was 34,470; baseline 32,921). Chat styles moved into `AskDialog.astro` (`is:global`, so they ship only if the dialog is mounted). Panels, gold links and the gold footer rule are gone; flat 1px dividers everywhere; `--panel-bg` tokens removed (P3 re-adds a surface behind diagrams). Links, focus rings and active nav are purple (`--accent-text`); gold stays on the trace and the case-page callout rule.
+- Mono (`Martian Mono`, uppercase, `.08em`) is one rule shared by `.label .meta .tag .dl dt .callout-label th .brand__d .who__txt span`; rule numbers are mono.
+- Widths: 1160 container, `.sec__body--read` (720px) for rules, incidents, problems, Currently; `.sec--wide` (full width, label above) for Selected work. Project titles are the second-largest type (width axis, 88%).
+- Header: transparent at top, `is-stuck` (solid background, 1px rule) after 8px scroll, still sticky, hides on scroll down on phones; phone header is two rows (wordmark + theme + Résumé, then links).
+- Copy changes carried from the advisor: hero sentence is `profile.servicesLead` (moved from `services.astro`, also read there); home "interesting part" picks: dental decision 2 (38 words), social-signal decision 2 (42), erp decision 3 (37). Indexes live in `SPOTLIGHT` in `index.astro`.
