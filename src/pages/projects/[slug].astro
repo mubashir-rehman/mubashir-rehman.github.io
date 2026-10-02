@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import Diagram from "@/components/Diagram.astro";
+import Incident from "@/components/Incident.astro";
 import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
 import { graph, breadcrumb, personRef, SITE } from "@/lib/schema";
@@ -21,6 +22,7 @@ const related = d.related.map((s) => all.find((w) => w.id === s)).filter(Boolean
 const role = roles.find((r) => d.tracks.includes(r.slug as never));
 const post = d.relatedPost ? (await getCollection("journal")).find((p) => p.id === d.relatedPost && p.data.status === "published") : undefined;
 const title = d.seoTitle ?? d.title;
+const rulesTotal = all.filter((w) => w.data.rule).length;
 
 const extra: object[] = [];
 if (entry.id === "hiretrack" && d.links.repo) extra.push({ "@type": "SoftwareSourceCode", name: "HireTrack", codeRepository: d.links.repo, author: personRef, programmingLanguage: ["TypeScript"] });
@@ -55,7 +57,7 @@ const fmt = (x: Date) => x.toLocaleDateString("en-GB", { day: "numeric", month: 
   <article>
     <div class="wrap page-head cs-head">
       <Crumbs items={[{ name: "Work", path: "/projects/" }, { name: d.title }]} />
-      <p class="panel__k">{d.pillar}</p>
+      <p class="meta">{d.pillar}</p>
       <h1 class="cs-h1">{d.title}</h1>
       <p class="lead">{d.summary}</p>
       <dl class="facts-strip">
@@ -76,24 +78,24 @@ const fmt = (x: Date) => x.toLocaleDateString("en-GB", { day: "numeric", month: 
     <div class="wrap">
       <div class="cs-duo">
         <section aria-labelledby="problem-h">
-          <h2 class="cs-h2" id="problem-h">Problem</h2>
+          <h2 class="cs-h2 label" id="problem-h">01 / Problem</h2>
           <p class="cs-p">{d.problem}</p>
           {d.role.includes(":") && <p class="small" style="margin-top:var(--s-4)"><b>My role:</b> {d.role}</p>}
         </section>
         <section aria-labelledby="system-h">
-          <h2 class="cs-h2" id="system-h">System</h2>
+          <h2 class="cs-h2 label" id="system-h">02 / System</h2>
           <Diagram id={entry.id} caption={d.diagram.caption} nodes={d.diagram.nodes} edges={d.diagram.edges} />
         </section>
       </div>
 
       <section class="cs-sec" aria-labelledby="decisions-h">
-        <h2 id="decisions-h">Decisions</h2>
+        <h2 class="label" id="decisions-h">03 / Decisions</h2>
         <div class="stack-list">
           {d.decisions.map((x) => (
             <div class="decision">
               <h3>{x.title}</h3>
               <dl class="dl">
-                <div><dt>Chose</dt><dd>{x.chose}</dd></div>
+                <div><dt>Decision</dt><dd>{x.chose}</dd></div>
                 <div><dt>Rejected</dt><dd>{x.rejected}</dd></div>
                 <div><dt>Why</dt><dd>{x.why}</dd></div>
                 <div><dt>Cost</dt><dd>{x.cost}</dd></div>
@@ -104,39 +106,29 @@ const fmt = (x: Date) => x.toLocaleDateString("en-GB", { day: "numeric", month: 
       </section>
 
       <section class="cs-sec" aria-labelledby="broke-h">
-        <h2 id="broke-h">What broke</h2>
+        <h2 class="label" id="broke-h">04 / What broke</h2>
         {d.broke.length ? (
           <div class="stack-list">
-            {d.broke.map((b) => (
-              <div class="broke">
-                <svg class="broke__z" viewBox="0 0 104 16" aria-hidden="true"><rect x="0" y="0" width="46" height="16" /><path d="M0 8H6L12 0L19 16L26 0L33 16L39 5L45 8" /></svg>
-                <h3>{b.title}</h3>
-                <dl class="dl">
-                  <div><dt>Symptom</dt><dd>{b.symptom}</dd></div>
-                  <div><dt>Cause</dt><dd>{b.cause}</dd></div>
-                  <div><dt>Fix</dt><dd>{b.fix}</dd></div>
-                </dl>
-              </div>
-            ))}
+            {d.broke.map((b) => <Incident title={b.title} symptom={b.symptom} cause={b.cause} fix={b.fix} />)}
           </div>
         ) : null}
         {d.brokeNote && <p>{d.brokeNote}</p>}
       </section>
 
       <section class="cs-sec" aria-labelledby="outcome-h">
-        <h2 id="outcome-h">Outcome</h2>
+        <h2 class="label" id="outcome-h">05 / Outcome</h2>
         <ul class="results">{d.results.map((r) => <li>{r}</li>)}</ul>
       </section>
 
       {d.rule && (
         <section class="cs-sec" aria-labelledby="rule-h">
-          <h2 id="rule-h" class="sr">The rule I took from this</h2>
-          <div class="rule-line"><b>{d.rule.n}</b><p><a href={`/about/#rule-${d.rule.n}`}><span>{d.rule.text}</span></a></p></div>
+          <h2 class="label" id="rule-h">06 / The rule I took from this</h2>
+          <blockquote class="pull"><p><a href={`/about/#rule-${d.rule.n}`}>{d.rule.text}</a></p><p class="meta">Rule {d.rule.n} of {rulesTotal}</p></blockquote>
         </section>
       )}
 
       <section class="cs-sec" aria-labelledby="stack-h">
-        <h2 id="stack-h">Stack</h2>
+        <h2 class="label" id="stack-h">Stack</h2>
         <ul class="tags">{d.stack.map((s) => <li class="tag">{s}</li>)}</ul>
         {d.specified && <><p class="small spec" style="margin:0">Specified, not built by me:</p><ul class="tags">{d.specified.map((s) => <li class="tag">{s}</li>)}</ul></>}
       </section>

@@ -17,7 +17,6 @@ const narrow = layoutNarrow(nodes, edges);
 const views: [string, Layout][] = [["wide", wide], ["narrow", narrow]];
 ---
 <figure class="fig" data-diagram>
-  <span class="tick-bl"></span><span class="tick-br"></span>
   {views.map(([kind, L]) => (
     <svg class={`dg dg--${kind}`} viewBox={`0 0 ${L.W} ${L.H}`} role="group" aria-label={`${caption} Components, in order: ${nodes.map((n) => n.label).join(", ")}.`}>
       <defs><marker id={`ah-${id}-${kind}`} class="ah" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 1L9 5L0 9z" /></marker></defs>
