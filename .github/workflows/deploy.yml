@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages (redirects to mubashirrehman.com)
 
 on:
   push:
@@ -34,6 +34,9 @@ jobs:
           npx astro preview --port 4321 &
           sleep 3
           node scripts/viewport-check.mjs
+      # The canonical site is mubashirrehman.com (Cloudflare Pages). This GitHub Pages copy serves the
+      # old address, mubashir-rehman.is-a.dev, so every page becomes a redirect to the same path there.
+      - run: node scripts/redirect-stubs.mjs dist/public
       - uses: actions/upload-pages-artifact@v3.0.1
         with:
           path: dist/public

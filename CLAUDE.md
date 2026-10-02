@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Personal portfolio for Mubashir Rehman, deployed as a fully static site to GitHub Pages at https://mubashir-rehman.is-a.dev. No backend — the only runtime-dynamic feature is the AskMe chatbot, which calls the Groq API directly from the browser.
+Personal portfolio for Mubashir Rehman, deployed as a fully static site to Cloudflare Pages at https://mubashirrehman.com (canonical since 2026-10-02; the old https://mubashir-rehman.is-a.dev on GitHub Pages now only redirects). No backend — the only runtime-dynamic feature is the AskMe chatbot, which calls the Groq API directly from the browser.
 
 > **History:** Two migrations, both worth knowing because stale references survive in odd corners.
 > 1. Began as a Vite + `vite-react-ssg` SPA (entry `main.tsx`/`App.tsx`, pages in `src/pages/*.tsx`, HashRouter) and **migrated to Astro** in commit `76787d8`. That left Astro as a thin SEO shell mounting one `client:only` React SPA island.
@@ -48,11 +48,12 @@ Static Astro MPA, **no React and no Tailwind**. Every route renders at build tim
 
 ## Deploy
 
-Push to `main` auto-deploys to GitHub Pages (build → upload `dist/public` → deploy) via the single workflow `.github/workflows/deploy.yml`.
+Two hosts build `main` on every push:
 
-> **Resolved 2026-08-06:** there used to be a second, byte-identical workflow (`static.yml`). Both fired on every push and both declared `concurrency.group: pages` with `cancel-in-progress: true`, so whichever registered second cancelled the other — every commit showed 2 cancelled + 2 successful checks. Deleting `static.yml` fixed it. If you ever add another Pages workflow, do **not** reuse the `pages` concurrency group.
+- **Cloudflare Pages** (project `mubashir-rehman-github-io`, configured on Cloudflare's side, no wrangler file): build `npm run build`, output `dist/public`, Node 22. It serves the canonical **https://mubashirrehman.com** (`www` redirects to the root via a Cloudflare redirect rule). `SITE` in `src/lib/schema.ts`, `astro.config.mjs` and `scripts/check-dist.mjs` must stay in sync with this domain.
+- **GitHub Pages** via `.github/workflows/deploy.yml`: runs tests, the build gate and the 13-viewport layout check, then `scripts/redirect-stubs.mjs` turns every HTML page into a stub that redirects to the same path on mubashirrehman.com (meta refresh + `location.replace`, canonical, noindex). This keeps old **mubashir-rehman.is-a.dev** links working; GitHub Pages cannot send real 301s. PDFs and feeds stay in place.
 
-**Cloudflare Pages** also builds this repo, configured on Cloudflare's side (there is no `wrangler.toml` or Cloudflare config in the repo). The canonical domain is served by **GitHub Pages** (`curl -sI https://mubashir-rehman.is-a.dev/` → `server: GitHub.com`), so the Cloudflare `*.pages.dev` deployment receives no traffic. It's harmless — `Base.astro`'s `isCanonical` check emits `noindex` on any host other than `mubashir-rehman.is-a.dev` — but it is a redundant build. Left in place deliberately.
+Keep a single Pages workflow and never reuse its `pages` concurrency group in another workflow (two workflows sharing it cancelled each other in the past).
 
 ## Tests
 

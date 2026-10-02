@@ -1,6 +1,6 @@
 # mubashir-rehman.github.io
 
-Source for **[mubashir-rehman.is-a.dev](https://mubashir-rehman.is-a.dev)**, the portfolio of Mubashir Rehman, a backend and systems engineer in Lahore.
+Source for **[mubashirrehman.com](https://mubashirrehman.com)**, the portfolio of Mubashir Rehman, a backend and systems engineer in Lahore.
 
 A static Astro 5 site with no UI framework and no CSS framework. Every page is plain HTML rendered at build time from a small data layer. The only client-side scripts are the theme toggle, the header's hide-on-scroll on phones, the explorable system diagrams, and a chat that loads only when opened.
 
@@ -22,7 +22,7 @@ A static Astro 5 site with no UI framework and no CSS framework. Every page is p
 | Social card and icons | Built with satori and resvg (`scripts/og.mjs`) |
 | Chat | A small vanilla script that answers only from a context file generated at build time (`/ask-context.json`) |
 | Tests | Vitest |
-| Deploy | GitHub Actions to GitHub Pages on every push to `main` |
+| Deploy | Cloudflare Pages builds `main` and serves mubashirrehman.com. GitHub Actions runs the tests and layout check, then publishes a redirect-only copy to GitHub Pages so the old address (mubashir-rehman.is-a.dev) forwards every path |
 
 ## Quality gates
 

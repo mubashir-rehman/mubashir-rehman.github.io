@@ -22,7 +22,7 @@ const card = h("div", { style: { width: 1200, height: 630, display: "flex", flex
     h("path", { d: t.d, fill: "none", stroke: "#d49b4f", strokeWidth: 2 }),
     h("rect", { x: t.mx - 6, y: t.my - 6, width: 12, height: 12, fill: "#ae4efe", transform: `rotate(45 ${t.mx} ${t.my})` })),
   h("div", { style: { position: "absolute", left: 64, right: 64, bottom: 40, display: "flex", justifyContent: "space-between", fontSize: 24, color: "#a9a9b6" } },
-    h("span", {}, "Backend software engineer, Lahore"), h("span", {}, "mubashir-rehman.is-a.dev")));
+    h("span", {}, "Backend software engineer, Lahore"), h("span", {}, "mubashirrehman.com")));
 
 const png = (svg, w) => new Resvg(svg, { fitTo: { mode: "width", value: w } }).render().asPng();
 mkdirSync("public/og", { recursive: true });

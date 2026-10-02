@@ -17,4 +17,4 @@ User-agent: Applebot-Extended
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://mubashir-rehman.is-a.dev/sitemap-index.xml
+Sitemap: https://mubashirrehman.com/sitemap-index.xml

@@ -44,7 +44,7 @@ const ogUrl = og.startsWith("http") ? og : `${SITE}${og}`;
 
 // Never index a non-canonical host (the raw github.io address, preview deploys).
 const host = Astro.url.hostname;
-const isCanonicalHost = ["mubashir-rehman.is-a.dev", "localhost", "127.0.0.1"].includes(host);
+const isCanonicalHost = ["mubashirrehman.com", "localhost", "127.0.0.1"].includes(host);
 const robots = noindex || !isCanonicalHost ? "noindex, follow" : "index, follow, max-snippet:-1, max-image-preview:large";
 ---
 <!doctype html>

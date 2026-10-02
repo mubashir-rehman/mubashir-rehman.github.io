@@ -15,7 +15,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 
 const DIST = process.argv[2] || "dist/public";
-const SITE = "https://mubashir-rehman.is-a.dev";
+const SITE = "https://mubashirrehman.com";
 const TITLE_MAX = 60;
 const DESC_MAX = 155;
 const BANNED = [

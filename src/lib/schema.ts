@@ -3,7 +3,7 @@
 // Every on-domain URL ends in "/" unless it has a file extension.
 import profile from "@/data/profile.json";
 
-export const SITE = "https://mubashir-rehman.is-a.dev";
+export const SITE = "https://mubashirrehman.com";
 export const PERSON_ID = `${SITE}/#person`;
 export const WEBSITE_ID = `${SITE}/#website`;
 
