@@ -43,9 +43,9 @@ Static Astro MPA, **no React and no Tailwind**. Every route renders at build tim
 ## Conventions
 
 - **Path alias:** `@/*` → `src/*` (configured in `tsconfig.json`, `astro.config.mjs`, and `vitest.config.ts` — keep all three in sync).
-- **Env vars:** Astro requires the `PUBLIC_` prefix for client-exposed vars. Only `PUBLIC_GROQ_API_KEY` is actually read (by `AskMe.tsx`); the `PUBLIC_GISCUS_*` entries in `src/env.d.ts`, `.env.example` and the workflow are dead. Values are baked into the bundle at build time and publicly visible (the Groq key relies on free-tier rate limits for abuse protection). In CI, the workflow maps the older `VITE_*` GitHub secrets onto these `PUBLIC_*` env vars.
+- **Env vars:** Astro requires the `PUBLIC_` prefix for client-exposed vars. Only `PUBLIC_GROQ_API_KEY` is read, by the dormant chat client `src/scripts/ask.ts` (chat is off, so nothing ships it); the `PUBLIC_GISCUS_*` entries in `.env.example` and the workflow are dead. Values are baked into the bundle at build time and publicly visible (the Groq key relies on free-tier rate limits for abuse protection). In CI, the workflow maps the older `VITE_*` GitHub secrets onto these `PUBLIC_*` env vars.
 - **TypeScript:** extends `astro/tsconfigs/strict` but loosened — `strictNullChecks`, `noImplicitAny`, `noUnused*` all off.
-- **Themes:** two themes, light and dark. No provider — the FOUC script in `Base.astro` applies the class and `ThemeToggle.tsx` flips it; persisted to `localStorage` under key `theme` (any legacy value, e.g. `sakura`, is migrated to `light`). Tokens live in `src/index.css` (`:root` + `.dark`).
+- **Themes:** two themes, light and dark. No provider: the inline script in `Base.astro` sets `data-theme` before first paint and the toggle in `Header.astro` flips it, persisted to `localStorage` under key `theme`. Tokens come from `design/tokens.mjs` (run `npm run tokens` to rewrite `src/styles/tokens.css`).
 - **Commit messages:** `<page/module/component> (<fix/refactor/enhancement/add/remove/feat>) : <details>`, e.g. `SEO (enhancement) : dynamic canonical URLs per route`.
 
 ## Deploy
@@ -59,6 +59,4 @@ Keep a single Pages workflow and never reuse its `pages` concurrency group in an
 
 ## Tests
 
-Vitest + React Testing Library + jsdom. Setup in `src/test/setup.ts`; tests match `src/**/*.{test,spec}.{ts,tsx}`. Currently minimal (`src/test/example.test.ts`).
-
-**Broken:** `vitest.config.ts` imports `@vitejs/plugin-react-swc`, which is not in `package.json` (the installed plugin is `@vitejs/plugin-react`), so `npm test` fails at config load with `ERR_MODULE_NOT_FOUND`. Fix the import (or add the dep) before relying on the test suite. `npm run lint` also currently reports errors, mostly from generated (`.astro/types.d.ts`) and archived (`archive/hobbies/`) files.
+Vitest (node environment, no React). Config in `vitest.config.ts`; tests match `src/**/*.{test,spec}.ts` (currently `src/lib/__tests__/diagram.test.ts`). `npm test` and `npm run lint` both pass.
