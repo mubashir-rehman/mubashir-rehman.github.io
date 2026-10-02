@@ -5,6 +5,32 @@
 // source. The client script and the context file load only when the dialog opens.
 ---
 <dialog class="ask-dialog" id="ask" aria-label="Ask the engineer"></dialog>
+<style is:global>
+:root{--shadow-float:0 22px 44px -14px rgb(0 0 0 / .7)}
+:root[data-theme="light"]{--shadow-float:0 22px 44px -18px rgb(30 10 60 / .28)}
+.ask-dialog{width:min(640px,calc(100vw - 2 * var(--gutter)));max-height:min(80vh,720px);padding:0;border:1px solid var(--line-2);border-radius:var(--r-float);background:var(--bg-overlay);color:var(--text-1);box-shadow:var(--shadow-float)}
+.ask-dialog::backdrop{background:rgb(0 0 0 / .6)}
+.ask-dialog__in{display:grid;grid-template-rows:auto minmax(0,1fr) auto;max-height:min(80vh,720px)}
+.ask-dialog header{display:flex;justify-content:space-between;align-items:center;gap:var(--s-4);padding:12px 12px 12px 20px;border-bottom:1px solid var(--line-2)}
+.ask-dialog h2{font-size:var(--fs-body);font-weight:600}
+.ask-log{list-style:none;overflow-y:auto;padding:var(--s-4) 20px;display:grid;gap:var(--s-4);align-content:start;min-height:160px}
+.ask-log li{display:grid;gap:2px}
+.ask-log p{margin:0;color:var(--text-2);white-space:pre-wrap}
+.ask-log li[data-role="user"] p{color:var(--text-1)}
+.ask-who{font-size:var(--fs-label);font-stretch:78%;font-weight:600;color:var(--text-3)}
+.ask-log a{color:var(--signal-text)}
+.ask-empty{color:var(--text-3);font-size:var(--fs-small);margin:0}
+.ask-suggest{display:flex;flex-wrap:wrap;gap:8px}
+.ask-form{display:grid;gap:8px;padding:12px 20px 16px;border-top:1px solid var(--line-2)}
+.ask-row{display:flex;gap:8px;align-items:flex-end}
+.input{width:100%;min-height:44px;padding:10px 12px;background:var(--bg-1);color:var(--text-1);border:1px solid var(--line-3);border-radius:var(--r-press);font:inherit;font-size:16px;line-height:1.4;resize:none}
+.input::placeholder{color:var(--text-3);opacity:1}
+.input:hover{border-color:var(--text-3)}
+.input:focus-visible{outline:2px solid var(--accent-text);outline-offset:2px;border-color:var(--accent-text)}
+.ask-status{min-height:1.4em;margin:0;font-size:var(--fs-small);color:var(--text-3)}
+
+.btn--sm{min-height:40px;padding:0 14px;font-size:15px}
+</style>
 <script>
   const dialog = document.getElementById("ask") as HTMLDialogElement | null;
   let chat: ReturnType<typeof import("../scripts/ask").mountAsk> | null = null;
