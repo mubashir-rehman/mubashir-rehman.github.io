@@ -1,12 +1,29 @@
 ---
 import Base from "@/layouts/Base.astro";
+import Trace from "@/components/Trace.astro";
+import Icon from "@/components/Icon.astro";
+const ways = [
+  { href: "/", h: "Home", p: "What I deliver and how I work.", icon: "compass" },
+  { href: "/projects/", h: "Work", p: "Case studies, with what broke.", icon: "layout-dashboard" },
+  { href: "/journal/", h: "Writing", p: "Build logs and incident write-ups.", icon: "list-checks" },
+];
 ---
 <Base title="Page Not Found" description="That address does not exist on mubashirrehman.com, or the page moved. Try the home page, the work index or the writing." path="/404/" noindex>
-  <div class="wrap page-head">
-    <p class="meta">404</p>
-    <h1 class="h1">Nothing here.</h1>
-    <p class="lead">That address does not exist, or the page moved. Try one of these.</p>
-    <p class="actions" style="margin-top:var(--s-6)"><a class="btn btn--primary" href="/">Go to the home page</a></p>
-    <p class="small" style="margin-top:var(--s-5)"><a class="link" href="/projects/">Work</a>, <a class="link" href="/journal/">Writing</a>, <a class="link" href="/contact/">Contact</a></p>
+  <div class="j wrap">
+    <div class="j-grid">
+      <header class="j-card cs-hero nf-hero">
+        <p class="j-eyebrow"><b>404</b> · Page not found</p>
+        <h1>Nothing here.</h1>
+        <p class="j-lead">That address does not exist, or the page moved. Try one of these.</p>
+        <div class="nf-trace"><Trace /></div>
+      </header>
+      {ways.map((w) => (
+        <a class="j-card cs-nextcard nf-way" href={w.href}>
+          <span class="j-ico"><Icon name={w.icon as any} /></span>
+          <p class="cs-nextcard__t">{w.h}</p>
+          <p class="j-a">{w.p}</p>
+        </a>
+      ))}
+    </div>
   </div>
 </Base>

@@ -2,6 +2,7 @@
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
+import Icon from "@/components/Icon.astro";
 import profile from "@/data/profile.json";
 import { graph, breadcrumb, faqPage, personRef, SITE } from "@/lib/schema";
 
@@ -42,39 +43,54 @@ const schema = graph([
 ]);
 ---
 <Base title={title} description={d.description} path={path} schema={schema} article={{ published: d.date, modified: d.updated, section: types[d.type], tags: d.tags }}>
-  <article class="wrap page-head">
+  <article class="j wrap jr">
     <Crumbs items={[{ name: "Writing", path: "/journal/" }, { name: d.title }]} />
-    <div class="post">
-      <div class="post__meta">
-        <span>{types[d.type]}</span>
-        <span>Published <time datetime={d.date.toISOString()}>{fmt(d.date)}</time></span>
-        {d.updated && <span>Updated <time datetime={d.updated.toISOString()}>{fmt(d.updated)}</time></span>}
-        <span>{minutes} minute read</span>
-        <span>By <a class="link" href="/about/">{profile.name}</a></span>
-      </div>
-      <div class="post__main">
-        <h1 class="h1">{d.title}</h1>
-        <p class="post__lede" style="margin-top:var(--s-5)">{d.lede}</p>
-        {d.note && <p class="post__note" style="margin-top:var(--s-5)">{d.note}</p>}
-        {h2s.length >= 3 && words > 700 && (
-          <nav aria-label="On this page" class="small" style="margin-top:var(--s-6)">
-            <p class="label" style="margin:0 0 6px">On this page</p>
-            <ol style="list-style:none;display:grid;gap:4px">{h2s.map((h) => <li><a class="link" href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
-          </nav>
-        )}
-        <div class="prose" style="margin-top:var(--s-7)"><Content /></div>
-        {d.rule && <blockquote class="pull" style="margin-top:var(--s-7)"><p>{d.rule}</p><p class="meta">The rule I took from this</p></blockquote>}
+    <header class="j-card cs-hero jr-hero">
+      <p class="j-eyebrow"><b>{types[d.type]}</b> · <time datetime={d.date.toISOString()}>{fmt(d.date)}</time>{d.updated && <> · Updated <time datetime={d.updated.toISOString()}>{fmt(d.updated)}</time></>} · {minutes} minute read · By <a href="/about/">{profile.name}</a></p>
+      <h1>{d.title}</h1>
+      <p class="j-lead">{d.lede}</p>
+      {d.note && <p class="post__note">{d.note}</p>}
+    </header>
+    <div class="jr-body">
+      {h2s.length >= 3 && words > 700 && (
+        <nav aria-label="On this page" class="cs-toc jr-toc">
+          <ol>{h2s.map((h, i) => <li><a href={`#${h.slug}`}><span>{String(i + 1).padStart(2, "0")}</span>{h.text}</a></li>)}</ol>
+        </nav>
+      )}
+      <div class="jr-main">
+        <div class="prose"><Content /></div>
+        {d.rule && <blockquote class="j-card cs-rule jr-rule"><p>{d.rule}</p><p class="cs-rule__n">The rule I took from this</p></blockquote>}
         {d.faq?.length ? (
-          <section style="margin-top:var(--s-7)" aria-labelledby="faq-h">
-            <h2 class="h3" id="faq-h" style="margin-bottom:var(--s-5)">Questions</h2>
-            <div class="qa">{d.faq.map((f) => <div><h3>{f.q}</h3><p>{f.a}</p></div>)}</div>
+          <section class="jr-faq" aria-labelledby="faq-h">
+            <h2 id="faq-h">Questions</h2>
+            <div class="cs-stack">{d.faq.map((f) => <div class="j-card ro-q"><h3>{f.q}</h3><p class="j-a">{f.a}</p></div>)}</div>
           </section>
         ) : null}
-        <div class="next" style="margin-top:var(--s-7)">
-          <p>Working on something similar? <a class="link" href={`mailto:${profile.email}?subject=${encodeURIComponent(`About: ${d.title}`)}`}>Email me</a>.</p>
-          <p>More: <a class="link" href="/journal/">all writing</a>, or <a class="link" href="/projects/">the case studies</a>.</p>
-        </div>
       </div>
     </div>
+    <section class="cs-next" aria-labelledby="next-h">
+      <h2 id="next-h" class="sr">Keep reading</h2>
+      <div class="j-grid">
+        <a class="j-card cs-nextcard" href="/journal/">
+          <p class="j-eyebrow"><b>More writing</b></p>
+          <p class="cs-nextcard__t">All build logs and incident write-ups</p>
+          <span class="cs-go" aria-hidden="true"><Icon name="arrow-right" size={20} /></span>
+        </a>
+        <a class="j-card cs-nextcard cs-also" href="/projects/">
+          <p class="j-eyebrow"><b>The work</b></p>
+          <p class="cs-nextcard__t">The case studies behind these posts</p>
+          <span class="cs-go" aria-hidden="true"><Icon name="arrow-right" size={20} /></span>
+        </a>
+        <div class="j-card j-contact cs-contact">
+          <div>
+            <p class="j-contact__k">Working on something similar?</p>
+            <p class="cs-contact__t">Tell me what the system is doing, and what it should be doing.</p>
+          </div>
+          <div class="j-contact__end">
+            <a class="btn btn--lg j-contact__btn" href={`mailto:${profile.email}?subject=${encodeURIComponent(`About: ${d.title}`)}`}><Icon name="mail" size={18} />Email me</a>
+          </div>
+        </div>
+      </div>
+    </section>
   </article>
 </Base>

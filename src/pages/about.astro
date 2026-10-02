@@ -3,6 +3,9 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
+import SecHead from "@/components/SecHead.astro";
+import Spine from "@/components/Spine.astro";
+import Icon from "@/components/Icon.astro";
 import headshot from "@/assets/mubashir-rehman.webp";
 import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
@@ -14,6 +17,8 @@ const work = await getCollection("work");
 const rules = work.filter((w) => w.data.rule).map((w) => ({ ...w.data.rule!, slug: w.id, title: w.data.title })).sort((a, b) => a.n - b.n);
 const ym = (s: string) => (s === "present" ? "now" : new Date(`${s}-01`).toLocaleDateString("en-GB", { month: "short", year: "numeric" }));
 
+const resume = profile.resumes[profile.defaultResume as keyof typeof profile.resumes];
+const range = (t: { start: string; end: string }) => `${ym(t.start)} to ${ym(t.end)}`;
 const title = "About Mubashir Rehman, Backend Engineer in Lahore";
 const description = "Mubashir Rehman is a backend engineer in Lahore. His timeline, the rules he works by, and his peer-reviewed ECG and ML paper (Springer, 2025).";
 const canonical = `${SITE}/about/`;
@@ -24,96 +29,102 @@ const schema = graph([
 ]);
 ---
 <Base title={title} description={description} path="/about/" schema={schema}>
-  <div class="wrap page-head">
+  <div class="j wrap ab">
     <Crumbs items={[{ name: "About" }]} />
-    <div class="cs-top">
-      <div>
-        <h1 class="cs-h1">About {profile.name}</h1>
-        <p class="lead" style="margin-top:var(--s-5)">{profile.bio.about[0]}</p>
-        <p class="actions" style="margin-top:var(--s-5)">
-          <a class="btn btn--primary" href={profile.resumes.backend.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé (PDF)</a>
-          <a class="btn btn--secondary" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>Email me</a>
+    <div class="j-grid">
+      <header class="j-card cs-hero ab-hero">
+        <p class="j-eyebrow"><b>{profile.label}</b> · {profile.location.city}, {profile.availabilityShort.toLowerCase()}</p>
+        <h1>About {profile.name}</h1>
+        <p class="j-lead">{profile.bio.about[0]}</p>
+        <p class="j-cta">
+          <a class="btn btn--primary btn--lg" href={resume.file}><Icon name="download" size={18} />Download résumé</a>
+          <a class="btn btn--secondary btn--lg" href={`mailto:${profile.email}`}><Icon name="mail" size={18} />Email me</a>
         </p>
-        <div class="prose" style="margin-top:var(--s-6)">{profile.bio.about.slice(1).map((p) => <p>{p}</p>)}</div>
+      </header>
+      <div class="j-card j-photo ab-photo">
+        <Image src={headshot} alt={profile.name} widths={[400]} sizes="(min-width: 860px) 380px, 100vw" loading="eager" />
+        <p class="j-photo__tag"><span>{profile.name}</span><span>{profile.location.city} · {profile.location.timezone.match(/UTC[+-]\d+/)?.[0]}</span></p>
       </div>
-      <div class="glance">
-        <div class="who">
-          <Image src={headshot} alt={profile.name} width={64} height={64} loading="eager" class="who__img" />
-          <p class="who__txt"><strong>{profile.name}</strong><span>At a glance</span></p>
-        </div>
-        <dl class="dl">
-          <div><dt>Role</dt><dd>{profile.jobTitle}</dd></div>
-          <div><dt>Based in</dt><dd>{profile.location.city}, {profile.location.country}</dd></div>
-          <div><dt>Time zone</dt><dd>{profile.location.timezone}</dd></div>
+      <div class="j-card ab-bio">
+        {profile.bio.about.slice(1).map((p) => <p>{p}</p>)}
+      </div>
+      <aside class="j-card cs-glance ab-glance" aria-label="At a glance">
+        <p class="j-eyebrow">At a glance</p>
+        <dl>
+          <div><dt>Role</dt><dd>{profile.jobTitle}, leading {numWord(profile.current.teamSize)} engineers at {profile.current.employer} since {ym(profile.current.since)}</dd></div>
+          <div><dt>Based in</dt><dd>{profile.location.city}, {profile.location.country} · {profile.location.timezone}</dd></div>
           <div><dt>Works</dt><dd>{profile.availability}</dd></div>
           <div><dt>Experience</dt><dd>{profile.yearsFullTime} years, full-time</dd></div>
-          <div><dt>Now</dt><dd>Leading five engineers at {profile.current.employer} since {ym(profile.current.since)}</dd></div>
-          <div><dt>Published</dt><dd><a class="link" href={profile.paper.url}>{profile.paper.journal}, {profile.paper.year}</a></dd></div>
+          <div><dt>Published</dt><dd><a href={profile.paper.url}>{profile.paper.journal}, {profile.paper.year}</a></dd></div>
         </dl>
-      </div>
+      </aside>
     </div>
-  </div>
 
-  <section class="sec wrap" id="rules" aria-labelledby="rules-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="h2" id="rules-h">How I work</h2><p class="small">All {numWord(rules.length)} rules. Each one came out of real work. The link is the evidence.</p></div>
-      <div class="sec__body">
-        <ol class="rules">
-          {rules.map((r) => (
-            <li class="rule" id={`rule-${r.n}`}>
-              <span class="rule__n" aria-hidden="true">{r.n}</span>
-              <div><p class="rule__t"><span class="sr">Rule {r.n}: </span>{r.text}</p><p class="rule__w">From <a class="link" href={`/projects/${r.slug}/`}>{r.title}</a></p></div>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </div>
-  </section>
+    <section class="j-part" id="rules" aria-labelledby="rules-h">
+      <SecHead n="01" id="rules-h" h="How I work" p={`All ${numWord(rules.length)} rules. Each one came out of real work, and the link is the evidence.`} />
+      <ol class="j-grid ab-rules">
+        {rules.map((r) => (
+          <li class="j-card ab-rule" id={`rule-${r.n}`}>
+            <span class="ab-rule__n" aria-hidden="true">{String(r.n).padStart(2, "0")}</span>
+            <p class="ab-rule__t"><span class="sr">Rule {r.n}: </span>{r.text}</p>
+            <p class="j-proof">From <a href={`/projects/${r.slug}/`}>{r.title} →</a></p>
+          </li>
+        ))}
+      </ol>
+    </section>
 
-  <section class="sec wrap" aria-labelledby="tl-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="h2" id="tl-h">Timeline</h2><p class="small">Full-time roles count toward the {profile.yearsFullTime} years; teaching and the internship do not.</p></div>
-      <div class="sec__body">
-        <ol class="timeline">
+    <section class="j-part" id="path" aria-labelledby="tl-h">
+      <SecHead n="02" id="tl-h" h="The path" p={`Full-time roles count toward the ${profile.yearsFullTime} years; teaching and the internship do not.`} />
+      <div class="j-journey">
+        <Spine />
+        <ol class="j-chapters">
           {profile.timeline.map((t, i) => (
-            <li class={`tl${i === 0 ? " is-now" : ""}`}>
-              <span class="tl__mk" aria-hidden="true"></span>
-              <p class="tl__when small"><time datetime={t.start}>{ym(t.start)}</time> to {t.end === "present" ? "now" : <time datetime={t.end}>{ym(t.end)}</time>}</p>
-              <div class="tl__body"><h3>{t.title}, {t.org}</h3><p><span class="small">{t.type}.</span> {t.scope}</p></div>
+            <li class:list={["j-card j-ch ab-ch", { "is-now": i === 0 }]}>
+              <span class="j-yr ab-yr"><time datetime={t.start}>{ym(t.start)}</time> to {t.end === "present" ? "now" : <time datetime={t.end}>{ym(t.end)}</time>}</span>
+              <div>
+                <h3>{t.title}, {t.org}</h3>
+                <p>{t.scope}</p>
+                <p class="j-gain">{t.type}</p>
+              </div>
             </li>
           ))}
         </ol>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="sec wrap" aria-labelledby="tr-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="h2" id="tr-h">Teaching and research</h2></div>
-      <div class="sec__body">
-        <div class="prose">
-          <p>{profile.teaching}</p>
-          <p><strong>{profile.paper.title}.</strong> {profile.paper.citation}. {profile.paper.authorship}. My part: {profile.paper.contribution.toLowerCase()} {profile.paper.result}</p>
-          <p><a href={profile.paper.url}>DOI {profile.paper.doi}</a> , <a href={profile.paper.arxiv}>arXiv preprint</a>, <a href={profile.paper.caseStudy}>How the study was built</a></p>
-        </div>
+    <section class="j-part" aria-labelledby="tr-h">
+      <SecHead n="03" id="tr-h" h="Teaching and research" p="Explaining systems, and measuring them." />
+      <div class="j-grid">
+        <article class="j-card ab-card">
+          <span class="j-ico"><Icon name="presentation" /></span>
+          <h3>Teaching assistant, operating systems</h3>
+          <p class="j-a">{profile.teaching}</p>
+        </article>
+        <article class="j-card ab-card">
+          <span class="j-ico"><Icon name="radar" /></span>
+          <p class="j-eyebrow"><b>Research</b> · {profile.paper.citation}</p>
+          <h3><a href={profile.paper.caseStudy}>{profile.paper.title}</a></h3>
+          <p class="j-a">{profile.paper.authorship}. My part: {profile.paper.contribution.toLowerCase()} {profile.paper.result}</p>
+          <p class="wk-links"><a href={profile.paper.url}>DOI {profile.paper.doi}</a><a href={profile.paper.arxiv}>arXiv preprint</a><a href={profile.paper.caseStudy}>How the study was built</a></p>
+        </article>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="sec wrap" aria-labelledby="ed-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="h2" id="ed-h">Education</h2></div>
-      <div class="sec__body"><p>{profile.education.degree}, {profile.education.institution}, {profile.education.place}.</p></div>
-    </div>
-  </section>
-
-  <section class="sec wrap" aria-labelledby="stack-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="h2" id="stack-h">Stack</h2></div>
-      <div class="sec__body">
-        <p>{profile.stackLine}</p>
-        <p class="small">Role pages: {roles.map((r, i) => <><a class="link" href={`/for/${r.slug}/`}>{r.label}</a>{i < roles.length - 1 ? ", " : ""}</>)}</p>
+    <section class="j-part" aria-labelledby="ed-h">
+      <SecHead n="04" id="ed-h" h="Education and stack" p="Where it started, and what I use now." />
+      <div class="j-grid">
+        <article class="j-card ab-card ab-card--sm">
+          <span class="j-ico"><Icon name="building-2" /></span>
+          <h3>{profile.education.degree}</h3>
+          <p class="j-a">{profile.education.institution}, {profile.education.place}.</p>
+        </article>
+        <article class="j-card ab-card ab-card--lg">
+          <span class="j-ico"><Icon name="code-xml" /></span>
+          <h3>{profile.stackLine}</h3>
+          <p class="j-a">The full toolbox, from daily tools to project exposure, is on the <a href="/#toolbox">home page</a>.</p>
+          <p class="wk-links">{roles.map((r) => <a href={`/for/${r.slug}/`}>{r.label} role</a>)}</p>
+        </article>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </Base>

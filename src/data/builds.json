@@ -3,50 +3,71 @@
     "title": "Prompt migration to a versioned backend",
     "line": "Moved 28 prompts from 11 workflows to a versioned backend; edits need no deploy.",
     "year": "2025 to 2026",
-    "tracks": ["backend", "ai-backend"]
+    "tracks": [
+      "backend",
+      "ai-backend"
+    ]
   },
   {
     "title": "Internal systems: an HRMS, then one ERP",
     "line": "Extended an HRMS (138 employee records, 2 biometric devices), then built its ERP successor.",
     "year": "2025 to 2026",
-    "tracks": ["backend", "erp-hrms"]
+    "tracks": [
+      "backend",
+      "erp-hrms"
+    ]
   },
   {
     "title": "Backend for an industrial parts cost-estimation platform",
     "line": "Built the APIs, schemas and delivery pipeline around an ML cost-estimation service.",
     "year": "2025 to 2026",
-    "tracks": ["backend", "ai-backend"]
+    "tracks": [
+      "backend",
+      "ai-backend"
+    ]
   },
   {
     "title": "AI feature suite for a property-management platform",
     "line": "Implemented 10+ of 28 specified AI features, checked against the live OpenAI API.",
     "year": "2026",
-    "tracks": ["ai-backend", "erp-hrms"]
+    "tracks": [
+      "ai-backend",
+      "erp-hrms"
+    ]
   },
   {
     "title": "Self-hosted LLM inference for an engineering team",
     "line": "vLLM behind an OpenAI-compatible proxy on one 12 GB GPU, adopted by the team.",
     "year": "",
-    "tracks": ["ai-backend"]
+    "tracks": [
+      "ai-backend"
+    ]
   },
   {
     "title": "The Quetta Tea 2.0: a fast café site",
     "line": "Astro site for a Lahore café; desktop PageSpeed 100 for performance, accessibility and SEO.",
     "year": "2026",
     "href": "https://github.com/mubashir-rehman/the-quetta-tea-20",
-    "tracks": ["full-stack"]
+    "tracks": [
+      "full-stack"
+    ],
+    "demo": "https://the-quetta-tea-20.vercel.app/"
   },
   {
     "title": "Ground-control software for a drone swarm",
     "line": "Led a team of four on QGroundControl-based mission planning, operator UI and telemetry.",
     "year": "2023 to 2025",
-    "tracks": ["backend"]
+    "tracks": [
+      "backend"
+    ]
   },
   {
     "title": "This portfolio site",
-    "line": "Static Astro site with per-route metadata, structured data and CI/CD to GitHub Pages.",
+    "line": "Static Astro site with per-route metadata, structured data, build-time checks and deploys to Cloudflare Pages.",
     "year": "2026",
     "href": "https://github.com/mubashir-rehman/mubashir-rehman.github.io",
-    "tracks": ["full-stack"]
+    "tracks": [
+      "full-stack"
+    ]
   }
 ]

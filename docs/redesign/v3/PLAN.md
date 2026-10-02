@@ -78,7 +78,9 @@ and a screenshot plus axe pass per page before going live.
   highlighted, Saw / Cause / Fix incident cards, outcome with a built-with card, the rule card, next and contact
   cards) and the Work index (how-each-reads card, featured cards with diagrams and the problem each solves, more
   case studies, open source with the HireTrack shot, smaller builds, research). Fixed the circular diagram panel.
-- Next: About, Services, role pages, Writing and posts, Contact, 404.
+- Done (dev branch): About (rules as cards, timeline on the spine), Services, the four role pages, Writing
+  index and posts, Contact, 404. Work page open source is three cards (HireTrack, this site, The Quetta Tea 2.0).
+- Next: phone polish across every page.
 
 ## Open items
 

@@ -1,45 +1,92 @@
 ---
 // Low-profile by design: not in the nav, no pricing, no packages. A candid statement of the
-// problems I like, each backed by the case study that shows it.
+// problems I like, each backed by the case study that shows it, and how working together starts.
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
+import SecHead from "@/components/SecHead.astro";
+import Icon from "@/components/Icon.astro";
 import profile from "@/data/profile.json";
 import problems from "@/data/problems.json";
+import approach from "@/data/approach.json";
 import { graph, breadcrumb, webPage, personRef, SITE } from "@/lib/schema";
 
 const title = "Problems I Solve";
 const description = "Messy multi-system workflows, AI on top of a system of record, demos that fail in production. The problems Mubashir Rehman likes to solve.";
 const canonical = `${SITE}/services/`;
 const schema = graph([webPage("WebPage", canonical, title, description, { about: personRef }), breadcrumb(canonical, [{ name: "Problems I solve", path: "/services/" }])]);
+const mail = `mailto:${profile.email}?subject=${encodeURIComponent("A problem worth a look")}`;
+const start = [
+  { h: "Send the problem", p: "Two or three lines on what is broken and where it lives is enough." },
+  { h: "Get my read", p: "I reply with what I see and what I would check first." },
+];
 ---
 <Base title={title} description={description} path="/services/" schema={schema}>
-  <div class="wrap page-head">
+  <div class="j wrap">
     <Crumbs items={[{ name: "Problems I solve" }]} />
-    <h1 class="h1">Problems I solve</h1>
-    <p class="lead">{profile.servicesLead}</p>
-  </div>
-  <section class="wrap" aria-label="Problems">
-    <ul class="works">
-      {problems.map((p) => (
-        <li class="work">
-          <h2 class="work__title">{p.h}</h2>
-          <p class="work__sum">{p.what}</p>
-          <p class="work__meta small">Shown in <a class="link" href={`/projects/${p.slug}/`}>{p.link}</a>.</p>
-        </li>
-      ))}
-    </ul>
-  </section>
-  <section class="sec wrap" aria-labelledby="start-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="label" id="start-h">How it starts</h2></div>
-      <div class="sec__body">
-        <ol class="steps" style="margin:0">
-          <li><span><b>Send the problem.</b> Two or three lines on what is broken and where it lives is enough.</span></li>
-          <li><span><b>Get my read.</b> I reply with what I see and what I would check first.</span></li>
-        </ol>
-        <p class="actions"><a class="btn btn--primary" href={`mailto:${profile.email}?subject=${encodeURIComponent("A problem worth a look")}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>Describe the problem</a></p>
-        <p class="small">Open to select engagements.</p>
-      </div>
+    <div class="j-grid">
+      <header class="j-card cs-hero wk-hero">
+        <p class="j-eyebrow"><b>Problems I solve</b> · {profile.location.city}, {profile.availabilityShort.toLowerCase()}</p>
+        <h1>Problems I solve</h1>
+        <p class="j-lead">{profile.servicesLead}</p>
+        <p class="j-cta"><a class="btn btn--primary btn--lg" href={mail}><Icon name="mail" size={18} />Describe the problem</a></p>
+      </header>
+      <aside class="j-card wk-how" aria-labelledby="start-h">
+        <h2 class="j-eyebrow" id="start-h">How it starts</h2>
+        <ol>{start.map((x, i) => <li><span>{String(i + 1).padStart(2, "0")}</span><div><b>{x.h}.</b> {x.p}</div></li>)}</ol>
+      </aside>
     </div>
-  </section>
+
+    <section class="j-part" aria-labelledby="p-h">
+      <SecHead n="01" id="p-h" h="If you have one of these" p="Each one is backed by a case study." />
+      <div class="j-grid">
+        {problems.map((p, i) => (
+          <article class:list={["j-card j-deliver", { "is-wide": i < 2 }]}>
+            <span class="j-ico"><Icon name={p.icon as any} /></span>
+            <p class="j-k">If you have</p>
+            <h3>{p.h}</h3>
+            <p class="j-k">You get</p>
+            <p class="j-a">{p.what}</p>
+            <p class="j-proof">Proof: <a href={`/projects/${p.slug}/`}>{p.link} →</a></p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="j-part" aria-labelledby="z-h">
+      <SecHead n="02" id="z-h" h="When nothing is defined yet" p="From an unclear ask to something shipped." />
+      <ol class="j-ztrack">
+        {approach.zero.stages.map((s, i) => (
+          <li class:list={["j-card j-zs", s.fuzzy ? "is-fuzzy" : "is-solid"]}>
+            <span class="j-dot"><Icon name={s.icon as any} size={20} /></span>
+            <h3><span class="j-stepn">{i + 1}</span>{s.h}</h3>
+            <p>{s.p}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="j-part" aria-labelledby="b-h">
+      <SecHead n="03" id="b-h" h="When something is broken" p="The same four steps, every time." />
+      <ol class="j-steps">
+        {approach.broken.steps.map((s, i) => (
+          <li class="j-card j-step">
+            <span class="j-dot"><Icon name={s.icon as any} size={20} /></span>
+            <h3><span class="j-stepn">{i + 1}</span>{s.h}</h3>
+            <p>{s.p}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="j-card j-contact" aria-labelledby="close-h">
+      <div>
+        <p class="j-contact__k">Open to select engagements</p>
+        <h2 id="close-h">Tell me what the system is doing. Tell me what it should be doing.</h2>
+      </div>
+      <div class="j-contact__end">
+        <p>{profile.location.city}, {profile.location.country} · {profile.location.timezone}</p>
+        <a class="btn btn--lg j-contact__btn" href={mail}><Icon name="mail" size={18} />Describe the problem</a>
+      </div>
+    </section>
+  </div>
 </Base>

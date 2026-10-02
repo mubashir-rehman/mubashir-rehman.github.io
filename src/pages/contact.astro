@@ -1,6 +1,7 @@
 ---
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
+import Icon from "@/components/Icon.astro";
 import { Image } from "astro:assets";
 import headshot from "@/assets/mubashir-rehman.webp";
 import profile from "@/data/profile.json";
@@ -19,32 +20,42 @@ const schema = graph([
 ]);
 ---
 <Base title={title} description={description} path="/contact/" schema={schema}>
-  <div class="wrap page-head">
+  <div class="j wrap">
     <Crumbs items={[{ name: "Contact" }]} />
-    <div class="cs-top">
+    <section class="j-card j-contact ct-hero" aria-labelledby="ct-h">
       <div>
-        <h1 class="h1">Contact</h1>
-        <p class="lead">Email is fastest. A role or a problem, in two lines, is enough.</p>
-        <p class="actions" style="margin-top:var(--s-6)">
-          <a class="btn btn--primary btn--lg" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>{profile.email}</a>
-        </p>
-        <dl class="dl" style="margin-top:var(--s-7)">
-          <div><dt>Where</dt><dd>{profile.location.city}, {profile.location.country}, {profile.location.timezone}</dd></div>
-          <div><dt>Works</dt><dd>{profile.availability} Open to select engagements.</dd></div>
-          <div><dt>Elsewhere</dt><dd><a class="link" href={profile.links.linkedin}>LinkedIn</a>, <a class="link" href={profile.links.github}>GitHub</a>, <a class="link" href={profile.links.scholar}>Google Scholar</a></dd></div>
-          <div><dt>Résumé by role</dt><dd>{roles.map((r, i) => <><a class="link" href={profile.resumes[r.slug as keyof typeof profile.resumes].file}>{r.label}</a>{i < roles.length - 1 ? ", " : ""}</>)}</dd></div>
-        </dl>
+        <p class="j-contact__k">Contact</p>
+        <h1 id="ct-h">Tell me what the system is doing. Tell me what it should be doing.</h1>
+        <p class="ct-lead">Email is fastest. A role or a problem, in two lines, is enough.</p>
       </div>
-      <aside aria-label="Other ways in">
-        <div class="who" style="margin-bottom:var(--s-5)">
-          <Image src={headshot} alt={profile.name} width={64} height={64} loading="eager" class="who__img" />
-          <p class="who__txt"><strong>{profile.name}</strong><span>{profile.jobTitle}, {profile.location.city}</span></p>
-        </div>
-        <ul class="works works--compact">
-          <li class="work"><p class="work__title"><a href="/services/">Problems I solve</a></p><p class="small">Workflows across systems that do not talk to each other, and AI on top of them.</p></li>
-          <li class="work"><p class="work__title"><a href="/projects/">{cap(numWord(caseCount))} case studies</a></p><p class="small">Problem, system, decisions and what broke, for each one.</p></li>
-        </ul>
+      <div class="j-contact__end">
+        <p>{profile.location.city}, {profile.location.country} · {profile.location.timezone}</p>
+        <a class="btn btn--lg j-contact__btn" href={`mailto:${profile.email}`}><Icon name="mail" size={18} />{profile.email}</a>
+      </div>
+    </section>
+    <div class="j-grid ct-grid">
+      <div class="j-card j-photo ct-photo">
+        <Image src={headshot} alt={profile.name} widths={[400]} sizes="(min-width: 860px) 380px, 100vw" loading="eager" />
+        <p class="j-photo__tag"><span>{profile.name}</span><span>{profile.jobTitle}</span></p>
+      </div>
+      <aside class="j-card cs-glance ct-glance" aria-label="Details">
+        <p class="j-eyebrow">Details</p>
+        <dl>
+          <div><dt>Works</dt><dd>{profile.availability} Open to select engagements.</dd></div>
+          <div><dt>Elsewhere</dt><dd class="wk-links"><a href={profile.links.linkedin}>LinkedIn</a><a href={profile.links.github}>GitHub</a><a href={profile.links.scholar}>Google Scholar</a></dd></div>
+          <div><dt>Résumé by role</dt><dd class="wk-links">{roles.map((r) => <a href={profile.resumes[r.slug as keyof typeof profile.resumes].file}>{r.label}</a>)}</dd></div>
+        </dl>
       </aside>
+      <a class="j-card cs-nextcard ct-way" href="/services/">
+        <span class="j-ico"><Icon name="wrench" /></span>
+        <p class="cs-nextcard__t">Problems I solve</p>
+        <p class="j-a">Workflows across systems that do not talk to each other, and AI on top of them.</p>
+      </a>
+      <a class="j-card cs-nextcard ct-way" href="/projects/">
+        <span class="j-ico"><Icon name="layout-dashboard" /></span>
+        <p class="cs-nextcard__t">{cap(numWord(caseCount))} case studies</p>
+        <p class="j-a">Problem, system, decisions and what broke, for each one.</p>
+      </a>
     </div>
   </div>
 </Base>

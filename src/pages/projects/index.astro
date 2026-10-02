@@ -7,6 +7,9 @@ import Icon from "@/components/Icon.astro";
 import { Image } from "astro:assets";
 import shotHireDark from "@/assets/work/hiretrack-dark.jpg";
 import shotHireLight from "@/assets/work/hiretrack-light.jpg";
+import shotSelfDark from "@/assets/work/portfolio-dark.jpg";
+import shotSelfLight from "@/assets/work/portfolio-light.jpg";
+import shotQuetta from "@/assets/work/quettatea.jpg";
 import problems from "@/data/problems.json";
 import MiniDiagram from "@/components/MiniDiagram.astro";
 import builds from "@/data/builds.json";
@@ -21,7 +24,8 @@ const researchId = profile.paper.caseStudy.split("/")[2];
 const more = work.filter((w) => !w.data.flagship && w.id !== hiretrackId && w.id !== researchId);
 const hiretrack = work.find((w) => w.id === "hiretrack")!;
 const portfolio = builds.find((b) => b.title === "This portfolio site")!;
-const smaller = builds.filter((b) => b !== portfolio);
+const quetta = builds.find((b) => b.title.startsWith("The Quetta Tea 2.0"))!;
+const smaller = builds.filter((b) => b !== portfolio && b !== quetta);
 const research = work.find((w) => w.id === profile.paper.caseStudy.split("/")[2])!;
 // Which "If you have" problem (home page, /services/) each case study answers.
 const solves = (id: string) => problems.find((p) => p.slug === id)?.h;
@@ -91,26 +95,40 @@ const schema = graph([
     </section>
 
     <section class="j-part" aria-labelledby="oss-h">
-      <SecHead n={S.oss} id="oss-h" h="Open source" p="Code you can read." />
+      <SecHead n={S.oss} id="oss-h" h="Open source" p="Code you can read, and sites you can open." />
       <div class="j-grid">
         <article class="j-card j-w j-w--shot wk-oss">
           <div class="j-shot">
-            <Image class="ht-dark" src={shotHireDark} alt="HireTrack sign-in screen, dark theme" widths={[560, 900]} sizes="(min-width: 860px) 640px, 100vw" />
-            <Image class="ht-light" src={shotHireLight} alt="HireTrack sign-in screen, light theme" widths={[560, 900]} sizes="(min-width: 860px) 640px, 100vw" />
+            <Image class="ht-dark" src={shotHireDark} alt="HireTrack sign-in screen, dark theme" widths={[400, 760]} sizes="(min-width: 860px) 390px, 100vw" />
+            <Image class="ht-light" src={shotHireLight} alt="HireTrack sign-in screen, light theme" widths={[400, 760]} sizes="(min-width: 860px) 390px, 100vw" />
           </div>
           <div class="j-w__in">
             <p class="j-eyebrow"><b>{hiretrack.data.pillar}</b> · {hiretrack.data.period}</p>
-            <h3><a href={`/projects/${hiretrack.id}/`}>{hiretrack.data.title}</a></h3>
+            <h3><a href={`/projects/${hiretrack.id}/`}>HireTrack</a></h3>
             <p class="j-a">{hiretrack.data.summary}</p>
             <p class="wk-links">{hiretrack.data.links.repo && <a href={hiretrack.data.links.repo}>Code</a>}{hiretrack.data.links.demo && <a href={hiretrack.data.links.demo}>Live demo</a>}<a href={`/projects/${hiretrack.id}/`}>Case study</a></p>
           </div>
         </article>
-        <article class="j-card wk-card wk-self">
-          <span class="j-ico"><Icon name="code-xml" /></span>
-          <p class="j-eyebrow">{portfolio.year}</p>
-          <h3><a href={portfolio.href}>{portfolio.title}</a></h3>
-          <p class="j-a">{portfolio.line}</p>
-          <p class="j-proof"><a href={portfolio.href}>View the code →</a></p>
+        <article class="j-card j-w j-w--shot wk-oss">
+          <div class="j-shot">
+            <Image class="ht-dark" src={shotSelfDark} alt="This portfolio's home page, dark theme" widths={[400, 760]} sizes="(min-width: 860px) 390px, 100vw" />
+            <Image class="ht-light" src={shotSelfLight} alt="This portfolio's home page, light theme" widths={[400, 760]} sizes="(min-width: 860px) 390px, 100vw" />
+          </div>
+          <div class="j-w__in">
+            <p class="j-eyebrow"><b>Open source</b> · {portfolio.year}</p>
+            <h3><a href={portfolio.href}>{portfolio.title}</a></h3>
+            <p class="j-a">{portfolio.line}</p>
+            <p class="wk-links"><a href={portfolio.href}>Code</a></p>
+          </div>
+        </article>
+        <article class="j-card j-w j-w--shot wk-oss">
+          <div class="j-shot"><Image src={shotQuetta} alt="The Quetta Tea 2.0 home page" widths={[400, 760]} sizes="(min-width: 860px) 390px, 100vw" /></div>
+          <div class="j-w__in">
+            <p class="j-eyebrow"><b>Built for a café</b> · {quetta.year}</p>
+            <h3><a href={quetta.demo}>The Quetta Tea 2.0</a></h3>
+            <p class="j-a">{quetta.line}</p>
+            <p class="wk-links"><a href={quetta.href}>Code</a><a href={quetta.demo}>Live site</a></p>
+          </div>
         </article>
       </div>
     </section>

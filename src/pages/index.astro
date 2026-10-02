@@ -185,7 +185,7 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
           <div class="j-shot"><Image src={shotQuetta} alt="The Quetta Tea 2.0 home page" widths={[600, 900]} sizes="(min-width: 860px) 580px, 100vw" /></div>
           <div class="j-w__in">
             <p class="j-eyebrow"><b>Built for a café</b> · {quetta.year}</p>
-            <h3><a href={quetta.href}>The Quetta Tea 2.0</a></h3>
+            <h3><a href={quetta.demo ?? quetta.href}>The Quetta Tea 2.0</a></h3>
             <p class="j-a">{quetta.line}</p>
           </div>
         </article>

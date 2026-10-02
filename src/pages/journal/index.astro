@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
+import { numWord, cap } from "@/lib/text";
 import { graph, breadcrumb, webPage, personRef, SITE } from "@/lib/schema";
 
 const posts = (await getCollection("journal", (p) => p.data.status === "published")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -18,24 +19,31 @@ const schema = graph([
 ]);
 ---
 <Base title={title} description={description} path="/journal/" schema={schema}>
-  <div class="wrap page-head">
+  <div class="j wrap">
     <Crumbs items={[{ name: "Writing" }]} />
-    <h1 class="h1">Writing</h1>
-    <p class="lead">Build logs and incident write-ups. The answer comes first.</p>
-    <p class="meta" style="margin-top:var(--s-4)">{posts.length} {posts.length === 1 ? "post" : "posts"}</p>
+    <div class="j-grid">
+      <header class="j-card cs-hero wk-hero">
+        <p class="j-eyebrow"><b>Writing</b> · {cap(numWord(posts.length))} {posts.length === 1 ? "post" : "posts"}</p>
+        <h1>Writing</h1>
+        <p class="j-lead">Build logs and incident write-ups. The answer comes first.</p>
+      </header>
+      <aside class="j-card wk-how" aria-labelledby="kinds-h">
+        <h2 class="j-eyebrow" id="kinds-h">Kinds of post</h2>
+        <ol>{Object.values(types).map((t, i) => <li><span>{String(i + 1).padStart(2, "0")}</span>{t}</li>)}</ol>
+        <p class="wk-links jr-rss"><a href="/rss.xml">RSS feed</a></p>
+      </aside>
+    </div>
+    <section class="j-part jr-list-sec" aria-label="All posts">
+      <ul class="j-grid jr-list">
+        {posts.map((p) => (
+          <li class="j-card jr-post">
+            <p class="j-eyebrow"><b>{types[p.data.type]}</b> · <time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time></p>
+            <h2><a href={`/journal/${p.id}/`}>{p.data.title}</a></h2>
+            <p class="j-a">{p.data.lede}</p>
+            <p class="j-proof"><a href={`/journal/${p.id}/`}>Read the post →</a></p>
+          </li>
+        ))}
+      </ul>
+    </section>
   </div>
-  <section class="wrap" aria-label="All posts">
-    <ul class="works works--wide">
-      {posts.map((p) => (
-        <li class="work">
-          <div>
-            <h2 class="work__title"><a href={`/journal/${p.id}/`}>{p.data.title}</a></h2>
-            <p class="work__sum">{p.data.lede}</p>
-          </div>
-          <p class="work__side meta">{types[p.data.type]}<br /><time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time></p>
-        </li>
-      ))}
-    </ul>
-    <p class="small" style="margin-top:var(--s-5)">Follow along with the <a class="link" href="/rss.xml">RSS feed</a>.</p>
-  </section>
 </Base>

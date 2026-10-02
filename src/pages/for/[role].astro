@@ -2,6 +2,9 @@
 import { getCollection } from "astro:content";
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
+import SecHead from "@/components/SecHead.astro";
+import Icon from "@/components/Icon.astro";
+import { numWord, cap } from "@/lib/text";
 import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
 import { graph, breadcrumb, faqPage, webPage, personRef, SITE } from "@/lib/schema";
@@ -22,63 +25,82 @@ const schema = graph([
 ]);
 ---
 <Base title={role.seoTitle} description={role.description} path={path} schema={schema} resume={role.slug as never}>
-  <div class="wrap page-head">
+  <div class="j wrap">
     <Crumbs items={[{ name: `Hiring: ${role.label}` }]} />
-    <nav class="switch" aria-label="Role pages">
-      <span class="meta">Hiring for</span>
+    <nav class="switch ro-switch" aria-label="Role pages">
+      <span class="j-eyebrow">Hiring for</span>
       <ul>{roles.map((r) => <li><a href={`/for/${r.slug}/`} aria-current={r.slug === role.slug ? "page" : undefined}>{r.label}</a></li>)}</ul>
     </nav>
-    <div class="cs-top">
-      <div>
-        <h1 class="h1">{role.h1}</h1>
-        <p class="lead">{role.fit}</p>
-        <p class="actions" style="margin-top:var(--s-6)">
-          <a class="btn btn--primary" href={resume.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé for {role.label} (PDF)</a>
-          <a class="btn btn--secondary" href={`mailto:${profile.email}`}>Email me</a>
+    <div class="j-grid">
+      <header class="j-card cs-hero wk-hero">
+        <p class="j-eyebrow"><b>Hiring for</b> · {role.label}</p>
+        <h1>{role.h1}</h1>
+        <p class="j-lead">{role.fit}</p>
+        <p class="j-cta">
+          <a class="btn btn--primary btn--lg" href={resume.file}><Icon name="download" size={18} />Résumé for {role.label} (PDF)</a>
+          <a class="btn btn--secondary btn--lg" href={`mailto:${profile.email}`}><Icon name="mail" size={18} />Email me</a>
         </p>
-      </div>
-      <div>
-        <h2 class="label">Practicalities</h2>
-        <dl class="dl" style="margin-top:8px">
-          <div><dt>Based in</dt><dd>{profile.location.city}, {profile.location.country} ({profile.location.timezone})</dd></div>
+      </header>
+      <aside class="j-card cs-glance" aria-labelledby="prac-h">
+        <h2 class="j-eyebrow" id="prac-h">Practicalities</h2>
+        <dl>
+          <div><dt>Based in</dt><dd>{profile.location.city}, {profile.location.country} · {profile.location.timezone}</dd></div>
+          <div><dt>Works</dt><dd>{profile.availability}</dd></div>
           <div><dt>Experience</dt><dd>{profile.yearsFullTime} years, full-time</dd></div>
           <div><dt>Now</dt><dd>{profile.current.title}, {profile.current.employer}</dd></div>
         </dl>
-      </div>
+      </aside>
     </div>
+
+    <section class="j-part" aria-labelledby="ev-h">
+      <SecHead n="01" id="ev-h" h="Evidence" p={`${cap(numWord(role.evidence.length))} builds that match this role.`} />
+      <div class="j-grid">
+        {role.evidence.map((e) => {
+          const w = "slug" in e ? work.find((x) => x.id === e.slug) : undefined;
+          const href = w ? `/projects/${w.id}/` : (e as { href: string }).href;
+          return (
+            <article class="j-card ro-ev">
+              {w && <p class="j-eyebrow"><b>{w.data.pillar}</b> · {w.data.period}</p>}
+              <h3><a href={href}>{w ? w.data.title : "Smaller builds"}</a></h3>
+              <p class="j-a">{e.line}</p>
+              <p class="j-proof"><a href={href}>{w ? "Read the case study →" : "See the smaller builds →"}</a></p>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="j-part" aria-labelledby="st-h">
+      <SecHead n="02" id="st-h" h="Stack for this role" p="The full toolbox is on the home page." />
+      <div class="j-card ro-stack">
+        <span class="j-ico"><Icon name="code-xml" /></span>
+        <ul class="j-chips">{role.stack.map((t) => <li class="j-chip">{t}</li>)}</ul>
+        <p class="wk-links"><a href="/#toolbox">Full toolbox</a><a href="/projects/">All case studies</a></p>
+      </div>
+    </section>
+
+    <section class="j-part" aria-labelledby="q-h">
+      <SecHead n="03" id="q-h" h="Questions" p="What hiring teams usually ask first." />
+      <div class="j-grid">
+        {role.faqs.map((f) => (
+          <article class="j-card ro-q">
+            <h3>{f.q}</h3>
+            <p class="j-a">{f.a}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="j-card j-contact" aria-labelledby="close-h">
+      <div>
+        <p class="j-contact__k">Hiring for {role.label.toLowerCase()}</p>
+        <h2 id="close-h">Tell me about the role and the system behind it.</h2>
+      </div>
+      <div class="j-contact__end">
+        <p>{profile.location.city}, {profile.location.country} · {profile.availabilityShort}</p>
+        <a class="btn btn--lg j-contact__btn" href={`mailto:${profile.email}`}><Icon name="mail" size={18} />{profile.email}</a>
+        <a class="j-contact__cv" href={resume.file}>Résumé for {role.label} (PDF)</a>
+      </div>
+    </section>
   </div>
-
-  <section class="sec wrap" aria-labelledby="ev-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="label" id="ev-h">Evidence</h2><p class="small">Three builds that match this role.</p></div>
-      <div class="sec__body">
-        <ul class="works">
-          {role.evidence.map((e) => {
-            const w = "slug" in e ? work.find((x) => x.id === e.slug) : undefined;
-            const href = w ? `/projects/${w.id}/` : (e as { href: string }).href;
-            return (
-              <li class="work">
-                <h3 class="work__title"><a href={href}>{w ? w.data.title : "Smaller builds"}</a></h3>
-                <p class="work__sum">{e.line}</p>
-              </li>
-            );
-          })}
-        </ul>
-        <div>
-          <h3 class="label" style="margin-bottom:12px">Stack for this role</h3>
-          <ul class="tags">{role.stack.map((s) => <li class="tag">{s}</li>)}</ul>
-        </div>
-        <p class="actions"><a class="btn btn--primary" href={resume.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé for {role.label} (PDF)</a></p>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec wrap" aria-labelledby="q-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="label" id="q-h">Questions</h2></div>
-      <div class="sec__body">
-        <div class="qa">{role.faqs.map((f) => <div><h3>{f.q}</h3><p>{f.a}</p></div>)}</div>
-      </div>
-    </div>
-  </section>
 </Base>
