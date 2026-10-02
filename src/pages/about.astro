@@ -5,6 +5,8 @@ import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import headshot from "@/assets/mubashir-rehman.webp";
 import profile from "@/data/profile.json";
+import roles from "@/data/roles.json";
+import { numWord } from "@/lib/text";
 import { graph, breadcrumb, personFull, webPage, SITE } from "@/lib/schema";
 
 // The numbered rules are citation keys: each comes from the case study that earned it.
@@ -52,9 +54,9 @@ const schema = graph([
     </div>
   </div>
 
-  <section class="sec wrap" aria-labelledby="rules-h">
+  <section class="sec wrap" id="rules" aria-labelledby="rules-h">
     <div class="sec__grid">
-      <div class="sec__head"><h2 class="h2" id="rules-h">Rules I work by</h2><p class="small">Each one came out of real work. The link is the evidence.</p></div>
+      <div class="sec__head"><h2 class="h2" id="rules-h">How I work</h2><p class="small">All {numWord(rules.length)} rules. Each one came out of real work. The link is the evidence.</p></div>
       <div class="sec__body">
         <ol class="rules">
           {rules.map((r) => (
@@ -93,8 +95,24 @@ const schema = graph([
           <p>{profile.teaching}</p>
           <p><strong>{profile.paper.title}.</strong> {profile.paper.citation}. {profile.paper.authorship}. My part: {profile.paper.contribution.toLowerCase()} {profile.paper.result}</p>
           <p><a href={profile.paper.url}>DOI {profile.paper.doi}</a> , <a href={profile.paper.arxiv}>arXiv preprint</a>, <a href={profile.paper.caseStudy}>How the study was built</a></p>
-          <p>{profile.education.degree}, {profile.education.institution}, {profile.education.place}.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="ed-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="h2" id="ed-h">Education</h2></div>
+      <div class="sec__body"><p>{profile.education.degree}, {profile.education.institution}, {profile.education.place}.</p></div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="stack-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="h2" id="stack-h">Stack</h2></div>
+      <div class="sec__body">
+        <p>{profile.stackLine}</p>
+        <p class="small">Role pages: {roles.map((r, i) => <><a class="link" href={`/for/${r.slug}/`}>{r.label}</a>{i < roles.length - 1 ? ", " : ""}</>)}</p>
       </div>
     </div>
   </section>
