@@ -1,37 +1,227 @@
 {
-  "_comment": "The home page toolbox. Every tool traces to the master CV's verified stack. daily = used most days, production = shipped with it, exposure = project use only. Left out on purpose: n8n (retired), MindsDB and Databricks (claimed only), integration-engine product names (use \"HL7 integration\"). Voice vendors may be listed here but never next to the dental case study.",
+  "_comment": "The home page toolbox. Every tool traces to the master CV's verified stack. daily = used most days, production = shipped with it, exposure = project use only, earlier = tools I used before and moved on from. Left out on purpose: n8n (retired), MindsDB and Databricks (claimed only), integration-engine product names (use \"HL7 integration\"). Voice vendors may be listed here but never next to the dental case study.",
   "areas": [
-    { "name": "Languages", "icon": "code-xml", "span": 4,
-      "daily": ["Python", "SQL"],
-      "production": ["TypeScript", "JavaScript", "C++", "C", "Bash", "QML", "C#"],
-      "exposure": ["Java", "Kotlin"] },
-    { "name": "Backend", "icon": "server", "span": 4,
-      "daily": ["Django", "Django REST Framework", "FastAPI"],
-      "production": ["Node.js", "Express-style BFF", "Flask", "Sequelize", "REST APIs", "OAuth2", "JWT", "RBAC", "SSO", "WebSockets", "SSE"],
-      "exposure": [] },
-    { "name": "AI and LLM", "icon": "brain-circuit", "span": 4,
-      "daily": ["LLM agents and tool calling", "OpenAI API", "pgvector search"],
-      "production": ["Google Gemini", "AWS Bedrock", "LangChain", "LangGraph", "MCP", "Embeddings and RAG", "vLLM", "LiteLLM", "Retell", "ElevenLabs", "Telnyx", "Claude Code"],
-      "exposure": ["YOLOv11", "DeepSORT", "OpenCV", "Keras", "scikit-learn", "SciPy"] },
-    { "name": "Data", "icon": "database", "span": 4,
-      "daily": ["PostgreSQL", "Redis"],
-      "production": ["MySQL", "MariaDB", "SQLite", "Supabase and row-level security", "SQLAlchemy", "SQLModel", "Alembic", "Multi-tenant data design"],
-      "exposure": [] },
-    { "name": "Cloud and DevOps", "icon": "cloud", "span": 8,
-      "daily": ["Docker", "AWS", "GitHub Actions"],
-      "production": ["AWS CDK", "ECS on Fargate", "RDS", "ALB", "WAF", "KMS", "S3", "IAM", "CloudTrail", "EventBridge", "Boto3", "Nginx", "Traefik", "Linux", "systemd", "DigitalOcean", "Cloudflare Workers", "Let's Encrypt"],
-      "exposure": ["Vagrant"] },
-    { "name": "Frontend", "icon": "layout-dashboard", "span": 4,
-      "daily": ["React", "TypeScript"],
-      "production": ["Vite", "Astro", "Next.js", "TanStack Start", "Tailwind CSS", "shadcn/ui", "Accessibility"],
-      "exposure": [] },
-    { "name": "Enterprise systems", "icon": "building-2", "span": 4,
-      "daily": ["ERPNext and Frappe"],
-      "production": ["Frappe CRM", "HRMS on Django", "ZKTeco biometric API", "HL7 integration", "Stripe billing"],
-      "exposure": [] },
-    { "name": "Async, real-time and robotics", "icon": "radio-tower", "span": 4,
-      "daily": ["Celery", "asyncio"],
-      "production": ["ARQ", "MQTT", "Qt/QML", "QGroundControl", "Gazebo", "Android SDK"],
-      "exposure": ["ArduPilot", "PX4", "Olympe"] }
+    {
+      "name": "Languages",
+      "icon": "code-xml",
+      "span": 4,
+      "daily": [
+        "Python",
+        "SQL"
+      ],
+      "production": [
+        "TypeScript",
+        "JavaScript",
+        "C++",
+        "C",
+        "Bash",
+        "QML",
+        "C#"
+      ],
+      "exposure": [
+        "Java",
+        "Kotlin"
+      ],
+      "earlier": []
+    },
+    {
+      "name": "Backend",
+      "icon": "server",
+      "span": 4,
+      "daily": [
+        "Django",
+        "Django REST Framework",
+        "FastAPI"
+      ],
+      "production": [
+        "Node.js",
+        "Express-style BFF",
+        "Flask",
+        "Sequelize",
+        "REST APIs",
+        "OAuth2",
+        "JWT",
+        "RBAC",
+        "SSO",
+        "WebSockets",
+        "SSE"
+      ],
+      "exposure": [],
+      "earlier": []
+    },
+    {
+      "name": "AI and LLM",
+      "icon": "brain-circuit",
+      "span": 4,
+      "daily": [
+        "LLM agents and tool calling",
+        "OpenAI API",
+        "pgvector search"
+      ],
+      "production": [
+        "Google Gemini",
+        "AWS Bedrock",
+        "LangChain",
+        "LangGraph",
+        "MCP",
+        "Embeddings and RAG",
+        "vLLM",
+        "LiteLLM",
+        "Retell",
+        "ElevenLabs",
+        "Telnyx"
+      ],
+      "exposure": [
+        "YOLOv11",
+        "DeepSORT",
+        "OpenCV",
+        "Keras",
+        "scikit-learn",
+        "SciPy"
+      ],
+      "earlier": []
+    },
+    {
+      "name": "Agentic engineering",
+      "icon": "bot",
+      "span": 8,
+      "daily": [
+        "Claude Code",
+        "OpenCode",
+        "Project skills",
+        "Subagents"
+      ],
+      "production": [
+        "Custom agent harness",
+        "MCP servers",
+        "Git worktrees per agent",
+        "Docs as skill resources",
+        "Regression test suites for agent changes",
+        "Model choice by task type"
+      ],
+      "exposure": [],
+      "earlier": [
+        "GitHub Copilot",
+        "Cline",
+        "OpenAI Codex",
+        "Google Antigravity",
+        "Qwen Code"
+      ]
+    },
+    {
+      "name": "Data",
+      "icon": "database",
+      "span": 4,
+      "daily": [
+        "PostgreSQL",
+        "Redis"
+      ],
+      "production": [
+        "MySQL",
+        "MariaDB",
+        "SQLite",
+        "Supabase and row-level security",
+        "SQLAlchemy",
+        "SQLModel",
+        "Alembic",
+        "Multi-tenant data design"
+      ],
+      "exposure": [],
+      "earlier": []
+    },
+    {
+      "name": "Cloud and DevOps",
+      "icon": "cloud",
+      "span": 8,
+      "daily": [
+        "Docker",
+        "AWS",
+        "GitHub Actions"
+      ],
+      "production": [
+        "AWS CDK",
+        "ECS on Fargate",
+        "RDS",
+        "ALB",
+        "WAF",
+        "KMS",
+        "S3",
+        "IAM",
+        "CloudTrail",
+        "EventBridge",
+        "Boto3",
+        "Nginx",
+        "Traefik",
+        "Linux",
+        "systemd",
+        "DigitalOcean",
+        "Cloudflare Workers",
+        "Let's Encrypt"
+      ],
+      "exposure": [
+        "Vagrant"
+      ],
+      "earlier": []
+    },
+    {
+      "name": "Frontend",
+      "icon": "layout-dashboard",
+      "span": 4,
+      "daily": [
+        "React",
+        "TypeScript"
+      ],
+      "production": [
+        "Vite",
+        "Astro",
+        "Next.js",
+        "TanStack Start",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "Accessibility"
+      ],
+      "exposure": [],
+      "earlier": []
+    },
+    {
+      "name": "Enterprise systems",
+      "icon": "building-2",
+      "span": 6,
+      "daily": [
+        "ERPNext and Frappe"
+      ],
+      "production": [
+        "Frappe CRM",
+        "HRMS on Django",
+        "ZKTeco biometric API",
+        "HL7 integration",
+        "Stripe billing"
+      ],
+      "exposure": [],
+      "earlier": []
+    },
+    {
+      "name": "Async, real-time and robotics",
+      "icon": "radio-tower",
+      "span": 6,
+      "daily": [
+        "Celery",
+        "asyncio"
+      ],
+      "production": [
+        "ARQ",
+        "MQTT",
+        "Qt/QML",
+        "QGroundControl",
+        "Gazebo",
+        "Android SDK"
+      ],
+      "exposure": [
+        "ArduPilot",
+        "PX4",
+        "Olympe"
+      ],
+      "earlier": []
+    }
   ]
 }

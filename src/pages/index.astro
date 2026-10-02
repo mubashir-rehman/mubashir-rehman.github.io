@@ -207,15 +207,17 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
         <li><span class="j-chip is-daily">Daily</span></li>
         <li><span class="j-chip">Used in production</span></li>
         <li><span class="j-chip is-exp">Project exposure</span></li>
+        <li><span class="j-chip is-earlier">Used before</span></li>
       </ul>
       <div class="j-grid">
         {toolbox.areas.map((a) => (
-          <article class:list={["j-card j-tool", { "is-wide": a.span === 8 }]}>
+          <article class:list={["j-card j-tool", `span-${a.span}`]}>
             <div class="j-tool__hd"><span class="j-ico"><Icon name={a.icon as any} /></span><h3>{a.name}</h3></div>
             <ul class="j-chips">
               {a.daily.map((t) => <li class="j-chip is-daily">{t}<span class="sr"> (daily)</span></li>)}
               {a.production.map((t) => <li class="j-chip">{t}</li>)}
               {a.exposure.map((t) => <li class="j-chip is-exp">{t}<span class="sr"> (project exposure)</span></li>)}
+              {a.earlier.map((t) => <li class="j-chip is-earlier">{t}<span class="sr"> (used before)</span></li>)}
             </ul>
           </article>
         ))}

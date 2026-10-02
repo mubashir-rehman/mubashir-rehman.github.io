@@ -111,11 +111,13 @@
 /* ---- 06 toolbox */
 .j-legend{list-style:none;margin:-8px 0 18px;padding:0;display:flex;gap:10px;flex-wrap:wrap}
 .j-tool{grid-column:span 4;display:flex;flex-direction:column;gap:14px}
-.j-tool.is-wide{grid-column:span 8}
+.j-tool.span-6{grid-column:span 6}
+.j-tool.span-8{grid-column:span 8}
 .j-tool__hd{display:flex;align-items:center;gap:14px}
 .j-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:7px}
 .j-chip{display:inline-block;font-size:.8125rem;font-weight:600;border-radius:999px;padding:5px 11px;border:1px solid var(--line-2);background:var(--card2);color:var(--text-1)}
 .j-chip.is-daily{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.j-chip.is-earlier{background:transparent;color:var(--text-2)}
 .j-chip.is-exp{background:transparent;color:var(--text-3);border-style:dashed;border-color:var(--line-3)}
 
 /* ---- contact */
