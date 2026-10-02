@@ -50,3 +50,33 @@ the NDA denylist), the 13-viewport check, tests, lint, axe (0 violations).
 Steps 1 to 6 built on the branch. All gates green: build with the NDA denylist, 13 viewports (the check now looks for
 the hero's `.j-cta`; the headline scales with screen height so the résumé button stays in the first screen), tests,
 lint, axe at 1440 and 390 in both themes on seven pages, zero `.js` files. Waiting for the owner's go-ahead.
+
+## Phase 2: inner pages (owner request, 2026-10-02)
+
+Every other page gets the same card language and, more importantly, a story: each page should answer one visitor
+question and lead to the next page, the way the home page leads from "what I deliver" to "how I think" to "proof".
+Today the inner pages only inherit the v3 palette and type; their layouts are still v2 (flat rows, 1px dividers).
+
+| Page | Visitor question | Story to tell | Notes |
+|---|---|---|---|
+| `/projects/` | What has he built? | Group by the kind of problem solved, not by format: the five "If you have" problems as chapters, each with its case studies as cards (diagram, pillar, period, one line on what broke). Open source, smaller builds and research follow as their own cards. | Reuse `j-` card and section-head patterns; consider moving them to a shared stylesheet. |
+| `/projects/[slug]/` (nine) | Can I trust this? | A case study reads as a journey: the situation (problem) → the system (explorable diagram) → the decisions (chose, rejected, why, cost as cards) → what broke (Notice, Trace, Fix, Rule, matching home section 02) → outcome → the rule. A progress spine down the side, like the path section. | Keep the explorable Diagram. The circular `--surface` shape behind the diagram looks odd in light mode; replace it with a card. |
+| `/about/` | Who is he, and how does he work? | The path section expanded: each role as a chapter with what it added, then how I work (the rules as cards, each linked to the incident it came from), teaching and research, education. Portrait here as well. | Light portrait when the owner provides it. |
+| `/services/` | Can he solve my problem, and how would we start? | Each problem as a card with icon, the "If you have / You get / Proof" pattern, then the zero-to-one stages as "how it starts". | Share data with home (`problems.json`, `approach.json`). |
+| `/for/[role]/` (four) | Is he right for this role? | Role fit at a glance (practicalities card), evidence as case-study cards, the role's slice of the toolbox, FAQ. | Toolbox slice should come from `toolbox.json`, not a separate list. |
+| `/journal/` and posts | What does he think about? | Index as cards with type (incident, lab note, build log, essay) and one-line lede; posts keep a calm reading column but adopt the new type, callouts and code blocks. | Prose must stay readable: no cards inside the article body. |
+| `/contact/` | How do I reach him? | The home contact card as the whole page: email, location, availability, résumé choice by role. | |
+| `/404` | Where now? | A short card with the trace and three ways back. | |
+
+Cross-cutting: phone polish for every page (the home page included), one shared stylesheet for the card system,
+and a screenshot plus axe pass per page before going live.
+
+## Open items
+
+- Agentic engineering case study (docs as skill resources, regression suites, model choice by task): waiting on the
+  owner's facts; extend `ai-agent-engineering-harness` or write a new one depending on the project.
+- Toolbox "Agentic engineering" card is on the dev branch; owner to decide whether it goes live now or with the case study.
+- Hero tagline: the long `heroLine` is live; the shorter wording would let the headline grow.
+- Light-mode portrait: pending a file from the owner.
+- Live check that DM Sans loads on the owner's devices (the sandbox proxy failed it intermittently).
+- Owner to revoke the Cloudflare API token when the work is done.
