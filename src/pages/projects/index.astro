@@ -16,8 +16,9 @@ import { graph, breadcrumb, webPage, personRef, SITE } from "@/lib/schema";
 
 const work = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
 const featured = work.filter((w) => w.data.flagship);
-const MORE = ["aws-backend-hipaa-eligible", "ai-agent-engineering-harness", "healthcare-integration-console", "multi-tenant-saas-architecture"];
-const more = MORE.map((id) => work.find((w) => w.id === id)!);
+const hiretrackId = "hiretrack";
+const researchId = profile.paper.caseStudy.split("/")[2];
+const more = work.filter((w) => !w.data.flagship && w.id !== hiretrackId && w.id !== researchId);
 const hiretrack = work.find((w) => w.id === "hiretrack")!;
 const portfolio = builds.find((b) => b.title === "This portfolio site")!;
 const smaller = builds.filter((b) => b !== portfolio);

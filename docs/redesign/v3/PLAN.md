@@ -82,8 +82,8 @@ and a screenshot plus axe pass per page before going live.
 
 ## Open items
 
-- Agentic engineering case study (docs as skill resources, regression suites, model choice by task): waiting on the
-  owner's facts; extend `ai-agent-engineering-harness` or write a new one depending on the project.
+- Agentic engineering case study: written as `agent-skills-and-model-routing` (rule 10) from the owner's account
+  on 2026-10-02. Owner to confirm the period ("2026 to present") and status wording.
 - Toolbox "Agentic engineering" card is on the dev branch; owner to decide whether it goes live now or with the case study.
 - Hero tagline: the long `heroLine` is live; the shorter wording would let the headline grow.
 - Light-mode portrait: pending a file from the owner.

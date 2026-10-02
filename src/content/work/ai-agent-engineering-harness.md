@@ -119,6 +119,6 @@ rule:
   text: "Split diagnosis from fixing where the blast radius changes."
 asOf: 2026-09-29
 related:
+  - agent-skills-and-model-routing
   - dental-ai-front-desk
-  - aws-backend-hipaa-eligible
 ---
