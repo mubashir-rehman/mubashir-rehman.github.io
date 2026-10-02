@@ -64,6 +64,61 @@ function renderText(el: HTMLElement, text: string) {
   if (last < text.length) el.append(text.slice(last));
 }
 
+const SUGGESTED = ["What has he built alone?", "What has he actually done with AI?", "Show me a production failure he fixed."];
+
+function el<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, string> = {}, text?: string) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  if (text) e.textContent = text;
+  return e;
+}
+
+// The dialog ships as an empty shell, so no chat text exists in the static HTML. The first
+// open builds its contents here.
+export function mountAsk(dialog: HTMLDialogElement) {
+  const root = el("div", { class: "ask-dialog__in", "data-ask-root": "" });
+  const head = el("header");
+  const close = el("button", { class: "icon-btn", type: "button", "data-ask-close": "", "aria-label": "Close" });
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "i");
+  svg.setAttribute("aria-hidden", "true");
+  const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+  use.setAttribute("href", "#i-x");
+  svg.append(use);
+  close.append(svg);
+  head.append(el("h2", { id: "ask-title" }, "Ask the engineer"), close);
+
+  const log = el("ol", { class: "ask-log", "data-ask-log": "", "aria-live": "polite" });
+  const empty = el("li", { class: "ask-empty-row" });
+  const sug = el("div", { class: "ask-suggest" });
+  SUGGESTED.forEach((q) => sug.append(el("button", { class: "btn btn--secondary btn--sm", type: "button", "data-ask-suggest": "" }, q)));
+  empty.append(el("p", { class: "ask-empty" }, "Ask about a project, a stack, or how I work. Answers come only from this site, and link to the page they come from."), sug);
+  log.append(empty);
+
+  const form = el("form", { class: "ask-form", "data-ask-form": "" });
+  const row = el("div", { class: "ask-row" });
+  row.append(
+    el("textarea", { class: "input", id: "ask-input", rows: "1", "data-ask-input": "", placeholder: "Ask a question", maxlength: "500" }),
+    el("button", { class: "btn btn--primary", type: "submit", "data-ask-send": "" }, "Ask"),
+  );
+  form.append(el("label", { class: "sr", for: "ask-input" }, "Your question"), row, el("p", { class: "ask-status", "data-ask-status": "", role: "status" }));
+
+  root.append(head, log, form);
+  dialog.setAttribute("aria-labelledby", "ask-title");
+  dialog.append(root);
+  initAsk(root);
+  return {
+    ask(q: string) {
+      const input = root.querySelector<HTMLTextAreaElement>("[data-ask-input]")!;
+      input.value = q;
+      root.querySelector<HTMLFormElement>("[data-ask-form]")!.requestSubmit();
+    },
+    focus() {
+      root.querySelector<HTMLTextAreaElement>("[data-ask-input]")?.focus();
+    },
+  };
+}
+
 export function initAsk(root: HTMLElement) {
   const log = root.querySelector<HTMLOListElement>("[data-ask-log]")!;
   const form = root.querySelector<HTMLFormElement>("[data-ask-form]")!;

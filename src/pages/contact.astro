@@ -5,8 +5,11 @@ import { Image } from "astro:assets";
 import headshot from "@/assets/mubashir-rehman.webp";
 import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
+import { getCollection } from "astro:content";
+import { numWord, cap } from "@/lib/text";
 import { graph, breadcrumb, webPage, SITE, PERSON_ID } from "@/lib/schema";
 
+const caseCount = (await getCollection("work")).length;
 const title = "Contact";
 const description = "Email Mubashir Rehman about backend, AI automation or integration roles. Based in Lahore, Pakistan, open to remote work in any timezone.";
 const canonical = `${SITE}/contact/`;
@@ -39,18 +42,13 @@ const schema = graph([
         </div>
         <ul class="panels">
           <li class="panel">
-            <p class="panel__k">Quick question</p>
-            <h2 class="panel__t"><button class="linkbtn" type="button" data-ask-open>Ask about my work</button></h2>
-            <p class="panel__s">Answers come only from this site and link to the page they come from.</p>
-          </li>
-          <li class="panel">
             <p class="panel__k">A problem, not a role</p>
             <h2 class="panel__t"><a href="/services/">Problems I solve</a></h2>
             <p class="panel__s">Workflows across systems that do not talk to each other, and AI on top of them.</p>
           </li>
           <li class="panel">
             <p class="panel__k">See the work first</p>
-            <h2 class="panel__t"><a href="/projects/">Nine case studies</a></h2>
+            <h2 class="panel__t"><a href="/projects/">{cap(numWord(caseCount))} case studies</a></h2>
             <p class="panel__s">Problem, system, decisions and what broke, for each one.</p>
           </li>
         </ul>

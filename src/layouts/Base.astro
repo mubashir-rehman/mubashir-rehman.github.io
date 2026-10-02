@@ -100,7 +100,7 @@ const robots = noindex || !isCanonicalHost ? "noindex, follow" : "index, follow,
   <body>
     <Icons />
     <a class="skip" href="#main">Skip to content</a>
-    <Header path={canonical.replace(SITE, "")} resume={resume} />
+    <Header path={canonical.replace(SITE, "")} />
     <main id="main" tabindex="-1">
       <slot />
     </main>
