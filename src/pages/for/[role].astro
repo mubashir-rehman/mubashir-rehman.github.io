@@ -24,6 +24,10 @@ const schema = graph([
 <Base title={role.seoTitle} description={role.description} path={path} schema={schema} resume={role.slug as never}>
   <div class="wrap page-head">
     <Crumbs items={[{ name: `Hiring: ${role.label}` }]} />
+    <nav class="switch" aria-label="Role pages">
+      <span class="meta">Hiring for</span>
+      <ul>{roles.map((r) => <li><a href={`/for/${r.slug}/`} aria-current={r.slug === role.slug ? "page" : undefined}>{r.label}</a></li>)}</ul>
+    </nav>
     <div class="cs-top">
       <div>
         <h1 class="h1">{role.h1}</h1>
@@ -47,7 +51,7 @@ const schema = graph([
 
   <section class="sec wrap" aria-labelledby="ev-h">
     <div class="sec__grid">
-      <div class="sec__head"><h2 class="h2" id="ev-h">Evidence</h2><p class="small">Three builds that match this role.</p></div>
+      <div class="sec__head"><h2 class="label" id="ev-h">Evidence</h2><p class="small">Three builds that match this role.</p></div>
       <div class="sec__body">
         <ul class="works">
           {role.evidence.map((e) => {
@@ -62,19 +66,19 @@ const schema = graph([
           })}
         </ul>
         <div>
-          <h3 class="h4" style="margin-bottom:12px">Stack for this role</h3>
+          <h3 class="label" style="margin-bottom:12px">Stack for this role</h3>
           <ul class="tags">{role.stack.map((s) => <li class="tag">{s}</li>)}</ul>
         </div>
+        <p class="actions"><a class="btn btn--primary" href={resume.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé for {role.label} (PDF)</a></p>
       </div>
     </div>
   </section>
 
   <section class="sec wrap" aria-labelledby="q-h">
     <div class="sec__grid">
-      <div class="sec__head"><h2 class="h2" id="q-h">Questions</h2></div>
+      <div class="sec__head"><h2 class="label" id="q-h">Questions</h2></div>
       <div class="sec__body">
         <div class="qa">{role.faqs.map((f) => <div><h3>{f.q}</h3><p>{f.a}</p></div>)}</div>
-        <p class="small">Other roles: {others.map((r, i) => <><a class="link" href={`/for/${r.slug}/`}>{r.h1}</a>{i < others.length - 1 ? ", " : "."}</>)}</p>
       </div>
     </div>
   </section>

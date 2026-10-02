@@ -22,6 +22,7 @@ const schema = graph([
     <Crumbs items={[{ name: "Writing" }]} />
     <h1 class="h1">Writing</h1>
     <p class="lead">Build logs and incident write-ups. The answer comes first.</p>
+    <p class="meta" style="margin-top:var(--s-4)">{posts.length} {posts.length === 1 ? "post" : "posts"}</p>
   </div>
   <section class="wrap" aria-label="All posts">
     <ul class="works works--wide">
@@ -31,7 +32,7 @@ const schema = graph([
             <h2 class="work__title"><a href={`/journal/${p.id}/`}>{p.data.title}</a></h2>
             <p class="work__sum">{p.data.lede}</p>
           </div>
-          <p class="work__side small">{types[p.data.type]}<br /><time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time></p>
+          <p class="work__side meta">{types[p.data.type]}<br /><time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time></p>
         </li>
       ))}
     </ul>
