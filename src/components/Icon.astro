@@ -1,0 +1,13 @@
+---
+// Lucide line icons (ISC licence, src/icons/LICENSE-lucide.txt). Only the icons the site uses are
+// kept, in src/icons/lucide.json. Decorative by default: the text next to an icon carries the meaning.
+import icons from "@/icons/lucide.json";
+
+interface Props {
+  name: keyof typeof icons;
+  size?: number;
+  class?: string;
+}
+const { name, size = 22, class: cls } = Astro.props;
+---
+<svg class:list={["lucide", cls]} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" set:html={icons[name]} />

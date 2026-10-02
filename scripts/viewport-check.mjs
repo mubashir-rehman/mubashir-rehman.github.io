@@ -24,7 +24,7 @@ for (const [w, h, label] of VIEWPORTS) {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     if (overflow > 1) failures.push(`${w}x${h} (${label}) ${path}: scrolls sideways by ${overflow}px`);
     if (path === "/") {
-      const bottom = await page.$eval(".hero__main .actions", (e) => e.getBoundingClientRect().bottom);
+      const bottom = await page.$eval(".j-cta", (e) => e.getBoundingClientRect().bottom);
       // On very short screens (a phone in landscape, heavy zoom) the name and headline come first
       // by design; the actions must still be within about one scroll.
       const limit = h >= 560 ? h : h * 1.6;

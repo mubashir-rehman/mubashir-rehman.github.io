@@ -2,6 +2,7 @@
 // The HTML shell for every page: head metadata (title, description, canonical, social cards,
 // one JSON-LD graph), the theme script, header, footer and the chat dialog.
 import "@/styles/global.css";
+import "@/styles/v3.css";
 import profile from "@/data/profile.json";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -62,15 +63,16 @@ const robots = noindex || !isCanonicalHost ? "noindex, follow" : "index, follow,
         d.classList.add("js");
       })();
     </script>
-    <link rel="preload" href="/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/dm-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/bricolage-grotesque-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
     {!noindex && <link rel="canonical" href={canonical} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0c0b0f" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f5f0e7" media="(prefers-color-scheme: light)" />
     <link rel="alternate" type="application/rss+xml" title={`Writing: ${profile.name}`} href="/rss.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 

@@ -1,131 +1,237 @@
 ---
+// The home page as a journey (docs/redesign/v3/PLAN.md): who and what, what I deliver, how I fix what is
+// broken, how I get from an unclear ask to something shipped, the path so far, the work, the toolbox, contact.
+// Every fact comes from src/data or the work collection; nothing is typed in here.
 import { getCollection } from "astro:content";
 import Base from "@/layouts/Base.astro";
 import Trace from "@/components/Trace.astro";
-import Artifact from "@/components/Artifact.astro";
-import Incident from "@/components/Incident.astro";
+import Icon from "@/components/Icon.astro";
+import Spine from "@/components/Spine.astro";
+import MiniDiagram from "@/components/MiniDiagram.astro";
 import { Image } from "astro:assets";
 import headshot from "@/assets/mubashir-rehman.webp";
+import shotHireDark from "@/assets/work/hiretrack-dark.jpg";
+import shotHireLight from "@/assets/work/hiretrack-light.jpg";
+import shotQuetta from "@/assets/work/quettatea.jpg";
 import profile from "@/data/profile.json";
-import roles from "@/data/roles.json";
 import problems from "@/data/problems.json";
+import approach from "@/data/approach.json";
+import toolbox from "@/data/toolbox.json";
+import builds from "@/data/builds.json";
 import { numWord } from "@/lib/text";
 import { graph, website, personFull, webPage, SITE } from "@/lib/schema";
+import "@/styles/home.css";
 
 const work = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
 const byId = (id: string) => work.find((w) => w.id === id)!;
-const flagships = work.filter((w) => w.data.flagship);
-const moreCount = work.length - flagships.length;
-const HOME_RULES = [1, 2, 3, 8];
-// The decision that best shows systems judgement within about 45 words (index into decisions[]).
-const SPOTLIGHT: Record<string, number> = { "dental-ai-front-desk": 1, "social-signal-intelligence-backend": 1, "erp-ai-agents": 2 };
-const rules = work.filter((w) => w.data.rule).map((w) => ({ ...w.data.rule!, slug: w.id, title: w.data.title })).sort((a, b) => a.n - b.n);
-const homeRules = HOME_RULES.map((n) => rules.find((r) => r.n === n)).filter(Boolean) as typeof rules;
-// One incident each from dental, social-signal and the healthcare console (the first listed).
-const incidents = ["dental-ai-front-desk", "social-signal-intelligence-backend", "healthcare-integration-console"].map((id) => ({ w: byId(id), b: byId(id).data.broke[0] }));
-const posts = (await getCollection("journal", (p) => p.data.status === "published")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 2);
 const resume = profile.resumes[profile.defaultResume as keyof typeof profile.resumes];
 const utc = profile.location.timezone.match(/UTC[+-]\d+/)?.[0] ?? profile.location.timezone;
-const openTo = profile.availabilityShort.replace(/^Open to /, "");
-const openRoles = roles.filter((r) => r.slug === "backend" || r.slug === "ai-backend");
-const ym = (s: string) => (s === "present" ? "now" : new Date(`${s}-01`).toLocaleDateString("en-GB", { month: "short", year: "numeric" }));
-const nn = (i: number) => String(i + 1).padStart(2, "0");
+const team = numWord(profile.current.teamSize);
+
+// 02: the four steps, each illustrated by the dental case study's first incident and its rule.
+const dental = byId(approach.broken.case);
+const incident = dental.data.broke[0];
+const example: Record<string, string> = {
+  symptom: incident.symptom,
+  cause: incident.cause,
+  fix: incident.fix,
+  rule: `Rule ${dental.data.rule!.n}: ${dental.data.rule!.text}`,
+};
+
+// 05: the work.
+const signal = byId("social-signal-intelligence-backend");
+const hiretrack = byId("hiretrack");
+const quetta = builds.find((b) => b.title.startsWith("The Quetta Tea 2.0"))!;
+
+const sections = [
+  { id: "deliver", h: "What I deliver", p: "Pick the problem that sounds like yours." },
+  { id: "broken", h: "When something is broken", p: "The same four steps, every time. One real case." },
+  { id: "zero", h: "When nothing exists yet", p: `From an unclear ask to something shipped. ${numWord(approach.zero.cases.length).replace(/^./, (c) => c.toUpperCase())} real cases.` },
+  { id: "path", h: "The path so far", p: "Each step added something I still use." },
+  { id: "work", h: "The work behind it", p: "Systems I have had to understand." },
+  { id: "toolbox", h: "Toolbox", p: "What I have used to ship, grouped by where it sits in a system." },
+];
+const S = Object.fromEntries(sections.map((s, i) => [s.id, { ...s, n: String(i + 1).padStart(2, "0") }]));
 
 const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, profile.seo.homeTitle, profile.seo.homeDescription, { about: { "@id": `${SITE}/#person` } })]);
 ---
 <Base title={profile.seo.homeTitle} description={profile.seo.homeDescription} path="/" schema={schema}>
-  <section class="hero wrap" aria-labelledby="hero-h">
-    <div class="hero__grid">
-      <div class="hero__main">
-        <div class="who">
-          <Image src={headshot} alt={profile.name} width={48} height={48} loading="eager" class="who__img" />
-          <p class="who__txt"><strong>{profile.name}</strong></p>
+  <div class="j wrap">
+    <section class="j-grid j-top" aria-labelledby="hero-h">
+      <div class="j-card j-hero">
+        <p class="j-eyebrow"><b>{profile.label}</b> · {profile.location.city}, {profile.availabilityShort.toLowerCase()}</p>
+        <div>
+          <h1 id="hero-h"><span class="l1">{profile.heroLine[0]}</span> <span class="l2">{profile.heroLine[1]}</span> <span class="l3">{profile.heroLine[2]}</span></h1>
+          <p class="j-lead">{profile.servicesLead}</p>
         </div>
-        <h1 class="statement statement--home" id="hero-h">
-          <span class="s1">{profile.heroLine[0]}</span> <span class="s2">{profile.heroLine[1]}</span> <span class="s3">{profile.heroLine[2]}</span>
-        </h1>
-        <p class="hero__id">{profile.servicesLead}</p>
-        <p class="meta">{profile.current.title}, {profile.current.employer} · {profile.location.city} · {utc}<span class="meta__more"><br />{profile.yearsFullTime} years in production · {profile.availabilityShort}</span></p>
-        <div class="actions">
-          <a class="btn btn--primary btn--lg" href={resume.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé (PDF)</a>
-          <a class="btn btn--secondary btn--lg" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>Email me</a>
-          <a class="link" href="#work">See the work ↓</a>
+        <div class="j-cta">
+          <a class="btn btn--primary btn--lg" href="#deliver">See what I deliver<Icon name="arrow-down" size={18} /></a>
+          <a class="btn btn--secondary btn--lg" href={resume.file}><Icon name="download" size={18} />Download résumé</a>
         </div>
-        <p class="router"><a href={`/for/${roles[0].slug}/`}>Hiring for a specific role? →</a></p>
       </div>
-    </div>
-    <Trace />
-  </section>
+      <div class="j-card j-photo">
+        <Image src={headshot} alt={profile.name} widths={[400]} sizes="(min-width: 860px) 380px, 100vw" loading="eager" />
+        <p class="j-photo__tag"><span>{profile.name}</span><span>{profile.location.city} · {utc}</span></p>
+      </div>
+      <div class="j-card j-now">
+        <p class="j-eyebrow">Now</p>
+        <p class="j-now__t">{profile.current.title} at {profile.current.employer}, leading {team} engineers.</p>
+      </div>
+      <div class="j-card j-trace">
+        <p class="j-eyebrow j-trace__cap">Noise in, <b>boring out.</b></p>
+        <Trace />
+      </div>
+    </section>
 
-  <section class="sec wrap" aria-labelledby="rules-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="label" id="rules-h">01 / How I work</h2></div>
-      <div class="sec__body sec__body--read">
-        <ol class="rules">
-          {homeRules.map((r) => (
-            <li class="rule">
-              <span class="rule__n" aria-hidden="true">{r.n}</span>
-              <div><p class="rule__t"><span class="sr">Rule {r.n}: </span>{r.text}</p><p class="rule__w meta">from: <a class="link" href={`/projects/${r.slug}/`}>{r.title}</a></p></div>
+    <section class="j-part" id="deliver" aria-labelledby="deliver-h">
+      <div class="j-head"><span class="j-num" aria-hidden="true">{S.deliver.n}</span><div><h2 id="deliver-h">{S.deliver.h}</h2><p>{S.deliver.p}</p></div></div>
+      <div class="j-grid">
+        {problems.map((p, i) => (
+          <article class:list={["j-card j-deliver", { "is-wide": i < 2 }]}>
+            <span class="j-ico"><Icon name={p.icon as any} /></span>
+            <p class="j-k">If you have</p>
+            <h3>{p.h}</h3>
+            <p class="j-k">You get</p>
+            <p class="j-a">{p.what}</p>
+            <p class="j-proof">Proof: <a href={`/projects/${p.slug}/`}>{p.link} →</a></p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="j-part" id="broken" aria-labelledby="broken-h">
+      <div class="j-head"><span class="j-num" aria-hidden="true">{S.broken.n}</span><div><h2 id="broken-h">{S.broken.h}</h2><p>{S.broken.p}</p></div></div>
+      <ol class="j-steps">
+        {approach.broken.steps.map((s, i) => (
+          <li class="j-card j-step">
+            <span class="j-dot"><Icon name={s.icon as any} size={20} /></span>
+            <h3><span class="j-stepn">{i + 1}</span>{s.h}</h3>
+            <p>{s.p}</p>
+            <p class="j-ex">{example[s.from]}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="j-more"><a href={`/projects/${dental.id}/`}>The full incident: {incident.title.toLowerCase()} →</a></p>
+    </section>
+
+    <section class="j-part" id="zero" aria-labelledby="zero-h">
+      <div class="j-head"><span class="j-num" aria-hidden="true">{S.zero.n}</span><div><h2 id="zero-h">{S.zero.h}</h2><p>{S.zero.p}</p></div></div>
+      <ol class="j-ztrack">
+        {approach.zero.stages.map((s, i) => (
+          <li class:list={["j-card j-zs", s.fuzzy ? "is-fuzzy" : "is-solid"]}>
+            <span class="j-dot"><Icon name={s.icon as any} size={20} /></span>
+            <h3><span class="j-stepn">{i + 1}</span>{s.h}</h3>
+            <p>{s.p}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="j-zcases">
+        {approach.zero.cases.map((c) => (
+          <article class="j-card j-zc">
+            <p class="j-k j-k--muted">The ask</p>
+            <p class="j-ask">{c.ask}</p>
+            <span class="j-arrow" aria-hidden="true"></span>
+            <p class="j-k">What shipped</p>
+            <h3 class="j-got">{c.got}</h3>
+            <p class="j-how">{c.how}</p>
+            <p class="j-proof"><a href={`/projects/${c.slug}/`}>{byId(c.slug).data.title} →</a></p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="j-part" id="path" aria-labelledby="path-h">
+      <div class="j-head"><span class="j-num" aria-hidden="true">{S.path.n}</span><div><h2 id="path-h">{S.path.h}</h2><p>{S.path.p}</p></div></div>
+      <div class="j-journey">
+        <Spine />
+        <ol class="j-chapters">
+          {approach.path.map((c) => (
+            <li class:list={["j-card j-ch", { "is-now": c.now }]}>
+              <span class="j-yr">{c.yr}</span>
+              <div>
+                <h3>{c.h}</h3>
+                <p>{c.p.replace("{teamSize}", team)}</p>
+                <p class="j-gain">Added: {c.added}</p>
+              </div>
+              <ul class="j-techs" aria-label="Tools">{c.tags.map((t) => <li>{t}</li>)}</ul>
             </li>
           ))}
         </ol>
-        <p class="small"><a class="link" href="/about/#rules">All {numWord(rules.length)} rules →</a></p>
       </div>
-    </div>
-  </section>
+      <p class="j-more"><a href="/about/">Full background →</a></p>
+    </section>
 
-  <section class="sec wrap" id="work" aria-labelledby="work-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="label" id="work-h">02 / Selected work</h2></div>
-      <div class="sec__body">
-        {flagships.map((w, i) => <Artifact entry={w} n={i + 1} flip={i % 2 === 1} spotlight={SPOTLIGHT[w.id] ?? 0} />)}
-        <p class="small"><a class="link" href="/projects/">+ {moreCount} more case studies, open source and research →</a></p>
+    <section class="j-part" id="work" aria-labelledby="work-h">
+      <div class="j-head"><span class="j-num" aria-hidden="true">{S.work.n}</span><div><h2 id="work-h">{S.work.h}</h2><p>{S.work.p}</p></div></div>
+      <div class="j-grid">
+        <article class="j-card j-w j-w--big">
+          <p class="j-eyebrow"><b>{dental.data.pillar}</b> · {dental.data.period}</p>
+          <h3><a href={`/projects/${dental.id}/`}>{dental.data.title}</a></h3>
+          <p class="j-a">{dental.data.summary}</p>
+          <MiniDiagram id="home-dental" caption={dental.data.diagram.caption} nodes={dental.data.diagram.nodes} edges={dental.data.diagram.edges as [string, string][]} />
+          <ul class="j-pills" aria-label="What broke">{dental.data.broke.map((b) => <li>{b.title}</li>)}</ul>
+        </article>
+        <article class="j-card j-w j-w--shot">
+          <div class="j-shot">
+            <Image class="ht-dark" src={shotHireDark} alt="HireTrack sign-in screen, dark theme" widths={[560, 900]} sizes="(min-width: 860px) 480px, 100vw" />
+            <Image class="ht-light" src={shotHireLight} alt="HireTrack sign-in screen, light theme" widths={[560, 900]} sizes="(min-width: 860px) 480px, 100vw" />
+          </div>
+          <div class="j-w__in">
+            <p class="j-eyebrow"><b>Open source</b> · {hiretrack.data.period}</p>
+            <h3><a href={`/projects/${hiretrack.id}/`}>HireTrack</a></h3>
+            <p class="j-a">{hiretrack.data.summary}</p>
+          </div>
+        </article>
+        <article class="j-card j-w j-w--shot j-w--half">
+          <div class="j-shot"><Image src={shotQuetta} alt="The Quetta Tea 2.0 home page" widths={[600, 900]} sizes="(min-width: 860px) 580px, 100vw" /></div>
+          <div class="j-w__in">
+            <p class="j-eyebrow"><b>Built for a café</b> · {quetta.year}</p>
+            <h3><a href={quetta.href}>The Quetta Tea 2.0</a></h3>
+            <p class="j-a">{quetta.line}</p>
+          </div>
+        </article>
+        <article class="j-card j-w j-w--half">
+          <p class="j-eyebrow"><b>{signal.data.pillar}</b> · {signal.data.period}</p>
+          <h3><a href={`/projects/${signal.id}/`}>{signal.data.title}</a></h3>
+          <p class="j-a">{signal.data.summary}</p>
+          <MiniDiagram id="home-signal" caption={signal.data.diagram.caption} nodes={signal.data.diagram.nodes} edges={signal.data.diagram.edges as [string, string][]} />
+          <p class="j-outcome">{signal.data.outcome}</p>
+        </article>
       </div>
-    </div>
-  </section>
+      <p class="j-more"><a href="/projects/">Every case study, open source project and paper →</a></p>
+    </section>
 
-  <section class="sec wrap" aria-labelledby="break-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="label" id="break-h">03 / When things break</h2></div>
-      <div class="sec__body sec__body--read">
-        {incidents.map(({ w, b }) => <Incident title={b.title} symptom={b.symptom} cause={b.cause} fix={b.fix} href={`/projects/${w.id}/`} from={w.data.title} />)}
+    <section class="j-part" id="toolbox" aria-labelledby="toolbox-h">
+      <div class="j-head"><span class="j-num" aria-hidden="true">{S.toolbox.n}</span><div><h2 id="toolbox-h">{S.toolbox.h}</h2><p>{S.toolbox.p}</p></div></div>
+      <ul class="j-legend" aria-label="Key">
+        <li><span class="j-chip is-daily">Daily</span></li>
+        <li><span class="j-chip">Used in production</span></li>
+        <li><span class="j-chip is-exp">Project exposure</span></li>
+      </ul>
+      <div class="j-grid">
+        {toolbox.areas.map((a) => (
+          <article class:list={["j-card j-tool", { "is-wide": a.span === 8 }]}>
+            <div class="j-tool__hd"><span class="j-ico"><Icon name={a.icon as any} /></span><h3>{a.name}</h3></div>
+            <ul class="j-chips">
+              {a.daily.map((t) => <li class="j-chip is-daily">{t}<span class="sr"> (daily)</span></li>)}
+              {a.production.map((t) => <li class="j-chip">{t}</li>)}
+              {a.exposure.map((t) => <li class="j-chip is-exp">{t}<span class="sr"> (project exposure)</span></li>)}
+            </ul>
+          </article>
+        ))}
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="sec wrap" aria-labelledby="called-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="label" id="called-h">04 / Where I usually get called</h2></div>
-      <div class="sec__body sec__body--read">
-        <ol class="works works--compact">
-          {problems.map((p, i) => (
-            <li class="work"><p class="work__title"><span class="meta">{nn(i)} </span><a href={`/projects/${p.slug}/`}>{p.h}</a></p></li>
-          ))}
-        </ol>
-        <p class="small"><a class="link" href="/services/">Problems I solve →</a></p>
+    <section class="j-card j-contact" aria-labelledby="close-h">
+      <div>
+        <p class="j-contact__k">Contact</p>
+        <h2 id="close-h">Tell me what the system is doing. Tell me what it should be doing.</h2>
       </div>
-    </div>
-  </section>
-
-  <section class="sec wrap" aria-labelledby="now-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="label" id="now-h">05 / Currently</h2></div>
-      <div class="sec__body sec__body--read">
-        <ul class="cur">
-          <li><span class="meta">Now</span><span>{profile.current.title} at {profile.current.employer}, leading {numWord(profile.current.teamSize)} engineers</span></li>
-          {posts.length > 0 && <li><span class="meta">Writing</span><span>{posts.map((p, i) => <><a class="link" href={`/journal/${p.id}/`}>{p.data.title}</a>{i < posts.length - 1 ? " · " : ""}</>)}</span></li>}
-          <li><span class="meta">Research</span><span><a class="link" href={profile.paper.url}>{profile.paper.journal}, {profile.paper.publisher}, {profile.paper.year}</a></span></li>
-          <li><span class="meta">Open to</span><span>{openTo}: {openRoles.map((r, i) => <><a class="link" href={`/for/${r.slug}/`}>{r.label}</a>{i < openRoles.length - 1 ? ", " : ""}</>)}</span></li>
-        </ul>
-        <p class="small"><a class="link" href="/about/">Full background →</a></p>
+      <div class="j-contact__end">
+        <p>{profile.location.city}, {profile.location.country} · {profile.availabilityShort}</p>
+        <a class="btn btn--lg j-contact__btn" href={`mailto:${profile.email}`}><Icon name="mail" size={18} />{profile.email}</a>
+        <a class="j-contact__cv" href={resume.file}>Download résumé</a>
       </div>
-    </div>
-  </section>
-
-  <section class="sec close wrap" aria-labelledby="close-h">
-    <h2 class="h2" id="close-h">Tell me what the system is doing. Tell me what it should be doing.</h2>
-    <p class="actions"><a class="btn btn--primary btn--lg" href={`mailto:${profile.email}`}>{profile.email} →</a></p>
-    <p class="meta">{profile.location.city}, {profile.location.country} · {profile.availabilityShort}</p>
-    <p class="small"><a class="link" href={resume.file}>Download résumé</a></p>
-  </section>
+    </section>
+  </div>
 </Base>

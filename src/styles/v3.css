@@ -1,0 +1,88 @@
+/* Redesign v3 design layer (docs/redesign/v3/PLAN.md). Loaded after global.css, so it wins on equal specificity.
+   One palette mirrored across dark and light, mapped onto the existing token names so every page inherits it.
+   Warm type: Bricolage Grotesque for headings, DM Sans for text and labels. Monospace stays for code only. */
+
+@font-face{font-family:"Bricolage Grotesque";src:url("/fonts/bricolage-grotesque-latin-wght-normal.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
+@font-face{font-family:"DM Sans";src:url("/fonts/dm-sans-latin-wght-normal.woff2") format("woff2");font-weight:100 1000;font-style:normal;font-display:swap}
+
+/* ---- one type scale: six steps, everything maps onto it */
+:root{
+  --font-sans:"DM Sans",ui-sans-serif,system-ui,"Helvetica Neue",Arial,sans-serif;
+  --font-display:"Bricolage Grotesque","DM Sans",ui-sans-serif,system-ui,sans-serif;
+  --t-display:clamp(2.6rem,1.4rem + 4.6vw,5.25rem);
+  --t-h2:clamp(1.75rem,1.25rem + 1.8vw,2.6rem);
+  --t-h3:clamp(1.2rem,1.05rem + .6vw,1.5rem);
+  --t-lead:clamp(1.0625rem,1rem + .3vw,1.2rem);
+  --t-body:1.0625rem;
+  --t-small:.875rem;
+  --fs-display:var(--t-display);--fs-h1:clamp(2.2rem,1.4rem + 3vw,3.75rem);--fs-h2:var(--t-h2);--fs-h3:var(--t-h3);--fs-h4:var(--t-h3);
+  --fs-lead:var(--t-lead);--fs-body:var(--t-body);--fs-small:var(--t-small);--fs-label:var(--t-small);--fs-mono:var(--t-small);
+  --r-card:24px;--r-inner:16px;--r-press:999px;
+}
+
+/* ---- palette, dark (default) */
+:root{
+  --bg-0:#0c0b0f;--bg-1:#16141b;--bg-2:#1c1922;--bg-3:#242029;--bg-overlay:#16141b;
+  --line-1:#211e27;--line-2:#29252f;--line-3:#5d5668;
+  --text-1:#f4f1f8;--text-2:#b8afc6;--text-3:#9c95a8;--text-4:#6b6477;
+  --accent:#8a45ec;--accent-hover:#9b5cf0;--accent-press:#7a2fd9;--on-accent:#ffffff;
+  --accent-text:#c9a2ff;--accent-tint:#221636;--accent-line:#a96bff;
+  --accent-bright:#a96bff;--accent2:#d6b8ff;
+  --signal:#e3a95c;--signal-text:#e3a95c;--signal-tint:#2a1f12;--focus:#e3a95c;
+  --selection-bg:#4b1f8c;--selection-text:#f4f1f8;
+  --card:#16141b;--card2:#1c1922;--glow:rgba(150,80,255,.22);--surface:#1c1922;
+  --dg-node-fill:#16141b;--dg-node-stroke:#5d5668;--dg-own-fill:#221636;--dg-own-stroke:#a96bff;--dg-edge:#e3a95c;
+  --photo-bg:#0c0b0f;--photo-line:#29252f;
+}
+
+/* ---- palette, light: the same warm neutrals and purple ink, mirrored */
+:root[data-theme="light"]{
+  --bg-0:#f5f0e7;--bg-1:#fffdf8;--bg-2:#efe7da;--bg-3:#e6dccb;--bg-overlay:#fffdf8;
+  --line-1:#ece3d4;--line-2:#e3d8c6;--line-3:#a89c8a;
+  --text-1:#16131b;--text-2:#5b5366;--text-3:#6c6474;--text-4:#958c9d;
+  --accent:#7a2fd9;--accent-hover:#6a22c4;--accent-press:#5c1cad;--on-accent:#ffffff;
+  --accent-text:#6a22c4;--accent-tint:#f1e7fd;--accent-line:#7a2fd9;
+  --accent-bright:#7a2fd9;--accent2:#9b5cf0;
+  --signal:#9a6413;--signal-text:#87570f;--signal-tint:#f6ecdc;--focus:#87570f;
+  --selection-bg:#e4d2ff;--selection-text:#16131b;
+  --card:#fffdf8;--card2:#efe7da;--glow:rgba(123,47,217,.14);--surface:#efe7da;
+  --dg-node-fill:#fffdf8;--dg-node-stroke:#8f8573;--dg-own-fill:#f6effe;--dg-own-stroke:#7a2fd9;--dg-edge:#9a6413;
+}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --bg-0:#f5f0e7;--bg-1:#fffdf8;--bg-2:#efe7da;--bg-3:#e6dccb;--bg-overlay:#fffdf8;
+  --line-1:#ece3d4;--line-2:#e3d8c6;--line-3:#a89c8a;
+  --text-1:#16131b;--text-2:#5b5366;--text-3:#6c6474;--text-4:#958c9d;
+  --accent:#7a2fd9;--accent-hover:#6a22c4;--accent-press:#5c1cad;--on-accent:#ffffff;
+  --accent-text:#6a22c4;--accent-tint:#f1e7fd;--accent-line:#7a2fd9;
+  --accent-bright:#7a2fd9;--accent2:#9b5cf0;
+  --signal:#9a6413;--signal-text:#87570f;--signal-tint:#f6ecdc;--focus:#87570f;
+  --selection-bg:#e4d2ff;--selection-text:#16131b;
+  --card:#fffdf8;--card2:#efe7da;--glow:rgba(123,47,217,.14);--surface:#efe7da;
+  --dg-node-fill:#fffdf8;--dg-node-stroke:#8f8573;--dg-own-fill:#f6effe;--dg-own-stroke:#7a2fd9;--dg-edge:#9a6413;
+}}
+
+/* ---- base type */
+body{font-family:var(--font-sans);font-size:var(--t-body);line-height:1.6;font-stretch:normal}
+h1,h2,h3,h4,.h1,.h2,.h3,.h4,.statement,.cs-h1,.cs-h2{font-family:var(--font-display);font-stretch:normal}
+.h1{font-weight:700;letter-spacing:-.03em}
+.h2{font-weight:650;letter-spacing:-.02em}
+.h3,.h4{font-weight:650;letter-spacing:-.01em}
+/* Labels: warm and quiet, not robotic. No monospace, no uppercase. */
+.label,.meta,.post__meta,.tag,.dl dt,.inc__cols dt,.facts-strip dt,.callout-label,.prose th,.who__txt span,.brand__d{
+  font-family:var(--font-sans);font-stretch:normal;font-size:var(--t-small);font-weight:600;letter-spacing:.01em;text-transform:none;color:var(--text-3)}
+.mini text{font-family:var(--font-sans);font-stretch:normal}
+.mini .k{font-family:var(--font-sans);font-stretch:normal;font-weight:700}
+.mini{border-radius:var(--r-inner);border-color:var(--line-2)}
+
+/* ---- buttons: pills */
+.btn{border-radius:999px;padding:.8em 1.3em}
+.btn--secondary{--_bg:var(--bg-1);--_bd:var(--line-2)}
+
+/* ---- header */
+.site-head.is-stuck{background:color-mix(in srgb,var(--bg-0) 92%,transparent);backdrop-filter:blur(8px)}
+.brand{font-family:var(--font-display);font-weight:700;font-size:1.05rem;letter-spacing:-.01em}
+.brand .i{color:var(--accent-bright)}
+.nav__links a{font-weight:500}
+
+/* ---- footer */
+.foot__id strong{font-family:var(--font-display);font-weight:700}

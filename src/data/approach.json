@@ -1,0 +1,42 @@
+{
+  "_comment": "How I work, as shown on the home page. Copy restates facts already in src/content/work; the broken-system example is read from the dental case study's first incident and rule at build time.",
+  "broken": {
+    "case": "dental-ai-front-desk",
+    "steps": [
+      { "icon": "eye", "h": "Notice", "p": "Something looks plausible but wrong.", "from": "symptom" },
+      { "icon": "search", "h": "Trace", "p": "Follow the number back to its source.", "from": "cause" },
+      { "icon": "wrench", "h": "Fix the cause", "p": "Fix the root, not the symptom, then prove it.", "from": "fix" },
+      { "icon": "shield-check", "h": "Keep the rule", "p": "Write down what to check next time.", "from": "rule" }
+    ]
+  },
+  "zero": {
+    "stages": [
+      { "icon": "compass", "h": "A vague ask", "p": "Write down what the client means, not just what they said.", "fuzzy": true },
+      { "icon": "list-checks", "h": "Pin down what is known", "p": "Turn it into numbered requirements. Mark what is still open.", "fuzzy": true },
+      { "icon": "drafting-compass", "h": "Design around the open parts", "p": "Keep the architecture stable while decisions are still pending." },
+      { "icon": "presentation", "h": "Show it early", "p": "A working demo the client can react to, traced to the requirements." },
+      { "icon": "package-check", "h": "Ship and hand over", "p": "Production, documentation, and a codebase someone else can own." }
+    ],
+    "cases": [
+      { "slug": "multi-tenant-saas-architecture",
+        "ask": "A SaaS that turns public filings into sales-ready leads. Requirements arrived in rounds.",
+        "got": "Requirements, architecture and detailed design, plus a deployed demo for client review.",
+        "how": "Three decisions stayed open, so I designed around them. Every requirement ID traces to a screen." },
+      { "slug": "erp-ai-agents",
+        "ask": "Automate expense claims inside the ERP. Then the goal moved to procurement for two companies.",
+        "got": "AI agents working inside a live ERP: two live deployments, demo and production.",
+        "how": "I reused the same agent layer for the new goal instead of starting over." },
+      { "slug": "social-signal-intelligence-backend",
+        "ask": "Turn chatter from Telegram, Discord and X into something searchable, with alerts.",
+        "got": "A backend built alone: ingestion, AI summaries, semantic search and alerts. 154 of 155 commits.",
+        "how": "Built so the client's own team could take it over, then handed over at their request." }
+    ]
+  },
+  "path": [
+    { "yr": "2022", "h": "Game development intern, GameBole", "p": "Android and web games in Unity and PlayCanvas.", "added": "First code that shipped to users", "tags": ["Unity", "PlayCanvas"] },
+    { "yr": "2022 to 2025", "h": "Teaching assistant, operating systems, ITU", "p": "Undergraduate labs for three semesters, graduate Advanced Operating Systems for two.", "added": "Explaining systems from the bottom up", "tags": ["C", "Linux", "Operating systems"] },
+    { "yr": "2023", "h": "Software engineer, then team lead, VeritusLabs", "p": "Promoted about three months in. Led four engineers on drone-control software in C++ and Qt/QML.", "added": "Leading engineers on real-time software", "tags": ["C++", "Qt/QML", "AWS"] },
+    { "yr": "2025", "h": "Software engineer, TransData", "p": "Backend, AI and infrastructure across healthcare, ERP and AI products. Co-authored a peer-reviewed Springer paper.", "added": "Owning production systems end to end", "tags": ["Python", "Django", "FastAPI", "PostgreSQL"] },
+    { "yr": "2026", "h": "Lead software engineer, TransData", "p": "Leading {teamSize} engineers. Took an AI voice front desk for dental clinics to production in September.", "added": "Taking AI from demo to production", "tags": ["AWS CDK", "PostgreSQL", "AI agents"], "now": true }
+  ]
+}
