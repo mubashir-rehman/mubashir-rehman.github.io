@@ -15,7 +15,7 @@ const cols = [["Symptom", symptom], ["Cause", cause], ["Fix", fix]];
 <article class="inc">
   <h3>{title}</h3>
   <dl class="inc__cols">
-    {cols.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+    {cols.map(([k, v], i) => <div>{i > 0 && <svg class="inc__a" viewBox="0 0 24 12" aria-hidden="true" focusable="false"><path d="M1 6H21M16 1.5L21 6L16 10.5" /></svg>}<dt>{k}</dt><dd>{v}</dd></div>)}
   </dl>
   {href && <p class="small"><a class="link" href={href}>{from} →</a></p>}
 </article>
