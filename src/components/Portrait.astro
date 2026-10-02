@@ -1,0 +1,17 @@
+---
+// The portrait card. Dark mode shows the dark portrait on a black card; light mode shows the
+// light portrait on a warm card that matches its background, so the photo never punches a hole
+// in the light theme. Both images are in the markup; CSS shows the one for the current theme.
+import { Image } from "astro:assets";
+import dark from "@/assets/mubashir-rehman.webp";
+import light from "@/assets/mubashir-rehman-light.webp";
+import profile from "@/data/profile.json";
+
+interface Props { class?: string; right: string; sizes?: string }
+const { class: cls, right, sizes = "(min-width: 860px) 380px, 100vw" } = Astro.props;
+---
+<div class:list={["j-card j-photo", cls]}>
+  <Image class="ph-dark" src={dark} alt={profile.name} widths={[400]} sizes={sizes} loading="eager" />
+  <Image class="ph-light" src={light} alt={profile.name} widths={[400, 800]} sizes={sizes} loading="eager" />
+  <p class="j-photo__tag"><span>{profile.name}</span><span>{right}</span></p>
+</div>

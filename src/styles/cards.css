@@ -335,3 +335,12 @@
 .ab .spine{transform:scaleY(-1)}
 .prose pre{border-radius:var(--r-inner)}
 .jr-list-sec{padding-top:clamp(28px,4vw,48px)}
+
+/* ---- portrait: one card, two photos */
+.j-photo .ph-light{display:none}
+:root[data-theme="light"] .j-photo{background:#f1eadf;border-color:var(--line-2)}
+:root[data-theme="light"] .j-photo .ph-dark{display:none}
+:root[data-theme="light"] .j-photo .ph-light{display:block;filter:none}
+:root[data-theme="light"] .j-photo__tag{color:#16131b;text-shadow:none;align-items:center}
+:root[data-theme="light"] .j-photo__tag span{background:rgba(245,240,231,.92);border-radius:999px;padding:4px 10px}
+:root[data-theme="light"] .j-photo__tag span:last-child{color:#4f4759}

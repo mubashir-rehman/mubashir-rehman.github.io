@@ -9,7 +9,7 @@ import Icon from "@/components/Icon.astro";
 import Spine from "@/components/Spine.astro";
 import MiniDiagram from "@/components/MiniDiagram.astro";
 import { Image } from "astro:assets";
-import headshot from "@/assets/mubashir-rehman.webp";
+import Portrait from "@/components/Portrait.astro";
 import shotHireDark from "@/assets/work/hiretrack-dark.jpg";
 import shotHireLight from "@/assets/work/hiretrack-light.jpg";
 import shotQuetta from "@/assets/work/quettatea.jpg";
@@ -68,10 +68,7 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
           <a class="btn btn--secondary btn--lg" href={resume.file}><Icon name="download" size={18} />Download résumé</a>
         </div>
       </div>
-      <div class="j-card j-photo">
-        <Image src={headshot} alt={profile.name} widths={[400]} sizes="(min-width: 860px) 380px, 100vw" loading="eager" />
-        <p class="j-photo__tag"><span>{profile.name}</span><span>{profile.location.city} · {utc}</span></p>
-      </div>
+      <Portrait right={`${profile.location.city} · ${utc}`} />
       <div class="j-card j-now">
         <p class="j-eyebrow">Now</p>
         <p class="j-now__t">{profile.current.title} at {profile.current.employer}, leading {team} engineers.</p>

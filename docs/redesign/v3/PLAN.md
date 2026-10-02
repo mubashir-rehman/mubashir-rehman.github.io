@@ -88,6 +88,6 @@ and a screenshot plus axe pass per page before going live.
   on 2026-10-02. Owner to confirm the period ("2026 to present") and status wording.
 - Toolbox "Agentic engineering" card is on the dev branch; owner to decide whether it goes live now or with the case study.
 - Hero tagline: the long `heroLine` is live; the shorter wording would let the headline grow.
-- Light-mode portrait: pending a file from the owner.
-- Live check that DM Sans loads on the owner's devices (the sandbox proxy failed it intermittently).
+- Light-mode portrait: done (Portrait.astro swaps by theme on home, About and Contact).
+- DM Sans confirmed loading on the owner's machine (2026-10-03).
 - Owner to revoke the Cloudflare API token when the work is done.

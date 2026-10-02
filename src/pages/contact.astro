@@ -2,8 +2,7 @@
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import Icon from "@/components/Icon.astro";
-import { Image } from "astro:assets";
-import headshot from "@/assets/mubashir-rehman.webp";
+import Portrait from "@/components/Portrait.astro";
 import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
 import { getCollection } from "astro:content";
@@ -34,10 +33,7 @@ const schema = graph([
       </div>
     </section>
     <div class="j-grid ct-grid">
-      <div class="j-card j-photo ct-photo">
-        <Image src={headshot} alt={profile.name} widths={[400]} sizes="(min-width: 860px) 380px, 100vw" loading="eager" />
-        <p class="j-photo__tag"><span>{profile.name}</span><span>{profile.jobTitle}</span></p>
-      </div>
+      <Portrait class="ct-photo" right={profile.jobTitle} />
       <aside class="j-card cs-glance ct-glance" aria-label="Details">
         <p class="j-eyebrow">Details</p>
         <dl>

@@ -1,12 +1,11 @@
 ---
 import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import SecHead from "@/components/SecHead.astro";
 import Spine from "@/components/Spine.astro";
 import Icon from "@/components/Icon.astro";
-import headshot from "@/assets/mubashir-rehman.webp";
+import Portrait from "@/components/Portrait.astro";
 import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
 import { numWord } from "@/lib/text";
@@ -41,10 +40,7 @@ const schema = graph([
           <a class="btn btn--secondary btn--lg" href={`mailto:${profile.email}`}><Icon name="mail" size={18} />Email me</a>
         </p>
       </header>
-      <div class="j-card j-photo ab-photo">
-        <Image src={headshot} alt={profile.name} widths={[400]} sizes="(min-width: 860px) 380px, 100vw" loading="eager" />
-        <p class="j-photo__tag"><span>{profile.name}</span><span>{profile.location.city} · {profile.location.timezone.match(/UTC[+-]\d+/)?.[0]}</span></p>
-      </div>
+      <Portrait class="ab-photo" right={`${profile.location.city} · ${profile.location.timezone.match(/UTC[+-]\d+/)?.[0]}`} />
       <div class="j-card ab-bio">
         {profile.bio.about.slice(1).map((p) => <p>{p}</p>)}
       </div>
