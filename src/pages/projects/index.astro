@@ -2,6 +2,8 @@
 import { getCollection } from "astro:content";
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
+import Artifact from "@/components/Artifact.astro";
+import MiniDiagram from "@/components/MiniDiagram.astro";
 import builds from "@/data/builds.json";
 import profile from "@/data/profile.json";
 import { numWord, cap } from "@/lib/text";
@@ -39,17 +41,9 @@ const schema = graph([
   <section class="wrap" aria-labelledby="feat-h">
     <h2 class="label" id="feat-h">Featured</h2>
     <p class="small">{cap(numWord(featured.length))} case studies, one per kind of work: {featured.map((w) => w.data.pillar).join(", ")}.</p>
-    <ul class="works works--wide">
-      {featured.map((w) => (
-        <li class="work">
-          <div>
-            <h3 class="work__title"><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
-            <p class="work__sum">{w.data.summary}</p>
-          </div>
-          <p class="work__side meta">{w.data.pillar}<br />{w.data.period}</p>
-        </li>
-      ))}
-    </ul>
+    <div class="wk-list">
+      {featured.map((w, i) => <Artifact entry={w} n={i + 1} variant="compact" flip={i % 2 === 1} />)}
+    </div>
   </section>
 
   <section class="sec wrap" aria-labelledby="more-h">
@@ -107,11 +101,14 @@ const schema = graph([
   <section class="sec wrap" aria-labelledby="res-h">
     <h2 class="label" id="res-h">Research</h2>
     <p class="small">Peer-reviewed, {profile.paper.publisher}, {profile.paper.year}.</p>
-    <article class="wk">
-      <h3><a href={profile.paper.caseStudy}>{profile.paper.title}</a></h3>
-      <p class="meta">{profile.paper.citation}</p>
-      <p><b>My part:</b> {profile.paper.contribution}</p>
-      <p class="small"><a class="link" href={profile.paper.url}>DOI {profile.paper.doi}</a> · <a class="link" href={profile.paper.arxiv}>arXiv preprint</a> · <a class="link" href={profile.paper.caseStudy}>How the study was built</a></p>
+    <article class="wk wk--compact">
+      <div class="wk__text">
+        <p class="meta">{profile.paper.citation}</p>
+        <h3><a href={profile.paper.caseStudy}>{profile.paper.title}</a></h3>
+        <p><b>My part:</b> {profile.paper.contribution}</p>
+        <p class="small"><a class="link" href={profile.paper.url}>DOI {profile.paper.doi}</a> · <a class="link" href={profile.paper.arxiv}>arXiv preprint</a> · <a class="link" href={profile.paper.caseStudy}>How the study was built</a></p>
+      </div>
+      <div class="wk__art"><MiniDiagram id={research.id} caption={research.data.diagram.caption} nodes={research.data.diagram.nodes} edges={research.data.diagram.edges} /></div>
     </article>
   </section>
 </Base>

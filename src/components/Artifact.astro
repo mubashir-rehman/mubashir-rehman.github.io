@@ -1,0 +1,30 @@
+---
+// One case study as an artifact: mono meta, title, one line, a real system fragment and, in the
+// full variant, the incident markers and "the interesting part". All text comes from the entry.
+import type { CollectionEntry } from "astro:content";
+import MiniDiagram from "@/components/MiniDiagram.astro";
+
+interface Props {
+  entry: CollectionEntry<"work">;
+  n?: number;
+  flip?: boolean;
+  variant?: "full" | "compact";
+  spotlight?: number;
+}
+const { entry, n, flip = false, variant = "full", spotlight = 0 } = Astro.props;
+const d = entry.data;
+const href = `/projects/${entry.id}/`;
+const full = variant === "full";
+const dec = d.decisions[spotlight] ?? d.decisions[0];
+---
+<article class:list={["wk", { "wk--flip": flip, "wk--compact": !full }]}>
+  <div class="wk__text">
+    <p class="meta">{n ? String(n).padStart(2, "0") + " · " : ""}{d.pillar} · {d.period}</p>
+    <h3><a href={href}>{d.title}</a></h3>
+    <p class="wk__sum">{d.summary}</p>
+    {full && d.broke.length > 0 && <ul class="tags" aria-label="What broke">{d.broke.map((b) => <li class="tag">{b.title}</li>)}</ul>}
+    {full && <p><b>The interesting part.</b> {dec.chose} {dec.why}</p>}
+    <p class="small"><a class="link" href={href}>Read the case study →</a></p>
+  </div>
+  <div class="wk__art"><MiniDiagram id={entry.id} caption={d.diagram.caption} nodes={d.diagram.nodes} edges={d.diagram.edges} /></div>
+</article>

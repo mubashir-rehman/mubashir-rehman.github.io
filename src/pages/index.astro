@@ -2,6 +2,8 @@
 import { getCollection } from "astro:content";
 import Base from "@/layouts/Base.astro";
 import Trace from "@/components/Trace.astro";
+import Artifact from "@/components/Artifact.astro";
+import Incident from "@/components/Incident.astro";
 import { Image } from "astro:assets";
 import headshot from "@/assets/mubashir-rehman.webp";
 import profile from "@/data/profile.json";
@@ -43,7 +45,7 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
           <span class="s1">{profile.heroLine[0]}</span> <span class="s2">{profile.heroLine[1]}</span> <span class="s3">{profile.heroLine[2]}</span>
         </h1>
         <p class="hero__id">{profile.servicesLead}</p>
-        <p class="meta">{profile.current.title}, {profile.current.employer} · leading {numWord(profile.current.teamSize)} engineers<br />{profile.yearsFullTime} years in production · {profile.location.city} · {utc} · {profile.availabilityShort}</p>
+        <p class="meta">{profile.current.title}, {profile.current.employer} · {profile.location.city} · {utc}<span class="meta__more"><br />{profile.yearsFullTime} years in production · {profile.availabilityShort}</span></p>
         <div class="actions">
           <a class="btn btn--primary btn--lg" href={resume.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé (PDF)</a>
           <a class="btn btn--secondary btn--lg" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>Email me</a>
@@ -72,20 +74,11 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
     </div>
   </section>
 
-  <section class="sec sec--wide wrap" id="work" aria-labelledby="work-h">
+  <section class="sec wrap" id="work" aria-labelledby="work-h">
     <div class="sec__grid">
       <div class="sec__head"><h2 class="label" id="work-h">02 / Selected work</h2></div>
       <div class="sec__body">
-        {flagships.map((w, i) => (
-          <article class="wk">
-            <p class="meta">{nn(i)} · {w.data.pillar} · {w.data.period}</p>
-            <h3><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
-            <p>{w.data.summary}</p>
-            {w.data.broke.length > 0 && <ul class="tags" aria-label="What broke">{w.data.broke.map((b) => <li class="tag">{b.title}</li>)}</ul>}
-            <p><b>The interesting part.</b> {w.data.decisions[SPOTLIGHT[w.id] ?? 0].chose} {w.data.decisions[SPOTLIGHT[w.id] ?? 0].why}</p>
-            <p class="small"><a class="link" href={`/projects/${w.id}/`}>Read the case study →</a></p>
-          </article>
-        ))}
+        {flagships.map((w, i) => <Artifact entry={w} n={i + 1} flip={i % 2 === 1} spotlight={SPOTLIGHT[w.id] ?? 0} />)}
         <p class="small"><a class="link" href="/projects/">+ {moreCount} more case studies, open source and research →</a></p>
       </div>
     </div>
@@ -95,17 +88,7 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
     <div class="sec__grid">
       <div class="sec__head"><h2 class="label" id="break-h">03 / When things break</h2></div>
       <div class="sec__body sec__body--read">
-        {incidents.map(({ w, b }) => (
-          <article class="inc">
-            <h3>{b.title}</h3>
-            <dl class="dl">
-              <div><dt>Symptom</dt><dd>{b.symptom}</dd></div>
-              <div><dt>Cause</dt><dd>{b.cause}</dd></div>
-              <div><dt>Fix</dt><dd>{b.fix}</dd></div>
-            </dl>
-            <p class="small"><a class="link" href={`/projects/${w.id}/`}>{w.data.title} →</a></p>
-          </article>
-        ))}
+        {incidents.map(({ w, b }) => <Incident title={b.title} symptom={b.symptom} cause={b.cause} fix={b.fix} href={`/projects/${w.id}/`} from={w.data.title} />)}
       </div>
     </div>
   </section>
