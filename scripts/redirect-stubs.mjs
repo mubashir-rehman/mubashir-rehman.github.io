@@ -30,6 +30,8 @@ let n = 0;
 for (const file of walk(root)) {
   if (!file.endsWith(".html")) continue;
   const rel = relative(root, file).split(sep).join("/");
+  // Search-engine ownership files must stay byte-for-byte, or the old property loses verification.
+  if (/^google[0-9a-f]+\.html$/.test(rel) || /^BingSiteAuth/i.test(rel)) continue;
   if (rel === "404.html") {
     // Unknown paths: forward the exact path, so the new host decides whether it exists.
     writeFileSync(file, stub(`${TARGET}/`, true));
