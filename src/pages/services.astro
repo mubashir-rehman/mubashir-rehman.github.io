@@ -16,7 +16,7 @@ const schema = graph([webPage("WebPage", canonical, title, description, { about:
   <div class="wrap page-head">
     <Crumbs items={[{ name: "Problems I solve" }]} />
     <h1 class="h1">Problems I solve</h1>
-    <p class="lead">Workflows that span systems that do not talk to each other. I make them reliable, and add AI where it helps.</p>
+    <p class="lead">{profile.servicesLead}</p>
   </div>
   <section class="wrap" aria-label="Problems">
     <ul class="works">
