@@ -4,15 +4,9 @@
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import profile from "@/data/profile.json";
+import problems from "@/data/problems.json";
 import { graph, breadcrumb, webPage, personRef, SITE } from "@/lib/schema";
 
-const problems = [
-  { h: "People re-key data between tools that do not talk to each other.", what: "I connect the systems and make the handoff a job with retries and an audit trail.", slug: "erp-ai-agents", link: "AI agents working inside a live ERP" },
-  { h: "We want AI, but our data lives in an ERP or a scheduling system.", what: "I build the AI layer on top of the system of record, not a second copy of it.", slug: "dental-ai-front-desk", link: "An AI voice front desk for dental clinics" },
-  { h: "The AI demo works. Production does not.", what: "I find what breaks between the demo and real traffic, and fix it at the root.", slug: "aws-backend-hipaa-eligible", link: "A production AWS backend" },
-  { h: "Signals arrive from everywhere and nobody sees the important ones.", what: "I build ingestion, search and alerting that says why it fired.", slug: "social-signal-intelligence-backend", link: "A social and market signal intelligence backend" },
-  { h: "The system runs, and nobody trusts what it shows.", what: "I trace the numbers back to their source until they add up.", slug: "healthcare-integration-console", link: "An operations console for a healthcare integration engine" },
-];
 const title = "Problems I Solve";
 const description = "Messy multi-system workflows, AI on top of a system of record, demos that fail in production. The problems Mubashir Rehman likes to solve.";
 const canonical = `${SITE}/services/`;

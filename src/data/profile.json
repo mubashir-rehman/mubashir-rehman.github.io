@@ -5,6 +5,7 @@
   "familyName": "Rehman",
   "jobTitle": "Lead Software Engineer",
   "roleLine": "Backend software engineer, with AI and automation where they help",
+  "label": "Backend / systems engineer",
   "heroLine": [
     "I like difficult systems.",
     "I like figuring out why they break.",
@@ -20,6 +21,7 @@
     "countryCode": "PK",
     "timezone": "PKT (UTC+5)"
   },
+  "availabilityShort": "Open to remote roles",
   "availability": "Open to remote roles in any timezone, and on-site work in Lahore.",
   "current": {
     "title": "Lead Software Engineer",
