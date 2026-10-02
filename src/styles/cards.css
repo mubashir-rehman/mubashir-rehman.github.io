@@ -1,4 +1,4 @@
-/* Home page (journey) only. Classes are prefixed j- so they never collide with the inner pages' styles. */
+/* The v3 card system, shared by every page (classes prefixed j-). Page-specific blocks are labelled below. */
 .j{max-width:calc(1200px + var(--gutter) * 2);padding-top:clamp(8px,2vw,20px)}
 .j-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
 .j-card{background:var(--card);border:1px solid var(--line-2);border-radius:var(--r-card);padding:clamp(22px,2.4vw,30px);position:relative;overflow:hidden;min-width:0}
@@ -158,3 +158,108 @@
 }
 @media(max-width:600px) and (max-height:700px){.j-hero .j-eyebrow{display:none}}
 @media(prefers-reduced-motion:reduce){.j-card{transition:none}}
+
+/* ---- shared: small section heads (inner pages), small icon tiles */
+.j-head--sm{margin-bottom:18px;padding-bottom:14px;gap:16px}
+.j-head--sm .j-num{font-size:clamp(2.2rem,1.6rem + 2vw,3.4rem)}
+.j-head--sm h2{font-size:clamp(1.45rem,1.15rem + 1vw,2rem)}
+.j-ico--sm{width:34px;height:34px;border-radius:10px}
+.j .crumbs{margin:6px 0 16px}
+
+/* ---- case study */
+.cs-top{align-items:stretch}
+.cs-hero{grid-column:span 8;display:flex;flex-direction:column;gap:16px}
+.cs-hero::before{content:"";position:absolute;right:-30%;top:-40%;width:70%;height:140%;background:radial-gradient(closest-side,var(--glow),transparent);pointer-events:none}
+.cs-hero h1{position:relative;font-family:var(--font-display);font-size:var(--fs-h1);line-height:1.04;letter-spacing:-.03em;font-weight:700;max-width:22ch;
+  background:linear-gradient(180deg,var(--text-1) 0%,var(--text-1) 55%,var(--accent2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cs-hero .j-lead{margin-top:0!important;max-width:60ch}
+.cs-hero .j-cta{margin:4px 0 0}
+.cs-glance{grid-column:span 4;display:flex;flex-direction:column;gap:14px}
+.cs-glance dl{display:grid;gap:14px;margin:0}
+.cs-glance dt{font-size:var(--t-small);font-weight:700;color:var(--accent-text)}
+.cs-glance dd{margin:2px 0 0;color:var(--text-1);font-size:.95rem;line-height:1.5}
+.cs-asof{color:var(--text-3)}
+.cs-body{display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px;margin-top:clamp(48px,6vw,80px)}
+.cs-toc{position:relative}
+.cs-toc ol{position:sticky;top:110px;list-style:none;margin:0;padding:4px 0 4px 18px;display:grid;gap:4px;border-left:2px solid var(--signal-text)}
+.cs-toc a{display:flex;gap:10px;align-items:baseline;padding:6px 0;color:var(--text-2);text-decoration:none;font-weight:500;font-size:var(--t-small);line-height:1.35}
+.cs-toc a span{font-family:var(--font-display);font-weight:300;color:var(--accent-text);min-width:1.6em}
+.cs-toc a:hover{color:var(--text-1)}
+.cs-main{min-width:0;display:grid;gap:clamp(48px,6vw,72px)}
+.cs-part{scroll-margin-top:110px}
+.cs-stack{display:grid;gap:14px}
+.cs-prose p{color:var(--text-2);font-size:var(--t-lead);line-height:1.6;max-width:68ch}
+.cs-prose .cs-role{margin-top:16px!important;font-size:var(--t-small);color:var(--text-3)}
+.cs-prose .cs-role b{color:var(--text-1)}
+.cs-sys .fig{background:var(--card2);border:0}
+.cs-dec h3,.cs-inc h3{margin-bottom:16px}
+.cs-dec dl,.cs-inc dl{margin:0;display:grid;gap:12px}
+.cs-dec dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cs-dec dl>div,.cs-inc dl>div{background:var(--card2);border-radius:14px;padding:14px 16px}
+.cs-dec dt,.cs-inc dt{font-size:var(--t-small);font-weight:700;color:var(--text-3);margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.cs-dec dd,.cs-inc dd{margin:0;color:var(--text-2);font-size:.95rem;line-height:1.55}
+.cs-dec .is-chose{background:var(--accent-tint);border:1px solid color-mix(in srgb,var(--accent-bright) 35%,transparent)}
+.cs-dec .is-chose dt{color:var(--accent-text)}
+.cs-dec .is-chose dd{color:var(--text-1)}
+.cs-inc dl{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cs-inc dl>div:last-child{background:var(--accent-tint);border:1px solid color-mix(in srgb,var(--accent-bright) 35%,transparent)}
+.cs-inc dl>div:last-child dd{color:var(--text-1)}
+.cs-results{grid-column:span 7}
+.cs-results ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.cs-results li{position:relative;padding-left:22px;color:var(--text-1);line-height:1.55}
+.cs-results li::before{content:"";position:absolute;left:0;top:.6em;width:9px;height:9px;transform:rotate(45deg);background:var(--signal-text)}
+.cs-built{grid-column:span 5;display:flex;flex-direction:column;gap:12px}
+.cs-built .cs-spec{margin-top:8px}
+.cs-rule{margin:0;background:linear-gradient(135deg,var(--card),var(--card2));border-color:var(--accent-bright)}
+.cs-rule p:first-child{font-family:var(--font-display);font-size:var(--t-h2);font-weight:600;line-height:1.15;letter-spacing:-.02em}
+.cs-rule a{text-decoration:none;background:linear-gradient(180deg,var(--text-1),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.cs-rule a:hover{text-decoration:underline;text-decoration-color:var(--accent-line)}
+.cs-rule__n{margin-top:14px!important;font-size:var(--t-small);font-weight:600;color:var(--text-3)}
+.cs-next{margin-top:clamp(64px,8vw,100px)}
+.cs-nextcard{grid-column:span 7;display:flex;flex-direction:column;gap:10px;text-decoration:none;transition:border-color var(--dur-2) linear}
+.cs-nextcard:hover{border-color:var(--accent-bright)}
+.cs-nextcard__t{font-family:var(--font-display);font-size:var(--t-h3);font-weight:650;line-height:1.28;color:var(--text-1);max-width:30ch}
+.cs-go{position:absolute;right:26px;top:26px;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--glow);color:var(--accent-text)}
+.cs-also{grid-column:span 5}
+.cs-also ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px}
+.cs-also a{color:var(--text-1);font-weight:600;text-decoration:underline;text-decoration-color:var(--line-3);text-underline-offset:.2em}
+.cs-also a:hover{text-decoration-color:var(--accent-line)}
+.cs-also span{color:var(--text-3);font-size:var(--t-small)}
+.cs-contact{grid-column:1/-1;margin-top:0;align-items:center}
+.cs-contact__t{font-family:var(--font-display);font-size:var(--t-h3);font-weight:650;line-height:1.25;margin-top:6px!important}
+@media(max-width:1060px){
+  .cs-body{grid-template-columns:minmax(0,1fr)}
+  .cs-toc{display:none}
+}
+@media(max-width:860px){
+  .cs-dec dl,.cs-inc dl{grid-template-columns:minmax(0,1fr)}
+  .cs-go{display:none}
+}
+.cs-built h3.j-k{font-family:var(--font-sans);font-size:var(--t-small);font-weight:700;letter-spacing:.02em;margin:0}
+
+/* ---- work index */
+.wk-hero{grid-column:span 8}
+.wk-how{grid-column:span 4}
+.wk-how h2{margin:0 0 12px}
+.wk-how ol{list-style:none;margin:0;padding:0 0 0 16px;display:grid;gap:8px;border-left:2px solid var(--signal-text)}
+.wk-how li{display:flex;gap:10px;color:var(--text-1);font-weight:500}
+.wk-how li span{font-family:var(--font-display);font-weight:300;color:var(--accent-text);min-width:1.6em}
+.wk-stack{display:grid;gap:14px}
+.wk-feat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:32px;align-items:center}
+.wk-feat__txt{display:flex;flex-direction:column;gap:10px}
+.wk-feat .mini{background:var(--card2);border:0;margin:0}
+.wk-feat .j-more{margin-top:6px}
+.wk-solves{font-size:var(--t-small);color:var(--text-2)}
+.wk-solves .j-k{margin-right:6px}
+.wk-card{grid-column:span 6;display:flex;flex-direction:column;gap:10px}
+.wk-oss{grid-column:span 7}
+.wk-self{grid-column:span 5}
+.wk-self .j-ico{margin-bottom:4px}
+.wk-links{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:var(--t-small);font-weight:600}
+.wk-links a{color:var(--accent-text);text-decoration:none}
+.wk-links a:hover{text-decoration:underline;text-underline-offset:.2em}
+.wk-builds{list-style:none;margin:0;padding:0}
+.wk-build{grid-column:span 4;display:flex;flex-direction:column;gap:8px}
+.wk-build h3{font-size:1.1rem}
+@media(max-width:1000px){.wk-feat{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:860px){.wk-how{display:block}}

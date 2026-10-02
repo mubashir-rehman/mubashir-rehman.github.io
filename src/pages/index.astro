@@ -20,7 +20,6 @@ import toolbox from "@/data/toolbox.json";
 import builds from "@/data/builds.json";
 import { numWord } from "@/lib/text";
 import { graph, website, personFull, webPage, SITE } from "@/lib/schema";
-import "@/styles/home.css";
 
 const work = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
 const byId = (id: string) => work.find((w) => w.id === id)!;

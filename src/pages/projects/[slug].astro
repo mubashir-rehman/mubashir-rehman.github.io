@@ -3,7 +3,8 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import Diagram from "@/components/Diagram.astro";
-import Incident from "@/components/Incident.astro";
+import Icon from "@/components/Icon.astro";
+import SecHead from "@/components/SecHead.astro";
 import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
 import { graph, breadcrumb, personRef, SITE } from "@/lib/schema";
@@ -51,98 +52,147 @@ const schema = graph([
   breadcrumb(canonical, [{ name: "Work", path: "/projects/" }, { name: d.title, path }]),
   ...extra,
 ]);
+// The journey every case study tells, in order. Labels feed the side spine and the section heads.
+const parts = [
+  { id: "problem", h: "The problem", p: "What was needed, and what made it hard." },
+  { id: "system", h: "The system", p: d.diagram.caption },
+  { id: "decisions", h: "Decisions", p: "What I chose, what I turned down, and what it cost." },
+  { id: "broke", h: "What broke", p: d.broke.length ? "What I noticed, what caused it, and how I fixed it." : "The honest boundary." },
+  { id: "outcome", h: "Outcome", p: "What came of it, and what it was built with." },
+  ...(d.rule ? [{ id: "rule", h: "The rule I took from this", p: "The line I keep from this project." }] : []),
+].map((x, i) => ({ ...x, n: String(i + 1).padStart(2, "0") }));
+const P = Object.fromEntries(parts.map((x) => [x.id, x]));
 const fmt = (x: Date) => x.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 ---
 <Base title={title} description={d.description} path={path} schema={schema} article={{ published: d.asOf ?? new Date("2026-09-29"), section: "Case study", tags: d.stack.slice(0, 4) }} resume={(role?.slug as never) ?? undefined}>
-  <article>
-    <div class="wrap page-head cs-head">
-      <Crumbs items={[{ name: "Work", path: "/projects/" }, { name: d.title }]} />
-      <p class="meta">{d.pillar}</p>
-      <h1 class="cs-h1">{d.title}</h1>
-      <p class="lead">{d.summary}</p>
-      <dl class="facts-strip">
-        <div><dt>Role</dt><dd>{d.role.split(":")[0]}</dd></div>
-        <div><dt>Period</dt><dd>{d.period}</dd></div>
-        <div><dt>Status</dt><dd>{d.status}{d.asOf && <span class="small"> (as of {fmt(d.asOf)})</span>}</dd></div>
-        <div><dt>Outcome</dt><dd>{d.outcome}</dd></div>
-      </dl>
-      {(d.links.repo || d.links.demo || d.links.paper) && (
-        <p class="actions" style="margin-top:var(--s-5)">
-          {d.links.repo && <a class="btn btn--secondary" href={d.links.repo}>View the code<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
-          {d.links.demo && <a class="btn btn--secondary" href={d.links.demo}>View the demo<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
-          {d.links.paper && <a class="btn btn--secondary" href={d.links.paper}>Read the paper<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
-        </p>
-      )}
+  <article class="j wrap cs">
+    <Crumbs items={[{ name: "Work", path: "/projects/" }, { name: d.title }]} />
+    <div class="j-grid cs-top">
+      <header class="j-card cs-hero">
+        <p class="j-eyebrow"><b>{d.pillar}</b> · {d.period}</p>
+        <h1>{d.title}</h1>
+        <p class="j-lead">{d.summary}</p>
+        {(d.links.repo || d.links.demo || d.links.paper) && (
+          <p class="j-cta">
+            {d.links.repo && <a class="btn btn--secondary" href={d.links.repo}>View the code<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
+            {d.links.demo && <a class="btn btn--secondary" href={d.links.demo}>View the demo<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
+            {d.links.paper && <a class="btn btn--secondary" href={d.links.paper}>Read the paper<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
+          </p>
+        )}
+      </header>
+      <aside class="j-card cs-glance" aria-label="At a glance">
+        <p class="j-eyebrow">At a glance</p>
+        <dl>
+          <div><dt>Role</dt><dd>{d.role.split(":")[0]}</dd></div>
+          <div><dt>Status</dt><dd>{d.status}{d.asOf && <span class="cs-asof"> (as of {fmt(d.asOf)})</span>}</dd></div>
+          <div><dt>Outcome</dt><dd>{d.outcome}</dd></div>
+        </dl>
+      </aside>
     </div>
 
-    <div class="wrap">
-      <div class="cs-duo">
-        <section aria-labelledby="problem-h">
-          <h2 class="cs-h2 label" id="problem-h">01 / Problem</h2>
-          <p class="cs-p">{d.problem}</p>
-          {d.role.includes(":") && <p class="small" style="margin-top:var(--s-4)"><b>My role:</b> {d.role}</p>}
-        </section>
-        <section aria-labelledby="system-h">
-          <h2 class="cs-h2 label" id="system-h">02 / System</h2>
-          <Diagram id={entry.id} caption={d.diagram.caption} nodes={d.diagram.nodes} edges={d.diagram.edges} />
-        </section>
-      </div>
-
-      <section class="cs-sec" aria-labelledby="decisions-h">
-        <h2 class="label" id="decisions-h">03 / Decisions</h2>
-        <div class="stack-list">
-          {d.decisions.map((x) => (
-            <div class="decision">
-              <h3>{x.title}</h3>
-              <dl class="dl">
-                <div><dt>Decision</dt><dd>{x.chose}</dd></div>
-                <div><dt>Rejected</dt><dd>{x.rejected}</dd></div>
-                <div><dt>Why</dt><dd>{x.why}</dd></div>
-                <div><dt>Cost</dt><dd>{x.cost}</dd></div>
-              </dl>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section class="cs-sec" aria-labelledby="broke-h">
-        <h2 class="label" id="broke-h">04 / What broke</h2>
-        {d.broke.length ? (
-          <div class="stack-list">
-            {d.broke.map((b) => <Incident title={b.title} symptom={b.symptom} cause={b.cause} fix={b.fix} />)}
+    <div class="cs-body">
+      <nav class="cs-toc" aria-label="On this page">
+        <ol>{parts.map((x) => <li><a href={`#${x.id}`}><span>{x.n}</span>{x.h}</a></li>)}</ol>
+      </nav>
+      <div class="cs-main">
+        <section class="cs-part" id="problem" aria-labelledby="problem-h">
+          <SecHead small n={P.problem.n} id="problem-h" h={P.problem.h} p={P.problem.p} />
+          <div class="j-card cs-prose">
+            <p>{d.problem}</p>
+            {d.role.includes(":") && <p class="cs-role"><b>My role:</b> {d.role}</p>}
           </div>
-        ) : null}
-        {d.brokeNote && <p>{d.brokeNote}</p>}
-      </section>
-
-      <section class="cs-sec" aria-labelledby="outcome-h">
-        <h2 class="label" id="outcome-h">05 / Outcome</h2>
-        <ul class="results">{d.results.map((r) => <li>{r}</li>)}</ul>
-      </section>
-
-      {d.rule && (
-        <section class="cs-sec" aria-labelledby="rule-h">
-          <h2 class="label" id="rule-h">06 / The rule I took from this</h2>
-          <blockquote class="pull"><p><a href={`/about/#rule-${d.rule.n}`}>{d.rule.text}</a></p><p class="meta">Rule {d.rule.n} of {rulesTotal}</p></blockquote>
         </section>
-      )}
 
-      <section class="cs-sec" aria-labelledby="stack-h">
-        <h2 class="label" id="stack-h">Stack</h2>
-        <ul class="tags">{d.stack.map((s) => <li class="tag">{s}</li>)}</ul>
-        {d.specified && <><p class="small spec" style="margin:0">Specified, not built by me:</p><ul class="tags">{d.specified.map((s) => <li class="tag">{s}</li>)}</ul></>}
-      </section>
+        <section class="cs-part" id="system" aria-labelledby="system-h">
+          <SecHead small n={P.system.n} id="system-h" h={P.system.h} p={P.system.p} />
+          <div class="j-card cs-sys"><Diagram id={entry.id} caption={d.diagram.caption} nodes={d.diagram.nodes} edges={d.diagram.edges} /></div>
+        </section>
 
-      <section class="cs-sec" aria-labelledby="next-h">
-        <h2 id="next-h" class="sr">Next</h2>
-        <div class="next">
-          <p>Working on something similar? <a class="link" href={`mailto:${profile.email}?subject=${encodeURIComponent(`About: ${d.title}`)}`}>Email me about this build</a>.</p>
-          {related.length > 0 && <p>Related: {related.map((r, i) => <><a class="link" href={`/projects/${r.id}/`}>{r.data.title}</a>{i < related.length - 1 ? ", " : ""}</>)}.</p>}
-          {post && <p>Read the post: <a class="link" href={`/journal/${post.id}/`}>{post.data.title}</a>.</p>}
-          {role && <p>Hiring for this kind of work? <a class="link" href={`/for/${role.slug}/`}>{role.h1}</a>.</p>}
-          <p>Next case study: <a class="link" href={`/projects/${next.id}/`}>{next.data.title}</a>.</p>
-        </div>
-      </section>
+        <section class="cs-part" id="decisions" aria-labelledby="decisions-h">
+          <SecHead small n={P.decisions.n} id="decisions-h" h={P.decisions.h} p={P.decisions.p} />
+          <div class="cs-stack">
+            {d.decisions.map((x, i) => (
+              <article class="j-card cs-dec">
+                <h3><span class="j-stepn">{i + 1}</span>{x.title}</h3>
+                <dl>
+                  <div class="is-chose"><dt>I chose</dt><dd>{x.chose}</dd></div>
+                  <div class="is-rejected"><dt>I turned down</dt><dd>{x.rejected}</dd></div>
+                  <div><dt>Why</dt><dd>{x.why}</dd></div>
+                  <div><dt>What it cost</dt><dd>{x.cost}</dd></div>
+                </dl>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="cs-part" id="broke" aria-labelledby="broke-h">
+          <SecHead small n={P.broke.n} id="broke-h" h={P.broke.h} p={P.broke.p} />
+          <div class="cs-stack">
+            {d.broke.map((b) => (
+              <article class="j-card cs-inc">
+                <h3>{b.title}</h3>
+                <dl>
+                  <div><dt><span class="j-ico j-ico--sm"><Icon name="eye" size={18} /></span>What I saw</dt><dd>{b.symptom}</dd></div>
+                  <div><dt><span class="j-ico j-ico--sm"><Icon name="search" size={18} /></span>The cause</dt><dd>{b.cause}</dd></div>
+                  <div><dt><span class="j-ico j-ico--sm"><Icon name="wrench" size={18} /></span>The fix</dt><dd>{b.fix}</dd></div>
+                </dl>
+              </article>
+            ))}
+            {d.brokeNote && <div class="j-card cs-prose"><p>{d.brokeNote}</p></div>}
+          </div>
+        </section>
+
+        <section class="cs-part" id="outcome" aria-labelledby="outcome-h">
+          <SecHead small n={P.outcome.n} id="outcome-h" h={P.outcome.h} p={P.outcome.p} />
+          <div class="j-grid">
+            <div class="j-card cs-results">
+              <ul>{d.results.map((r) => <li>{r}</li>)}</ul>
+            </div>
+            <div class="j-card cs-built">
+              <h3 class="j-k">Built with</h3>
+              <ul class="j-chips">{d.stack.map((t) => <li class="j-chip">{t}</li>)}</ul>
+              {d.specified && <><h3 class="j-k cs-spec">Specified, not built by me</h3><ul class="j-chips">{d.specified.map((t) => <li class="j-chip is-exp">{t}</li>)}</ul></>}
+            </div>
+          </div>
+        </section>
+
+        {d.rule && (
+          <section class="cs-part" id="rule" aria-labelledby="rule-h">
+            <SecHead small n={P.rule.n} id="rule-h" h={P.rule.h} p={P.rule.p} />
+            <blockquote class="j-card cs-rule"><p><a href={`/about/#rule-${d.rule.n}`}>{d.rule.text}</a></p><p class="cs-rule__n">Rule {d.rule.n} of {rulesTotal}</p></blockquote>
+          </section>
+        )}
+      </div>
     </div>
+
+    <section class="cs-next" aria-labelledby="next-h">
+      <h2 id="next-h" class="sr">Keep reading</h2>
+      <div class="j-grid">
+        <a class="j-card cs-nextcard" href={`/projects/${next.id}/`}>
+          <p class="j-eyebrow"><b>Next case study</b> · {next.data.pillar}</p>
+          <p class="cs-nextcard__t">{next.data.title}</p>
+          <p class="j-a">{next.data.summary}</p>
+          <span class="cs-go" aria-hidden="true"><Icon name="arrow-right" size={20} /></span>
+        </a>
+        <div class="j-card cs-also">
+          <p class="j-eyebrow">Also worth reading</p>
+          <ul>
+            {related.map((r) => <li><a href={`/projects/${r.id}/`}>{r.data.title}</a></li>)}
+            {post && <li><a href={`/journal/${post.id}/`}>{post.data.title}</a> <span>(post)</span></li>}
+            {role && <li><a href={`/for/${role.slug}/`}>{role.h1}</a> <span>(hiring for this)</span></li>}
+            <li><a href="/projects/">All work</a></li>
+          </ul>
+        </div>
+        <div class="j-card j-contact cs-contact">
+          <div>
+            <p class="j-contact__k">Working on something similar?</p>
+            <p class="cs-contact__t">Tell me what the system is doing, and what it should be doing.</p>
+          </div>
+          <div class="j-contact__end">
+            <a class="btn btn--lg j-contact__btn" href={`mailto:${profile.email}?subject=${encodeURIComponent(`About: ${d.title}`)}`}><Icon name="mail" size={18} />Email me about this build</a>
+          </div>
+        </div>
+      </div>
+    </section>
   </article>
 </Base>

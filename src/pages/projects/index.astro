@@ -2,7 +2,12 @@
 import { getCollection } from "astro:content";
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
-import Artifact from "@/components/Artifact.astro";
+import SecHead from "@/components/SecHead.astro";
+import Icon from "@/components/Icon.astro";
+import { Image } from "astro:assets";
+import shotHireDark from "@/assets/work/hiretrack-dark.jpg";
+import shotHireLight from "@/assets/work/hiretrack-light.jpg";
+import problems from "@/data/problems.json";
 import MiniDiagram from "@/components/MiniDiagram.astro";
 import builds from "@/data/builds.json";
 import profile from "@/data/profile.json";
@@ -17,6 +22,10 @@ const hiretrack = work.find((w) => w.id === "hiretrack")!;
 const portfolio = builds.find((b) => b.title === "This portfolio site")!;
 const smaller = builds.filter((b) => b !== portfolio);
 const research = work.find((w) => w.id === profile.paper.caseStudy.split("/")[2])!;
+// Which "If you have" problem (home page, /services/) each case study answers.
+const solves = (id: string) => problems.find((p) => p.slug === id)?.h;
+const steps = ["The problem", "The system", "Decisions", "What broke", "Outcome", "The rule I took from it"];
+const S = ["featured", "more", "oss", "smaller", "research"].reduce((a, k, i) => ({ ...a, [k]: String(i + 1).padStart(2, "0") }), {} as Record<string, string>);
 const title = "Work: Backend, AI and Automation Systems";
 const description = "Case studies by Mubashir Rehman: AI backends, integrations, ERP agents, a production AWS backend, open-source tools and published research.";
 const canonical = `${SITE}/projects/`;
@@ -32,83 +41,103 @@ const schema = graph([
 ]);
 ---
 <Base title={title} description={description} path="/projects/" schema={schema}>
-  <div class="wrap page-head">
+  <div class="j wrap wk-page">
     <Crumbs items={[{ name: "Work" }]} />
-    <h1 class="h1">Selected work</h1>
-    <p class="lead">Case studies first. Each covers the problem, the system, the decisions, what broke and what came of it.</p>
-  </div>
-
-  <section class="wrap" aria-labelledby="feat-h">
-    <h2 class="label" id="feat-h">Featured</h2>
-    <p class="small">{cap(numWord(featured.length))} case studies, one per kind of work: {featured.map((w) => w.data.pillar).join(", ")}.</p>
-    <div class="wk-list">
-      {featured.map((w, i) => <Artifact entry={w} n={i + 1} variant="compact" flip={i % 2 === 1} />)}
+    <div class="j-grid">
+      <header class="j-card cs-hero wk-hero">
+        <p class="j-eyebrow"><b>Work</b> · {cap(numWord(work.length))} case studies</p>
+        <h1>Selected work</h1>
+        <p class="j-lead">Systems I built, took over or designed, with the decisions behind them and what broke along the way. Work under NDA is described by function, never by name.</p>
+      </header>
+      <aside class="j-card wk-how" aria-labelledby="how-h">
+        <h2 class="j-eyebrow" id="how-h">How each case study reads</h2>
+        <ol>{steps.map((x, i) => <li><span>{String(i + 1).padStart(2, "0")}</span>{x}</li>)}</ol>
+      </aside>
     </div>
-  </section>
 
-  <section class="sec wrap" aria-labelledby="more-h">
-    <h2 class="label" id="more-h">More systems</h2>
-    <p class="small">{cap(numWord(more.length))} more case studies.</p>
-    <ul class="works works--wide">
-      {more.map((w) => (
-        <li class="work">
-          <div>
-            <h3 class="work__title"><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
-            <p class="work__sum">{w.data.summary}</p>
-          </div>
-          <p class="work__side meta">{w.data.pillar}<br />{w.data.period}</p>
-        </li>
-      ))}
-    </ul>
-  </section>
-
-  <section class="sec wrap" aria-labelledby="oss-h">
-    <h2 class="label" id="oss-h">Open source</h2>
-    <p class="small">Code you can read.</p>
-    <ul class="works works--wide">
-      <li class="work">
-        <div>
-          <h3 class="work__title"><a href={`/projects/${hiretrack.id}/`}>{hiretrack.data.title}</a></h3>
-          <p class="work__sum">{hiretrack.data.summary}</p>
-          <p class="small">{hiretrack.data.links.repo && <a class="link" href={hiretrack.data.links.repo}>Code</a>}{hiretrack.data.links.demo && <> · <a class="link" href={hiretrack.data.links.demo}>Live demo</a></>}</p>
-        </div>
-        <p class="work__side meta">{hiretrack.data.pillar}<br />{hiretrack.data.period}</p>
-      </li>
-      <li class="work">
-        <div>
-          <h3 class="work__title"><a href={portfolio.href}>{portfolio.title}</a></h3>
-          <p class="work__sum">{portfolio.line}</p>
-        </div>
-        <p class="work__side meta">{portfolio.year}</p>
-      </li>
-    </ul>
-  </section>
-
-  <section class="sec wrap" id="smaller-builds" aria-labelledby="sb-h">
-    <h2 class="label" id="sb-h">Smaller builds</h2>
-    <p class="small">One line each. Work under NDA is described by function.</p>
-    <ul class="builds">
-      {smaller.map((b) => (
-        <li class="build">
-          <b>{b.href ? <a class="link" href={b.href}>{b.title}</a> : b.title}</b>
-          <p>{b.line}</p>
-          <p class="yr meta">{b.year}</p>
-        </li>
-      ))}
-    </ul>
-  </section>
-
-  <section class="sec wrap" aria-labelledby="res-h">
-    <h2 class="label" id="res-h">Research</h2>
-    <p class="small">Peer-reviewed, {profile.paper.publisher}, {profile.paper.year}.</p>
-    <article class="wk wk--compact">
-      <div class="wk__text">
-        <p class="meta">{profile.paper.citation}</p>
-        <h3><a href={profile.paper.caseStudy}>{profile.paper.title}</a></h3>
-        <p><b>My part:</b> {profile.paper.contribution}</p>
-        <p class="small"><a class="link" href={profile.paper.url}>DOI {profile.paper.doi}</a> · <a class="link" href={profile.paper.arxiv}>arXiv preprint</a> · <a class="link" href={profile.paper.caseStudy}>How the study was built</a></p>
+    <section class="j-part" aria-labelledby="feat-h">
+      <SecHead n={S.featured} id="feat-h" h="Featured" p={`One per kind of work: ${featured.map((w) => w.data.pillar).join(", ")}.`} />
+      <div class="wk-stack">
+        {featured.map((w) => (
+          <article class="j-card wk-feat">
+            <div class="wk-feat__txt">
+              <p class="j-eyebrow"><b>{w.data.pillar}</b> · {w.data.period}</p>
+              <h3><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
+              <p class="j-a">{w.data.summary}</p>
+              {solves(w.id) && <p class="wk-solves"><span class="j-k">Solves</span> {solves(w.id)}</p>}
+              {w.data.broke.length > 0 && <ul class="j-pills" aria-label="What broke">{w.data.broke.map((b) => <li>{b.title}</li>)}</ul>}
+              <p class="j-more"><a href={`/projects/${w.id}/`}>Read the case study →</a></p>
+            </div>
+            <MiniDiagram id={`wk-${w.id}`} caption={w.data.diagram.caption} nodes={w.data.diagram.nodes} edges={w.data.diagram.edges as [string, string][]} />
+          </article>
+        ))}
       </div>
-      <div class="wk__art"><MiniDiagram id={research.id} caption={research.data.diagram.caption} nodes={research.data.diagram.nodes} edges={research.data.diagram.edges} /></div>
-    </article>
-  </section>
+    </section>
+
+    <section class="j-part" aria-labelledby="more-h">
+      <SecHead n={S.more} id="more-h" h="More case studies" p={`${cap(numWord(more.length))} more systems, each with its decisions and what broke.`} />
+      <div class="j-grid">
+        {more.map((w) => (
+          <article class="j-card wk-card">
+            <p class="j-eyebrow"><b>{w.data.pillar}</b> · {w.data.period}</p>
+            <h3><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
+            <p class="j-a">{w.data.summary}</p>
+            {solves(w.id) && <p class="wk-solves"><span class="j-k">Solves</span> {solves(w.id)}</p>}
+            <p class="j-proof"><a href={`/projects/${w.id}/`}>Read the case study →</a></p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="j-part" aria-labelledby="oss-h">
+      <SecHead n={S.oss} id="oss-h" h="Open source" p="Code you can read." />
+      <div class="j-grid">
+        <article class="j-card j-w j-w--shot wk-oss">
+          <div class="j-shot">
+            <Image class="ht-dark" src={shotHireDark} alt="HireTrack sign-in screen, dark theme" widths={[560, 900]} sizes="(min-width: 860px) 640px, 100vw" />
+            <Image class="ht-light" src={shotHireLight} alt="HireTrack sign-in screen, light theme" widths={[560, 900]} sizes="(min-width: 860px) 640px, 100vw" />
+          </div>
+          <div class="j-w__in">
+            <p class="j-eyebrow"><b>{hiretrack.data.pillar}</b> · {hiretrack.data.period}</p>
+            <h3><a href={`/projects/${hiretrack.id}/`}>{hiretrack.data.title}</a></h3>
+            <p class="j-a">{hiretrack.data.summary}</p>
+            <p class="wk-links">{hiretrack.data.links.repo && <a href={hiretrack.data.links.repo}>Code</a>}{hiretrack.data.links.demo && <a href={hiretrack.data.links.demo}>Live demo</a>}<a href={`/projects/${hiretrack.id}/`}>Case study</a></p>
+          </div>
+        </article>
+        <article class="j-card wk-card wk-self">
+          <span class="j-ico"><Icon name="code-xml" /></span>
+          <p class="j-eyebrow">{portfolio.year}</p>
+          <h3><a href={portfolio.href}>{portfolio.title}</a></h3>
+          <p class="j-a">{portfolio.line}</p>
+          <p class="j-proof"><a href={portfolio.href}>View the code →</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="j-part" id="smaller-builds" aria-labelledby="sb-h">
+      <SecHead n={S.smaller} id="sb-h" h="Smaller builds" p="One line each. Work under NDA is described by function." />
+      <ul class="j-grid wk-builds">
+        {smaller.map((b) => (
+          <li class="j-card wk-build">
+            {b.year && <p class="j-eyebrow">{b.year}</p>}
+            <h3>{b.href ? <a href={b.href}>{b.title}</a> : b.title}</h3>
+            <p class="j-a">{b.line}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="j-part" aria-labelledby="res-h">
+      <SecHead n={S.research} id="res-h" h="Research" p={`Peer-reviewed, ${profile.paper.publisher}, ${profile.paper.year}.`} />
+      <article class="j-card wk-feat">
+        <div class="wk-feat__txt">
+          <p class="j-eyebrow"><b>Research</b> · {profile.paper.citation}</p>
+          <h3><a href={profile.paper.caseStudy}>{profile.paper.title}</a></h3>
+          <p class="j-a"><b>My part:</b> {profile.paper.contribution}</p>
+          <p class="wk-links"><a href={profile.paper.url}>DOI {profile.paper.doi}</a><a href={profile.paper.arxiv}>arXiv preprint</a><a href={profile.paper.caseStudy}>How the study was built</a></p>
+        </div>
+        <MiniDiagram id={research.id} caption={research.data.diagram.caption} nodes={research.data.diagram.nodes} edges={research.data.diagram.edges as [string, string][]} />
+      </article>
+    </section>
+  </div>
 </Base>

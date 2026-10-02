@@ -71,6 +71,15 @@ Today the inner pages only inherit the v3 palette and type; their layouts are st
 Cross-cutting: phone polish for every page (the home page included), one shared stylesheet for the card system,
 and a screenshot plus axe pass per page before going live.
 
+### Progress
+
+- Done (dev branch): shared card system (`src/styles/cards.css`, loaded on every page; `SecHead.astro`), the
+  case-study template (hero and at-a-glance cards, sticky spine of the six parts, decision cards with the choice
+  highlighted, Saw / Cause / Fix incident cards, outcome with a built-with card, the rule card, next and contact
+  cards) and the Work index (how-each-reads card, featured cards with diagrams and the problem each solves, more
+  case studies, open source with the HireTrack shot, smaller builds, research). Fixed the circular diagram panel.
+- Next: About, Services, role pages, Writing and posts, Contact, 404.
+
 ## Open items
 
 - Agentic engineering case study (docs as skill resources, regression suites, model choice by task): waiting on the

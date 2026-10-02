@@ -1,0 +1,6 @@
+---
+// A v3 section head: a big gradient numeral, the h2 and one line under it.
+interface Props { n: string; id: string; h: string; p?: string; small?: boolean }
+const { n, id, h, p, small = false } = Astro.props;
+---
+<div class:list={["j-head", { "j-head--sm": small }]}><span class="j-num" aria-hidden="true">{n}</span><div><h2 id={id}>{h}</h2>{p && <p>{p}</p>}</div></div>
