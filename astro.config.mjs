@@ -3,7 +3,7 @@ import sitemap from "@astrojs/sitemap";
 import { readFileSync, readdirSync } from "node:fs";
 import rehypeJournal from "./src/lib/rehype-journal.mjs";
 
-const SITE = "https://mubashir-rehman.is-a.dev";
+const SITE = "https://mubashirrehman.com";
 
 // Frontmatter read straight from the content files, because the config cannot use
 // getCollection. Two jobs: redirects for archived posts that were once public, and sitemap
