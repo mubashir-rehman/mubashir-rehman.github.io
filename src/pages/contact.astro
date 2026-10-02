@@ -40,17 +40,9 @@ const schema = graph([
           <Image src={headshot} alt={profile.name} width={64} height={64} loading="eager" class="who__img" />
           <p class="who__txt"><strong>{profile.name}</strong><span>{profile.jobTitle}, {profile.location.city}</span></p>
         </div>
-        <ul class="panels">
-          <li class="panel">
-            <p class="panel__k">A problem, not a role</p>
-            <h2 class="panel__t"><a href="/services/">Problems I solve</a></h2>
-            <p class="panel__s">Workflows across systems that do not talk to each other, and AI on top of them.</p>
-          </li>
-          <li class="panel">
-            <p class="panel__k">See the work first</p>
-            <h2 class="panel__t"><a href="/projects/">{cap(numWord(caseCount))} case studies</a></h2>
-            <p class="panel__s">Problem, system, decisions and what broke, for each one.</p>
-          </li>
+        <ul class="works works--compact">
+          <li class="work"><p class="work__title"><a href="/services/">Problems I solve</a></p><p class="small">Workflows across systems that do not talk to each other, and AI on top of them.</p></li>
+          <li class="work"><p class="work__title"><a href="/projects/">{cap(numWord(caseCount))} case studies</a></p><p class="small">Problem, system, decisions and what broke, for each one.</p></li>
         </ul>
       </aside>
     </div>
