@@ -38,7 +38,7 @@ const schema = graph([
 
   <section class="wrap" aria-labelledby="feat-h">
     <h2 class="label" id="feat-h">Featured</h2>
-    <p class="small">{cap(numWord(featured.length))} case studies, one per kind of work: {featured.map((w) => w.data.pillar.toLowerCase()).join(", ")}.</p>
+    <p class="small">{cap(numWord(featured.length))} case studies, one per kind of work: {featured.map((w) => w.data.pillar).join(", ")}.</p>
     <ul class="works works--wide">
       {featured.map((w) => (
         <li class="work">

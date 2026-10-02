@@ -15,6 +15,8 @@ const byId = (id: string) => work.find((w) => w.id === id)!;
 const flagships = work.filter((w) => w.data.flagship);
 const moreCount = work.length - flagships.length;
 const HOME_RULES = [1, 2, 3, 8];
+// The decision that best shows systems judgement within about 45 words (index into decisions[]).
+const SPOTLIGHT: Record<string, number> = { "dental-ai-front-desk": 1, "social-signal-intelligence-backend": 1, "erp-ai-agents": 2 };
 const rules = work.filter((w) => w.data.rule).map((w) => ({ ...w.data.rule!, slug: w.id, title: w.data.title })).sort((a, b) => a.n - b.n);
 const homeRules = HOME_RULES.map((n) => rules.find((r) => r.n === n)).filter(Boolean) as typeof rules;
 // One incident each from dental, social-signal and the healthcare console (the first listed).
@@ -40,7 +42,7 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
         <h1 class="statement statement--home" id="hero-h">
           <span class="s1">{profile.heroLine[0]}</span> <span class="s2">{profile.heroLine[1]}</span> <span class="s3">{profile.heroLine[2]}</span>
         </h1>
-        <p class="hero__id">{profile.roleLine}.</p>
+        <p class="hero__id">{profile.servicesLead}</p>
         <p class="meta">{profile.current.title}, {profile.current.employer} · leading {numWord(profile.current.teamSize)} engineers<br />{profile.yearsFullTime} years in production · {profile.location.city} · {utc} · {profile.availabilityShort}</p>
         <div class="actions">
           <a class="btn btn--primary btn--lg" href={resume.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé (PDF)</a>
@@ -56,7 +58,7 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
   <section class="sec wrap" aria-labelledby="rules-h">
     <div class="sec__grid">
       <div class="sec__head"><h2 class="label" id="rules-h">01 / How I work</h2></div>
-      <div class="sec__body">
+      <div class="sec__body sec__body--read">
         <ol class="rules">
           {homeRules.map((r) => (
             <li class="rule">
@@ -70,7 +72,7 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
     </div>
   </section>
 
-  <section class="sec wrap" id="work" aria-labelledby="work-h">
+  <section class="sec sec--wide wrap" id="work" aria-labelledby="work-h">
     <div class="sec__grid">
       <div class="sec__head"><h2 class="label" id="work-h">02 / Selected work</h2></div>
       <div class="sec__body">
@@ -80,7 +82,7 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
             <h3><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
             <p>{w.data.summary}</p>
             {w.data.broke.length > 0 && <ul class="tags" aria-label="What broke">{w.data.broke.map((b) => <li class="tag">{b.title}</li>)}</ul>}
-            <p><b>The interesting part.</b> {w.data.decisions[0].chose} {w.data.decisions[0].why}</p>
+            <p><b>The interesting part.</b> {w.data.decisions[SPOTLIGHT[w.id] ?? 0].chose} {w.data.decisions[SPOTLIGHT[w.id] ?? 0].why}</p>
             <p class="small"><a class="link" href={`/projects/${w.id}/`}>Read the case study →</a></p>
           </article>
         ))}
@@ -92,7 +94,7 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
   <section class="sec wrap" aria-labelledby="break-h">
     <div class="sec__grid">
       <div class="sec__head"><h2 class="label" id="break-h">03 / When things break</h2></div>
-      <div class="sec__body">
+      <div class="sec__body sec__body--read">
         {incidents.map(({ w, b }) => (
           <article class="inc">
             <h3>{b.title}</h3>
@@ -111,7 +113,7 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
   <section class="sec wrap" aria-labelledby="called-h">
     <div class="sec__grid">
       <div class="sec__head"><h2 class="label" id="called-h">04 / Where I usually get called</h2></div>
-      <div class="sec__body">
+      <div class="sec__body sec__body--read">
         <ol class="works works--compact">
           {problems.map((p, i) => (
             <li class="work"><p class="work__title"><span class="meta">{nn(i)} </span><a href={`/projects/${p.slug}/`}>{p.h}</a></p></li>
@@ -125,7 +127,7 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
   <section class="sec wrap" aria-labelledby="now-h">
     <div class="sec__grid">
       <div class="sec__head"><h2 class="label" id="now-h">05 / Currently</h2></div>
-      <div class="sec__body">
+      <div class="sec__body sec__body--read">
         <ul class="cur">
           <li><span class="meta">Now</span><span>{profile.current.title} at {profile.current.employer}, leading {numWord(profile.current.teamSize)} engineers</span></li>
           {posts.length > 0 && <li><span class="meta">Writing</span><span>{posts.map((p, i) => <><a class="link" href={`/journal/${p.id}/`}>{p.data.title}</a>{i < posts.length - 1 ? " · " : ""}</>)}</span></li>}
