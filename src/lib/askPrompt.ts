@@ -52,7 +52,7 @@ ${timeline}
 ## Case studies
 ${caseStudies}
 
-## Smaller builds
+## More builds
 ${builds.map((b) => `- ${b.title} (${b.year}): ${b.line}`).join("\n")}
 
 ## Research

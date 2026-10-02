@@ -61,9 +61,9 @@ const schema = graph([
           return (
             <article class="j-card ro-ev">
               {w && <p class="j-eyebrow"><b>{w.data.pillar}</b> · {w.data.period}</p>}
-              <h3><a href={href}>{w ? w.data.title : "Smaller builds"}</a></h3>
+              <h3><a href={href}>{w ? w.data.title : "More builds"}</a></h3>
               <p class="j-a">{e.line}</p>
-              <p class="j-proof"><a href={href}>{w ? "Read the case study →" : "See the smaller builds →"}</a></p>
+              <p class="j-proof"><a href={href}>{w ? "Read the case study →" : "See more builds →"}</a></p>
             </article>
           );
         })}
