@@ -1,14 +1,13 @@
 ---
-// Four visible links and one action at every width (no hamburger: with four destinations there
-// is nothing to hide). On phones the links take a second row.
+// Wordmark with a one-line identity label, four links and a quiet Résumé text link at every
+// width (no hamburger). On phones the links take a second row and the label is hidden.
 import profile from "@/data/profile.json";
 
 interface Props {
   path: string;
-  resume?: keyof typeof profile.resumes;
 }
-const { path, resume = profile.defaultResume as keyof typeof profile.resumes } = Astro.props;
-const r = profile.resumes[resume];
+const { path } = Astro.props;
+const r = profile.resumes[profile.defaultResume as keyof typeof profile.resumes];
 const links = [
   { href: "/projects/", label: "Work" },
   { href: "/journal/", label: "Writing" },
@@ -19,7 +18,7 @@ const current = (href: string) => path === href || (href !== "/" && path.startsW
 ---
 <header class="site-head">
   <nav class="nav wrap" aria-label="Main">
-    <a class="brand" href="/" aria-label={`${profile.name}, home`}><svg class="i" aria-hidden="true"><use href="#mark" /></svg>{profile.name}</a>
+    <a class="brand" href="/" aria-label={`${profile.name}, home`}><svg class="i" aria-hidden="true"><use href="#mark" /></svg><span class="brand__t">{profile.name}<small class="brand__d">{profile.label}</small></span></a>
     <ul class="nav__links">
       {links.map((l) => <li><a href={l.href} aria-current={current(l.href) ? "page" : undefined}>{l.label}</a></li>)}
     </ul>
@@ -27,7 +26,7 @@ const current = (href: string) => path === href || (href !== "/" && path.startsW
       <button class="icon-btn theme-btn" type="button" data-theme-toggle aria-label="Switch theme">
         <svg class="i ic-to-light" aria-hidden="true"><use href="#i-sun" /></svg><svg class="i ic-to-dark" aria-hidden="true"><use href="#i-moon" /></svg>
       </button>
-      <a class="btn btn--primary btn--sm" href={r.file} aria-label={`Résumé, ${r.label}, PDF`}>Résumé</a>
+      <a class="nav__cv" href={r.file} aria-label={`Résumé, ${r.label}, PDF`}>Résumé ↗</a>
     </div>
   </nav>
 </header>
