@@ -23,7 +23,7 @@ npm test             # vitest run (one-shot) — currently broken, see Tests
 npm run test:watch   # vitest watch mode
 ```
 
-Node 22 in CI. Lockfiles for both npm (`package-lock.json`) and bun (`bun.lock`) exist; CI uses `npm ci`.
+Node 22 in CI. npm only (`package-lock.json`); do not add a `bun.lock`: Cloudflare Pages switches to `bun install --frozen-lockfile` whenever one exists, and a stale one fails every build.
 
 ## Architecture (rebuilt 2026-09-29, see docs/redesign/)
 
