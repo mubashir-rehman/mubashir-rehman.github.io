@@ -38,8 +38,11 @@ const current = (href: string) => path === href || (href !== "/" && path.startsW
     label();
     // Phones: hide the header while scrolling down, bring it back on any scroll up or focus.
     var h = document.querySelector(".site-head"), last = scrollY;
+    function stuck() { if (h) h.classList.toggle("is-stuck", scrollY > 8); }
+    stuck();
     addEventListener("scroll", function () {
       var y = scrollY;
+      stuck();
       if (h) h.classList.toggle("is-hidden", y > last && y > 120);
       last = y;
     }, { passive: true });
