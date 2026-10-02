@@ -39,7 +39,7 @@ button{font:inherit;color:inherit}
 .i{width:1.15em;height:1.15em;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:square;stroke-linejoin:miter}
 
 /* ---- type roles */
-.mono,.label,.meta,.post__meta,.tag,.dl dt,.inc__cols dt,.facts-strip dt,.callout-label,.prose th,.who__txt span,.brand__d{font-family:var(--font-mono);font-stretch:78%;font-size:var(--fs-mono);font-weight:500;line-height:1.5;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.label,.meta,.post__meta,.tag,.dl dt,.inc__cols dt,.facts-strip dt,.callout-label,.prose th,.who__txt span,.brand__d{font-family:var(--font-mono);font-stretch:78%;font-size:var(--fs-mono);font-weight:500;line-height:1.5;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
 .meta{margin:0}
 .small{font-size:var(--fs-small);line-height:var(--lh-small);color:var(--text-2)}
 .lead{font-size:var(--fs-lead);line-height:var(--lh-lead);letter-spacing:var(--ls-lead);color:var(--text-2);max-width:52ch;margin:0}
@@ -205,11 +205,11 @@ html{scroll-padding-top:120px}
 .inc__cols{display:grid;gap:var(--s-4);margin:0 0 var(--s-3)}
 .inc__cols>div{position:relative;display:grid;gap:4px;align-content:start}
 .inc__cols dd{color:var(--text-2);font-size:var(--fs-small);line-height:1.5}
-.inc__cols>div+div::before{content:"↓";position:absolute;left:0;top:-1.55em;font-family:var(--font-mono);color:var(--text-4);font-size:var(--fs-mono)}
+.inc__a{position:absolute;left:0;top:-1.5em;width:20px;height:10px;fill:none;stroke:var(--text-3);stroke-width:1;transform:rotate(90deg);transform-origin:left center}
 .inc__cols>div:last-child dt{color:var(--accent-text)}
 @media(min-width:900px){
   .inc__cols{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--s-7)}
-  .inc__cols>div+div::before{content:"→";left:calc(var(--s-7) / -1 + 6px);top:0}
+  .inc__a{left:-36px;top:.45em;transform:none}
 }
 .cur{display:grid;gap:10px;list-style:none}
 .cur li{display:grid;gap:2px 20px}
@@ -243,11 +243,6 @@ html{scroll-padding-top:120px}
 .rule__n{font-family:var(--font-mono);font-stretch:78%;font-size:clamp(1.5rem,3vw,2.25rem);line-height:1.1;font-weight:300;color:var(--accent-text)}
 .rule__t{margin:0;font-size:var(--fs-h4);line-height:var(--lh-h4);letter-spacing:var(--ls-h4);font-weight:580}
 .rule__w{margin:8px 0 0}
-.rule-line{display:flex;gap:var(--s-4);align-items:baseline;padding:var(--s-5) 0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);max-width:var(--measure)}
-.rule-line b{font-family:var(--font-mono);font-stretch:78%;font-size:clamp(1.5rem,3vw,2.25rem);line-height:1;font-weight:300;color:var(--accent-text)}
-.rule-line p{margin:0;font-size:var(--fs-h4);line-height:var(--lh-h4);font-weight:580}
-.rule-line a{color:inherit;text-decoration:none}
-.rule-line a:hover span{text-decoration:underline}
 .stack-list{display:grid;gap:var(--s-7)}
 .decision{max-width:var(--measure)}
 .decision h3{font-size:var(--fs-h4);line-height:var(--lh-h4);font-weight:600;letter-spacing:var(--ls-h4);margin-bottom:10px}
@@ -401,8 +396,12 @@ html{scroll-padding-top:120px}
 .pull p:first-child{margin:0 0 var(--s-3);font-size:var(--fs-h3);line-height:var(--lh-h3);letter-spacing:var(--ls-h3);font-weight:680;font-stretch:88%}
 .pull a{color:inherit;text-decoration:none}
 .pull a:hover{text-decoration:underline;text-decoration-color:var(--accent-line);text-underline-offset:.12em}
-.switch{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-4);margin-bottom:var(--s-5)}
-.switch ul{display:flex;flex-wrap:wrap;gap:0 var(--s-4);list-style:none}
+.switch{display:flex;align-items:center;gap:var(--s-2) var(--s-4);margin-bottom:var(--s-5)}
+.switch ul{display:flex;gap:0 var(--s-4);list-style:none;overflow-x:auto;scrollbar-width:none;padding:2px}
+.switch ul::-webkit-scrollbar{display:none}
+.switch li{flex:none}
+@media(max-width:599px){.switch .meta{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.switch ul{gap:0 14px}}
 .switch a{display:inline-flex;align-items:center;min-height:44px;color:var(--text-2);text-decoration:none;border-bottom:2px solid transparent}
 .switch a:hover{color:var(--text-1)}
 .switch a[aria-current="page"]{color:var(--text-1);border-bottom-color:var(--accent-line)}
+.wk:hover .mini{border-color:var(--line-3)}
