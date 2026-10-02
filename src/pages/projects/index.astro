@@ -3,9 +3,18 @@ import { getCollection } from "astro:content";
 import Base from "@/layouts/Base.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import builds from "@/data/builds.json";
+import profile from "@/data/profile.json";
+import { numWord, cap } from "@/lib/text";
 import { graph, breadcrumb, webPage, personRef, SITE } from "@/lib/schema";
 
 const work = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+const featured = work.filter((w) => w.data.flagship);
+const MORE = ["aws-backend-hipaa-eligible", "ai-agent-engineering-harness", "healthcare-integration-console", "multi-tenant-saas-architecture"];
+const more = MORE.map((id) => work.find((w) => w.id === id)!);
+const hiretrack = work.find((w) => w.id === "hiretrack")!;
+const portfolio = builds.find((b) => b.title === "This portfolio site")!;
+const smaller = builds.filter((b) => b !== portfolio);
+const research = work.find((w) => w.id === profile.paper.caseStudy.split("/")[2])!;
 const title = "Work: Backend, AI and Automation Systems";
 const description = "Case studies by Mubashir Rehman: AI backends, integrations, ERP agents, a production AWS backend, open-source tools and published research.";
 const canonical = `${SITE}/projects/`;
@@ -24,36 +33,85 @@ const schema = graph([
   <div class="wrap page-head">
     <Crumbs items={[{ name: "Work" }]} />
     <h1 class="h1">Selected work</h1>
-    <p class="lead">Case studies first, in the order I would read them. Each covers the problem, the system, the decisions, what broke and what came of it.</p>
+    <p class="lead">Case studies first. Each covers the problem, the system, the decisions, what broke and what came of it.</p>
   </div>
-  <section class="wrap" aria-labelledby="cs-h">
-    <h2 class="sr" id="cs-h">Case studies</h2>
+
+  <section class="wrap" aria-labelledby="feat-h">
+    <h2 class="label" id="feat-h">Featured</h2>
+    <p class="small">{cap(numWord(featured.length))} case studies, one per kind of work: {featured.map((w) => w.data.pillar.toLowerCase()).join(", ")}.</p>
     <ul class="works works--wide">
-      {work.map((w) => (
+      {featured.map((w) => (
         <li class="work">
           <div>
             <h3 class="work__title"><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
             <p class="work__sum">{w.data.summary}</p>
           </div>
-          <p class="work__side small">{w.data.pillar}<br />{w.data.period}</p>
+          <p class="work__side meta">{w.data.pillar}<br />{w.data.period}</p>
         </li>
       ))}
     </ul>
   </section>
+
+  <section class="sec wrap" aria-labelledby="more-h">
+    <h2 class="label" id="more-h">More systems</h2>
+    <p class="small">{cap(numWord(more.length))} more case studies.</p>
+    <ul class="works works--wide">
+      {more.map((w) => (
+        <li class="work">
+          <div>
+            <h3 class="work__title"><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
+            <p class="work__sum">{w.data.summary}</p>
+          </div>
+          <p class="work__side meta">{w.data.pillar}<br />{w.data.period}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="oss-h">
+    <h2 class="label" id="oss-h">Open source</h2>
+    <p class="small">Code you can read.</p>
+    <ul class="works works--wide">
+      <li class="work">
+        <div>
+          <h3 class="work__title"><a href={`/projects/${hiretrack.id}/`}>{hiretrack.data.title}</a></h3>
+          <p class="work__sum">{hiretrack.data.summary}</p>
+          <p class="small">{hiretrack.data.links.repo && <a class="link" href={hiretrack.data.links.repo}>Code</a>}{hiretrack.data.links.demo && <> · <a class="link" href={hiretrack.data.links.demo}>Live demo</a></>}</p>
+        </div>
+        <p class="work__side meta">{hiretrack.data.pillar}<br />{hiretrack.data.period}</p>
+      </li>
+      <li class="work">
+        <div>
+          <h3 class="work__title"><a href={portfolio.href}>{portfolio.title}</a></h3>
+          <p class="work__sum">{portfolio.line}</p>
+        </div>
+        <p class="work__side meta">{portfolio.year}</p>
+      </li>
+    </ul>
+  </section>
+
   <section class="sec wrap" id="smaller-builds" aria-labelledby="sb-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="h2" id="sb-h">Smaller builds</h2><p class="small">One line each. Work under NDA is described by function.</p></div>
-      <div class="sec__body">
-        <ul class="builds">
-          {builds.map((b) => (
-            <li class="build">
-              <b>{b.href ? <a class="link" href={b.href}>{b.title}</a> : b.title}</b>
-              <p>{b.line}</p>
-              <p class="yr small">{b.year}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+    <h2 class="label" id="sb-h">Smaller builds</h2>
+    <p class="small">One line each. Work under NDA is described by function.</p>
+    <ul class="builds">
+      {smaller.map((b) => (
+        <li class="build">
+          <b>{b.href ? <a class="link" href={b.href}>{b.title}</a> : b.title}</b>
+          <p>{b.line}</p>
+          <p class="yr meta">{b.year}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="res-h">
+    <h2 class="label" id="res-h">Research</h2>
+    <p class="small">Peer-reviewed, {profile.paper.publisher}, {profile.paper.year}.</p>
+    <article class="wk">
+      <h3><a href={profile.paper.caseStudy}>{profile.paper.title}</a></h3>
+      <p class="meta">{profile.paper.citation}</p>
+      <p><b>My part:</b> {profile.paper.contribution}</p>
+      <p class="small"><a class="link" href={profile.paper.url}>DOI {profile.paper.doi}</a> · <a class="link" href={profile.paper.arxiv}>arXiv preprint</a> · <a class="link" href={profile.paper.caseStudy}>How the study was built</a></p>
+    </article>
   </section>
 </Base>
