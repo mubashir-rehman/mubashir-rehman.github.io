@@ -19,7 +19,7 @@ npm run dev          # astro dev server (http://localhost:4321)
 npm run build        # astro build → outputs to dist/public/
 npm run preview      # preview the production build
 npm run lint         # eslint .
-npm test             # vitest run (one-shot) — currently broken, see Tests
+npm test             # vitest run (one-shot)
 npm run test:watch   # vitest watch mode
 ```
 
