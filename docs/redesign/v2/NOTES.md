@@ -115,3 +115,6 @@ Done against PLAN v2.3. Supersedes the P0 proposals in sections 3 to 5 where the
 - `/projects/`: Featured 3, More systems 4, Open source (HireTrack + portfolio build), Smaller builds (7 remaining), Research (ECG only). `/about/`: `#rules` id, education and stack/role-links sections. Counts computed via `src/lib/text.ts`.
 - Small-phone fix: at max-width 480 and max-height 700 the hero evidence line and label are hidden so résumé/email stay above the fold (viewport gate 320x568).
 - `global.css` grew to 34,470 bytes (from 32,921) because P1 appended helper rules; P2 must consolidate below the baseline.
+
+## 8. Chat is off (owner decision, main 0a18977)
+The owner switched the chat off site-wide in 0a18977 (no active LLM API key). `Base.astro` does not mount `AskDialog`; the home "Ask the engineer" section and example buttons were removed from the redesign, and the contact chat panel stays removed. `ask.ts`, `AskDialog.astro`, `askPrompt.ts` and `/ask-context.json` stay in the repo untouched (the empty-shell and build-on-open change in `ask.ts` remains, nothing loads it). Planned `ask.json` is cancelled. Built pages ship zero `.js` files (`find dist/public -name '*.js'` is empty). bun.lock was removed on main (4416080, 41f067c); never re-add it.

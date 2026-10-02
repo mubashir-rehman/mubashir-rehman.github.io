@@ -25,7 +25,6 @@ const utc = profile.location.timezone.match(/UTC[+-]\d+/)?.[0] ?? profile.locati
 const openTo = profile.availabilityShort.replace(/^Open to /, "");
 const openRoles = roles.filter((r) => r.slug === "backend" || r.slug === "ai-backend");
 const ym = (s: string) => (s === "present" ? "now" : new Date(`${s}-01`).toLocaleDateString("en-GB", { month: "short", year: "numeric" }));
-const ASK = ["What has he built alone?", "What has he actually done with AI?", "Show me a production failure he fixed."];
 const nn = (i: number) => String(i + 1).padStart(2, "0");
 
 const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, profile.seo.homeTitle, profile.seo.homeDescription, { about: { "@id": `${SITE}/#person` } })]);
@@ -134,19 +133,6 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
           <li><span class="meta">Open to</span><span>{openTo}: {openRoles.map((r, i) => <><a class="link" href={`/for/${r.slug}/`}>{r.label}</a>{i < openRoles.length - 1 ? ", " : ""}</>)}</span></li>
         </ul>
         <p class="small"><a class="link" href="/about/">Full background →</a></p>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec wrap" aria-labelledby="ask-h">
-    <div class="sec__grid">
-      <div class="sec__head"><h2 class="label" id="ask-h">Ask the engineer</h2></div>
-      <div class="sec__body">
-        <p class="lead">Answers come only from what is published here.</p>
-        <div class="ask-suggest">
-          {ASK.map((q) => <button class="btn btn--secondary btn--sm" type="button" data-ask-open data-ask-q={q}>{q}</button>)}
-        </div>
-        <noscript><p class="small">The chat needs JavaScript. Email me instead.</p></noscript>
       </div>
     </div>
   </section>
