@@ -126,3 +126,9 @@ Type A chosen by the owner (Archivo width axis + Martian Mono); no font files ad
 - Widths: 1160 container, `.sec__body--read` (720px) for rules, incidents, problems, Currently; `.sec--wide` (full width, label above) for Selected work. Project titles are the second-largest type (width axis, 88%).
 - Header: transparent at top, `is-stuck` (solid background, 1px rule) after 8px scroll, still sticky, hides on scroll down on phones; phone header is two rows (wordmark + theme + Résumé, then links).
 - Copy changes carried from the advisor: hero sentence is `profile.servicesLead` (moved from `services.astro`, also read there); home "interesting part" picks: dental decision 2 (38 words), social-signal decision 2 (42), erp decision 3 (37). Indexes live in `SPOTLIGHT` in `index.astro`.
+
+## 10. P3 (artifacts) record
+- Merged main's domain switch (d888ddd) cleanly; domain untouched.
+- `MiniDiagram` (3-per-row snake at >=600px, 2-per-row below, both inline SVG, `aria-hidden`, visible caption), `Incident`, `Artifact` (full and compact). All three 6-node chains look alike because the data edges are all chains; dental (5 nodes) differs. No edges were invented.
+- `--surface` (grey dark, camel light) lives in `global.css` and is used only behind MiniDiagram. Section labels sit above content at every width. No JS added (draw-on-view skipped). The trace "tiny squiggle" at 390px was the draw animation caught at 0.5 s; it is full width once drawn.
+- `global.css` 28,976 bytes. A leftover duplicate of the old base/type/layout block (including `.sec__head h2{max-width:16ch}`, the cause of wrapped labels) was removed.
