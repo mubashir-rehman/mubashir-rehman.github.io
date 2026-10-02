@@ -460,3 +460,5 @@ html{scroll-padding-top:148px}
 .cur{display:grid;gap:10px;margin:0;list-style:none}.cur li{display:grid;gap:2px 20px}
 @media(min-width:760px){.cur li{grid-template-columns:110px minmax(0,1fr)}}
 .close{padding-block:var(--sec-pad)}.close h2{max-width:22ch}
+.foot .foot__nav{display:flex}
+@media(max-width:480px) and (max-height:700px){.hero .meta{display:none}.hero{padding-top:12px}.hero__main .hero__id{margin-top:10px}.hero__main .actions{margin-top:12px}.hero .who__txt span{display:none}}

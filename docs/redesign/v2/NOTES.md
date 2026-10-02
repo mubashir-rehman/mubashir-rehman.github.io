@@ -105,3 +105,13 @@ New:
 ## 6. Deferred / not touched
 - Root `index.html`, `public/giscus-*.css`, `components.json`, `PUBLIC_GISCUS_*`, `projects.json` self-description: stale leftovers per CLAUDE.md; out of scope.
 - CLAUDE.md lines about tests/lint being broken and `src/index.css` tokens are stale (tests pass, lint clean, tokens in `src/styles/tokens.css`). Left for the advisor.
+
+## 7. P1 (structure) record
+Done against PLAN v2.3. Supersedes the P0 proposals in sections 3 to 5 where they differ (no `flagship` change, no `Artifact`/`work.ts`, home is three flagships).
+- Home: hero, 01 How I work (rules 1, 2, 3, 8), 02 Selected work (3 flagships, `broke[]` titles as tags, first decision as "The interesting part"; no MiniDiagram until P3), 03 When things break (first `broke[]` item of dental, social-signal, healthcare console; inline markup, `Incident` component is P3), 04 Where I usually get called (`problems.json`), 05 Currently, Ask the engineer (once), closing statement C.
+- Chat: `<dialog id="ask">` ships empty; `mountAsk()` in `src/scripts/ask.ts` builds it on first open; home buttons carry `data-ask-open data-ask-q`. Chat panel removed from `/contact/` (it was chat text outside the home block).
+- Header: wordmark + `profile.label` (hidden under 760px), Work/Writing/About/Contact, `Résumé ↗` text link, theme toggle. Header no longer takes `resume`; Base no longer passes it (its prop declaration is left).
+- Footer: three-line fourth-review version, all pages (no Contact, RSS, roles, email; those are reachable elsewhere).
+- `/projects/`: Featured 3, More systems 4, Open source (HireTrack + portfolio build), Smaller builds (7 remaining), Research (ECG only). `/about/`: `#rules` id, education and stack/role-links sections. Counts computed via `src/lib/text.ts`.
+- Small-phone fix: at max-width 480 and max-height 700 the hero evidence line and label are hidden so résumé/email stay above the fold (viewport gate 320x568).
+- `global.css` grew to 34,470 bytes (from 32,921) because P1 appended helper rules; P2 must consolidate below the baseline.
