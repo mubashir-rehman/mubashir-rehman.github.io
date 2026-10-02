@@ -39,7 +39,7 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
       <div class="hero__main">
         <div class="who">
           <Image src={headshot} alt={profile.name} width={48} height={48} loading="eager" class="who__img" />
-          <p class="who__txt"><strong>{profile.name}</strong><span>{profile.label}</span></p>
+          <p class="who__txt"><strong>{profile.name}</strong></p>
         </div>
         <h1 class="statement statement--home" id="hero-h">
           <span class="s1">{profile.heroLine[0]}</span> <span class="s2">{profile.heroLine[1]}</span> <span class="s3">{profile.heroLine[2]}</span>

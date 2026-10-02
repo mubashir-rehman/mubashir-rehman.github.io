@@ -63,7 +63,7 @@ const schema = graph([
           </nav>
         )}
         <div class="prose" style="margin-top:var(--s-7)"><Content /></div>
-        {d.rule && <div class="rule-line" style="margin-top:var(--s-7)"><b aria-hidden="true">*</b><p><span class="sr">The rule I took from this: </span>{d.rule}</p></div>}
+        {d.rule && <blockquote class="pull" style="margin-top:var(--s-7)"><p>{d.rule}</p><p class="meta">The rule I took from this</p></blockquote>}
         {d.faq?.length ? (
           <section style="margin-top:var(--s-7)" aria-labelledby="faq-h">
             <h2 class="h3" id="faq-h" style="margin-bottom:var(--s-5)">Questions</h2>
