@@ -1,0 +1,21 @@
+---
+// One failure in the site's grammar: SYMPTOM, CAUSE, FIX, verbatim from the case study's broke[].
+// Three columns with thin arrows on desktop, stacked on phones.
+interface Props {
+  title: string;
+  symptom: string;
+  cause: string;
+  fix: string;
+  href?: string;
+  from?: string;
+}
+const { title, symptom, cause, fix, href, from } = Astro.props;
+const cols = [["Symptom", symptom], ["Cause", cause], ["Fix", fix]];
+---
+<article class="inc">
+  <h3>{title}</h3>
+  <dl class="inc__cols">
+    {cols.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+  </dl>
+  {href && <p class="small"><a class="link" href={href}>{from} →</a></p>}
+</article>
