@@ -1,0 +1,32 @@
+---
+// A static, compact copy of a case study's system diagram: the same nodes and edges, laid out by
+// src/lib/diagram.ts, as inline SVG. Decorative for sighted visitors (aria-hidden); the caption is
+// the text alternative. No JavaScript.
+import { layoutMini } from "@/lib/diagram";
+
+interface Props {
+  id: string;
+  caption: string;
+  nodes: { id: string; label: string; text: string }[];
+  edges: [string, string][];
+}
+const { id, caption, nodes, edges } = Astro.props;
+const views: [string, ReturnType<typeof layoutMini>][] = [["m3", layoutMini(nodes, edges, 3)], ["m2", layoutMini(nodes, edges, 2)]];
+---
+<figure class="mini">
+  {views.map(([k, L]) => (
+    <svg class={k} viewBox={`0 0 ${L.W} ${L.H}`} aria-hidden="true" focusable="false">
+      <defs><marker id={`mh-${id}-${k}`} class="ah" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 1L9 5L0 9z" /></marker></defs>
+      {L.extras.map((d) => <path class="e e--x" d={d} />)}
+      {L.hops.map((d) => <path class="e" d={d} marker-end={`url(#mh-${id}-${k})`} />)}
+      {L.boxes.map((b) => (
+        <g>
+          <rect class="n" x={b.x} y={b.y} width={b.w} height={b.h} rx="2" />
+          <text class="t" x={b.x + 12} y={b.y + b.h / 2 + 4.5}>{b.label}</text>
+          <text class="k" x={b.x + b.w - 8} y={b.y + 13}>{b.n}</text>
+        </g>
+      ))}
+    </svg>
+  ))}
+  <figcaption>{caption}</figcaption>
+</figure>

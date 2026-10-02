@@ -61,3 +61,17 @@ export function layoutNarrow(nodes: DNode[], edges: [string, string][]): Layout 
   const boxes = nodes.map((n, i) => ({ ...n, n: i + 1, x: pad + 14, y: pad + 12 + i * (h + gy), w, h }));
   return finish(boxes, edges, pad * 2 + 14 + w + 40, pad * 2 + 12 + nodes.length * h + (nodes.length - 1) * gy);
 }
+
+// Compact layout for the home and index artifacts: small boxes, a snake of up to three per row.
+export function layoutMini(nodes: DNode[], edges: [string, string][], cols = 3): Layout {
+  const w = 148, h = 46, gx = 34, gy = 40, pad = 14;
+  const perRow = Math.min(cols, nodes.length);
+  const rows = Math.ceil(nodes.length / perRow);
+  const boxes = nodes.map((n, i) => {
+    const row = Math.floor(i / perRow);
+    let col = i % perRow;
+    if (row % 2 === 1) col = perRow - 1 - col;
+    return { ...n, n: i + 1, x: pad + col * (w + gx), y: pad + row * (h + gy), w, h };
+  });
+  return finish(boxes, edges, pad * 2 + perRow * w + (perRow - 1) * gx, pad * 2 + rows * h + (rows - 1) * gy);
+}
