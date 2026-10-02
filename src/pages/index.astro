@@ -6,14 +6,27 @@ import { Image } from "astro:assets";
 import headshot from "@/assets/mubashir-rehman.webp";
 import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
+import problems from "@/data/problems.json";
+import { numWord } from "@/lib/text";
 import { graph, website, personFull, webPage, SITE } from "@/lib/schema";
 
-const flagships = (await getCollection("work", (w) => w.data.flagship)).sort((a, b) => a.data.order - b.data.order);
-const posts = (await getCollection("journal", (p) => p.data.status === "published"))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 2);
+const work = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+const byId = (id: string) => work.find((w) => w.id === id)!;
+const flagships = work.filter((w) => w.data.flagship);
+const moreCount = work.length - flagships.length;
+const HOME_RULES = [1, 2, 3, 8];
+const rules = work.filter((w) => w.data.rule).map((w) => ({ ...w.data.rule!, slug: w.id, title: w.data.title })).sort((a, b) => a.n - b.n);
+const homeRules = HOME_RULES.map((n) => rules.find((r) => r.n === n)).filter(Boolean) as typeof rules;
+// One incident each from dental, social-signal and the healthcare console (the first listed).
+const incidents = ["dental-ai-front-desk", "social-signal-intelligence-backend", "healthcare-integration-console"].map((id) => ({ w: byId(id), b: byId(id).data.broke[0] }));
+const posts = (await getCollection("journal", (p) => p.data.status === "published")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 2);
 const resume = profile.resumes[profile.defaultResume as keyof typeof profile.resumes];
-const fmt = (d: Date) => d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+const utc = profile.location.timezone.match(/UTC[+-]\d+/)?.[0] ?? profile.location.timezone;
+const openTo = profile.availabilityShort.replace(/^Open to /, "");
+const openRoles = roles.filter((r) => r.slug === "backend" || r.slug === "ai-backend");
+const ym = (s: string) => (s === "present" ? "now" : new Date(`${s}-01`).toLocaleDateString("en-GB", { month: "short", year: "numeric" }));
+const ASK = ["What has he built alone?", "What has he actually done with AI?", "Show me a production failure he fixed."];
+const nn = (i: number) => String(i + 1).padStart(2, "0");
 
 const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, profile.seo.homeTitle, profile.seo.homeDescription, { about: { "@id": `${SITE}/#person` } })]);
 ---
@@ -22,71 +35,126 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
     <div class="hero__grid">
       <div class="hero__main">
         <div class="who">
-          <Image src={headshot} alt={profile.name} width={64} height={64} loading="eager" class="who__img" />
-          <p class="who__txt"><strong>{profile.name}</strong><span>{profile.jobTitle}, {profile.location.city}. {profile.yearsFullTime} years.</span></p>
+          <Image src={headshot} alt={profile.name} width={48} height={48} loading="eager" class="who__img" />
+          <p class="who__txt"><strong>{profile.name}</strong><span>{profile.label}</span></p>
         </div>
         <h1 class="statement statement--home" id="hero-h">
           <span class="s1">{profile.heroLine[0]}</span> <span class="s2">{profile.heroLine[1]}</span> <span class="s3">{profile.heroLine[2]}</span>
         </h1>
+        <p class="hero__id">{profile.roleLine}.</p>
+        <p class="meta">{profile.current.title}, {profile.current.employer} · leading {numWord(profile.current.teamSize)} engineers<br />{profile.yearsFullTime} years in production · {profile.location.city} · {utc} · {profile.availabilityShort}</p>
         <div class="actions">
           <a class="btn btn--primary btn--lg" href={resume.file}><svg class="i" aria-hidden="true"><use href="#i-download" /></svg>Download résumé (PDF)</a>
           <a class="btn btn--secondary btn--lg" href={`mailto:${profile.email}`}><svg class="i" aria-hidden="true"><use href="#i-mail" /></svg>Email me</a>
+          <a class="link" href="#work">See the work ↓</a>
         </div>
-        <p class="hero__id">{profile.positioning} Open to remote roles.</p>
-        <p class="router">Hiring for a specific role? {roles.map((r, i) => <><a href={`/for/${r.slug}/`}>{r.label}</a>{i < roles.length - 1 ? ", " : "."}</>)}</p>
-      </div>
-      <div class="hero__side">
-        <h2 class="label" id="sel-h">Selected work</h2>
-        <ul class="panels" aria-labelledby="sel-h">
-          {flagships.map((w) => (
-            <li class="panel">
-              <p class="panel__k">{w.data.pillar}</p>
-              <h3 class="panel__t"><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
-              <p class="panel__s">{w.data.outcome}</p>
-            </li>
-          ))}
-        </ul>
-        <p class="small" style="margin-top:12px"><a class="link" href="/projects/">All nine case studies</a></p>
+        <p class="router"><a href={`/for/${roles[0].slug}/`}>Hiring for a specific role? →</a></p>
       </div>
     </div>
     <Trace />
   </section>
 
-  {posts.length > 0 && (
-    <section class="sec wrap" aria-labelledby="writing-h">
-      <div class="sec__grid">
-        <div class="sec__head">
-          <h2 class="h2" id="writing-h">Latest writing</h2>
-          <p class="small"><a class="link" href="/journal/">All writing</a></p>
-        </div>
-        <div class="sec__body">
-          <ul class="panels panels--grid">
-            {posts.map((p) => (
-              <li class="panel">
-                <p class="panel__k"><time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time></p>
-                <h3 class="panel__t"><a href={`/journal/${p.id}/`}>{p.data.title}</a></h3>
-                <p class="panel__s">{p.data.lede}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
+  <section class="sec wrap" aria-labelledby="rules-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="label" id="rules-h">01 / How I work</h2></div>
+      <div class="sec__body">
+        <ol class="rules">
+          {homeRules.map((r) => (
+            <li class="rule">
+              <span class="rule__n" aria-hidden="true">{r.n}</span>
+              <div><p class="rule__t"><span class="sr">Rule {r.n}: </span>{r.text}</p><p class="rule__w meta">from: <a class="link" href={`/projects/${r.slug}/`}>{r.title}</a></p></div>
+            </li>
+          ))}
+        </ol>
+        <p class="small"><a class="link" href="/about/#rules">All {numWord(rules.length)} rules →</a></p>
       </div>
-    </section>
-  )}
+    </div>
+  </section>
+
+  <section class="sec wrap" id="work" aria-labelledby="work-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="label" id="work-h">02 / Selected work</h2></div>
+      <div class="sec__body">
+        {flagships.map((w, i) => (
+          <article class="wk">
+            <p class="meta">{nn(i)} · {w.data.pillar} · {w.data.period}</p>
+            <h3><a href={`/projects/${w.id}/`}>{w.data.title}</a></h3>
+            <p>{w.data.summary}</p>
+            {w.data.broke.length > 0 && <ul class="tags" aria-label="What broke">{w.data.broke.map((b) => <li class="tag">{b.title}</li>)}</ul>}
+            <p><b>The interesting part.</b> {w.data.decisions[0].chose} {w.data.decisions[0].why}</p>
+            <p class="small"><a class="link" href={`/projects/${w.id}/`}>Read the case study →</a></p>
+          </article>
+        ))}
+        <p class="small"><a class="link" href="/projects/">+ {moreCount} more case studies, open source and research →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="break-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="label" id="break-h">03 / When things break</h2></div>
+      <div class="sec__body">
+        {incidents.map(({ w, b }) => (
+          <article class="inc">
+            <h3>{b.title}</h3>
+            <dl class="dl">
+              <div><dt>Symptom</dt><dd>{b.symptom}</dd></div>
+              <div><dt>Cause</dt><dd>{b.cause}</dd></div>
+              <div><dt>Fix</dt><dd>{b.fix}</dd></div>
+            </dl>
+            <p class="small"><a class="link" href={`/projects/${w.id}/`}>{w.data.title} →</a></p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="called-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="label" id="called-h">04 / Where I usually get called</h2></div>
+      <div class="sec__body">
+        <ol class="works works--compact">
+          {problems.map((p, i) => (
+            <li class="work"><p class="work__title"><span class="meta">{nn(i)} </span><a href={`/projects/${p.slug}/`}>{p.h}</a></p></li>
+          ))}
+        </ol>
+        <p class="small"><a class="link" href="/services/">Problems I solve →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="now-h">
+    <div class="sec__grid">
+      <div class="sec__head"><h2 class="label" id="now-h">05 / Currently</h2></div>
+      <div class="sec__body">
+        <ul class="cur">
+          <li><span class="meta">Now</span><span>{profile.current.title} at {profile.current.employer}, leading {numWord(profile.current.teamSize)} engineers</span></li>
+          {posts.length > 0 && <li><span class="meta">Writing</span><span>{posts.map((p, i) => <><a class="link" href={`/journal/${p.id}/`}>{p.data.title}</a>{i < posts.length - 1 ? " · " : ""}</>)}</span></li>}
+          <li><span class="meta">Research</span><span><a class="link" href={profile.paper.url}>{profile.paper.journal}, {profile.paper.publisher}, {profile.paper.year}</a></span></li>
+          <li><span class="meta">Open to</span><span>{openTo}: {openRoles.map((r, i) => <><a class="link" href={`/for/${r.slug}/`}>{r.label}</a>{i < openRoles.length - 1 ? ", " : ""}</>)}</span></li>
+        </ul>
+        <p class="small"><a class="link" href="/about/">Full background →</a></p>
+      </div>
+    </div>
+  </section>
 
   <section class="sec wrap" aria-labelledby="ask-h">
     <div class="sec__grid">
-      <div class="sec__head"><h2 class="h2" id="ask-h">Questions about my work?</h2></div>
+      <div class="sec__head"><h2 class="label" id="ask-h">Ask the engineer</h2></div>
       <div class="sec__body">
-        <div class="ask">
-          <p class="lead">Ask the site. Answers come only from what is published here, and point to the page they come from.</p>
-          <div class="actions">
-            <button class="btn btn--secondary" type="button" data-ask-open>Ask about my work</button>
-            <a class="link" href={`/projects/hiretrack/`}>Or read some code: HireTrack</a>
-          </div>
-          <noscript><p class="small">The chat needs JavaScript. Email me instead.</p></noscript>
+        <p class="lead">Answers come only from what is published here.</p>
+        <div class="ask-suggest">
+          {ASK.map((q) => <button class="btn btn--secondary btn--sm" type="button" data-ask-open data-ask-q={q}>{q}</button>)}
         </div>
+        <noscript><p class="small">The chat needs JavaScript. Email me instead.</p></noscript>
       </div>
     </div>
+  </section>
+
+  <section class="sec close wrap" aria-labelledby="close-h">
+    <h2 class="h2" id="close-h">Tell me what the system is doing. Tell me what it should be doing.</h2>
+    <p class="actions"><a class="btn btn--primary btn--lg" href={`mailto:${profile.email}`}>{profile.email} →</a></p>
+    <p class="meta">{profile.location.city}, {profile.location.country} · {profile.availabilityShort}</p>
+    <p class="small"><a class="link" href={resume.file}>Download résumé</a></p>
   </section>
 </Base>
