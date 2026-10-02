@@ -29,10 +29,12 @@ Node 22 in CI. npm only (`package-lock.json`); do not add a `bun.lock`: Cloudfla
 
 Static Astro MPA, **no React and no Tailwind**. Every route renders at build time from data.
 
-- `src/data/profile.json`, `roles.json`, `builds.json`: identity, role pages, smaller builds. Single source for pages, JSON-LD, `llms.txt`, and the chat context.
+- `src/data/profile.json` (incl. `label`, `availabilityShort`, `servicesLead`), `roles.json`, `builds.json`, `problems.json` (shared by home and `/services/`): identity, role pages, smaller builds. Single source for pages, JSON-LD, `llms.txt`, and the chat context.
 - `src/content/work/*.md`: case studies (frontmatter only, schema in `src/content.config.ts`). `src/content/journal/*.md`: posts with `status: published | draft | archived`; only published posts are built, archived ones with `redirectTo` get a redirect.
-- `src/layouts/Base.astro`: head (title rule, canonical, OG, one JSON-LD graph via `src/lib/schema.ts`), header, footer, chat dialog.
-- `src/components/`: Header, Footer, Diagram (explorable system diagram, laid out by `src/lib/diagram.ts`), Trace, AskDialog. `src/scripts/ask.ts` is the chat client, loaded on open.
+- `src/layouts/Base.astro`: head (title rule, canonical, OG, one JSON-LD graph via `src/lib/schema.ts`), header, footer (chat dialog is unmounted, see below).
+- `src/components/`: Header, Footer, Diagram (explorable, case pages), MiniDiagram (static compact copy on a `--surface` panel, from the same nodes and edges), Artifact (case study row, full and compact), Incident (SYMPTOM, CAUSE, FIX), Trace, plus the dormant AskDialog. The role switcher is markup in `src/pages/for/[role].astro`. `src/lib/text.ts` spells out computed counts (`numWord`); never hardcode counts.
+- **Chat is off by owner decision** (main 0a18977): `Base.astro` does not mount `AskDialog`; `ask.ts`, `askPrompt.ts`, `/ask-context.json` stay for later. Built pages ship zero `.js` files; keep it that way.
+- **Redesign v2 rules** (docs/redesign/v2/PLAN.md, NOTES.md): Martian Mono, uppercase, for metadata and labels only; the grey/camel `--surface` only behind diagrams; gold only on the trace (and the post callout rule); purple is the one UI accent; flat 1px dividers, no shadows or tinted panels; no new facts, numbers or names.
 - Design tokens are generated: edit `design/tokens.mjs`, run `npm run tokens` to rewrite `src/styles/tokens.css`. Everything else lives in `src/styles/global.css`.
 - `scripts/check-dist.mjs` is the post-build gate (one h1, canonical equals sitemap, title/description length, JSON-LD, links, no em dashes or banned words). `npm run build` runs it. Set `NDA_DENYLIST` to a private file to also scan for names that must never publish.
 - `scripts/og.mjs` regenerates the social card and icons.
