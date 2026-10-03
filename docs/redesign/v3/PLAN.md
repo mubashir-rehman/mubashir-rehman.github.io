@@ -98,8 +98,8 @@ styles), or on purple (white, white underline). Defined once at the end of `src/
 
 ## Open items
 
-- Agentic engineering case study: written as `agent-skills-and-model-routing` (rule 10) from the owner's account
-  on 2026-10-02. Owner to confirm the period ("2026 to present") and status wording.
+- Agentic engineering case study: written as `agent-skills-and-model-routing` (rule 10). Period "2026 to present"
+  confirmed by the owner on 2026-10-03; the status line ("In use on the projects I lead") is still unconfirmed.
 - Toolbox "Agentic engineering" card is on the dev branch; owner to decide whether it goes live now or with the case study.
 - Hero tagline: the long `heroLine` is live; the shorter wording would let the headline grow.
 - Light-mode portrait: done (Portrait.astro swaps by theme on home, About and Contact).
