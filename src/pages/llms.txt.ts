@@ -4,6 +4,7 @@ import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import profile from "@/data/profile.json";
 import roles from "@/data/roles.json";
+import toolbox from "@/data/toolbox.json";
 import { SITE } from "@/lib/schema";
 
 export const GET: APIRoute = async () => {
@@ -11,6 +12,7 @@ export const GET: APIRoute = async () => {
   const posts = (await getCollection("journal", (p) => p.data.status === "published")).sort(
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
   );
+  const rules = work.filter((w) => w.data.rule).map((w) => ({ ...w.data.rule!, slug: w.id, title: w.data.title })).sort((a, b) => a.n - b.n);
   const lines = [
     `# ${profile.name}`,
     "",
@@ -26,6 +28,16 @@ export const GET: APIRoute = async () => {
     "## Case studies",
     ...work.map((w) => `- [${w.data.title}](${SITE}/projects/${w.id}/): ${w.data.summary}`),
     "",
+    "## How I work",
+    ...rules.map((r) => `- Rule ${r.n}: ${r.text} (from [${r.title}](${SITE}/projects/${r.slug}/))`),
+    "",
+    "## Toolbox",
+    "Daily tools first; then tools used in production; project exposure and tools used before are marked.",
+    ...toolbox.areas.map((a) => {
+      const parts = [`daily: ${a.daily.join(", ")}`, a.production.length ? `production: ${a.production.join(", ")}` : "", a.exposure.length ? `project exposure: ${a.exposure.join(", ")}` : "", a.earlier.length ? `used before: ${a.earlier.join(", ")}` : ""].filter(Boolean);
+      return `- ${a.name}: ${parts.join("; ")}`;
+    }),
+    "",
     "## Writing",
     ...posts.map((p) => `- [${p.data.title}](${SITE}/journal/${p.id}/): ${p.data.lede}`),
     "",
@@ -34,6 +46,7 @@ export const GET: APIRoute = async () => {
     "",
     "## Profiles",
     `- [About](${SITE}/about/)`,
+    `- [Contact](${SITE}/contact/)`,
     `- [GitHub](${profile.links.github})`,
     `- [LinkedIn](${profile.links.linkedin})`,
     `- [Google Scholar](${profile.links.scholar})`,
