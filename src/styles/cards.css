@@ -40,7 +40,7 @@
 .j-trace .trace .ln{stroke:var(--signal-text);stroke-width:2}
 
 /* ---- section heads: a big gradient numeral, the h2 and one line */
-.j-part{padding-top:clamp(72px,9vw,110px)}
+.j-part{padding-top:clamp(56px,6vw,88px)}
 .j-head{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:end;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--line-2)}
 .j-num{font-family:var(--font-display);font-size:var(--t-display);font-weight:250;line-height:.85;letter-spacing:-.04em;
   background:linear-gradient(180deg,var(--accent2),var(--accent-bright));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -318,16 +318,17 @@
 @media(max-width:1060px){.jr-body{grid-template-columns:minmax(0,1fr)}.jr-toc{display:none}.jr-main{margin-inline:auto}}
 
 /* ---- contact, 404 */
-.ct-hero{margin-top:0}
-.ct-hero h1{font-family:var(--font-display);font-size:var(--fs-h1);font-weight:700;letter-spacing:-.03em;line-height:1.05}
-.ct-line{margin-top:12px!important;font-family:var(--font-display);font-size:var(--t-h2);font-weight:500;line-height:1.15;letter-spacing:-.02em;max-width:22ch;color:#fff}
-.ct-lead{margin-top:14px!important;color:#f1e9ff;font-size:var(--t-lead)}
-.ct-grid{margin-top:14px}
+.ct-hero{margin-top:0;grid-column:span 8;grid-template-columns:minmax(0,1fr);align-content:space-between;gap:24px}
+.ct-hero h1{font-family:var(--font-display);font-size:clamp(2.2rem,1.6rem + 2vw,3.2rem);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.ct-line{margin-top:10px!important;font-family:var(--font-display);font-size:clamp(1.35rem,1.1rem + .9vw,1.85rem);font-weight:500;line-height:1.2;letter-spacing:-.015em;max-width:26ch;color:#fff}
+.ct-lead{margin-top:12px!important;color:#f1e9ff;font-size:var(--t-body)}
+.ct-end{grid-auto-flow:row}
+.ct-grid{margin-top:0}
 .ct-photo{grid-column:span 4}
-@media(min-width:861px){.ct-photo{min-height:320px}}
-.ct-glance{grid-column:span 8}
+@media(min-width:861px){.ct-photo{min-height:300px}}
+.ct-glance{grid-column:span 4}
 .ct-glance .wk-links a{font-size:.95rem}
-.ct-way{grid-column:span 6}
+.ct-way{grid-column:span 4}
 .nf-hero{grid-column:1/-1}
 .nf-trace .trace{margin-top:8px}
 .nf-way{grid-column:span 4}
