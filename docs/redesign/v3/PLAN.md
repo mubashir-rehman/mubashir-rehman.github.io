@@ -89,6 +89,13 @@ actions pinned to the bottom, and one side card. Both cards are 430px tall from 
 y and put the h1 at the same y on every page (checked across all 22 inner pages at five widths). New pages must use
 it; content that does not fit is cut down, not given a taller card.
 
+### Rule: five link roles
+
+Every text link is one of: inline (inside a sentence: accent, thin accent underline, weight of the text),
+action (a standalone link that moves you on: accent, semibold, small, underline on hover), title (a linked
+heading: heading colour, underline on hover), navigation (header, footer, breadcrumb, spine, pills: menu
+styles), or on purple (white, white underline). Defined once at the end of `src/styles/cards.css`.
+
 ## Open items
 
 - Agentic engineering case study: written as `agent-skills-and-model-routing` (rule 10) from the owner's account

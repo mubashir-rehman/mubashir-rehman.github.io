@@ -385,3 +385,24 @@
 .pt .ro-switch a{min-height:24px;padding:0 10px;font-size:.78rem;line-height:1}
 .pt-main,.pt-main--purple{padding:clamp(22px,2.4vw,30px)}
 .pt .ro-switch{height:calc(var(--t-small) * 1.6);align-items:center}
+
+/* ---- link roles (the design language). Five roles; every text link belongs to one.
+   1 inline: a link inside a sentence. Accent colour, thin accent underline, weight of the text around it.
+   2 action: a standalone link that moves you on ("Read the case study →", "Proof: …", "Code").
+     Accent colour, semibold, small, no underline until hover.
+   3 title: a card or page title that links. Heading colour, underline only on hover.
+   4 navigation: header, footer, breadcrumb, side spine, role pills. Styled as menus, not here.
+   5 on purple: any text link inside a purple card. White with a white underline. */
+.prose a,.link,.j-a a,.pt-lead a,.j-eyebrow a,.cs-glance dd:not(.wk-links) a,.jr-hero a{
+  color:var(--accent-text);font-weight:inherit;font-size:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em;
+  text-decoration-color:color-mix(in srgb,var(--accent-text) 45%,transparent)}
+.prose a:hover,.link:hover,.j-a a:hover,.pt-lead a:hover,.j-eyebrow a:hover,.cs-glance dd:not(.wk-links) a:hover{text-decoration-thickness:2px;text-decoration-color:currentColor}
+.j-more a,.j-proof a,.j-deliver .j-proof a,.ab-rule .j-proof a,.j-zc .j-proof a,.wk-links a,.ct-glance .wk-links a,.cs-also a{
+  color:var(--accent-text);font-weight:600;font-size:var(--t-small);text-decoration:none}
+.j-more a:hover,.j-proof a:hover,.j-deliver .j-proof a:hover,.ab-rule .j-proof a:hover,.wk-links a:hover,.cs-also a:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+.j-proof{font-size:var(--t-small)}
+.j-card h3 a,.jr-post h2 a,.cs-rule a{text-decoration:none}
+.j-card h3 a:hover,.jr-post h2 a:hover{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.18em;text-decoration-color:var(--accent-line)}
+.j-contact a:not(.btn),.pt-main--purple .crumbs a{color:#fff;font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em;text-decoration-color:rgba(255,255,255,.55)}
+.pt-main--purple .crumbs a{font-weight:inherit}
+.j-contact a:not(.btn):hover{text-decoration-color:#fff;text-decoration-thickness:2px}
