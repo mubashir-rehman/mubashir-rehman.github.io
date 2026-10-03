@@ -2,6 +2,7 @@
 // Low-profile by design: not in the nav, no pricing, no packages. A candid statement of the
 // problems I like, each backed by the case study that shows it, and how working together starts.
 import Base from "@/layouts/Base.astro";
+import PageTop from "@/components/PageTop.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import SecHead from "@/components/SecHead.astro";
 import Icon from "@/components/Icon.astro";
@@ -22,19 +23,14 @@ const start = [
 ---
 <Base title={title} description={description} path="/services/" schema={schema}>
   <div class="j wrap">
-    <Crumbs items={[{ name: "Problems I solve" }]} />
-    <div class="j-grid">
-      <header class="j-card cs-hero wk-hero">
-        <p class="j-eyebrow"><b>Problems I solve</b> · {profile.location.city}, {profile.availabilityShort.toLowerCase()}</p>
-        <h1>Problems I solve</h1>
-        <p class="j-lead">{profile.servicesLead}</p>
-        <p class="j-cta"><a class="btn btn--primary btn--lg" href={mail}><Icon name="mail" size={18} />Describe the problem</a></p>
-      </header>
-      <aside class="j-card wk-how" aria-labelledby="start-h">
+    <PageTop crumbs={[{ name: "Problems I solve" }]} title="Problems I solve" lead={profile.servicesLead}>
+      <p slot="eyebrow" class="j-eyebrow"><b>Problems I solve</b> · {profile.location.city}, {profile.availabilityShort.toLowerCase()}</p>
+      <Fragment slot="actions"><a class="btn btn--primary btn--lg" href={mail}><Icon name="mail" size={18} />Describe the problem</a></Fragment>
+      <aside slot="side" class="j-card wk-how pt-side" aria-labelledby="start-h">
         <h2 class="j-eyebrow" id="start-h">How it starts</h2>
         <ol>{start.map((x, i) => <li><span>{String(i + 1).padStart(2, "0")}</span><div><b>{x.h}.</b> {x.p}</div></li>)}</ol>
       </aside>
-    </div>
+    </PageTop>
 
     <section class="j-part" aria-labelledby="p-h">
       <SecHead n="01" id="p-h" h="If you have one of these" p="Each one is backed by a case study." />

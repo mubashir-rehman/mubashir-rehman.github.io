@@ -82,6 +82,13 @@ and a screenshot plus axe pass per page before going live.
   index and posts, Contact, 404. Work page open source is three cards (HireTrack, this site, The Quetta Tea 2.0).
 - Next: phone polish across every page.
 
+### Rule: one page top
+
+Every inner page opens with `PageTop.astro`: breadcrumb inside the main card, an eyebrow line, the h1, a lead,
+actions pinned to the bottom, and one side card. Both cards are 430px tall from 1000px wide up, start at the same
+y and put the h1 at the same y on every page (checked across all 22 inner pages at five widths). New pages must use
+it; content that does not fit is cut down, not given a taller card.
+
 ## Open items
 
 - Agentic engineering case study: written as `agent-skills-and-model-routing` (rule 10) from the owner's account

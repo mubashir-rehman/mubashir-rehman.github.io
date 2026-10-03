@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "@/layouts/Base.astro";
+import PageTop from "@/components/PageTop.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import SecHead from "@/components/SecHead.astro";
 import Spine from "@/components/Spine.astro";
@@ -29,18 +30,15 @@ const schema = graph([
 ---
 <Base title={title} description={description} path="/about/" schema={schema}>
   <div class="j wrap ab">
-    <Crumbs items={[{ name: "About" }]} />
-    <div class="j-grid">
-      <header class="j-card cs-hero ab-hero">
-        <p class="j-eyebrow"><b>{profile.label}</b> · {profile.location.city}, {profile.availabilityShort.toLowerCase()}</p>
-        <h1>About {profile.name}</h1>
-        <p class="j-lead">{profile.bio.about[0]}</p>
-        <p class="j-cta">
-          <a class="btn btn--primary btn--lg" href={resume.file}><Icon name="download" size={18} />Download résumé</a>
-          <a class="btn btn--secondary btn--lg" href={`mailto:${profile.email}`}><Icon name="mail" size={18} />Email me</a>
-        </p>
-      </header>
-      <Portrait class="ab-photo" right={`${profile.location.city} · ${profile.location.timezone.match(/UTC[+-]\d+/)?.[0]}`} />
+    <PageTop crumbs={[{ name: "About" }]} title={`About ${profile.name}`} lead={profile.bio.about[0]}>
+      <p slot="eyebrow" class="j-eyebrow"><b>{profile.label}</b> · {profile.location.city}, {profile.availabilityShort.toLowerCase()}</p>
+      <Fragment slot="actions">
+        <a class="btn btn--primary btn--lg" href={resume.file}><Icon name="download" size={18} />Download résumé</a>
+        <a class="btn btn--secondary btn--lg" href={`mailto:${profile.email}`}><Icon name="mail" size={18} />Email me</a>
+      </Fragment>
+      <Portrait slot="side" class="pt-side" right={`${profile.location.city} · ${profile.location.timezone.match(/UTC[+-]\d+/)?.[0]}`} />
+    </PageTop>
+    <div class="j-grid pt-next">
       <div class="j-card ab-bio">
         {profile.bio.about.slice(1).map((p) => <p>{p}</p>)}
       </div>

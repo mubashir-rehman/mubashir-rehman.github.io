@@ -1,5 +1,6 @@
 ---
 import Base from "@/layouts/Base.astro";
+import PageTop from "@/components/PageTop.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import Icon from "@/components/Icon.astro";
 import Portrait from "@/components/Portrait.astro";
@@ -20,20 +21,18 @@ const schema = graph([
 ---
 <Base title={title} description={description} path="/contact/" schema={schema}>
   <div class="j wrap">
-    <Crumbs items={[{ name: "Contact" }]} />
-    <div class="j-grid ct-grid">
-      <section class="j-card j-contact ct-hero" aria-labelledby="ct-h">
-        <div>
-          <h1 id="ct-h">Contact</h1>
-          <p class="ct-line">Tell me what the system is doing. Tell me what it should be doing.</p>
-          <p class="ct-lead">Email is fastest. A role or a problem, in two lines, is enough.</p>
-        </div>
-        <div class="j-contact__end ct-end">
-          <p>{profile.location.city}, {profile.location.country} · {profile.location.timezone}</p>
-          <a class="btn btn--lg j-contact__btn" href={`mailto:${profile.email}`}><Icon name="mail" size={18} />{profile.email}</a>
-        </div>
-      </section>
-      <Portrait class="ct-photo" right={profile.jobTitle} />
+    <PageTop purple crumbs={[{ name: "Contact" }]} title="Contact">
+      <p slot="eyebrow" class="j-eyebrow ct-eyebrow">{profile.location.city}, {profile.location.country} · {profile.location.timezone} · {profile.availabilityShort}</p>
+      <Fragment slot="extra">
+        <p class="ct-line">Tell me what the system is doing. Tell me what it should be doing.</p>
+        <p class="ct-lead">Email is fastest. A role or a problem, in two lines, is enough.</p>
+      </Fragment>
+      <Fragment slot="actions">
+        <a class="btn btn--lg j-contact__btn" href={`mailto:${profile.email}`}><Icon name="mail" size={18} />{profile.email}</a>
+      </Fragment>
+      <Portrait slot="side" class="pt-side" right={profile.jobTitle} />
+    </PageTop>
+    <div class="j-grid pt-next">
       <aside class="j-card cs-glance ct-glance" aria-label="Details">
         <p class="j-eyebrow">Details</p>
         <dl>

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import Base from "@/layouts/Base.astro";
+import PageTop from "@/components/PageTop.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import Icon from "@/components/Icon.astro";
 import profile from "@/data/profile.json";
@@ -44,13 +45,17 @@ const schema = graph([
 ---
 <Base title={title} description={d.description} path={path} schema={schema} article={{ published: d.date, modified: d.updated, section: types[d.type], tags: d.tags }}>
   <article class="j wrap jr">
-    <Crumbs items={[{ name: "Writing", path: "/journal/" }, { name: d.title }]} />
-    <header class="j-card cs-hero jr-hero">
-      <p class="j-eyebrow"><b>{types[d.type]}</b> · <time datetime={d.date.toISOString()}>{fmt(d.date)}</time>{d.updated && <> · Updated <time datetime={d.updated.toISOString()}>{fmt(d.updated)}</time></>} · {minutes} minute read · By <a href="/about/">{profile.name}</a></p>
-      <h1>{d.title}</h1>
-      <p class="j-lead">{d.lede}</p>
-      {d.note && <p class="post__note">{d.note}</p>}
-    </header>
+    <PageTop crumbs={[{ name: "Writing", path: "/journal/" }, { name: d.title }]} title={d.title} lead={d.lede}>
+      <p slot="eyebrow" class="j-eyebrow"><b>{types[d.type]}</b> · {minutes} minute read</p>
+      <aside slot="side" class="j-card cs-glance pt-side" aria-label="About this post">
+        <p class="j-eyebrow">About this post</p>
+        <dl>
+          <div><dt>Published</dt><dd><time datetime={d.date.toISOString()}>{fmt(d.date)}</time>{d.updated && <span class="cs-asof">, updated <time datetime={d.updated.toISOString()}>{fmt(d.updated)}</time></span>}</dd></div>
+          <div><dt>By</dt><dd><a href="/about/">{profile.name}</a></dd></div>
+          {d.note && <div><dt>Note</dt><dd class="jr-note">{d.note}</dd></div>}
+        </dl>
+      </aside>
+    </PageTop>
     <div class="jr-body">
       {h2s.length >= 3 && words > 700 && (
         <nav aria-label="On this page" class="cs-toc jr-toc">

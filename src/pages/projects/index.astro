@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "@/layouts/Base.astro";
+import PageTop from "@/components/PageTop.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import SecHead from "@/components/SecHead.astro";
 import Icon from "@/components/Icon.astro";
@@ -47,18 +48,13 @@ const schema = graph([
 ---
 <Base title={title} description={description} path="/projects/" schema={schema}>
   <div class="j wrap wk-page">
-    <Crumbs items={[{ name: "Work" }]} />
-    <div class="j-grid">
-      <header class="j-card cs-hero wk-hero">
-        <p class="j-eyebrow"><b>Work</b> · {cap(numWord(work.length))} case studies</p>
-        <h1>Selected work</h1>
-        <p class="j-lead">Systems I built, took over or designed, with the decisions behind them and what broke along the way. Work under NDA is described by function, never by name.</p>
-      </header>
-      <aside class="j-card wk-how" aria-labelledby="how-h">
+    <PageTop crumbs={[{ name: "Work" }]} title="Selected work" lead="Systems I built, took over or designed, with the decisions behind them and what broke along the way. Work under NDA is described by function, never by name.">
+      <p slot="eyebrow" class="j-eyebrow"><b>Work</b> · {cap(numWord(work.length))} case studies</p>
+      <aside slot="side" class="j-card wk-how pt-side" aria-labelledby="how-h">
         <h2 class="j-eyebrow" id="how-h">How each case study reads</h2>
         <ol>{steps.map((x, i) => <li><span>{String(i + 1).padStart(2, "0")}</span>{x}</li>)}</ol>
       </aside>
-    </div>
+    </PageTop>
 
     <section class="j-part" aria-labelledby="feat-h">
       <SecHead n={S.featured} id="feat-h" h="Featured" p={`One per kind of work: ${featured.map((w) => w.data.pillar).join(", ")}.`} />

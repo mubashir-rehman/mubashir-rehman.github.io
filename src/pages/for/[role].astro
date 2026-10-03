@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "@/layouts/Base.astro";
+import PageTop from "@/components/PageTop.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import SecHead from "@/components/SecHead.astro";
 import Icon from "@/components/Icon.astro";
@@ -26,22 +27,16 @@ const schema = graph([
 ---
 <Base title={role.seoTitle} description={role.description} path={path} schema={schema} resume={role.slug as never}>
   <div class="j wrap">
-    <Crumbs items={[{ name: `Hiring: ${role.label}` }]} />
-    <nav class="switch ro-switch" aria-label="Role pages">
-      <span class="j-eyebrow">Hiring for</span>
-      <ul>{roles.map((r) => <li><a href={`/for/${r.slug}/`} aria-current={r.slug === role.slug ? "page" : undefined}>{r.label}</a></li>)}</ul>
-    </nav>
-    <div class="j-grid">
-      <header class="j-card cs-hero wk-hero">
-        <p class="j-eyebrow"><b>Hiring for</b> · {role.label}</p>
-        <h1>{role.h1}</h1>
-        <p class="j-lead">{role.fit}</p>
-        <p class="j-cta">
-          <a class="btn btn--primary btn--lg" href={resume.file}><Icon name="download" size={18} />Résumé for {role.label} (PDF)</a>
-          <a class="btn btn--secondary btn--lg" href={`mailto:${profile.email}`}><Icon name="mail" size={18} />Email me</a>
-        </p>
-      </header>
-      <aside class="j-card cs-glance" aria-labelledby="prac-h">
+    <PageTop crumbs={[{ name: `Hiring: ${role.label}` }]} title={role.h1} lead={role.fit}>
+      <nav slot="eyebrow" class="switch ro-switch" aria-label="Role pages">
+        <span class="j-eyebrow">Hiring for</span>
+        <ul>{roles.map((r) => <li><a href={`/for/${r.slug}/`} aria-current={r.slug === role.slug ? "page" : undefined}>{r.label}</a></li>)}</ul>
+      </nav>
+      <Fragment slot="actions">
+        <a class="btn btn--primary btn--lg" href={resume.file}><Icon name="download" size={18} />Résumé for {role.label} (PDF)</a>
+        <a class="btn btn--secondary btn--lg" href={`mailto:${profile.email}`}><Icon name="mail" size={18} />Email me</a>
+      </Fragment>
+      <aside slot="side" class="j-card cs-glance pt-side" aria-labelledby="prac-h">
         <h2 class="j-eyebrow" id="prac-h">Practicalities</h2>
         <dl>
           <div><dt>Based in</dt><dd>{profile.location.city}, {profile.location.country} · {profile.location.timezone}</dd></div>
@@ -50,7 +45,7 @@ const schema = graph([
           <div><dt>Now</dt><dd>{profile.current.title}, {profile.current.employer}</dd></div>
         </dl>
       </aside>
-    </div>
+    </PageTop>
 
     <section class="j-part" aria-labelledby="ev-h">
       <SecHead n="01" id="ev-h" h="Evidence" p={`${cap(numWord(role.evidence.length))} builds that match this role.`} />

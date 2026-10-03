@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
 import Base from "@/layouts/Base.astro";
+import PageTop from "@/components/PageTop.astro";
 import Crumbs from "@/components/Crumbs.astro";
 import Diagram from "@/components/Diagram.astro";
 import Icon from "@/components/Icon.astro";
@@ -66,21 +67,16 @@ const fmt = (x: Date) => x.toLocaleDateString("en-GB", { day: "numeric", month: 
 ---
 <Base title={title} description={d.description} path={path} schema={schema} article={{ published: d.asOf ?? new Date("2026-09-29"), section: "Case study", tags: d.stack.slice(0, 4) }} resume={(role?.slug as never) ?? undefined}>
   <article class="j wrap cs">
-    <Crumbs items={[{ name: "Work", path: "/projects/" }, { name: d.title }]} />
-    <div class="j-grid cs-top">
-      <header class="j-card cs-hero">
-        <p class="j-eyebrow"><b>{d.pillar}</b> · {d.period}</p>
-        <h1>{d.title}</h1>
-        <p class="j-lead">{d.summary}</p>
-        {(d.links.repo || d.links.demo || d.links.paper) && (
-          <p class="j-cta">
-            {d.links.repo && <a class="btn btn--secondary" href={d.links.repo}>View the code<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
-            {d.links.demo && <a class="btn btn--secondary" href={d.links.demo}>View the demo<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
-            {d.links.paper && <a class="btn btn--secondary" href={d.links.paper}>Read the paper<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
-          </p>
-        )}
-      </header>
-      <aside class="j-card cs-glance" aria-label="At a glance">
+    <PageTop crumbs={[{ name: "Work", path: "/projects/" }, { name: d.title }]} title={d.title} lead={d.summary}>
+      <p slot="eyebrow" class="j-eyebrow"><b>{d.pillar}</b> · {d.period}</p>
+      {(d.links.repo || d.links.demo || d.links.paper) && (
+        <Fragment slot="actions">
+          {d.links.repo && <a class="btn btn--secondary" href={d.links.repo}>View the code<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
+          {d.links.demo && <a class="btn btn--secondary" href={d.links.demo}>View the demo<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
+          {d.links.paper && <a class="btn btn--secondary" href={d.links.paper}>Read the paper<svg class="i" aria-hidden="true"><use href="#i-ext" /></svg></a>}
+        </Fragment>
+      )}
+      <aside slot="side" class="j-card cs-glance pt-side" aria-label="At a glance">
         <p class="j-eyebrow">At a glance</p>
         <dl>
           <div><dt>Role</dt><dd>{d.role.split(":")[0]}</dd></div>
@@ -88,7 +84,7 @@ const fmt = (x: Date) => x.toLocaleDateString("en-GB", { day: "numeric", month: 
           <div><dt>Outcome</dt><dd>{d.outcome}</dd></div>
         </dl>
       </aside>
-    </div>
+    </PageTop>
 
     <div class="cs-body">
       <nav class="cs-toc" aria-label="On this page">

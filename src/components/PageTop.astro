@@ -1,0 +1,28 @@
+---
+// The top of every inner page: one main card (breadcrumb, eyebrow, h1, lead, actions) and one
+// side card, always the same size and in the same place, so moving between pages never shifts.
+// The side card is passed in the "side" slot and must carry the class "pt-side".
+import Crumbs from "@/components/Crumbs.astro";
+
+interface Props {
+  crumbs: { name: string; path?: string }[];
+  title: string;
+  lead?: string;
+  purple?: boolean;
+  id?: string;
+}
+const { crumbs, title, lead, purple = false, id = "pt-h" } = Astro.props;
+---
+<div class="j-grid pt">
+  <header class:list={["j-card pt-main", purple ? "j-contact pt-main--purple" : "cs-hero"]} aria-labelledby={id}>
+    <Crumbs items={crumbs} />
+    <div class="pt-body">
+      <slot name="eyebrow" />
+      <h1 id={id}>{title}</h1>
+      {lead && <p class="pt-lead">{lead}</p>}
+      <slot name="extra" />
+    </div>
+    {Astro.slots.has("actions") && <div class="pt-actions"><slot name="actions" /></div>}
+  </header>
+  <slot name="side" />
+</div>

@@ -1,5 +1,6 @@
 ---
 import Base from "@/layouts/Base.astro";
+import PageTop from "@/components/PageTop.astro";
 import Trace from "@/components/Trace.astro";
 import Icon from "@/components/Icon.astro";
 const ways = [
@@ -10,20 +11,13 @@ const ways = [
 ---
 <Base title="Page Not Found" description="That address does not exist on mubashirrehman.com, or the page moved. Try the home page, the work index or the writing." path="/404/" noindex>
   <div class="j wrap">
-    <div class="j-grid">
-      <header class="j-card cs-hero nf-hero">
-        <p class="j-eyebrow"><b>404</b> · Page not found</p>
-        <h1>Nothing here.</h1>
-        <p class="j-lead">That address does not exist, or the page moved. Try one of these.</p>
-        <div class="nf-trace"><Trace /></div>
-      </header>
-      {ways.map((w) => (
-        <a class="j-card cs-nextcard nf-way" href={w.href}>
-          <span class="j-ico"><Icon name={w.icon as any} /></span>
-          <p class="cs-nextcard__t">{w.h}</p>
-          <p class="j-a">{w.p}</p>
-        </a>
-      ))}
-    </div>
+    <PageTop crumbs={[{ name: "Page not found" }]} title="Nothing here." lead="That address does not exist, or the page moved. Try one of these.">
+      <p slot="eyebrow" class="j-eyebrow"><b>404</b> · Page not found</p>
+      <div slot="extra" class="nf-trace"><Trace /></div>
+      <nav slot="side" class="j-card wk-how pt-side nf-ways" aria-labelledby="ways-h">
+        <h2 class="j-eyebrow" id="ways-h">Ways back</h2>
+        <ul>{ways.map((w) => <li><a href={w.href}><span class="j-ico j-ico--sm"><Icon name={w.icon as any} size={18} /></span><span><b>{w.h}</b><small>{w.p}</small></span></a></li>)}</ul>
+      </nav>
+    </PageTop>
   </div>
 </Base>
