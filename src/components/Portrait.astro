@@ -1,17 +1,27 @@
 ---
-// The portrait card. Dark mode shows the dark portrait on a black card; light mode shows the
-// light portrait on a warm card that matches its background, so the photo never punches a hole
-// in the light theme. Both images are in the markup; CSS shows the one for the current theme.
-import { Image } from "astro:assets";
-import dark from "@/assets/mubashir-rehman.webp";
-import light from "@/assets/mubashir-rehman-light.webp";
+// The portrait card. Dark mode shows the dark portrait on a black card; light mode shows the light
+// portrait on a warm card that matches its background, so the photo never punches a hole in the
+// light theme.
+// Loading (LCP): one <picture> lets the browser pick the portrait for the system theme, so a visitor
+// downloads exactly one photo, at high priority, straight from the HTML. A visitor who toggled the
+// opposite theme gets a lazy alternate that only loads when CSS shows it.
+import { getImage } from "astro:assets";
+import darkSrc from "@/assets/mubashir-rehman.webp";
+import lightSrc from "@/assets/mubashir-rehman-light.webp";
 import profile from "@/data/profile.json";
 
 interface Props { class?: string; right: string; sizes?: string }
 const { class: cls, right, sizes = "(min-width: 860px) 380px, 100vw" } = Astro.props;
+const dk = await getImage({ src: darkSrc, widths: [400], format: "webp" });
+const lt = await getImage({ src: lightSrc, widths: [400, 800], format: "webp" });
+const alt = profile.name;
 ---
 <div class:list={["j-card j-photo", cls]}>
-  <Image class="ph-dark" src={dark} alt={profile.name} widths={[400]} sizes={sizes} loading="eager" />
-  <Image class="ph-light" src={light} alt={profile.name} widths={[400, 800]} sizes={sizes} loading="eager" />
+  <picture class="ph-main">
+    <source media="(prefers-color-scheme: light)" srcset={lt.srcSet.attribute} sizes={sizes} width="800" height="800" />
+    <img src={dk.src} srcset={dk.srcSet.attribute} sizes={sizes} alt={alt} width="400" height="400" fetchpriority="high" loading="eager" decoding="async" />
+  </picture>
+  <img class="ph-force ph-force-light" src={lt.src} srcset={lt.srcSet.attribute} sizes={sizes} alt={alt} width="800" height="800" loading="lazy" decoding="async" />
+  <img class="ph-force ph-force-dark" src={dk.src} srcset={dk.srcSet.attribute} sizes={sizes} alt={alt} width="400" height="400" loading="lazy" decoding="async" />
   <p class="j-photo__tag"><span>{profile.name}</span><span>{right}</span></p>
 </div>

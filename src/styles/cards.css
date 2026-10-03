@@ -338,10 +338,14 @@
 .jr-list-sec{padding-top:clamp(28px,4vw,48px)}
 
 /* ---- portrait: one card, two photos */
-.j-photo .ph-light{display:none}
+.j-photo .ph-main,.j-photo .ph-main img{display:block;width:100%;height:100%}
+.j-photo .ph-force{display:none}
+.j-photo .ph-force-light{filter:none}
+@media(prefers-color-scheme:light){.j-photo .ph-main img{filter:none}}
+/* the visitor chose the theme opposite to the system: swap in the lazy alternate */
+@media(prefers-color-scheme:dark){:root[data-theme="light"] .j-photo .ph-main{display:none}:root[data-theme="light"] .j-photo .ph-force-light{display:block}}
+@media(prefers-color-scheme:light){:root[data-theme="dark"] .j-photo .ph-main{display:none}:root[data-theme="dark"] .j-photo .ph-force-dark{display:block}}
 :root[data-theme="light"] .j-photo{background:#f1eadf;border-color:var(--line-2)}
-:root[data-theme="light"] .j-photo .ph-dark{display:none}
-:root[data-theme="light"] .j-photo .ph-light{display:block;filter:none}
 :root[data-theme="light"] .j-photo__tag{color:#16131b;text-shadow:none;align-items:center}
 :root[data-theme="light"] .j-photo__tag span{background:rgba(245,240,231,.92);border-radius:999px;padding:4px 10px}
 :root[data-theme="light"] .j-photo__tag span:last-child{color:#4f4759}
