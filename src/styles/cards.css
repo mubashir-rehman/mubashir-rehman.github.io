@@ -467,3 +467,20 @@
 .j-contact__cv,.cs-glance dd a{display:inline-block;padding-block:3px}
 @media(max-width:600px){.btn--lg{font-size:15px}}
 @media(max-width:600px){.j-card.j-photo,.j-card.j-w--shot,.j-card.j-trace{padding:0}}
+
+/* ---- toolbox: on phones the non-daily tools fold behind one tap (checkbox + label, no JavaScript,
+   one copy of every tool in the page). Desktop always shows everything. */
+.tb-toggle,.tb-more{display:none}
+@media(max-width:600px){
+  .tb-toggle{display:block;position:absolute;width:1px;height:1px;opacity:0;margin:0;pointer-events:none}
+  .j-tool .is-rest{display:none}
+  .tb-toggle:checked ~ .j-chips .is-rest{display:inline-block}
+  .tb-more{display:inline-flex;align-self:flex-start;align-items:center;min-height:32px;padding:4px 14px;border-radius:999px;border:1px solid var(--line-2);
+    background:var(--card2);color:var(--accent-text);font-weight:600;font-size:var(--t-small);cursor:pointer}
+  .tb-more::after{content:"";width:7px;height:7px;margin-left:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg)}
+  .tb-toggle:checked ~ .tb-more::after{transform:translateY(2px) rotate(-135deg)}
+  .tb-hide{display:none}
+  .tb-toggle:checked ~ .tb-more .tb-show{display:none}
+  .tb-toggle:checked ~ .tb-more .tb-hide{display:inline}
+  .tb-toggle:focus-visible ~ .tb-more{outline:2px solid var(--accent-text);outline-offset:3px}
+}

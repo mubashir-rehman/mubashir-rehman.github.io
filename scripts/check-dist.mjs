@@ -145,6 +145,9 @@ for (const file of htmlFiles) {
     const i = text.indexOf("—");
     fail(rel, `em dash in visible copy: "...${text.slice(Math.max(0, i - 40), i + 40).trim()}..."`);
   }
+  // Leftover template syntax (a stray "))}" or "{x.y}") renders as literal text when an edit goes wrong.
+  const stray = text.match(/\)\)\}|\}\)\}|\{[a-z][\w.]*\}/i);
+  if (stray) fail(rel, `stray template code in visible copy: "${stray[0]}"`);
   const lower = text.toLowerCase();
   for (const w of BANNED) if (lower.includes(w)) fail(rel, `banned phrase in copy: "${w}"`);
   for (const w of denylist) if (new RegExp(`\\b${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(text)) fail(rel, "NDA denylist term in copy");

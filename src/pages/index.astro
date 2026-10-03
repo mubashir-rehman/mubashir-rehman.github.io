@@ -206,17 +206,24 @@ const schema = graph([website, personFull(), webPage("WebPage", `${SITE}/`, prof
         <li><span class="j-chip is-earlier">Used before</span></li>
       </ul>
       <div class="j-grid">
-        {toolbox.areas.map((a) => (
-          <article class:list={["j-card j-tool", `span-${a.span}`]}>
-            <div class="j-tool__hd"><span class="j-ico"><Icon name={a.icon as any} /></span><h3>{a.name}</h3></div>
-            <ul class="j-chips">
-              {a.daily.map((t) => <li class="j-chip is-daily">{t}<span class="sr"> (daily)</span></li>)}
-              {a.production.map((t) => <li class="j-chip">{t}</li>)}
-              {a.exposure.map((t) => <li class="j-chip is-exp">{t}<span class="sr"> (project exposure)</span></li>)}
-              {a.earlier.map((t) => <li class="j-chip is-earlier">{t}<span class="sr"> (used before)</span></li>)}
-            </ul>
-          </article>
-        ))}
+        {toolbox.areas.map((a, i) => {
+          // On phones only, everything past the daily tools folds behind one tap. One copy of the
+          // list either way: the CSS shows or hides the "is-rest" items, nothing is duplicated.
+          const rest = a.production.length + a.exposure.length + a.earlier.length;
+          return (
+            <article class:list={["j-card j-tool", `span-${a.span}`]}>
+              <div class="j-tool__hd"><span class="j-ico"><Icon name={a.icon as any} /></span><h3>{a.name}</h3></div>
+              {rest > 0 && <input class="tb-toggle" type="checkbox" id={`tb-${i}`} />}
+              <ul class="j-chips">
+                {a.daily.map((t) => <li class="j-chip is-daily">{t}<span class="sr"> (daily)</span></li>)}
+                {a.production.map((t) => <li class="j-chip is-rest">{t}</li>)}
+                {a.exposure.map((t) => <li class="j-chip is-exp is-rest">{t}<span class="sr"> (project exposure)</span></li>)}
+                {a.earlier.map((t) => <li class="j-chip is-earlier is-rest">{t}<span class="sr"> (used before)</span></li>)}
+              </ul>
+              {rest > 0 && <label class="tb-more" for={`tb-${i}`}><span class="tb-show">Show {rest} more</span><span class="tb-hide">Show fewer</span></label>}
+            </article>
+          );
+        })}
       </div>
     </section>
 
