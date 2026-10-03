@@ -102,6 +102,12 @@ Header, every card and the footer share one container (1200px plus gutters, `--c
 left and right edges line up on every page. The footer is a quiet card in that grid: identity, Site, Hiring for,
 Elsewhere, with navigation-role links.
 
+### Rule: phones (<= 600px)
+
+One scale on phones: 33.6 (page titles), 28 (section heads), 19.2 (card titles), 17 (text and lead), 14 (small),
+13 (chips), 15 (buttons). Icons sit on the line they label (deliver cards, step circles), cards use 20px padding
+(photo, screenshot and trace cards stay edge to edge), and every standalone link has a 24px tap area.
+
 ## Open items
 
 - Agentic engineering case study: written as `agent-skills-and-model-routing` (rule 10). Period "2026 to present"
