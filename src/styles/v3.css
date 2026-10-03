@@ -17,7 +17,7 @@
   --t-small:.875rem;
   --fs-display:var(--t-display);--fs-h1:clamp(2.2rem,1.4rem + 3vw,3.75rem);--fs-h2:var(--t-h2);--fs-h3:var(--t-h3);--fs-h4:var(--t-h3);
   --fs-lead:var(--t-lead);--fs-body:var(--t-body);--fs-small:var(--t-small);--fs-label:var(--t-small);--fs-mono:var(--t-small);
-  --r-card:24px;--r-inner:16px;
+  --r-card:24px;--r-inner:16px;--container:1200px;
 }
 
 /* ---- palette, dark (default) */

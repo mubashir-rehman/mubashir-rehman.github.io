@@ -96,6 +96,12 @@ action (a standalone link that moves you on: accent, semibold, small, underline 
 heading: heading colour, underline on hover), navigation (header, footer, breadcrumb, spine, pills: menu
 styles), or on purple (white, white underline). Defined once at the end of `src/styles/cards.css`.
 
+### Rule: one grid edge
+
+Header, every card and the footer share one container (1200px plus gutters, `--container` in v3.css), so their
+left and right edges line up on every page. The footer is a quiet card in that grid: identity, Site, Hiring for,
+Elsewhere, with navigation-role links.
+
 ## Open items
 
 - Agentic engineering case study: written as `agent-skills-and-model-routing` (rule 10). Period "2026 to present"
