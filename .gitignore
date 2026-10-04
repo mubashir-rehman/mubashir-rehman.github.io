@@ -34,5 +34,13 @@ dist-ssr
 # Astro build-time cache/types
 .astro/
 
-# Claude session config
-.claude/
+# Claude session config: only the project skills are committed. Settings, local overrides and anything
+# else under .claude stay out of git (they can hold tokens or machine paths).
+.claude/*
+!.claude/skills/
+
+# Never commit: credentials, the NDA denylist, QA screenshots
+*.pem
+*.key
+nda-denylist*.txt
+qa-shots/

@@ -21,7 +21,10 @@ npm run preview      # preview the production build
 npm run lint         # eslint .
 npm test             # vitest run (one-shot)
 npm run test:watch   # vitest watch mode
+npm run qa           # every gate after a build: tests, lint, zero-js, 13 viewports, page-top, axe (needs a preview server)
 ```
+
+**Project skills** in `.claude/skills/` hold the repeated workflows, so read the matching one instead of re-deriving it: `site-qa` (run all gates), `site-ship` (go live after the owner says so), `site-shots` (screenshots for owner review), `site-content` (copy, data and NDA rules; adding a case study), `site-design` (the v3 design language). Their scripts live in `scripts/qa/`. Only `.claude/skills/` is committed; everything else under `.claude/` is git-ignored. Never commit credentials, `.env` values or the NDA denylist.
 
 Node 22 in CI. npm only (`package-lock.json`); do not add a `bun.lock`: Cloudflare Pages switches to `bun install --frozen-lockfile` whenever one exists, and a stale one fails every build.
 
