@@ -116,4 +116,9 @@ One scale on phones: 33.6 (page titles), 28 (section heads), 19.2 (card titles),
 - Hero tagline: the long `heroLine` is live; the shorter wording would let the headline grow.
 - Light-mode portrait: done (Portrait.astro swaps by theme on home, About and Contact).
 - DM Sans confirmed loading on the owner's machine (2026-10-03).
+- Lighthouse flags `static.cloudflareinsights.com/beacon.min.js` (1-day cache, legacy JS, one hop in the
+  request chain). It is Cloudflare Web Analytics, injected at the edge by Cloudflare, not part of the build,
+  so its cache lifetime and transpilation cannot be changed here. It loads with `defer` and is not the LCP.
+  The owner's choice: keep the analytics and accept the unscored findings, or turn automatic injection off in
+  Cloudflare (Web Analytics settings) and lose visit counts.
 - Owner to revoke the Cloudflare API token when the work is done.
